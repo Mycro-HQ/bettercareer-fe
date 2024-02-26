@@ -1,0 +1,63 @@
+/**
+* This is a variable font
+* You can controll variable axes as shown below:
+* font-variation-settings: 'wght' 900.0;
+*
+* available axes:
+
+* 'wght' (range from 300.0 to 900.0)
+
+*/
+
+/**
+* This is a variable font
+* You can controll variable axes as shown below:
+* font-variation-settings: 'wght' 900.0;
+*
+* available axes:
+
+* 'wght' (range from 300.0 to 900.0)
+
+*/
+
+@font-face {
+	font-family: 'Recoleta';
+	src: url('../../../public/assets/fonts/Recoleta-Bold.woff2') format('woff2');
+	font-weight: 700 800 900;
+	font-display: swap;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Recoleta';
+	src: url('../../../public/assets/fonts/Recoleta-SemiBold.woff2')
+		format('woff2');
+	font-weight: 500 600;
+	font-display: swap;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	src: url('../../../public/assets/fonts/Figtree-Regular.woff2') format('woff2');
+	font-weight: 300 400 500;
+	font-display: swap;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Circular Std';
+	src: url('../../../public/assets/fonts/Figtree-Medium.woff2') format('woff2');
+	font-weight: 600 700;
+	font-display: swap;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Circular Std';
+	src: url('../../../public/assets/fonts/Figtree-SemiBold.woff2')
+		format('woff2');
+	font-weight: 800 900;
+	font-display: swap;
+	font-style: normal;
+}

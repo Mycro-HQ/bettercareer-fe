@@ -1,0 +1,9 @@
+@import './reset.scss';
+@import './base/normalize';
+@import './base/utils';
+@import './base/font';
+@import './base/theme';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
