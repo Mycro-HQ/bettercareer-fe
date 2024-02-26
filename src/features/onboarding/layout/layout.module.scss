@@ -1,0 +1,43 @@
+@use '@/styles/base/utils' as *;
+
+.Layout {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+}
+
+.LayoutInfographic {
+	background: #f3f9fe;
+	height: 100vh;
+	max-width: 45%;
+	flex: 1 0 45%;
+	width: 100%;
+	border-right: #f9fafa 1px solid;
+}
+
+.Contain {
+	max-width: 1200px;
+	padding: 0 20px;
+	width: 100%;
+	height: 100%;
+}
+
+.LayoutContentWrap {
+	display: flex;
+	flex-direction: column;
+	gap: 140px;
+	flex: 1;
+	padding: rem(64px);
+	height: 100%;
+}
+
+.LayoutContent {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.Logo {
+	height: auto;
+	width: rem(200px);
+}

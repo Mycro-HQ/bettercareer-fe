@@ -1,0 +1,18 @@
+@use '@/styles/base/utils' as *;
+
+.AuthLayout {
+	max-width: 450px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	height: 100%;
+}
+
+.AuthLayoutButtons {
+	margin-top: 48px;
+}
+
+.AuthLayoutFooter {
+	margin-top: auto;
+}
