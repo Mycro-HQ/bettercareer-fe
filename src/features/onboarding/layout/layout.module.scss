@@ -4,22 +4,28 @@
 	display: flex;
 	justify-content: space-between;
 	gap: 12px;
+	flex-wrap: wrap;
 }
 
 .LayoutInfographic {
-	background: #f3f9fe;
+	background: #f9fafa;
 	height: 100vh;
-	max-width: 45%;
-	flex: 1 0 45%;
+	flex: 1 1 34%;
 	width: 100%;
-	border-right: #f9fafa 1px solid;
+	border-left: #f9fafa 1px solid;
+	padding: 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	@include media('lg', 'max') {
+		display: none;
+	}
 }
 
-.Contain {
-	max-width: 1200px;
-	padding: 0 20px;
-	width: 100%;
-	height: 100%;
+.LayoutContentContain {
+	flex: 1 0 65%;
+	display: flex;
 }
 
 .LayoutContentWrap {
@@ -29,12 +35,19 @@
 	flex: 1;
 	padding: rem(64px);
 	height: 100%;
+
+	@include media('lg', 'max') {
+		gap: 64px;
+		padding: 2rem 0;
+		height: var(--bc-labs-vh);
+	}
 }
 
 .LayoutContent {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	height: 100%;
 }
 
 .Logo {

@@ -1,33 +1,56 @@
-import { Seo } from '@/components/seo';
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Container } from '@labs/components';
 
+import { Seo } from '@/components/seo';
 import Logo from '@labs/icons/logo.svg';
 
 import styles from './layout.module.scss';
 
 interface OnboardingLayoutProps {
+	/**
+	 * The content of the layout
+	 */
 	children: React.ReactNode;
+	/**
+	 * The title of the layout
+	 * @default ''
+	 */
 	title: string;
+	/**
+	 * Layout Infographic
+	 * @default ''
+	 */
+	adjacentContent?: React.ReactNode;
 }
 
 export const OnboardingLayout = ({
 	children,
 	title,
+	adjacentContent,
 }: OnboardingLayoutProps) => {
 	return (
 		<>
 			<Seo title={title} />
 			<div className={styles.Layout}>
-				<div className={styles.Contain}>
-					<div className={styles.LayoutContentWrap}>
-						<div className={styles.Logo}>
-							<Logo />
+				<div className={styles.LayoutContentContain}>
+					<Container>
+						<div className={styles.LayoutContentWrap}>
+							<div className={styles.Logo}>
+								<Logo />
+							</div>
+							<div className={styles.LayoutContent}>{children}</div>
 						</div>
-						<div className={styles.LayoutContent}>{children}</div>
-					</div>
+					</Container>
 				</div>
-
-				<div className={styles.LayoutInfographic} />
+				<motion.div
+					className={styles.LayoutInfographic}
+					initial={{ opacity: 0, x: 10 }}
+					animate={{ opacity: 1, x: 0 }}
+					exit={{ opacity: 0, x: 10 }}
+				>
+					{adjacentContent}
+				</motion.div>
 			</div>
 		</>
 	);
