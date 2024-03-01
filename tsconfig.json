@@ -8,7 +8,8 @@
     "strictNullChecks": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
+    "downlevelIteration": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -16,7 +17,8 @@
     "paths": {
       "@/*": ["./src/*"],
       "@lib/*": ["./lib/*"],
-      "@labs/*": ["./labs/*"]
+      "@labs/*": ["./labs/*"],
+      "@labs": ["./labs"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
