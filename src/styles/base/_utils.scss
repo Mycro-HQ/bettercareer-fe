@@ -21,8 +21,8 @@ $breakpoints: (
 	'xs': 0,
 	'sm': 576px,
 	'md': 768px,
-	'lg': 1024px,
-	'xl': 1280px,
+	'lg': 992px,
+	'xl': 1200px,
 	'xxl': 1400px,
 );
 
@@ -154,9 +154,8 @@ $typography: (
 			letter-spacing: var(--letter-spacing-regular);
 			line-height: 26px;
 		} @else if $type == 'button' {
-			font-weight: var(--font-weight-medium);
+			font-weight: 600;
 			letter-spacing: calc(var(--letter-spacing-regular));
-			margin-top: -1px;
 			line-height: 130%;
 		} @else {
 			font-weight: var(--font-weight-regular);

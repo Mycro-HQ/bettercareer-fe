@@ -39,24 +39,24 @@
 
 @font-face {
 	font-family: 'Figtree';
-	src: url('../../../public/assets/fonts/Figtree-Regular.woff2') format('woff2');
+	src: url('../../../public/assets/fonts/Figtree-Medium.woff2') format('woff2');
 	font-weight: 300 400 500;
 	font-display: swap;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: 'Circular Std';
-	src: url('../../../public/assets/fonts/Figtree-Medium.woff2') format('woff2');
+	font-family: 'Figtree';
+	src: url('../../../public/assets/fonts/Figtree-SemiBold.woff2')
+		format('woff2');
 	font-weight: 600 700;
 	font-display: swap;
 	font-style: normal;
 }
 
 @font-face {
-	font-family: 'Circular Std';
-	src: url('../../../public/assets/fonts/Figtree-SemiBold.woff2')
-		format('woff2');
+	font-family: 'Figtree';
+	src: url('../../../public/assets/fonts/Figtree-Bold.woff2') format('woff2');
 	font-weight: 800 900;
 	font-display: swap;
 	font-style: normal;

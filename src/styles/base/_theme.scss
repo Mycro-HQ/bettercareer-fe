@@ -44,7 +44,7 @@
 	--soft-black: #16013c;
 
 	/** Layout */
-	--BC-labs-vh: 100vh;
+	--bc-labs-vh: 100vh;
 	--nav-height: 78.8px;
 }
 
@@ -77,7 +77,7 @@
 
 @supports (height: 100dvh) {
 	:root {
-		--BC-labs-vh: 100dvh;
+		--bc-labs-vh: 100dvh;
 	}
 }
 
@@ -201,7 +201,7 @@ Reset links to optimize for opt-in styling instead of opt-out.
 a {
 	color: inherit;
 	text-decoration: inherit;
-	outline-color: var(--primary-theme);
+	outline-color: var(--primary-blue);
 }
 
 /*
@@ -323,7 +323,7 @@ button,
 	/* 2 */
 	background-image: none;
 	/* 2 */
-	outline-color: var(--primary-theme);
+	outline-color: var(--primary-blue);
 } /*
 Use the modern Firefox focus style for all focusable elements.
 */
@@ -571,6 +571,6 @@ video {
 
 .sparkles-green {
 	path {
-		stroke: var(--primary-theme);
+		stroke: var(--primary-blue);
 	}
 }
