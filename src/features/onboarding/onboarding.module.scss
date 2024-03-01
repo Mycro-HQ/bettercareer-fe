@@ -7,6 +7,7 @@
 	align-items: center;
 	justify-content: space-between;
 	height: 100%;
+	gap: 24px;
 }
 
 .AuthLayoutButtons {
@@ -15,4 +16,124 @@
 
 .AuthLayoutFooter {
 	margin-top: auto;
+}
+
+.AuthWrapLogin {
+	background: url('/images/auth/login.png');
+}
+
+.AuthWrapRegister {
+	background: url('/images/auth/register.png');
+}
+
+.AuthWrapLogin,
+.AuthWrapRegister {
+	height: 100%;
+	width: 100%;
+	background-size: cover;
+	background-position: center;
+	background-blend-mode: overlay;
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 12px;
+	padding: 48px;
+
+	.AuthWrapInner {
+		justify-content: flex-end;
+		margin-top: auto;
+		height: 100%;
+		color: #fff;
+		gap: 14px;
+
+		svg {
+			path {
+				fill: #fff;
+			}
+		}
+	}
+
+	.AuthWrapAuthor {
+		flex-wrap: wrap;
+		margin-top: 12px;
+		gap: 8px;
+		align-items: center;
+
+		img {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+		}
+	}
+}
+
+.OnboardCardWrap {
+	position: relative;
+
+	.OnboardCardStack {
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+
+			left: 50%;
+			border: 1px solid rgba(0, 0, 0, 0.06);
+			border-radius: 12px;
+			background: #fff;
+			z-index: 0;
+			transform: translateX(-50%);
+		}
+
+		&::before {
+			width: 70%;
+			top: -40px;
+			height: 70%;
+		}
+
+		&::after {
+			width: 80%;
+			top: -20px;
+			height: 80%;
+		}
+	}
+}
+
+.OnboardCard {
+	max-width: 482px;
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	margin: auto;
+	padding: 40px;
+	position: relative;
+	z-index: 1;
+
+	svg {
+		width: 16px;
+		height: 16px;
+	}
+
+	.AuthWrapAuthor {
+		flex-wrap: wrap;
+		margin-top: 12px;
+		gap: 8px;
+		align-items: center;
+
+		img {
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+		}
+	}
+}
+
+.RadioGroup {
+	padding: 16px 24px;
+	background: #ffffff;
+	border: 1.2px solid #e7e9eb;
+	border-radius: 12px;
+	display: flex;
+	gap: 4px;
+	flex-direction: column;
 }

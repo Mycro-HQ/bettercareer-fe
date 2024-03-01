@@ -10,12 +10,12 @@ import styles from './onboarding.module.scss';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 
-export const Login = () => {
+export const Register = () => {
 	return (
 		<OnboardingLayout
-			title="Login"
+			title="Create your account"
 			adjacentContent={
-				<div className={styles.AuthWrapLogin}>
+				<div className={styles.AuthWrapRegister}>
 					<Flex.Column className={styles.AuthWrapInner}>
 						<LogoMark />
 						<Heading.h5 weight={700}>
@@ -42,15 +42,15 @@ export const Login = () => {
 						exit={{ opacity: 0, y: 15 }}
 					>
 						<Flex.Column gap={14}>
-							<Heading.h3>Welcome back!</Heading.h3>
+							<Heading.h3>Create your account</Heading.h3>
 							<Heading.h5>
-								Please sign in to BetterCareer and ignite your professional
-								journey.
+								Get ready to launch your career into new heights with
+								BetterCareers!
 							</Heading.h5>
 
 							<Flex.Column gap={14} className={styles.AuthLayoutButtons}>
 								<CallToAction leadingIcon={<LinkedInIcon />} size="block">
-									Sign up with Linkedin
+									Sign up with Google
 								</CallToAction>
 								<CallToAction.a
 									leadingIcon={<GoogleIcon />}
@@ -61,9 +61,9 @@ export const Login = () => {
 									Sign up with Google
 								</CallToAction.a>
 								<Text fontSize="16px" className="mt-[10px]">
-									Don’t have an account?{' '}
+									Already have an account?{' '}
 									<Text.span inheritFont color="var(--primary-blue)">
-										<Link href="/register">Sign Up</Link>
+										<Link href="/login">Sign In</Link>
 									</Text.span>
 								</Text>
 							</Flex.Column>
