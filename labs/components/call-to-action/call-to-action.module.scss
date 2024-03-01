@@ -1,0 +1,92 @@
+@use '@/styles/base/utils' as *;
+
+.CallToAction {
+	outline: none;
+	text-decoration: none;
+	transition: all 0.2s ease-in-out;
+	cursor: pointer;
+	border-radius: 50px;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+
+	* {
+		user-select: none;
+	}
+
+	&.sm {
+		padding: 10px 18px;
+		@include typography('p');
+		font-weight: 700;
+	}
+
+	&.md,
+	&.lg,
+	&.block {
+		height: fit-content;
+		width: fit-content;
+		@include typography('button');
+	}
+
+	&.md {
+		padding: 16px 32px;
+	}
+
+	&.lg {
+		padding: 18px 38px;
+	}
+
+	&.block {
+		width: 100%;
+		padding: 18px;
+	}
+
+	.LeadingIcon {
+		user-select: none;
+	}
+
+	&.CTAprimary {
+		background: linear-gradient(196.99deg, #339dff 7.09%, #2783d8 86.59%);
+		color: #fff;
+		border: 1.4px solid var(--primary-blue);
+
+		&-outline {
+			background-color: transparent;
+			border: 1.4px solid #cfd2d5;
+			border-style: solid;
+			color: #3f4c58;
+
+			&.lg {
+				border-width: 2px;
+			}
+
+			&:disabled {
+				background: transparent;
+			}
+
+			&:hover,
+			&:focus {
+				opacity: 0.8;
+			}
+		}
+
+		&:disabled {
+			background: #a1cffa;
+			color: #fff;
+			cursor: not-allowed;
+		}
+
+		&:hover,
+		&:focus {
+			background: linear-gradient(196.99deg, #59afff 7.09%, #3ca2ff 86.59%);
+			transition: all 0.2s ease-in-out;
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--primary-blue);
+			outline-offset: 2px;
+		}
+	}
+}
