@@ -1,0 +1,67 @@
+@use '@/styles/base/utils' as *;
+
+.Container {
+	width: 100%;
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: auto;
+	margin-left: auto;
+
+	max-width: var(--BC-labs-max-width);
+
+	&.Fluid {
+		max-width: 100% !important;
+	}
+
+	&:not(.Fluid) {
+		@include media('sm', 'min') {
+			max-width: 720px;
+		}
+		@include media('md', 'min') {
+			max-width: 960px;
+		}
+
+		@include media('lg', 'min') {
+			max-width: 1140px;
+		}
+
+		@include media('xl', 'min') {
+			max-width: 1320px;
+		}
+	}
+
+	&.maxWidth {
+		&--sm {
+			max-width: 720px;
+		}
+
+		&--md {
+			max-width: 960px;
+		}
+
+		&--lg {
+			max-width: 1140px;
+		}
+
+		&--xl {
+			max-width: 1320px;
+		}
+	}
+
+	&.noGutter {
+		@include media('lg', 'min') {
+			padding-left: env(safe-area-inset-left, 0px);
+			padding-right: 0;
+		}
+
+		@include media('xl', 'min') {
+			padding-left: env(safe-area-inset-left, 0px);
+			padding-right: 0;
+		}
+
+		> :global(.flex-row) {
+			margin-right: 0;
+			margin-left: env(safe-area-inset-left, 0px);
+		}
+	}
+}
