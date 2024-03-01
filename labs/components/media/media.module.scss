@@ -1,0 +1,7 @@
+@use '@/styles/base/utils' as *;
+/** media CSS File */
+.Media {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+}
