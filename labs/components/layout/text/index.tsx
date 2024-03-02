@@ -47,6 +47,10 @@ interface TypographyProps extends Omit<TypeProps, 'as'> {
 	 *  The font size of the text.
 	 */
 	fontSize?: string;
+	/**
+	 * size of the text
+	 */
+	size?: 'xs' | 'sm' | 'caption';
 }
 
 export interface TextProps
@@ -72,12 +76,19 @@ const TextBase = forwardRefWrapper<HTMLParagraphElement, TypographyProps>(
 			children,
 			noOfLines,
 			weight,
+			size,
 			...rest
 		},
 		ref
 	) => {
+		const sizeMap = {
+			xs: 'var(--font-small)',
+			sm: 'var(--font-accent)',
+			caption: 'var(--font-caption)',
+		};
+
 		const dynamicClass = useDynamicStyle({
-			fontSize,
+			fontSize: fontSize ?? sizeMap[size as keyof typeof sizeMap],
 			textTransform: casing,
 			textAlign: align,
 			color,
