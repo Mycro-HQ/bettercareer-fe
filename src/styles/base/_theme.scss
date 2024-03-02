@@ -7,16 +7,16 @@
 	--font-secondary: 'Figtree', sans-serif;
 
 	/* Typography */
-	--font-h1: 82px;
-	--font-h2: 42px;
-	--font-h3: 28px;
+	--font-h1: 72px;
+	--font-h2: 46px;
+	--font-h3: 32px;
 	--font-h4: 24px;
-	--font-h5: 18px;
-	--font-h6: 16px;
-	--font-p: 14px;
-	--font-accent: 13px;
+	--font-h5: 20px;
+	--font-h6: 18px;
+	--font-p: 16px;
+	--font-accent: 14px;
 	--font-caption: 12px;
-	--font-small: 11px;
+	--font-small: 10px;
 
 	/* Letter Spacings */
 	--letter-spacing-regular: -0.2px;
@@ -62,16 +62,16 @@
 @media (max-width: 768px) {
 	:root {
 		/* Typography */
-		--font-h1: calc(62px - 12px);
-		--font-h2: calc(42px - 8px);
-		--font-h3: calc(28px - 8px);
-		--font-h4: calc(24px - 4px);
-		--font-h5: calc(19px - 3px);
-		--font-h6: calc(16px - 2px);
+		--font-h1: calc(72px - 12px);
+		--font-h2: calc(46px - 4px);
+		--font-h3: calc(32px - 4px);
+		--font-h4: calc(24px - 2px);
+		--font-h5: calc(20px - 2px);
+		--font-h6: calc(18px - 2px);
 		--font-p: 14px;
-		--font-accent: 13px;
+		--font-accent: 12px;
 		--font-caption: 12px;
-		--font-small: 11px;
+		--font-small: 10px;
 	}
 }
 

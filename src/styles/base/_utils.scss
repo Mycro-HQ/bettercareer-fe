@@ -118,7 +118,7 @@ $typography: (
 	'h5': 'h5',
 	'h6': 'h6',
 	'p': 'p',
-	'button': 'h6',
+	'button': 'p',
 	'a': 'p',
 	'span': 'p',
 	'regular': 'p',
@@ -143,16 +143,20 @@ $typography: (
 			line-height: 45px;
 		} @else if $property == 'h3' {
 			font-weight: var(--font-weight-medium);
-			letter-spacing: var(--letter-spacing-regular);
+			letter-spacing: var(--letter-spacing-wide);
 			line-height: 45px;
 		} @else if $property == 'h4' {
 			font-weight: var(--font-weight-medium);
-			letter-spacing: var(--letter-spacing-regular);
+			letter-spacing: var(--letter-spacing-wide);
 			line-height: 33px;
 		} @else if $property == 'h5' {
 			font-weight: var(--font-weight-medium);
 			letter-spacing: var(--letter-spacing-regular);
 			line-height: 26px;
+		} @else if $property == 'h6' {
+			font-weight: var(--font-weight-medium);
+			letter-spacing: var(--letter-spacing-regular);
+			line-height: 1.5;
 		} @else if $type == 'button' {
 			font-weight: 600;
 			letter-spacing: calc(var(--letter-spacing-regular));
