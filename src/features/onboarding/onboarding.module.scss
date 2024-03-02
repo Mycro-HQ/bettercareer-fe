@@ -137,3 +137,28 @@
 	gap: 4px;
 	flex-direction: column;
 }
+
+.FileListItem {
+	border-radius: 10px;
+	border: 1px solid #cfd2d5;
+	background: #fff;
+	min-height: rem(78px);
+	width: 100%;
+	padding-left: rem(24.63px);
+	padding-right: rem(18px);
+	margin: 0;
+}
+
+.FileListDocumentIcon {
+	margin-right: rem(15.63px);
+}
+
+.FileListItemTitle {
+	color: #0f1f2e;
+	font-family: Figtree;
+	font-size: rem(16px);
+	font-style: normal;
+	font-weight: 600;
+	line-height: 18px; /* 112.5% */
+	letter-spacing: -0.192px;
+}
