@@ -27,7 +27,7 @@ export const useDynamicStyle = (styles: React.CSSProperties) => {
 	const className = useMemo(() => {
 		return Object.entries(styles)
 			.reduce((acc, [property, value]) => {
-				if (!property || !value) return acc;
+				if (!property || !value || typeof property === 'undefined') return acc;
 
 				const dynamicClassName = styleConverter.applyStyle(property, value);
 				return `${acc} ${dynamicClassName}`;

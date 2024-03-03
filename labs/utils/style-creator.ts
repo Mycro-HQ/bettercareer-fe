@@ -68,7 +68,12 @@ export class StyleConverter {
 
 		if (!ruleExists) {
 			try {
-				this.stylesheet.insertRule(cssRule, this.stylesheet.cssRules.length);
+				if (typeof document !== 'undefined') {
+					this.stylesheet.insertRule(
+						cssRule,
+						this.stylesheet.cssRules?.length || 0
+					);
+				}
 			} catch (error) {
 				// check if rule already exists
 
@@ -77,7 +82,6 @@ export class StyleConverter {
 						(rule: string) => rule === cssRule
 					)
 				) {
-					console.log('cssRule', cssRule);
 					return className;
 				}
 
