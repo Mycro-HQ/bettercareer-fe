@@ -54,7 +54,7 @@ export const Login = () => {
 									leadingIcon={<LinkedInIcon />}
 									size="block"
 								>
-									Sign up with Linkedin
+									Sign in with Linkedin
 								</CallToAction.a>
 								<CallToAction.a
 									leadingIcon={<GoogleIcon />}
@@ -62,7 +62,7 @@ export const Login = () => {
 									outline
 									size="block"
 								>
-									Sign up with Google
+									Sign in with Google
 								</CallToAction.a>
 								<Text fontSize="16px" className="mt-[10px]">
 									Don’t have an account?{' '}

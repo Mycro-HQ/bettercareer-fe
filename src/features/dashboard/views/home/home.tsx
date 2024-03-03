@@ -91,7 +91,7 @@ export const SetupChecklist = () => {
 								)}
 							</div>
 
-							<Heading.h6 weight={700}>{item.title}</Heading.h6>
+							<Text weight={700}>{item.title}</Text>
 						</Flex>
 					</button>
 				))}
