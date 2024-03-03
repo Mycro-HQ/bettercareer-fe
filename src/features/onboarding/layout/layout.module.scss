@@ -9,8 +9,9 @@
 
 .LayoutInfographic {
 	background: #f9fafa;
-	height: 100vh;
-	flex: 1 1 34%;
+	min-height: 100vh;
+	flex: 1 1 33.5%;
+	max-width: 600px;
 	width: 100%;
 	border-left: #f9fafa 1px solid;
 	padding: 14px;
@@ -20,6 +21,8 @@
 
 	@include media('lg', 'max') {
 		display: none;
+
+		margin: 0 auto;
 	}
 }
 
@@ -31,15 +34,14 @@
 .LayoutContentWrap {
 	display: flex;
 	flex-direction: column;
-	gap: 140px;
+	gap: 10%;
 	flex: 1;
-	padding: rem(64px);
+	padding: rem(48px);
 	height: 100%;
 
 	@include media('lg', 'max') {
 		gap: 64px;
 		padding: 2rem 0;
-		height: var(--bc-labs-vh);
 	}
 }
 
@@ -51,6 +53,12 @@
 }
 
 .Logo {
-	height: auto;
-	width: rem(200px);
+	svg {
+		height: auto;
+		width: rem(180px);
+
+		@include media('lg', 'max') {
+			width: rem(150px);
+		}
+	}
 }

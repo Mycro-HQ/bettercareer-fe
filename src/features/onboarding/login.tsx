@@ -18,11 +18,11 @@ export const Login = () => {
 				<div className={styles.AuthWrapLogin}>
 					<Flex.Column className={styles.AuthWrapInner}>
 						<LogoMark />
-						<Heading.h5 weight={700}>
+						<Heading.h6 weight={700}>
 							I was glad the day I discovered Kuzco’s poison. As the name
 							indicates, it makes the process of creating content for
 							publication incredibly easy.
-						</Heading.h5>
+						</Heading.h6>
 						<Flex className={styles.AuthWrapAuthor}>
 							<img src="https://via.placeholder.com/150" alt="placeholder" />
 							<Flex.Column>
@@ -43,15 +43,19 @@ export const Login = () => {
 					>
 						<Flex.Column gap={14}>
 							<Heading.h3>Welcome back!</Heading.h3>
-							<Heading.h5>
+							<Heading.h6>
 								Please sign in to BetterCareer and ignite your professional
 								journey.
-							</Heading.h5>
+							</Heading.h6>
 
 							<Flex.Column gap={14} className={styles.AuthLayoutButtons}>
-								<CallToAction leadingIcon={<LinkedInIcon />} size="block">
+								<CallToAction.a
+									href="/build-profile?linkedin=true"
+									leadingIcon={<LinkedInIcon />}
+									size="block"
+								>
 									Sign up with Linkedin
-								</CallToAction>
+								</CallToAction.a>
 								<CallToAction.a
 									leadingIcon={<GoogleIcon />}
 									href="/build-profile"

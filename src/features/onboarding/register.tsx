@@ -18,11 +18,11 @@ export const Register = () => {
 				<div className={styles.AuthWrapRegister}>
 					<Flex.Column className={styles.AuthWrapInner}>
 						<LogoMark />
-						<Heading.h5 weight={700}>
+						<Heading.h6 weight={700}>
 							I was glad the day I discovered Kuzco’s poison. As the name
 							indicates, it makes the process of creating content for
 							publication incredibly easy.
-						</Heading.h5>
+						</Heading.h6>
 						<Flex className={styles.AuthWrapAuthor}>
 							<img src="https://via.placeholder.com/150" alt="placeholder" />
 							<Flex.Column>
@@ -49,9 +49,13 @@ export const Register = () => {
 							</Heading.h5>
 
 							<Flex.Column gap={14} className={styles.AuthLayoutButtons}>
-								<CallToAction leadingIcon={<LinkedInIcon />} size="block">
-									Sign up with Google
-								</CallToAction>
+								<CallToAction.a
+									href="/build-profile?linkedin=true"
+									leadingIcon={<LinkedInIcon />}
+									size="block"
+								>
+									Sign up with Linkedin
+								</CallToAction.a>
 								<CallToAction.a
 									leadingIcon={<GoogleIcon />}
 									href="/build-profile"

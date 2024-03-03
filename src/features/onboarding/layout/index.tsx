@@ -34,7 +34,7 @@ export const OnboardingLayout = ({
 			<Seo title={title} />
 			<div className={styles.Layout}>
 				<div className={styles.LayoutContentContain}>
-					<Container>
+					<Container fluid>
 						<div className={styles.LayoutContentWrap}>
 							<div className={styles.Logo}>
 								<Logo />
@@ -43,14 +43,16 @@ export const OnboardingLayout = ({
 						</div>
 					</Container>
 				</div>
-				<motion.div
-					className={styles.LayoutInfographic}
-					initial={{ opacity: 0, x: 10 }}
-					animate={{ opacity: 1, x: 0 }}
-					exit={{ opacity: 0, x: 10 }}
-				>
-					{adjacentContent}
-				</motion.div>
+				{adjacentContent && (
+					<motion.div
+						className={styles.LayoutInfographic}
+						initial={{ opacity: 0, x: 10 }}
+						animate={{ opacity: 1, x: 0 }}
+						exit={{ opacity: 0, x: 10 }}
+					>
+						{adjacentContent}
+					</motion.div>
+				)}
 			</div>
 		</>
 	);

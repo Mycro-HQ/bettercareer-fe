@@ -1,61 +1,76 @@
-import React, { useState } from 'react';
-import * as RadioGroup from '@radix-ui/react-radio-group';
+import React, { useEffect, useState } from 'react';
+import * as Progress from '@radix-ui/react-progress';
+import Router from 'next/router';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { useInterval } from '@labs/utils/hooks/useInterval';
 
 import { OnboardingLayout } from '.';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 
-import LinkedInIcon from '@labs/icons/socials/linkedin.svg';
-import GoogleIcon from '@labs/icons/socials/google.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { useInterval } from '@labs/utils/hooks/useInterval';
-
 export const BuildProfile = () => {
+	const [isLinkedin, setIsLinkedin] = useState(false);
+
+	useEffect(() => {
+		if (Router.query?.linkedin) {
+			setIsLinkedin(true);
+		}
+	}, []);
+
 	return (
 		<OnboardingLayout
-			title="Build your Profile"
-			adjacentContent={<OnboardCards />}
+			title="Upload Resume"
+			adjacentContent={isLinkedin ? null : <OnboardCards />}
 		>
-			<AnimatePresence>
-				<div className={styles.AuthLayout}>
-					<motion.div
-						initial={{ opacity: 0, y: 15 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: 15 }}
-					>
-						<Flex.Column gap={14}>
-							<Heading.h3>Build your profile</Heading.h3>
-							<Heading.h5>
-								Import from LinkedIn for swift connections, or fill in manually
-								for a profile that truly reflects you.
-							</Heading.h5>
-
-							<Flex.Column gap={18} className="mt-[48px]">
-								<div className={styles.RadioGroup}>
-									<Heading.h5 weight={600}>Connect LinkedIn</Heading.h5>
-									<Text>
-										Leverage your LinkedIn data to create a comprehensive
-										profile.
-									</Text>
-								</div>
-								<div className={styles.RadioGroup}>
-									<Heading.h5 weight={600}>Upload Resume</Heading.h5>
-									<Text>Showcase your unique experiences and achievements</Text>
-								</div>
-							</Flex.Column>
-							<Flex gap={8} className="mt-[24px]">
-								<CallToAction>Continue</CallToAction>
-								<CallToAction.a href="/login" outline>
-									Skip
-								</CallToAction.a>
-							</Flex>
-						</Flex.Column>
-					</motion.div>
-				</div>
-			</AnimatePresence>
+			{isLinkedin ? <LinkedinFlow /> : <UploadResumeFlow />}
 		</OnboardingLayout>
+	);
+};
+
+const LinkedinFlow = () => {
+	return (
+		<Flex.Column
+			gap={24}
+			alignItems="center"
+			className="min-h-[60vh]"
+			justifyContent="center"
+		>
+			<img src="/images/misc/loading.gif" alt="placeholder" width={45} />
+			<Heading.h5 weight={700}>Connecting Linkedin</Heading.h5>
+			<ProgressDemo />
+		</Flex.Column>
+	);
+};
+
+const UploadResumeFlow = () => {
+	return (
+		<AnimatePresence>
+			<div className={styles.AuthLayout}>
+				<motion.div
+					initial={{ opacity: 0, y: 15 }}
+					animate={{ opacity: 1, y: 0 }}
+					exit={{ opacity: 0, y: 15 }}
+				>
+					<Flex.Column gap={14}>
+						<Heading.h3>Upload Your Resume</Heading.h3>
+						<Heading.h6>
+							Seamlessly integrate your professional journey by uploading your
+							resume.
+						</Heading.h6>
+						{/* DRAG AND DROP COMPONENT  */}
+						<Flex gap={8} className="mt-[24px]">
+							<CallToAction>Continue</CallToAction>
+							<CallToAction.a href="/login" outline>
+								Skip
+							</CallToAction.a>
+						</Flex>
+					</Flex.Column>
+				</motion.div>
+			</div>
+		</AnimatePresence>
 	);
 };
 
@@ -95,7 +110,6 @@ const OnboardCards = () => {
 
 	return (
 		<AnimatePresence mode="wait">
-			{/* create a stack illusion */}
 			<motion.div className={styles.OnboardCardWrap}>
 				<motion.div
 					initial={{ opacity: 0, scale: 0.9 }}
@@ -124,12 +138,40 @@ const OnboardCards = () => {
 							alt={currentMessage.author.name}
 						/>
 						<Flex.Column gap={1} className="mt-[10px]">
-							<Heading.h6 weight={800}>{currentMessage.author.name}</Heading.h6>
-							<Text>{currentMessage.author.title}</Text>
+							<Text weight={800}>{currentMessage.author.name}</Text>
+							<Text size="sm">{currentMessage.author.title}</Text>
 						</Flex.Column>
 					</Flex>
 				</motion.div>
 			</motion.div>
 		</AnimatePresence>
+	);
+};
+
+const ProgressDemo = () => {
+	const [progress, setProgress] = React.useState(13);
+
+	React.useEffect(() => {
+		const timer = setInterval(
+			() => setProgress((prev) => (prev + Math.random() * 10) % 100),
+			500
+		);
+
+		return () => clearInterval(timer);
+	}, []);
+
+	return (
+		<Progress.Root
+			className="relative overflow-hidden bg-[#F3F4F4] rounded-full w-[300px] h-[8px]"
+			style={{
+				transform: 'translateZ(0)',
+			}}
+			value={progress}
+		>
+			<Progress.Indicator
+				className="bg-[#1388F2] w-full h-full transition-transform duration-[660ms] ease-[cubic-bezier(0.65, 0, 0.35, 1)]"
+				style={{ transform: `translateX(-${100 - progress}%)` }}
+			/>
+		</Progress.Root>
 	);
 };
