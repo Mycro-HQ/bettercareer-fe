@@ -60,7 +60,7 @@ export const SetupChecklist = () => {
 			action: 'Set Preferences',
 		},
 	];
-	const [active, setActive] = React.useState(0);
+	const [active, setActive] = React.useState(1);
 	const currentChecklist = checklist[active];
 
 	return (

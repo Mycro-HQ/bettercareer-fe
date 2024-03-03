@@ -62,7 +62,7 @@ const UploadResumeFlow = () => {
 						</Heading.h6>
 						{/* DRAG AND DROP COMPONENT  */}
 						<Flex gap={8} className="mt-[24px]">
-							<CallToAction>Continue</CallToAction>
+							<CallToAction.a href="/dashboard">Continue</CallToAction.a>
 							<CallToAction.a href="/login" outline>
 								Skip
 							</CallToAction.a>
@@ -149,7 +149,8 @@ const OnboardCards = () => {
 };
 
 const ProgressDemo = () => {
-	const [progress, setProgress] = React.useState(13);
+	const router = Router;
+	const [progress, setProgress] = React.useState(0);
 
 	React.useEffect(() => {
 		const timer = setInterval(
@@ -157,8 +158,12 @@ const ProgressDemo = () => {
 			500
 		);
 
+		if (progress > 90) {
+			router.push('/dashboard');
+		}
+
 		return () => clearInterval(timer);
-	}, []);
+	}, [progress, router]);
 
 	return (
 		<Progress.Root
