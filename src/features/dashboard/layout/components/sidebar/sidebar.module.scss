@@ -1,0 +1,118 @@
+@use '@/styles/base/utils' as *;
+
+.DashboardSidebar {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+	width: 100%;
+	height: calc(100% - 32px * 4);
+
+	&.DashboardSidebarCollapsed {
+		transition: all 0.3s ease;
+		height: calc(100% - 32px * 6);
+
+		.DashboardSidebarProfile {
+			p {
+				display: none;
+			}
+		}
+		.DashboardSidebarHeader {
+			justify-content: center;
+
+			> svg {
+				height: 20px;
+				width: auto;
+			}
+
+			> button {
+				transform: rotate(180deg);
+			}
+		}
+		.DashboardSidebarMenu {
+			.DashboardSidebarMenuItem {
+				justify-content: center;
+
+				p {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.DashboardSidebarHeader {
+		display: flex;
+		gap: 22px;
+		align-items: center;
+		justify-content: space-between;
+		width: 100%;
+
+		> svg {
+			width: 140px;
+			height: auto;
+		}
+
+		> button {
+			transition: transform 0.3s ease;
+		}
+	}
+
+	.DashboardSidebarProfile {
+		display: flex;
+		flex-direction: row;
+		cursor: pointer;
+		align-items: center;
+		padding: 12px;
+		gap: 12px;
+		justify-content: space-between;
+		background: #fcfcfc;
+		border: 1px solid #f3f4f4;
+		border-radius: 12px;
+
+		&:hover {
+			background: #f9fafa;
+		}
+	}
+}
+
+.DashboardSidebarMenu {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	gap: 4px;
+
+	.DashboardSidebarMenuItem {
+		background: transparent;
+		border-radius: 12px;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 10px 16px;
+		color: var(--text-gray);
+
+		&.active {
+			background: #f9fafa;
+			color: var(--text-black);
+
+			svg {
+				path {
+					stroke: var(--text-black);
+				}
+			}
+		}
+
+		svg {
+			width: 16px;
+			height: 16px;
+
+			path {
+				stroke: var(--text-gray);
+			}
+		}
+
+		&:hover,
+		&:focus {
+			background: #f9fafa;
+			transition: all 0.3s ease;
+		}
+	}
+}

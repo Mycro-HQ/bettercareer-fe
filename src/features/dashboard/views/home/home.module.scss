@@ -1,0 +1,79 @@
+@use '@/styles/base/utils' as *;
+
+.DashboardHome {
+	.SetupChecklist {
+		border: 1px solid #e7e9eb;
+		border-radius: 12px;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		margin-top: 48px;
+
+		.ChecklistItem {
+			padding: 14px;
+			border: 1px solid #f3f4f4;
+			border-radius: 12px;
+
+			&.active {
+				.ChecklistItemStatusIndex {
+					transition: all 0.3s ease;
+					background: var(--primary-blue);
+					color: #ffffff;
+				}
+			}
+
+			&.done {
+				h6 {
+					color: #868e96;
+				}
+			}
+
+			.ChecklistItemStatus {
+				svg {
+					width: 30px;
+					height: 30px;
+				}
+			}
+
+			.ChecklistItemStatusIndex {
+				background: #f3f4f4;
+				border-radius: 50%;
+				width: 30px;
+				height: 30px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+
+		.Checklist {
+			padding: 24px;
+			width: 100%;
+			max-width: 420px;
+
+			@include media('xl', 'max') {
+				max-width: 100%;
+			}
+		}
+
+		.ChecklistItemDetails {
+			padding: 32px;
+			display: flex;
+			align-items: center;
+			border-left: 1px solid #e7e9eb;
+			background: #f9fafa;
+			gap: 14px;
+			justify-content: center;
+			flex: 1;
+
+			@include media('xl', 'max') {
+				flex: 1 1 100%;
+				flex-wrap: wrap;
+			}
+
+			> img {
+				width: 320px;
+			}
+		}
+	}
+}
