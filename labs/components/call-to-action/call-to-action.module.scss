@@ -18,8 +18,10 @@
 
 	&.sm {
 		padding: 10px 18px;
-		@include typography('p');
-		font-weight: 700;
+		@include typography('accent');
+		font-weight: 600;
+		height: fit-content;
+		width: fit-content;
 	}
 
 	&.md,

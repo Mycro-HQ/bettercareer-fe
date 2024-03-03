@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { APP_URL } from '@lib/config';
 
-const DEFAULT_OG_IMAGE = '/og-image.png';
+const DEFAULT_OG_IMAGE = '/meta/og-image.png';
 
 interface SeoProps {
 	readonly title?: string;
@@ -97,19 +97,19 @@ export function Seo({
 				<link
 					rel="apple-touch-icon"
 					sizes="180x180"
-					href="/apple-touch-icon.png"
+					href="/meta/apple-touch-icon.png"
 				/>
 				<link
 					rel="icon"
 					type="image/png"
 					sizes="32x32"
-					href="/favicon-32x32.png"
+					href="/meta/favicon-32x32.png"
 				/>
 				<link
 					rel="icon"
 					type="image/png"
 					sizes="16x16"
-					href="/favicon-16x16.png"
+					href="/meta/favicon-16x16.png"
 				/>
 				<link rel="manifest" href="/site.webmanifest" />
 
