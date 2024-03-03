@@ -10,6 +10,7 @@
     "format": "prettier --write */**/*.{ts,tsx,css} --config ./.prettierrc"
   },
   "dependencies": {
+    "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/themes": "^2.0.3",
     "classnames": "^2.5.1",
     "framer-motion": "^11.0.8",
