@@ -1,0 +1,44 @@
+@use '@/styles/base/utils' as *;
+
+.DashboardHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 1;
+	margin-bottom: 56px;
+
+	.DashboardHeaderSearch {
+		padding: 0 16px;
+		min-width: 200px;
+		flex: 0 0 320px;
+
+		input {
+			font-size: var(--font-p);
+			padding: 12px 4px;
+			height: auto;
+
+			&::placeholder {
+				color: var(--text-gray-light);
+			}
+		}
+
+		div:last-child {
+			border-radius: 12px;
+			box-shadow: inset 0 0 0 1px #e7e9eb;
+		}
+	}
+
+	.DashboardHeaderNotification {
+		position: relative;
+		cursor: pointer;
+
+		&:hover {
+			opacity: 0.6;
+		}
+
+		svg {
+			width: 24px;
+			height: auto;
+		}
+	}
+}
