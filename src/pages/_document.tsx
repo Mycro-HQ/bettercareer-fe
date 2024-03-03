@@ -21,11 +21,7 @@ class MyDocument extends Document {
 
 		return (
 			<Html lang="en">
-				<Head>
-					{/* {ssrCssRules && (
-						<style id="jss-server-side">{ssrCssRules.join('\n')}</style>
-					)} */}
-				</Head>
+				<Head></Head>
 				<body>
 					<Main />
 					<NextScript />
