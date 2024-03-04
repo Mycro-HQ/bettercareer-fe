@@ -165,7 +165,7 @@ export const JobCard = () => {
 					</div>
 				</div>
 
-				<div className='md:w-[283px] md:h-[32px] flex justify-between '>
+				<div className='md:w-[283px] md:h-[32px] flex justify-between'>
 					<div className='w-[82px] h-[32px] border rounded-full bg-[#F9FAFA] text-center py-1 '>
 						Remote
 					</div>
