@@ -65,7 +65,10 @@ const UploadResumeFlow = () => {
 
 	function handleFileSubmit() {
 		// check if the files const contains files
-		// move those files to the zustand store
+		if (files.length !== 0) {
+			// move those files to the zustand store
+			// or extract the data immediately?
+		}
 	}
 
 	return (
@@ -87,6 +90,8 @@ const UploadResumeFlow = () => {
 								accept="application/pdf"
 								multiple={multiple}
 								setFiles={setFiles}
+								onDrop={(files) => {}}
+								onDragOver={() => {}}
 							/>
 						)}
 						{files &&
