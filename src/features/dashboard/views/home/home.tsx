@@ -7,8 +7,8 @@ import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import CheckIcon from '@labs/icons/dashboard/check.svg';
 
 import styles from './home.module.scss';
-import Image from 'next/image';
-import { CompanyLogo } from '../../../../../public/images/jobs';
+
+import JobCard from '@/components/seo/jobcard/JobCard';
 
 export const DashboardHome = () => {
 	return (
@@ -135,50 +135,3 @@ export const SetupChecklist = () => {
 	);
 };
 
-export const JobCard = () => {
-  return (
-    <div className='md:w-[1044px]  flex  items-center gap-10 p-5 border rounded-md border-black'>
-			<div className='flex flex-col md:w-full md:h-[128px] gap-10 '>
-				<div className='flex md:h-[56px] justify-between '>
-					<div className='flex justify-between w-[322px] '>
-						<Image src={CompanyLogo} alt={'Company Logo'} />
-
-						<div className='flex flex-col w-[248px] h-[54px] '>
-							<Heading.h6>
-								Brand Designer
-							</Heading.h6>
-
-							<Text color="var(--text-gray)">
-								Dribble. California. $120k - $140k
-							</Text> 
-						</div>
-					</div>
-				
-					<div className='flex w-[177px] justify-between '>
-						<button className='border rounded-full w-[79px] h-[42px] '>
-							Save
-						</button> 
-
-						<button className='border bg-[#3198F8] text-white rounded-full w-[90px] h-[42px] '>
-							Apply
-						</button>
-					</div>
-				</div>
-
-				<div className='md:w-[283px] md:h-[32px] flex justify-between'>
-					<div className='w-[82px] h-[32px] border rounded-full bg-[#F9FAFA] text-center py-1 '>
-						Remote
-					</div>
-
-					<div className='w-[82px] h-[32px] border rounded-full bg-[#F9FAFA] text-center py-1 '>
-						Internship
-					</div>
-					
-					<div className='w-[82px] h-[32px] border rounded-full bg-[#F9FAFA] text-center py-1 '>
-						Full-time
-					</div>
-				</div>
-			</div>
-    </div>
-  )
-};
