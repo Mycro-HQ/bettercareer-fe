@@ -8,12 +8,6 @@ import { FileWithKey } from '@labs/utils/types/utility';
 interface DragAndDrop {
 	multiple: boolean;
 	accept: 'application/pdf';
-	// | 'image/gif'
-	// | 'image/jpeg'
-	// | 'image/png'
-	// | 'image/svg+xml'
-	// | 'image/tiff'
-	// | 'image/webp';
 	onDrop: (files: File[]) => void;
 	onDragOver: () => void;
 	setFiles: React.Dispatch<React.SetStateAction<FileWithKey[]>>;
