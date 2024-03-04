@@ -31,3 +31,8 @@ export type AssertHasPropsAndType = <Prop extends string, Type>(
 
 export type NativeElementProps<T extends keyof ReactHTML> =
 	ReactHTML[T] extends DetailedHTMLFactory<infer Props, any> ? Props : {};
+
+export interface FileWithKey {
+	blob: File;
+	key: string;
+}
