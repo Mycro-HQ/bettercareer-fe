@@ -1,44 +1,11 @@
 @use '@/styles/base/utils' as *;
 
-.ModalBody {
-	padding: rem(42px);
-	background: white;
-	border-radius: rem(18px);
-	border-width: 1px;
-	border-color: rgb(229 231 235);
-}
-
-.ModalTitle {
-	color: #16013c;
-	font-family: Recoleta;
-	font-size: rem(24px);
-	font-style: normal;
-	font-weight: 700;
-	line-height: 44px;
-	letter-spacing: -0.432px;
-}
-
-.ModalDescription {
-	color: #57636d;
-	font-family: Figtree;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 500;
-	line-height: 32px;
-	letter-spacing: -0.192px;
-}
-
-.ModalCloseButton {
-	cursor: pointer;
-}
-
-.ModalDragAndDrop {
+.DragAndDrop {
 	aspect-ratio: 2.520879504703188;
 	// padding-top: rem(128px);
 	// padding-bottom: rem(128px);
 	border-radius: 16px;
 	border: 2px dashed #b8dbfb;
-	// background: #f9fcff;
 
 	& > div {
 		place-content: center;
@@ -54,12 +21,8 @@
 	}
 }
 
-@media all and (max-width: 768px) {
-	.ModalBody {
-		padding: rem(24px);
-	}
-
-	.ModalDragAndDrop {
+@include media('md', 'max') {
+	.DragAndDrop {
 		aspect-ratio: 2.538461538461538;
 
 		img {
@@ -67,21 +30,5 @@
 			scale: 0.8;
 			margin-bottom: rem(13px);
 		}
-	}
-}
-
-.ModalContinueButton {
-	background: linear-gradient(196.99deg, #339dff 7.09%, #2783d8 86.59%);
-	color: white;
-	font-weight: 600;
-	line-height: 1;
-	font-size: rem(16px);
-	width: max-content;
-	padding: rem(19px) rem(44.5px);
-	border-radius: rem(40px);
-	// flex-shrink: 1;
-
-	&:disabled {
-		background: #d6ebfe;
 	}
 }
