@@ -14,28 +14,56 @@ interface DragAndDrop {
 	// | 'image/svg+xml'
 	// | 'image/tiff'
 	// | 'image/webp';
-	// onDrop: (files: File[]) => void;
+	onDrop: (files: File[]) => void;
+	onDragOver: () => void;
 	setFiles: React.Dispatch<React.SetStateAction<FileWithKey[]>>;
 }
 
-// interface DragAndDrop {
-//   multiple: boolean;
-//   accept: string; // pdf, image/*
-//   onDrop: (files: File[]) => void;
-//   onDragOver: () => void;
-// }
-
+/**
+ * The DragAndDrop component provides a user interface for drag-and-drop file uploads.
+ * It supports both drag-and-drop and file selection through a file input. The component
+ * can be configured to accept multiple files or a single file, and to accept specific
+ * MIME types.
+ *
+ * @param {boolean} multiple - Determines whether multiple files can be uploaded.
+ * @param {'application/pdf'} accept - Specifies the MIME types of files that can be uploaded.
+ * @param {(files: File[]) => void} onDrop - A callback function that is called when files are dropped/inputted onto the component. It receives an array of `File` objects.
+ * @param {() => void} onDragOver - A callback function that is called when a drag event is detected over the component.
+ * @param {React.Dispatch<React.SetStateAction<FileWithKey[]>>} setFiles - A function to update the state with the uploaded files. It should be a state setter function from the `useState` hook.
+ *
+ * @example
+ * import React, { useState } from 'react';
+ * import DragAndDrop from './DragAndDrop';
+ *
+ * function MyComponent() {
+ *  const [files, setFiles] = useState([]);
+ *
+ *  const handleDrop = (droppedFiles: File[]) => {
+ *       console.log('Files dropped:', droppedFiles);
+ *       // Process dropped files...
+ *  };
+ *
+ *  return (
+ *       <DragAndDrop
+ *         multiple={true}
+ *         accept="application/pdf"
+ *         onDrop={handleDrop}
+ *         onDragOver={() => console.log('Drag over')}
+ *         setFiles={setFiles}
+ *       />
+ *   );
+ * }
+ */
 export default function DragAndDrop({
 	multiple,
 	accept,
-	// onDrop,
+	onDrop,
+	onDragOver,
 	setFiles,
 }: DragAndDrop) {
 	const [dragIsOver, setDragIsOver] = useState(false);
 
-	function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-		const files = Array.from(e.target.files!);
-
+	function addKeysToFiles(files: File[]) {
 		const filesWithKeys = files.map((file) => ({
 			blob: file,
 			key: generateUUID(),
@@ -44,9 +72,16 @@ export default function DragAndDrop({
 		setFiles((prev) => [...prev, ...filesWithKeys]);
 	}
 
+	function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+		const files = Array.from(e.target.files!);
+		addKeysToFiles(files);
+		onDrop(files);
+	}
+
 	const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
 		setDragIsOver(true);
+		onDragOver();
 	};
 
 	const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
@@ -60,32 +95,16 @@ export default function DragAndDrop({
 
 		let droppedFiles = Array.from(event.dataTransfer.files);
 
+		droppedFiles = droppedFiles.filter((file) => file.type === accept);
+
 		if (!multiple) {
 			droppedFiles = droppedFiles.slice(0, 1);
 		}
 
-		const filesWithKeys = droppedFiles.map((file) => ({
-			blob: file,
-			key: generateUUID(),
-		}));
-
-		setFiles((prev) => [...prev, ...filesWithKeys]);
-
-		droppedFiles.forEach((file) => {
-			const reader = new FileReader();
-
-			reader.onloadend = () => {
-				console.log(reader.result);
-			};
-
-			reader.onerror = () => {
-				console.error('There was an issue reading the file: ', file.name, '.');
-			};
-
-			reader.readAsDataURL(file);
-			return reader;
-		});
+		addKeysToFiles(droppedFiles);
+		onDrop(droppedFiles);
 	};
+
 	return (
 		<Flex
 			grow="1"
@@ -106,7 +125,10 @@ export default function DragAndDrop({
 					alt="Drag-and-drop zone for file upload."
 					width={70}
 					height={44.75}
-					style={{ scale: dragIsOver ? 1 : 1.4 }}
+					style={{
+						transform: !dragIsOver ? 'scale(1)' : 'scale(1.4)',
+						transition: 'transform 0.3s ease-in-out',
+					}}
 				/>
 				<Box>
 					{dragIsOver ? (
