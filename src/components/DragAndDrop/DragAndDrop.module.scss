@@ -23,7 +23,8 @@
 
 @include media('md', 'max') {
 	.DragAndDrop {
-		aspect-ratio: 2.538461538461538;
+		padding-top: 2.5rem;
+		padding-bottom: 2.5rem;
 
 		img {
 			margin-top: 0;
