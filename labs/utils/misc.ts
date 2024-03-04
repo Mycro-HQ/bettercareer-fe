@@ -48,3 +48,31 @@ export const getSSRCssRules = (): string[] => {
 
 	return [];
 };
+
+/**
+ * Scale bytes to its proper byte format
+ * e.g:
+ *
+ *   1253656 => '1.20MB'
+ *
+ *   1253656678 => '1.17GB'
+ * @param b The size in bytes.
+ * @param factor The factor to divide by.
+ * @param suffix The suffix to add to the end.
+ */
+export function getSizeFormat(
+	b: number,
+	factor: number = 1024,
+	suffix: string = 'B'
+): string {
+	const units: string[] = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z'];
+
+	for (const unit of units) {
+		if (b < factor) {
+			return `${b.toFixed(2)}${unit}${suffix}`;
+		}
+		b /= factor;
+	}
+
+	return `${b.toFixed(2)}Y${suffix}`;
+}
