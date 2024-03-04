@@ -111,7 +111,7 @@ export default function DragAndDrop({
 			direction="column"
 			align="center"
 			gap="4"
-			className={styles.ModalDragAndDrop}
+			className={styles.DragAndDrop}
 			style={{
 				backgroundColor: dragIsOver ? '#E7F3FE' : '#f9fcff',
 			}}
