@@ -11,6 +11,12 @@ import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
 
+import DragAndDrop from '@/components/DragAndDrop';
+import { getSizeFormat } from '@labs/utils';
+import Image from 'next/image';
+import { Button } from '@radix-ui/themes';
+import { FileWithKey } from '@labs/utils/types/utility';
+
 export const BuildProfile = () => {
 	const [isLinkedin, setIsLinkedin] = useState(false);
 
@@ -46,6 +52,22 @@ const LinkedinFlow = () => {
 };
 
 const UploadResumeFlow = () => {
+	const [files, setFiles] = useState<FileWithKey[]>([]);
+	const multiple: boolean = true;
+
+	function handleDeleteClick(indexToRemove: number) {
+		setFiles((prev) => {
+			const newFiles = [...prev];
+			newFiles.splice(indexToRemove, 1);
+			return newFiles;
+		});
+	}
+
+	function handleFileSubmit() {
+		// check if the files const contains files
+		// move those files to the zustand store
+	}
+
 	return (
 		<AnimatePresence>
 			<div className={styles.AuthLayout}>
@@ -60,9 +82,54 @@ const UploadResumeFlow = () => {
 							Seamlessly integrate your professional journey by uploading your
 							resume.
 						</Heading.h6>
-						{/* DRAG AND DROP COMPONENT  */}
+						{(!files || files.length !== 1) && (
+							<DragAndDrop
+								accept="application/pdf"
+								multiple={multiple}
+								setFiles={setFiles}
+							/>
+						)}
+						{files &&
+							files.map((file, index) => (
+								<Flex
+									direction="row"
+									alignItems="center"
+									justifyContent="space-between"
+									key={file.key}
+									className={styles.FileListItem}
+								>
+									<Flex.Row>
+										<Image
+											src="/document.svg"
+											alt="Document"
+											width={19.744}
+											height={23.563}
+											className={styles.FileListDocumentIcon}
+										/>
+										<Flex.Column>
+											<Text className={styles.FileListItemTitle}>
+												{file.blob.name}
+											</Text>
+											<Text>{getSizeFormat(file.blob.size)}</Text>
+										</Flex.Column>
+									</Flex.Row>
+									<Button
+										variant="ghost"
+										onClick={() => handleDeleteClick(index)}
+									>
+										<Image
+											src="/delete.svg"
+											alt="Delete your file"
+											width={24}
+											height={24}
+										/>
+									</Button>
+								</Flex>
+							))}
 						<Flex gap={8} className="mt-[24px]">
-							<CallToAction.a href="/dashboard">Continue</CallToAction.a>
+							<CallToAction.a href="/dashboard" onClick={handleFileSubmit}>
+								Continue
+							</CallToAction.a>
 							<CallToAction.a href="/login" outline>
 								Skip
 							</CallToAction.a>
