@@ -1,66 +1,54 @@
 @use '@/styles/base/utils' as *;
 
 
-.jobCard {
-  @media (min-width: 768px) {
-    width: 1044px;
-  }
+.JobCard {
+  width: 100%; 
   display: flex;
   flex-direction: column;
-  gap: 1.25rem; 
-  padding: 1.25rem; 
+  gap: 14px; 
+  padding: 14px; 
   justify-content: space-around;
-  // border: 1px solid;
-  border-radius: 0.375rem;
-  padding-bottom: 1.7rem;
+  border-radius: 10px;
+  padding-bottom: 25px;
 
-  .jobDetails {
+  .JobDetails {
     display: flex;
     justify-content: space-between;
-    @media (min-width: 768px) {
-      width: 100%; 
-    }
-    gap: 1.25rem;
+    width: 100%; 
+    gap: 14px;
     
 
-    .logoAndInfo {
+    .LogoAndInfo {
       display: flex;
-      @media (min-width: 768px) {
-        height: 56px; 
-        width: 322px;
-      }
+      height: 56px; 
+      width: 322px;
       justify-content: space-between;
 
-      .info {
+      .Info {
         display: flex;
         flex-direction: column;
         width: 248px;
         height: 54px;
-
-        h6 {
-          font-weight: 600;
-          font-size: 1.125rem;
-        }
       }
     }
 
-    .actionButtons {
+    .ActionButtons {
       display: flex;
       justify-content: space-between;
       width: 177px;
 
-      .save {
-        border: 1px solid #b7b7b7;
-        border-radius: 9999px;
+      .Save {
+        border: 1px solid #b7b7b7 !important;
+        border-radius: 50px;
         width: 79px;
         height: 42px;
       }
 
-      .apply {
+      .Apply {
         border: 1px solid #3198F8;
         background-color: #3198F8;
         color: white;
-        border-radius: 9999px; /* Rounded to full for circular shape */
+        border-radius: 50px; 
         width: 90px;
         height: 42px;
       }
@@ -68,17 +56,17 @@
 
   }
 
-  .tags {
+  .Tags {
     width: 283px;
     height: 32px;
     display: flex;
     justify-content: space-between;
 
-    .tag {
+    .Tag {
       width: 87px;
       height: 32px;
       border: 1px solid #F9FAFA;
-      border-radius: 9999px; 
+      border-radius: 50px; 
       background-color: #F9FAFA;
       text-align: center;
     }
