@@ -8,6 +8,26 @@ import CheckIcon from '@labs/icons/dashboard/check.svg';
 
 import styles from './home.module.scss';
 
+import JobCard from '@/features/dashboard/views/home/component/jobcard/JobCard';
+
+const JOBS = [
+  {
+    title: 'Brand Designer',
+		company: 'Dribble',
+    location: 'California',
+		pay: '$120k - $140k',
+		tags: ["Remote", "Internship", "Full-time"]
+  },
+
+	{
+    title: 'Product Designer',
+		company: 'Dribble',
+    location: 'London',
+		pay: '$220k - $340k',
+		tags: ["Remote", "Hybrid", "Full-time"]
+  }
+]
+
 export const DashboardHome = () => {
 	return (
 		<div className={styles.DashboardHome}>
@@ -22,6 +42,17 @@ export const DashboardHome = () => {
 				</Text>
 			</Flex.Column>
 			<SetupChecklist />
+
+			<Heading.h5 color="var(--text-black)" className='pt-10 pl-6'>
+				Random Job Based On Profile
+			</Heading.h5>
+
+			{
+				JOBS.map((job) => (
+					<JobCard title={job.title} company={job.company} location={job.location} pay={job.pay} tags={job.tags} />
+				))
+			}
+			
 		</div>
 	);
 };
@@ -126,3 +157,4 @@ export const SetupChecklist = () => {
 		</div>
 	);
 };
+

@@ -1,0 +1,76 @@
+@use '@/styles/base/utils' as *;
+
+
+.JobCard {
+  width: 100%; 
+  display: flex;
+  flex-direction: column;
+  gap: 14px; 
+  padding: 14px; 
+  justify-content: space-around;
+  border-radius: 10px;
+  padding-bottom: 25px;
+
+  .JobDetails {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+    gap: 14px;
+    
+
+    .LogoAndInfo {
+      display: flex;
+      height: 56px; 
+      width: 322px;
+      justify-content: space-between;
+
+      .Info {
+        display: flex;
+        flex-direction: column;
+        width: 248px;
+        height: 54px;
+      }
+    }
+
+    .ActionButtons {
+      display: flex;
+      justify-content: space-between;
+      width: 177px;
+
+      .Save {
+        border: 1px solid #b7b7b7 !important;
+        border-radius: 50px;
+        width: 79px;
+        height: 42px;
+      }
+
+      .Apply {
+        border: 1px solid #3198F8;
+        background-color: #3198F8;
+        color: white;
+        border-radius: 50px; 
+        width: 90px;
+        height: 42px;
+      }
+    }
+
+  }
+
+  .Tags {
+    width: 283px;
+    height: 32px;
+    display: flex;
+    justify-content: space-between;
+
+    .Tag {
+      width: 87px;
+      height: 32px;
+      border: 1px solid #F9FAFA;
+      border-radius: 50px; 
+      background-color: #F9FAFA;
+      text-align: center;
+    }
+  }
+}
+
+

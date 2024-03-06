@@ -26,6 +26,7 @@ export const BuildProfile = () => {
 			adjacentContent={isLinkedin ? null : <OnboardCards />}
 		>
 			{isLinkedin ? <LinkedinFlow /> : <UploadResumeFlow />}
+
 		</OnboardingLayout>
 	);
 };

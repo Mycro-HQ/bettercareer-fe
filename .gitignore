@@ -8,7 +8,7 @@
 
 # testing
 /coverage
-
+.history
 # next.js
 /.next/
 /out/
@@ -19,6 +19,7 @@
 # misc
 .DS_Store
 *.pem
+.hintrc
 
 # debug
 npm-debug.log*
