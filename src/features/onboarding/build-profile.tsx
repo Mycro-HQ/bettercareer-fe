@@ -73,6 +73,30 @@ const UploadResumeFlow = () => {
 		}
 	}
 
+	const filesWithError = files.filter((file) => file.status.length !== 0);
+	const filesWithoutError = files.filter((file) => file.status.length === 0);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (filesWithError.length > 0) {
+				setFiles((prev) => {
+					const firstErrorIndex = prev.findIndex(
+						(file) => file.status.length !== 0
+					);
+					if (firstErrorIndex !== -1) {
+						return [
+							...prev.slice(0, firstErrorIndex),
+							...prev.slice(firstErrorIndex + 1),
+						];
+					}
+					return prev;
+				});
+			}
+		}, 3000);
+
+		return () => clearInterval(interval);
+	}, [files]);
+
 	return (
 		<AnimatePresence>
 			<div className={styles.AuthLayout}>
@@ -98,7 +122,13 @@ const UploadResumeFlow = () => {
 							/>
 						)}
 						{files &&
-							files.map((file, index) => {
+							filesWithError.map((file) => (
+								<Text key={file.key} color="var(--primary-error)" size="sm">
+									{file.status.map((status) => status + '\n')}
+								</Text>
+							))}
+						{files &&
+							filesWithoutError.map((file, index) => {
 								return (
 									<Flex
 										direction="row"
@@ -113,15 +143,9 @@ const UploadResumeFlow = () => {
 												<Text className={styles.FileListItemTitle}>
 													{file.blob.name}
 												</Text>
-												{file.status.length === 0 ? (
-													<Text color="var(--text-gray)" size="sm">
-														{getSizeFormat(file.blob.size)}
-													</Text>
-												) : (
-													<Text color="var(--primary-error)" size="sm">
-														{file.status.map((status) => status + '\n')}
-													</Text>
-												)}
+												<Text color="var(--text-gray)" size="sm">
+													{getSizeFormat(file.blob.size)}
+												</Text>
 											</Flex.Column>
 										</Flex>
 										<button onClick={() => handleDeleteClick(index)}>
