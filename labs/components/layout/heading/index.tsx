@@ -49,6 +49,10 @@ export interface TypographyProps extends NativeElementProps<HeadingElements> {
 	 * @default ''
 	 */
 	lineHeight?: string;
+	/**
+	 * animate the heading
+	 */
+	animate?: 'fade' | 'slide' | 'none';
 }
 
 const HeadingBase = forwardRefWrapper<HTMLHeadingElement, TypographyProps>(
@@ -65,16 +69,19 @@ const HeadingBase = forwardRefWrapper<HTMLHeadingElement, TypographyProps>(
 			weight,
 			noOfLines,
 			casing,
+			color,
 			lineHeight,
 			align,
+			animate = 'none',
+			fontSize,
 			...rest
 		} = props;
 
 		const dynamicClass = useDynamicStyle({
-			fontSize: rest.fontSize,
+			fontSize: fontSize,
 			textTransform: casing,
 			textAlign: align,
-			color: rest.color,
+			color: color,
 			lineHeight,
 		});
 
@@ -84,6 +91,7 @@ const HeadingBase = forwardRefWrapper<HTMLHeadingElement, TypographyProps>(
 			Element !== 'span' && styles[`Heading-${Element}`],
 			weight && styles[`weight-${weight}`],
 			noOfLines && styles[`noOfLines-${noOfLines}`],
+			animate && styles[`animate--${animate}`],
 			className
 		);
 
