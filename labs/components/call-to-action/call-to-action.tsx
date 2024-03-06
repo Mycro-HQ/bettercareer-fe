@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
-import { Button } from '@radix-ui/themes';
 
 import { forwardRefWrapper } from '@labs/utils';
 
@@ -12,7 +11,7 @@ import styles from './call-to-action.module.scss';
 type CTASize = 'sm' | 'md' | 'lg' | 'block';
 type CTATheme = 'primary' | 'secondary' | 'clear' | 'error';
 type CTAElement = 'button' | 'a';
-type ButtonProps = React.ComponentProps<typeof Button>;
+
 type Ref = HTMLButtonElement | HTMLAnchorElement;
 
 /**
@@ -23,8 +22,7 @@ type CallToActionComponent<T> = Prettify<
 	CallToActionProps & (T extends CTAElement ? NativeElementProps<T> : never)
 >;
 
-export interface CallToActionProps
-	extends Omit<ButtonProps, 'size' | 'variant'> {
+export interface CallToActionProps {
 	/**
 	 * Decides whether the CTA is outlined or not
 	 * @default false
