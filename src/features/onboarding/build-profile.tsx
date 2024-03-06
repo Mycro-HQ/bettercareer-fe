@@ -94,7 +94,7 @@ const UploadResumeFlow = () => {
 								setFiles={setFiles}
 								onDrop={(files) => {}}
 								onDragOver={() => {}}
-								maxSize={10}
+								maxSize={maxSize}
 							/>
 						)}
 						{files &&
