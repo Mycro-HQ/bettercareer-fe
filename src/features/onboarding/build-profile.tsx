@@ -13,9 +13,10 @@ import styles from './onboarding.module.scss';
 
 import DragAndDrop from '@/components/DragAndDrop';
 import { getSizeFormat } from '@labs/utils';
-import Image from 'next/image';
-import { Button } from '@radix-ui/themes';
 import { FileWithKey } from '@labs/utils/types/utility';
+
+import DocumentImage from '@labs/icons/document.svg';
+import DeleteImage from '@labs/icons/delete.svg';
 
 export const BuildProfile = () => {
 	const [isLinkedin, setIsLinkedin] = useState(false);
@@ -54,6 +55,7 @@ const LinkedinFlow = () => {
 const UploadResumeFlow = () => {
 	const [files, setFiles] = useState<FileWithKey[]>([]);
 	const multiple: boolean = true;
+	const maxSize = 10;
 
 	function handleDeleteClick(indexToRemove: number) {
 		setFiles((prev) => {
@@ -92,45 +94,42 @@ const UploadResumeFlow = () => {
 								setFiles={setFiles}
 								onDrop={(files) => {}}
 								onDragOver={() => {}}
+								maxSize={10}
 							/>
 						)}
 						{files &&
-							files.map((file, index) => (
-								<Flex
-									direction="row"
-									alignItems="center"
-									justifyContent="space-between"
-									key={file.key}
-									className={styles.FileListItem}
-								>
-									<Flex.Row>
-										<Image
-											src="/document.svg"
-											alt="Document"
-											width={19.744}
-											height={23.563}
-											className={styles.FileListDocumentIcon}
-										/>
-										<Flex.Column>
-											<Text className={styles.FileListItemTitle}>
-												{file.blob.name}
-											</Text>
-											<Text>{getSizeFormat(file.blob.size)}</Text>
-										</Flex.Column>
-									</Flex.Row>
-									<Button
-										variant="ghost"
-										onClick={() => handleDeleteClick(index)}
+							files.map((file, index) => {
+								return (
+									<Flex
+										direction="row"
+										alignItems="center"
+										justifyContent="space-between"
+										key={file.key}
+										className={styles.FileListItem}
 									>
-										<Image
-											src="/delete.svg"
-											alt="Delete your file"
-											width={24}
-											height={24}
-										/>
-									</Button>
-								</Flex>
-							))}
+										<Flex>
+											<DocumentImage className={styles.FileListDocumentIcon} />
+											<Flex.Column gap={4}>
+												<Text className={styles.FileListItemTitle}>
+													{file.blob.name}
+												</Text>
+												{file.status.length === 0 ? (
+													<Text color="var(--text-gray)" size="sm">
+														{getSizeFormat(file.blob.size)}
+													</Text>
+												) : (
+													<Text color="var(--primary-error)" size="sm">
+														{file.status.map((status) => status + '\n')}
+													</Text>
+												)}
+											</Flex.Column>
+										</Flex>
+										<button onClick={() => handleDeleteClick(index)}>
+											<DeleteImage />
+										</button>
+									</Flex>
+								);
+							})}
 						<Flex gap={8} className="mt-[24px]">
 							<CallToAction.a href="/dashboard" onClick={handleFileSubmit}>
 								Continue
