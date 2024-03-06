@@ -35,4 +35,5 @@ export type NativeElementProps<T extends keyof ReactHTML> =
 export interface FileWithKey {
 	blob: File;
 	key: string;
+	status: string[];
 }
