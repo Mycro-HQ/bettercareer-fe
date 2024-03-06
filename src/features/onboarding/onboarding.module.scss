@@ -145,18 +145,19 @@
 	border-radius: 10px;
 	border: 1px solid #cfd2d5;
 	background: #fff;
-	// min-height: rem(78px);
 	width: 100%;
 	padding: rem(18px);
 	margin: 0;
 
 	button:hover {
-		fill: red;
+		filter: brightness(0) saturate(100%) invert(21%) sepia(76%) saturate(1898%)
+			hue-rotate(342deg) brightness(113%) contrast(106%);
 	}
 }
 
 .FileListDocumentIcon {
 	margin-right: rem(15.63px);
+	min-width: rem(19.74px);
 }
 
 .FileListItemTitle {
