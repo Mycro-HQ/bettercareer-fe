@@ -145,11 +145,14 @@
 	border-radius: 10px;
 	border: 1px solid #cfd2d5;
 	background: #fff;
-	min-height: rem(78px);
+	// min-height: rem(78px);
 	width: 100%;
-	padding-left: rem(24.63px);
-	padding-right: rem(18px);
+	padding: rem(18px);
 	margin: 0;
+
+	button:hover {
+		fill: red;
+	}
 }
 
 .FileListDocumentIcon {
@@ -162,6 +165,5 @@
 	font-size: rem(16px);
 	font-style: normal;
 	font-weight: 600;
-	line-height: 18px; /* 112.5% */
-	letter-spacing: -0.192px;
+	line-height: 18px;
 }
