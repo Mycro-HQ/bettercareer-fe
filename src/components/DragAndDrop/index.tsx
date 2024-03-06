@@ -1,9 +1,10 @@
 import React, { useState, DragEvent } from 'react';
-import { Flex, Box, Text } from '@radix-ui/themes';
+import { Flex, Text } from '@labs/components';
 import styles from './DragAndDrop.module.scss';
-import Image from 'next/image';
 import { generateUUID } from '@labs/utils';
 import { FileWithKey } from '@labs/utils/types/utility';
+import classNames from 'classnames';
+import DragAndDropImage from '@labs/icons/dragAndDrop.svg';
 
 interface DragAndDrop {
 	multiple: boolean;
@@ -11,6 +12,7 @@ interface DragAndDrop {
 	onDrop: (files: File[]) => void;
 	onDragOver: () => void;
 	setFiles: React.Dispatch<React.SetStateAction<FileWithKey[]>>;
+	maxSize: number;
 }
 
 /**
@@ -24,7 +26,7 @@ interface DragAndDrop {
  * @param {(files: File[]) => void} onDrop - A callback function that is called when files are dropped/inputted onto the component. It receives an array of `File` objects.
  * @param {() => void} onDragOver - A callback function that is called when a drag event is detected over the component.
  * @param {React.Dispatch<React.SetStateAction<FileWithKey[]>>} setFiles - A function to update the state with the uploaded files. It should be a state setter function from the `useState` hook.
- *
+ * @param {number} maxSize - A number representing the maxSixe in bytes.
  * @example
  * import React, { useState } from 'react';
  * import DragAndDrop from './DragAndDrop';
@@ -54,13 +56,27 @@ export default function DragAndDrop({
 	onDrop,
 	onDragOver,
 	setFiles,
+	maxSize,
 }: DragAndDrop) {
 	const [dragIsOver, setDragIsOver] = useState(false);
+
+	function validateFile(file: File) {
+		const errors: string[] = [];
+
+		if (file.size > maxSize * 1024 * 1024) {
+			errors.push(`File ${file.name}'s size should be less than ${maxSize}MB`);
+		} else if (file.type !== accept) {
+			errors.push(`File ${file.name}'s type should be ${accept.split('/')[1]}`);
+		}
+
+		return errors;
+	}
 
 	function addKeysToFiles(files: File[]) {
 		const filesWithKeys = files.map((file) => ({
 			blob: file,
 			key: generateUUID(),
+			status: [],
 		}));
 
 		setFiles((prev) => [...prev, ...filesWithKeys]);
@@ -69,6 +85,12 @@ export default function DragAndDrop({
 	function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
 		const files = Array.from(e.target.files!);
 		addKeysToFiles(files);
+		setFiles((prev) =>
+			prev.map((file) => ({
+				...file,
+				status: validateFile(file.blob),
+			}))
+		);
 		onDrop(files);
 	}
 
@@ -96,42 +118,52 @@ export default function DragAndDrop({
 		}
 
 		addKeysToFiles(droppedFiles);
+		setFiles((prev) =>
+			prev.map((file) => ({
+				...file,
+				status: validateFile(file.blob),
+			}))
+		);
 		onDrop(droppedFiles);
 	};
 
 	return (
-		<Flex
-			grow="1"
-			direction="column"
-			align="center"
+		<Flex.Column
+			alignItems="center"
 			gap="4"
-			className={styles.DragAndDrop}
-			style={{
-				backgroundColor: dragIsOver ? '#E7F3FE' : '#f9fcff',
-			}}
+			className={classNames(
+				styles.DragAndDrop,
+				dragIsOver ? 'bg-[#E7F3FE]' : 'bg-[#f9fcff]',
+				'mt-9 mb-9'
+			)}
 			onDragOver={handleDragOver}
 			onDragLeave={handleDragLeave}
 			onDrop={handleDrop}
 		>
-			<Flex direction="column" align="center" grow="1">
-				<Image
-					src="/dragAndDrop.svg"
-					alt="Drag-and-drop zone for file upload."
-					width={70}
-					height={44.75}
+			<Flex.Column alignItems="center">
+				<DragAndDropImage
 					style={{
 						transform: !dragIsOver ? 'scale(1)' : 'scale(1.4)',
 						transition: 'transform 0.3s ease-in-out',
 					}}
 				/>
-				<Box>
+				<Flex.Column alignItems="center">
 					{dragIsOver ? (
 						<Text as="span">Drop your file here</Text>
 					) : (
 						<>
-							<Text as="span">Drag and drop file or </Text>
-							<Text as="label" htmlFor="DragAndDrop">
-								Browse
+							<Flex gap="2" alignItems="center">
+								<Text as="span">Drag and drop file or </Text>
+								<label
+									htmlFor="DragAndDrop"
+									role="button"
+									className="cursor-pointer"
+								>
+									Browse
+								</label>
+							</Flex>
+							<Text className="mt-[2px]" size="sm" color="var(--text-gray)">
+								Up to 10MB in PDF
 							</Text>
 						</>
 					)}
@@ -142,11 +174,11 @@ export default function DragAndDrop({
 						name="DragAndDrop"
 						accept={accept}
 						multiple={multiple}
-						style={{ opacity: 0, width: 0, height: 0 }}
+						className="opacity-0 w-0 h-0"
 						onChange={handleFileUpload}
 					/>
-				</Box>
-			</Flex>
-		</Flex>
+				</Flex.Column>
+			</Flex.Column>
+		</Flex.Column>
 	);
 }
