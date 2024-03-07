@@ -7,6 +7,8 @@ import { forwardRefWrapper } from '@labs/utils';
 import type { NativeElementProps, Prettify } from '@labs/utils/types/utility';
 
 import styles from './call-to-action.module.scss';
+import { Spinner } from '../spinner';
+import { Flex } from '../layout';
 
 type CTASize = 'sm' | 'md' | 'lg' | 'block';
 type CTATheme = 'primary' | 'secondary' | 'clear' | 'error';
@@ -102,6 +104,13 @@ const createCallToActionComponent = <T extends CTAElement>(component: T) =>
 				className,
 			]);
 
+			const spinnerSize = {
+				sm: 14,
+				md: 16,
+				lg: 18,
+				block: 20,
+			};
+
 			return (
 				<Component
 					ref={ref}
@@ -110,13 +119,31 @@ const createCallToActionComponent = <T extends CTAElement>(component: T) =>
 					data-bc-component="CallToAction"
 					{...otherProps}
 				>
-					{leadingIcon && (
-						<span className={styles.leadingIcon}>{leadingIcon}</span>
+					{isLoading && (
+						<Spinner
+							size={spinnerSize[size as keyof typeof spinnerSize]}
+							thickness="2"
+							spinner="logo"
+							isLoading={isLoading}
+							color={variant === 'primary' && !outline ? '#fff' : undefined} // we need explicit colors here so we can get the right contrast
+						/>
 					)}
-					{isLoading ? loadingText : children}
-					{trailingIcon && (
-						<span className={styles.trailingIcon}>{trailingIcon}</span>
-					)}
+
+					<>
+						{isLoading ? (
+							loadingText
+						) : (
+							<>
+								{leadingIcon && (
+									<span className={styles.leadingIcon}>{leadingIcon}</span>
+								)}
+								{children}
+								{trailingIcon && (
+									<span className={styles.trailingIcon}>{trailingIcon}</span>
+								)}
+							</>
+						)}
+					</>
 				</Component>
 			);
 		}
