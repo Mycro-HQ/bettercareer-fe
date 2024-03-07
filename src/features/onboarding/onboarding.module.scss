@@ -140,3 +140,16 @@
 	gap: 4px;
 	flex-direction: column;
 }
+
+.GoogleAuthButton {
+	position: absolute;
+	width: 100%;
+	will-change: opacity;
+	opacity: 0.001;
+	transform: scale(1.9);
+	z-index: 1;
+
+	iframe {
+		margin: auto !important;
+	}
+}
