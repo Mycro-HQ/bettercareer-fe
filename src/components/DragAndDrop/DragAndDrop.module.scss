@@ -3,8 +3,8 @@
 .DragAndDrop {
 	border-radius: 16px;
 	border: 2px dashed #b8dbfb;
-	padding-top: rem(75.02px);
-	padding-bottom: rem(75.02px);
+	padding-top: rem(75px);
+	padding-bottom: rem(75px);
 
 	& > div {
 		place-content: center;
@@ -22,8 +22,8 @@
 
 @include media('md', 'max') {
 	.DragAndDrop {
-		padding-top: 2.5rem;
-		padding-bottom: 2.5rem;
+		padding-top: rem(40px);
+		padding-bottom: rem(40px);
 
 		img {
 			margin-top: 0;
