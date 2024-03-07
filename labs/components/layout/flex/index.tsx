@@ -6,9 +6,10 @@ import type { CSSProperties } from 'react';
 
 import classNames from 'classnames';
 
-import styles from './flex.module.scss';
-import { forwardRefWrapper, useDynamicStyle, useStyles } from '@labs/utils';
+import { forwardRefWrapper, useDynamicStyle } from '@labs/utils';
 import { useMediaQuery } from '@labs/components';
+
+import styles from './flex.module.scss';
 
 type MainAxisAlignment =
 	| 'normal'
@@ -78,125 +79,72 @@ export interface IFlexProps
 	extends React.HTMLAttributes<HTMLDivElement>,
 		IFlex {}
 
-interface IFlexRow extends React.HTMLAttributes<HTMLDivElement>, IFlex {
-	noGutters?: boolean;
-}
+const capitalize = (s?: string) =>
+	s ? s.charAt(0).toUpperCase() + s.slice(1) : '';
 
-const FlexBase = forwardRefWrapper<HTMLDivElement, IFlexProps>(
-	'FlexBase',
-	({ children, responsiveScroll, scrollable = false, ...rest }, ref) => {
-		const dynamicClassName = useDynamicStyle({
-			gap: rest.gap,
-			flexBasis: rest.basis,
-			flex: rest.flex,
-		});
+export const buildFlex = (type: '' | 'row' | 'column' = '') => {
+	return forwardRefWrapper<HTMLDivElement, IFlexProps>(
+		`Flex${capitalize(type)}`,
+		(
+			{
+				children,
+				responsiveScroll,
+				scrollable = false,
+				css,
+				gap,
+				basis,
+				flex,
+				className,
+				sm,
+				md,
+				xl,
+				lg,
+				...rest
+			},
+			ref
+		) => {
+			const dynamicClassName = useDynamicStyle({
+				gap: gap,
+				flexBasis: basis,
+				flex: flex,
+			});
 
-		const _class = classNames([
-			styles.Flex,
-			scrollable && 'custom-scrollbar',
-			scrollable && styles.FlexScroll,
-			responsiveScroll && styles.FlexResponsiveScroll,
-			rest.className,
-			dynamicClassName,
-		]);
-		const isMediaQuery =
-			(Object.keys(rest).some((key) => key.match(/sm|md|lg|xl/)) && rest.sm) ??
-			rest.md ??
-			rest.lg ??
-			rest.xl ??
-			false;
-		const matchQuery = useMediaQuery(
-			Object.keys(rest).find((key) => key.match(/sm|md|lg|xl/)) ?? 'sm',
-			'greaterThan'
-		);
+			const _class = classNames([
+				styles[`Flex${capitalize(type)}`],
+				scrollable && 'custom-scrollbar',
+				scrollable && styles.FlexScroll,
+				responsiveScroll && styles.FlexResponsiveScroll,
+				className,
+				dynamicClassName,
+				buildProperties(rest),
+			]);
 
-		return (
-			<div
-				ref={ref}
-				className={`${_class} ${buildProperties(rest)}`}
-				style={{
-					...rest.css,
-					...(matchQuery && isMediaQuery),
-				}}
-			>
-				{children}
-			</div>
-		);
-	}
-);
+			const isMediaQuery =
+				(Object.keys(rest).some((key) => key.match(/sm|md|lg|xl/)) && sm) ??
+				md ??
+				xl ??
+				(lg || false);
+			const matchQuery = useMediaQuery(
+				Object.keys(rest).find((key) => key.match(/sm|md|lg|xl/)) ?? 'sm',
+				'greaterThan'
+			);
 
-export const FlexColumn = forwardRefWrapper<HTMLDivElement, IFlexProps>(
-	'FlexColumn',
-	({ children, responsiveScroll, scrollable = false, ...rest }, ref) => {
-		const dynamicClassName = useDynamicStyle({
-			gap: rest.gap,
-			flexBasis: rest.basis,
-			flex: rest.flex,
-		});
-
-		const _class = classNames([
-			styles.FlexColumn,
-			scrollable && 'custom-scrollbar',
-			scrollable && styles.FlexScroll,
-			responsiveScroll && styles.FlexResponsiveScroll,
-			rest.className,
-			dynamicClassName,
-		]);
-		const isMediaQuery =
-			(Object.keys(rest).some((key) => key.match(/sm|md|lg|xl/)) && rest.sm) ??
-			rest.md ??
-			rest.xl ??
-			(rest.lg || false);
-		const matchQuery = useMediaQuery(
-			Object.keys(rest).find((key) => key.match(/sm|md|lg|xl/)) ?? 'sm',
-			'greaterThan'
-		);
-
-		return (
-			<div
-				ref={ref}
-				className={`${_class}  ${buildProperties(rest)}`}
-				style={{
-					...rest.css,
-					...(matchQuery && isMediaQuery),
-				}}
-			>
-				{children}
-			</div>
-		);
-	}
-);
-
-export const FlexRow = forwardRefWrapper<HTMLDivElement, IFlexRow>(
-	'FlexRow',
-	(
-		{ children, responsiveScroll, scrollable = false, noGutters, ...rest },
-		ref
-	) => {
-		const _class = classNames([
-			'flex-row',
-			styles.FlexRow,
-			scrollable && 'custom-scrollbar',
-			scrollable && styles.FlexScroll,
-			responsiveScroll && styles.FlexResponsiveScroll,
-			rest.className,
-		]);
-		const _style = useStyles({
-			marginRight: (noGutters && 0) || undefined,
-			marginLeft: (noGutters && 0) || undefined,
-		});
-
-		return (
-			<div
-				ref={ref}
-				className={`${_class} ${buildProperties(rest)}`}
-				style={_style}
-			>
-				{children}
-			</div>
-		);
-	}
-);
+			return (
+				<div
+					ref={ref}
+					className={_class}
+					style={{
+						...css,
+						...(matchQuery && isMediaQuery),
+					}}
+					{...rest}
+				>
+					{children}
+				</div>
+			);
+		}
+	);
+};
 
 const buildProperties = (props: IFlex) => {
 	const alignSelfMapping = {
@@ -206,7 +154,7 @@ const buildProperties = (props: IFlex) => {
 		center: 'self-center',
 		baseline: 'self-baseline',
 		stretch: 'self-stretch',
-	};
+	} as const;
 
 	// Mapping for alignContent
 	const alignContentMapping = {
@@ -217,14 +165,14 @@ const buildProperties = (props: IFlex) => {
 		'space-around': 'content-around',
 		'space-evenly': 'content-evenly',
 		stretch: 'content-stretch',
-	};
+	} as const;
 
 	// Mapping for flexWrap
 	const flexWrapMapping = {
 		nowrap: 'flex-nowrap',
 		wrap: 'flex-wrap',
 		'wrap-reverse': 'flex-wrap-reverse',
-	};
+	} as const;
 
 	// Mapping for flexDirection
 	const flexDirectionMapping = {
@@ -232,7 +180,7 @@ const buildProperties = (props: IFlex) => {
 		'row-reverse': 'flex-row-reverse',
 		column: 'flex-col',
 		'column-reverse': 'flex-col-reverse',
-	};
+	} as const;
 
 	const justifyContentMapping = {
 		'flex-start': 'justify-start',
@@ -241,7 +189,7 @@ const buildProperties = (props: IFlex) => {
 		'space-between': 'justify-between',
 		'space-around': 'justify-around',
 		'space-evenly': 'justify-evenly',
-	};
+	} as const;
 
 	const alignItemsMapping = {
 		'flex-start': 'items-start',
@@ -249,7 +197,7 @@ const buildProperties = (props: IFlex) => {
 		center: 'items-center',
 		baseline: 'items-baseline',
 		stretch: 'items-stretch',
-	};
+	} as const;
 
 	const justifyContentClass =
 		justifyContentMapping[
@@ -297,7 +245,7 @@ const buildProperties = (props: IFlex) => {
  * @example
  * <Flex></Flex>
  */
-export const Flex = Object.assign(FlexBase, {
-	Row: FlexRow,
-	Column: FlexColumn,
+export const Flex = Object.assign(buildFlex(''), {
+	Row: buildFlex('row'),
+	Column: buildFlex('column'),
 });
