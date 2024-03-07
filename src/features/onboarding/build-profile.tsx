@@ -140,7 +140,12 @@ const UploadResumeFlow = () => {
 										<Flex>
 											<DocumentImage className={styles.FileListDocumentIcon} />
 											<Flex.Column gap={4}>
-												<Text className={styles.FileListItemTitle}>
+												<Text
+													className={styles.FileListItemTitle}
+													fontSize="var(--font-p)"
+													weight={600}
+													lineHeight="18px"
+												>
 													{file.blob.name}
 												</Text>
 												<Text color="var(--text-gray)" size="sm">
