@@ -158,7 +158,7 @@ const UploadResumeFlow = () => {
 							<CallToAction.a href="/dashboard" onClick={handleFileSubmit}>
 								Continue
 							</CallToAction.a>
-							<CallToAction.a href="/login" outline>
+							<CallToAction.a href="/dashboard" outline>
 								Skip
 							</CallToAction.a>
 						</Flex>

@@ -4,6 +4,9 @@
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	background: #fcfcfc;
+	position: relative;
+	z-index: -1;
 
 	--dashboard-aside-width: 285px;
 
@@ -16,29 +19,54 @@
 		}
 	}
 
-	&Aside {
-		position: fixed;
-		top: 0;
-		left: 0;
-		overflow-x: auto;
-		bottom: 0;
-		width: var(--dashboard-aside-width);
-		padding: 32px;
-		transition: all 0.3s ease;
-		display: flex;
-		flex-direction: column;
-		flex-wrap: wrap;
-		align-items: flex-end;
-		gap: 22px;
-		height: var(--bc-labs-vh);
-		background: #ffffff;
-		border-right: 1px solid #f3f4f4;
-
-		@include custom-scrollbar;
-
-		@include media('lg', 'max') {
-			transform: translateX(-100%);
+	&--lg {
+		.DashboardLayoutBanner {
+			height: 360px;
 		}
+	}
+
+	&--sm {
+		.DashboardLayoutBanner {
+			height: 240px;
+		}
+	}
+
+	&--md {
+		.DashboardLayoutBanner {
+			height: 318px;
+		}
+	}
+
+	.DashboardLayoutBanner {
+		/* Rectangle 29 */
+
+		box-sizing: border-box;
+		position: absolute;
+		width: 100%;
+		left: 0px;
+		top: 0px;
+		z-index: -1;
+
+		@supports (
+			background:
+				radial-gradient(
+					7.08% 35.82% at 1.49% 49.83%,
+					rgba(234, 224, 255, 0.12) 0%,
+					rgba(73, 0, 226, 0) 100%
+				)
+		) {
+			background:
+				radial-gradient(
+						7.08% 35.82% at 1.49% 49.83%,
+						rgba(234, 224, 255, 0.36) 0%,
+						rgba(234, 224, 255, 0) 100%
+					)
+					/* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+				linear-gradient(96.68deg, #eef7ff -0.19%, #b4fff3 226.07%);
+		}
+
+		background: linear-gradient(96.68deg, #eef7ff -0.19%, #b4fff3 226.07%);
+		border: 1px solid #f3f4f4;
 	}
 
 	&Main {
@@ -46,29 +74,14 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4;
-		padding: 32px 48px;
-		width: calc(100% - var(--dashboard-aside-width));
+		padding: 0 15px;
+		width: 100%;
 		margin-left: auto;
 		position: relative;
 		min-height: var(--bc-labs-vh);
 
 		@include media('lg', 'max') {
 			width: 100%;
-		}
-
-		&:before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 235px;
-			background: linear-gradient(
-				180deg,
-				rgba(19, 136, 242, 0.31) -210.66%,
-				rgba(255, 255, 255, 0) 75.71%
-			);
-			z-index: 0;
 		}
 	}
 }

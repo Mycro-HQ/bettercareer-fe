@@ -5,7 +5,7 @@ import { DashboardLayout } from '@/features/dashboard/layout';
 
 export const Dashboard = () => {
 	return (
-		<DashboardLayout>
+		<DashboardLayout backdropThreshold="md">
 			<DashboardHome />
 		</DashboardLayout>
 	);

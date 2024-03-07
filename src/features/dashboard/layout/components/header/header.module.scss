@@ -1,19 +1,81 @@
 @use '@/styles/base/utils' as *;
 
+.DashboardHeaderSpacer {
+	margin-bottom: 40px;
+
+	&.scrolled {
+		margin-bottom: calc(40px + 111px);
+
+		@include media('lg', 'max') {
+			margin-bottom: calc(40px + 68px);
+		}
+	}
+}
+
 .DashboardHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
 	z-index: 1;
-	margin-bottom: 56px;
+	position: relative;
+	padding: 32px 0;
+	transition:
+		background 0.3s ease,
+		box-shadow 0.2s ease;
+
+	@include media('lg', 'max') {
+		padding: 18px 0;
+	}
+
+	&.scrolled {
+		background: #fff;
+		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+		padding: 20px 0;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+
+		@include media('lg', 'max') {
+			padding: 18px 0;
+		}
+	}
+
+	.DashboardWrapper {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.DashboardHeaderLeft {
+		svg {
+			width: 144px;
+			height: auto;
+
+			@include media('lg', 'max') {
+				height: 30px;
+				width: auto;
+			}
+		}
+
+		.DashboardHeaderLeftItems {
+			@include media('lg', 'max') {
+				display: none;
+			}
+		}
+	}
+
+	.DashboardHeaderMenuItem {
+		color: var(--text-gray);
+	}
 
 	.DashboardHeaderSearch {
-		padding: 0 16px;
-		min-width: 200px;
-		flex: 0 0 320px;
+		padding: 0 14px;
+
+		@include media('lg', 'max') {
+			display: none;
+		}
 
 		input {
-			font-size: var(--font-p);
+			font-size: var(--font-accent);
 			padding: 12px 4px;
 			height: auto;
 
@@ -23,7 +85,7 @@
 		}
 
 		div:last-child {
-			border-radius: 12px;
+			border-radius: 8px;
 			box-shadow: inset 0 0 0 1px #e7e9eb;
 		}
 	}
@@ -37,8 +99,14 @@
 		}
 
 		svg {
-			width: 24px;
+			width: 18px;
 			height: auto;
 		}
+	}
+}
+
+.DashboardHeaderProfile {
+	:global(.rt-AvatarFallback) {
+		font-size: 12px !important;
 	}
 }

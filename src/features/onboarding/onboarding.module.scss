@@ -87,13 +87,13 @@
 
 		&::before {
 			width: calc(var(--cardWidth) - 50px);
-			top: -40px;
+			top: -30px;
 			height: 70%;
 		}
 
 		&::after {
 			width: calc(var(--cardWidth) - 30px);
-			top: -20px;
+			top: -15px;
 			height: 80%;
 		}
 	}
@@ -139,6 +139,19 @@
 	display: flex;
 	gap: 4px;
 	flex-direction: column;
+}
+
+.GoogleAuthButton {
+	position: absolute;
+	width: 100%;
+	will-change: opacity;
+	opacity: 0.001;
+	transform: scale(1.9);
+	z-index: 1;
+
+	iframe {
+		margin: auto !important;
+	}
 }
 
 .FileListItem {

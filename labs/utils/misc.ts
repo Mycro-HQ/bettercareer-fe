@@ -1,3 +1,5 @@
+import { APP_URL } from '@lib/config';
+
 function getRandomBytes(byteCount: number): Uint8Array {
 	let randomBytes = new Uint8Array(byteCount);
 	if (
@@ -48,6 +50,73 @@ export const getSSRCssRules = (): string[] => {
 
 	return [];
 };
+
+export function openPopupWindow(
+	url = '',
+	{ name = '', width = 600, height = 400 } = {}
+) {
+	const left = window.innerWidth / 2 - width / 2;
+	const top = window.innerHeight / 2 - height / 2;
+	const options = {
+		toolbar: 'no',
+		location: 'no',
+		directories: 'no',
+		status: 'no',
+		menubar: 'no',
+		scrollbars: 'no',
+		resizable: 'no',
+		copyhistory: 'no',
+		width,
+		height,
+		top,
+		left,
+	};
+	const optionsString = Object.entries(options)
+		.map(([key, value]) => `${key}=${value}`)
+		.join(',');
+
+	return window.open(url, name, optionsString);
+}
+
+export async function getLocationFromPopup(popup: {
+	location: Location;
+	closed: boolean | undefined;
+	close: () => void;
+}): Promise<any> {
+	return new Promise((resolve, reject) => {
+		let timer: number | undefined;
+
+		function getLocation() {
+			if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+				clearTimeout(timer!);
+				reject(new Error('Popup closed'));
+				return;
+			}
+
+			try {
+				const { hostname } = popup.location;
+				const anchor = document.createElement('a');
+				anchor.href = APP_URL as string;
+
+				const hostnameSearch = anchor.hostname;
+
+				if (hostname.includes(hostnameSearch)) {
+					clearTimeout(timer!);
+					popup.close();
+					resolve(popup.location);
+					return;
+				}
+			} catch (error) {
+				// Ignore DOMException: Blocked a frame with origin from accessing a cross-origin frame.
+				// A hack to get around same-origin security policy errors in IE.
+			}
+
+			timer = window.setTimeout(getLocation, 500);
+		}
+
+		getLocation();
+	});
+}
 
 /**
  * Scale bytes to its proper byte format

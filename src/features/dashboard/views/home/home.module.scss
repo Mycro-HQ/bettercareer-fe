@@ -6,8 +6,9 @@
 		border-radius: 12px;
 		display: flex;
 		flex-wrap: wrap;
+		overflow: hidden;
+		background: #fff;
 		justify-content: space-between;
-		margin-top: 48px;
 
 		.ChecklistItem {
 			padding: 14px;
@@ -77,5 +78,68 @@
 				width: 320px;
 			}
 		}
+	}
+}
+
+.ActionCard {
+	display: flex;
+	gap: 4px;
+	flex-direction: column;
+	padding: 24px;
+	align-items: flex-start;
+	width: 100%;
+	max-width: 31%;
+	background: #ffffff;
+	border: 1px solid #e7e9eb;
+	border-radius: 12px;
+
+	@include media('md', 'max') {
+		max-width: 100%;
+	}
+
+	.ActionCardIcon {
+		margin-bottom: 12px;
+		background: #f9fafa;
+		border: 1px solid #f3f4f4;
+		border-radius: 4px;
+		padding: 8px;
+
+		svg {
+			width: 18px;
+			height: 18px;
+		}
+	}
+}
+
+.PastResume {
+	width: 100%;
+	max-width: 31%;
+	background: #ffffff;
+	overflow: hidden;
+	border-radius: 8px;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	min-height: 300px;
+	border: 1px solid #e7e9eb;
+
+	.PastResumeInfo {
+		padding: 18px;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		border-top: 1px solid #e7e9eb;
+	}
+}
+
+.Section {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 72px;
+
+	&:last-child {
+		margin-bottom: 72px;
 	}
 }

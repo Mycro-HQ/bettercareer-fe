@@ -1,14 +1,16 @@
 import React from 'react';
 
 import { OnboardingLayout } from '.';
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
+import { Flex, Heading, Text } from '@labs/components';
 
-import LinkedInIcon from '@labs/icons/socials/linkedin.svg';
-import GoogleIcon from '@labs/icons/socials/google.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
-import styles from './onboarding.module.scss';
+
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
+import LoginWithGoogle from './components/login-with-google';
+
+import styles from './onboarding.module.scss';
+import LoginWithLinkedin from './components/login-with-linkedin';
 
 export const Login = () => {
 	return (
@@ -49,21 +51,9 @@ export const Login = () => {
 							</Heading.h6>
 
 							<Flex.Column gap={14} className={styles.AuthLayoutButtons}>
-								<CallToAction.a
-									href="/build-profile?linkedin=true"
-									leadingIcon={<LinkedInIcon />}
-									size="block"
-								>
-									Sign in with Linkedin
-								</CallToAction.a>
-								<CallToAction.a
-									leadingIcon={<GoogleIcon />}
-									href="/build-profile"
-									outline
-									size="block"
-								>
-									Sign in with Google
-								</CallToAction.a>
+								<LoginWithLinkedin intent="login" />
+
+								<LoginWithGoogle intent="login" />
 								<Text fontSize="16px" className="mt-[10px]">
 									Don’t have an account?{' '}
 									<Text.span inheritFont color="var(--primary-blue)">

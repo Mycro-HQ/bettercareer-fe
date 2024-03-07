@@ -51,6 +51,10 @@ interface TypographyProps extends Omit<TypeProps, 'as'> {
 	 * size of the text
 	 */
 	size?: 'xs' | 'sm' | 'caption';
+	/**
+	 * animate the heading
+	 */
+	animate?: 'fade' | 'slide' | 'none';
 }
 
 export interface TextProps
@@ -75,6 +79,7 @@ const TextBase = forwardRefWrapper<HTMLParagraphElement, TypographyProps>(
 			decoration,
 			children,
 			noOfLines,
+			animate = 'none',
 			weight,
 			size,
 			...rest
@@ -101,6 +106,7 @@ const TextBase = forwardRefWrapper<HTMLParagraphElement, TypographyProps>(
 			weight && styles[`weight-${weight}`],
 			noOfLines && styles[`noOfLines-${noOfLines}`],
 			inheritFont && styles.adapt,
+			animate && styles[`animate--${animate}`],
 			rest.className,
 			dynamicClass,
 		]);

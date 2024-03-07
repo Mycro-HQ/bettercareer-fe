@@ -16,7 +16,6 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
-	ecmaVersion: 12,
 	sourceType: 'module',
 	project: './tsconfig.json',
 	rules: {

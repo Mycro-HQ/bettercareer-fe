@@ -1,128 +1,114 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
-import classNames from 'classnames';
 
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
-import CheckIcon from '@labs/icons/dashboard/check.svg';
+import Resumes from '@labs/icons/dashboard/resumes.svg';
+import FileIcon from '@labs/icons/dashboard/file.svg';
+
+import { SetupChecklist } from './components/setup-checklist';
+
+import { StackCard } from './components/stack-card/stack-card';
 
 import styles from './home.module.scss';
 
 export const DashboardHome = () => {
+	const hasSetup = true;
 	return (
 		<div className={styles.DashboardHome}>
 			<Flex.Column gap={6}>
 				<Flex alignItems="center" gap={12}>
-					<Heading.h3>Welcome, Adenekan Wonderful</Heading.h3>
+					<Heading.h3 weight={400} animate="slide">
+						{hasSetup ? 'Welcome, Adenekan' : 'Hello, Let’s get you started'}
+					</Heading.h3>
 					<WavingHandIcon width="24" height="24" />
 				</Flex>
 
-				<Text color="var(--text-gray)">
+				<Text color="var(--text-gray)" animate="fade" className="mb-[40px]">
 					Launch your dream career journey today.
 				</Text>
 			</Flex.Column>
-			<SetupChecklist />
-		</div>
-	);
-};
-
-export const SetupChecklist = () => {
-	const checklist = [
-		{
-			title: 'Connect Your Account',
-			status: 'done',
-			infographic: null,
-			description: 'Connect your LinkedIn or Google account to get started.',
-			action: 'Connect Account',
-		},
-		{
-			title: 'Upload Your Resume',
-			status: 'pending',
-			infographic: '/images/dashboard/1.png',
-			description:
-				'Fast track your profile: Add your resume for a faster and more complete profile.',
-			action: 'Upload Resume',
-		},
-		{
-			title: 'Build Your Resume',
-			status: 'pending',
-			infographic: '/images/dashboard/2.png',
-			description:
-				'Use our builder to create a perfect resume for your job applications.',
-			action: 'Build Resume',
-		},
-		{
-			title: 'Fill Job Preferences',
-			status: 'pending',
-			infographic: '/images/dashboard/3.png',
-			description:
-				'Specify your preferences to narrow down your search and find your dream job.',
-			action: 'Set Preferences',
-		},
-	];
-	const [active, setActive] = React.useState(1);
-	const currentChecklist = checklist[active];
-
-	return (
-		<div className={styles.SetupChecklist}>
-			<Flex.Column gap={16} className={styles.Checklist}>
-				<Heading.h6 className="mb-[8px]" weight={700}>
-					Setup Checklist
-				</Heading.h6>
-				{checklist.map((item, index) => (
-					<button
-						key={index}
-						className={classNames([
-							styles.ChecklistItem,
-							active === index && styles.active,
-							item.status === 'done' && styles.done,
-						])}
-						onClick={() => setActive(index)}
-						aria-label={item.title}
-					>
-						<Flex alignItems="center" gap={12}>
-							<div className={styles.ChecklistItemStatus}>
-								{item.status === 'done' ? (
-									<CheckIcon width="16" height="16" />
-								) : (
-									<span className={styles.ChecklistItemStatusIndex}>
-										{index + 1}
-									</span>
-								)}
-							</div>
-
-							<Text weight={700}>{item.title}</Text>
-						</Flex>
-					</button>
-				))}
-			</Flex.Column>
-			<motion.div
-				className={styles.ChecklistItemDetails}
-				key={currentChecklist?.title}
-			>
-				{currentChecklist.infographic && (
-					<motion.img
-						src={currentChecklist.infographic}
-						alt="placeholder"
-						initial={{ opacity: 0, y: 15 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: 15 }}
-					/>
-				)}
-				<motion.div
-					initial={{ opacity: 0, y: 15 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 15 }}
-					transition={{ delay: 0.1 }}
-				>
-					<Flex.Column gap={14} className="max-w-[400px]">
-						<Text weight={600}>{currentChecklist.description}</Text>
-						<CallToAction className={styles.ChecklistItemAction}>
-							{currentChecklist.action}
+			{hasSetup ? (
+				<Flex gap={18} flexWrap="wrap">
+					{Array.from({ length: 4 }).map((_, i) => (
+						<StackCard
+							title="All your matches"
+							icon={<img src="/images/dashboard/match.png" alt="matches" />}
+							key={i}
+							href="/"
+							tag="5+ jobs"
+						/>
+					))}
+				</Flex>
+			) : (
+				<SetupChecklist />
+			)}
+			<Flex.Column gap={24} className={styles.Section}>
+				<Heading.h5 weight={800}>Resume Makeover</Heading.h5>
+				<Flex fullWidth gap={32} flexWrap="wrap">
+					<div className={styles.ActionCard}>
+						<div className={styles.ActionCardIcon}>
+							<Resumes />
+						</div>
+						<Heading.h6 weight={800} fontSize="16px">
+							New Resume
+						</Heading.h6>
+						<Text size="sm" color="var(--text-gray)" weight={600}>
+							Craft specific resumes to highlight a perfect fit for each role.
+						</Text>
+						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
+							Add Resume
 						</CallToAction>
-					</Flex.Column>
-				</motion.div>
-			</motion.div>
+					</div>
+					<div className={styles.ActionCard}>
+						<div className={styles.ActionCardIcon}>
+							<Resumes />
+						</div>
+						<Heading.h6 weight={800} fontSize="16px">
+							Tailor Resume to Job
+						</Heading.h6>
+						<Text size="sm" color="var(--text-gray)" weight={600}>
+							Tailor your resume to each opportunity and boost your job
+							applications
+						</Text>
+						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
+							Tailor Resume
+						</CallToAction>
+					</div>
+					<div className={styles.ActionCard}>
+						<div className={styles.ActionCardIcon}>
+							<Resumes />
+						</div>
+						<Heading.h6 weight={800} fontSize="16px">
+							Update Job Preferences
+						</Heading.h6>
+						<Text size="sm" color="var(--text-gray)" weight={600}>
+							Adjust your criteria to find jobs that align with your career
+							aspirations
+						</Text>
+						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
+							Update Preferences
+						</CallToAction>
+					</div>
+				</Flex>
+			</Flex.Column>
+			<Flex.Column gap={24} className={styles.Section}>
+				<Heading.h5 weight={800}>Past Resumes</Heading.h5>
+				<Flex fullWidth gap={32} flexWrap="wrap">
+					<div className={styles.PastResume}>
+						<div className={styles.PastResumeInfo}>
+							<Heading.h6 weight={800} fontSize="16px">
+								Adenekan_META_Resume
+							</Heading.h6>
+							<Flex gap={2} alignItems="center">
+								<FileIcon />
+								<Text size="sm" color="var(--text-gray-light)">
+									Built Feb 23, 2024
+								</Text>
+							</Flex>{' '}
+						</div>
+					</div>
+				</Flex>
+			</Flex.Column>
 		</div>
 	);
 };

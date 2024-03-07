@@ -234,8 +234,9 @@ $typography: (
 }
 
 $colors: (
-	'neutral': '#16013C',
-	'primary-blue': '#fff',
+	'neutral': #16013c,
+	'primary-blue': #007bff,
+	// Assuming you want an actual blue color here
 );
 
 // @function color-variant($base-col: '#16013C', $level) {
@@ -257,33 +258,21 @@ $colors: (
 
 @function color-variant($color-name, $level) {
 	// Ensure the base color is directly fetched as a color value from the map
-	$base-color: #fc8d8d;
+	$base-color: map-get($colors, $color-name) or $color-name;
+
 	// Check if the base color is indeed fetched; otherwise, return a warning or a fallback
-	// @if type-of($base-color) != 'color' {
-	// 	@warn "The base color for `#{$color-name}` could not be found or is not a color.";
-	// 	@return null;
-	// }
+	@if type-of($base-color) != 'color' {
+		@warn "The base color for `#{$color-name}` could not be found or is not a color.";
+		@return null;
+	}
 
-	// // Calculate the adjustment based on the level provided
-	// $adjustment: if($level > 500, ($level - 500) * 0.2, (500 - $level) * 0.2);
+	// Calculate the adjustment based on the level provided
+	$adjustment: if($level > 500, ($level - 500) * 0.2, (500 - $level) * 0.2);
 
-	// // Apply the adjustment
-	// @if $level > 500 {
-	// 	@return lighten($base-color, $adjustment);
-	// } @else {
-	// 	@return darken($base-color, %);
-	// }
-
-	@each $level
-		in (10, 25, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000)
-	{
-		$adjustment: if($level > 500, $level - 500, $level - 500) * 0.1;
-		$adjusted-color: if(
-			$level > 500,
-			darken($base-color, $adjustment),
-			lighten($base-color, -$adjustment)
-		);
-
-		@return $adjusted-color;
+	// Apply the adjustment
+	@if $level > 500 {
+		@return darken($base-color, $adjustment);
+	} @else {
+		@return lighten($base-color, $adjustment);
 	}
 }

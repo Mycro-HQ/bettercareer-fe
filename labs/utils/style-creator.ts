@@ -101,8 +101,8 @@ export class StyleConverter {
 			return className;
 		}
 
-		const augumentedValue = `${value}`?.includes('px') ? value : `${value}px`;
-		document.documentElement.style.setProperty(variableName, augumentedValue);
+		const augmentValue = `${value}`?.includes('px') ? value : `${value}px`;
+		document.documentElement.style.setProperty(variableName, augmentValue);
 
 		return className;
 	}
