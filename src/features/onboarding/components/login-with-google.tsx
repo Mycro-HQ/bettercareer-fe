@@ -87,7 +87,7 @@ const LoginWithGoogle = (props: LoginWithGoogleProps) => {
 			leadingIcon={<GoogleIcon />}
 			outline
 			onClick={handleLoginClick}
-			className="overflow-hidden"
+			className="overflow-hidden relative"
 		>
 			<div id="signInDiv" className={styles.GoogleAuthButton}></div>
 			{props.intent === 'login' ? 'Sign in with Google' : 'Sign up with Google'}
