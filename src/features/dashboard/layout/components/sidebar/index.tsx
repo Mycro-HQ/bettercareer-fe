@@ -1,3 +1,7 @@
+/**
+ * @deprecated This file is deprecated and will be removed in the future. Please use the new sidebar component.
+ * @name DashboardSidebar
+ */
 import React from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -89,29 +93,10 @@ export const DashboardSidebar = ({
 					</div>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content>
-					<DropdownMenu.Item shortcut="⌘ E">Edit</DropdownMenu.Item>
-					<DropdownMenu.Item shortcut="⌘ D">Duplicate</DropdownMenu.Item>
+					<DropdownMenu.Item>Account Profile</DropdownMenu.Item>
+					<DropdownMenu.Item>Settings</DropdownMenu.Item>
 					<DropdownMenu.Separator />
-					<DropdownMenu.Item shortcut="⌘ N">Archive</DropdownMenu.Item>
-
-					<DropdownMenu.Sub>
-						<DropdownMenu.SubTrigger>More</DropdownMenu.SubTrigger>
-						<DropdownMenu.SubContent>
-							<DropdownMenu.Item>Move to project…</DropdownMenu.Item>
-							<DropdownMenu.Item>Move to folder…</DropdownMenu.Item>
-
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item>Advanced options…</DropdownMenu.Item>
-						</DropdownMenu.SubContent>
-					</DropdownMenu.Sub>
-
-					<DropdownMenu.Separator />
-					<DropdownMenu.Item>Share</DropdownMenu.Item>
-					<DropdownMenu.Item>Add to favorites</DropdownMenu.Item>
-					<DropdownMenu.Separator />
-					<DropdownMenu.Item shortcut="⌘ ⌫" color="red">
-						Delete
-					</DropdownMenu.Item>
+					<DropdownMenu.Item color="red">Logout</DropdownMenu.Item>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 			<Flex.Column justifyContent="space-between" className="min-h-[100%]">
