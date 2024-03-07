@@ -77,7 +77,7 @@ authApiCreator.startListening({
 					) /* 30 days */,
 				});
 
-				if (res) {
+				if (res !== undefined) {
 					resolve();
 				} else {
 					throw new Error('Failed to set token');

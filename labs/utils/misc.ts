@@ -78,7 +78,11 @@ export function openPopupWindow(
 	return window.open(url, name, optionsString);
 }
 
-export async function getLocationFromPopup(popup: Popup): Promise<any> {
+export async function getLocationFromPopup(popup: {
+	location: Location;
+	closed: boolean | undefined;
+	close: () => void;
+}): Promise<any> {
 	return new Promise((resolve, reject) => {
 		let timer: number | undefined;
 
