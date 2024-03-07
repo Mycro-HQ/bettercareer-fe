@@ -63,7 +63,7 @@ const UploadResumeFlow = () => {
 						{/* DRAG AND DROP COMPONENT  */}
 						<Flex gap={8} className="mt-[24px]">
 							<CallToAction.a href="/dashboard">Continue</CallToAction.a>
-							<CallToAction.a href="/login" outline>
+							<CallToAction.a href="/dashboard" outline>
 								Skip
 							</CallToAction.a>
 						</Flex>

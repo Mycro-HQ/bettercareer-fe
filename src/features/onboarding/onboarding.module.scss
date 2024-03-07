@@ -87,13 +87,13 @@
 
 		&::before {
 			width: calc(var(--cardWidth) - 50px);
-			top: -40px;
+			top: -30px;
 			height: 70%;
 		}
 
 		&::after {
 			width: calc(var(--cardWidth) - 30px);
-			top: -20px;
+			top: -15px;
 			height: 80%;
 		}
 	}

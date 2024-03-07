@@ -3,9 +3,13 @@ import { CallToAction, Flex, Heading, Text } from '@labs/components';
 
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
+import FileIcon from '@labs/icons/dashboard/file.svg';
+
 import { SetupChecklist } from './components/setup-checklist';
-import styles from './home.module.scss';
+
 import { StackCard } from './components/stack-card/stack-card';
+
+import styles from './home.module.scss';
 
 export const DashboardHome = () => {
 	const hasSetup = true;
@@ -90,19 +94,18 @@ export const DashboardHome = () => {
 			<Flex.Column gap={24} className={styles.Section}>
 				<Heading.h5 weight={800}>Past Resumes</Heading.h5>
 				<Flex fullWidth gap={32} flexWrap="wrap">
-					<div className={styles.PastResumes}>
-						<div className={styles.ActionCardIcon}>
-							<Resumes />
+					<div className={styles.PastResume}>
+						<div className={styles.PastResumeInfo}>
+							<Heading.h6 weight={800} fontSize="16px">
+								Adenekan_META_Resume
+							</Heading.h6>
+							<Flex gap={2} alignItems="center">
+								<FileIcon />
+								<Text size="sm" color="var(--text-gray-light)">
+									Built Feb 23, 2024
+								</Text>
+							</Flex>{' '}
 						</div>
-						<Heading.h6 weight={800} fontSize="16px">
-							New Resume
-						</Heading.h6>
-						<Text size="sm" color="var(--text-gray)" weight={600}>
-							Craft specific resumes to highlight a perfect fit for each role.
-						</Text>
-						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
-							Add Resume
-						</CallToAction>
 					</div>
 				</Flex>
 			</Flex.Column>
