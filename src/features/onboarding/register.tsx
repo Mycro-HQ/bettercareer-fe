@@ -9,6 +9,7 @@ import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
+import LoginWithGoogle from './components/login-with-google';
 
 export const Register = () => {
 	return (
@@ -56,14 +57,7 @@ export const Register = () => {
 								>
 									Sign up with Linkedin
 								</CallToAction.a>
-								<CallToAction.a
-									leadingIcon={<GoogleIcon />}
-									href="/build-profile"
-									outline
-									size="block"
-								>
-									Sign up with Google
-								</CallToAction.a>
+								<LoginWithGoogle intent="signup" />
 								<Text fontSize="16px" className="mt-[10px]">
 									Already have an account?{' '}
 									<Text.span inheritFont color="var(--primary-blue)">
