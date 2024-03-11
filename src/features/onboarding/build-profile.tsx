@@ -11,6 +11,13 @@ import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
 
+import DragAndDrop from '@/components/DragAndDrop';
+import { getSizeFormat } from '@labs/utils';
+import { FileWithKey } from '@labs/utils/types/utility';
+
+import DocumentImage from '@labs/icons/document.svg';
+import DeleteImage from '@labs/icons/delete.svg';
+
 export const BuildProfile = () => {
 	const [isLinkedin, setIsLinkedin] = useState(false);
 
@@ -46,6 +53,50 @@ const LinkedinFlow = () => {
 };
 
 const UploadResumeFlow = () => {
+	const [files, setFiles] = useState<FileWithKey[]>([]);
+	const multiple: boolean = true;
+	const maxSize = 10;
+
+	function handleDeleteClick(indexToRemove: number) {
+		setFiles((prev) => {
+			const newFiles = [...prev];
+			newFiles.splice(indexToRemove, 1);
+			return newFiles;
+		});
+	}
+
+	function handleFileSubmit() {
+		// check if the files const contains files
+		if (files.length !== 0) {
+			// move those files to the zustand store
+			// or extract the data immediately?
+		}
+	}
+
+	const filesWithError = files.filter((file) => file.status.length !== 0);
+	const filesWithoutError = files.filter((file) => file.status.length === 0);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (filesWithError.length > 0) {
+				setFiles((prev) => {
+					const firstErrorIndex = prev.findIndex(
+						(file) => file.status.length !== 0
+					);
+					if (firstErrorIndex !== -1) {
+						return [
+							...prev.slice(0, firstErrorIndex),
+							...prev.slice(firstErrorIndex + 1),
+						];
+					}
+					return prev;
+				});
+			}
+		}, 3000);
+
+		return () => clearInterval(interval);
+	}, [files]);
+
 	return (
 		<AnimatePresence>
 			<div className={styles.AuthLayout}>
@@ -60,9 +111,58 @@ const UploadResumeFlow = () => {
 							Seamlessly integrate your professional journey by uploading your
 							resume.
 						</Heading.h6>
-						{/* DRAG AND DROP COMPONENT  */}
+						{(!files || files.length !== 1) && (
+							<DragAndDrop
+								accept="application/pdf"
+								multiple={multiple}
+								setFiles={setFiles}
+								onDrop={(files) => {}}
+								onDragOver={() => {}}
+								maxSize={maxSize}
+							/>
+						)}
+						{files &&
+							filesWithError.map((file) => (
+								<Text key={file.key} color="var(--primary-error)" size="sm">
+									{file.status.map((status) => status + '\n')}
+								</Text>
+							))}
+						{files &&
+							filesWithoutError.map((file, index) => {
+								return (
+									<Flex
+										direction="row"
+										alignItems="center"
+										justifyContent="space-between"
+										key={file.key}
+										className={styles.FileListItem}
+									>
+										<Flex>
+											<DocumentImage className={styles.FileListDocumentIcon} />
+											<Flex.Column gap={4}>
+												<Text
+													className={styles.FileListItemTitle}
+													fontSize="var(--font-p)"
+													weight={600}
+													lineHeight="18px"
+												>
+													{file.blob.name}
+												</Text>
+												<Text color="var(--text-gray)" size="sm">
+													{getSizeFormat(file.blob.size)}
+												</Text>
+											</Flex.Column>
+										</Flex>
+										<button onClick={() => handleDeleteClick(index)}>
+											<DeleteImage />
+										</button>
+									</Flex>
+								);
+							})}
 						<Flex gap={8} className="mt-[24px]">
-							<CallToAction.a href="/dashboard">Continue</CallToAction.a>
+							<CallToAction.a href="/dashboard" onClick={handleFileSubmit}>
+								Continue
+							</CallToAction.a>
 							<CallToAction.a href="/dashboard" outline>
 								Skip
 							</CallToAction.a>

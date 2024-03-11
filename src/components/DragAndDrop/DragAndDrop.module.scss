@@ -1,0 +1,34 @@
+@use '@/styles/base/utils' as *;
+
+.DragAndDrop {
+	border-radius: 16px;
+	border: 2px dashed #b8dbfb;
+	padding-top: rem(75px);
+	padding-bottom: rem(75px);
+
+	& > div {
+		place-content: center;
+		place-items: center;
+	}
+
+	img {
+		margin-bottom: rem(16px);
+	}
+
+	label {
+		color: #1388f2;
+	}
+}
+
+@include media('md', 'max') {
+	.DragAndDrop {
+		padding-top: rem(40px);
+		padding-bottom: rem(40px);
+
+		img {
+			margin-top: 0;
+			scale: 0.8;
+			margin-bottom: rem(13px);
+		}
+	}
+}
