@@ -4,6 +4,11 @@ import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
 import FileIcon from '@labs/icons/dashboard/file.svg';
+import ResumeIcon from '@labs/icons/dashboard/file_1.svg';
+import Selection from '@labs/icons/dashboard/selection.svg';
+import JobIcon from '@labs/icons/dashboard/calendar.svg';
+import SponsorIcon from '@labs/icons/dashboard/tag.svg';
+import NewResume from '@labs/icons/dashboard/upload.svg';
 
 import { SetupChecklist } from './components/setup-checklist';
 
@@ -13,6 +18,34 @@ import styles from './home.module.scss';
 
 export const DashboardHome = () => {
 	const hasSetup = true;
+
+	const recommendationSections = [
+		{
+			title: 'All your matches',
+			icon: '/images/dashboard/match.png',
+			href: '/',
+			tag: '5+ jobs',
+		},
+		{
+			title: 'Based on your Resume',
+			icon: ResumeIcon,
+			href: '/',
+			tag: '5+ jobs',
+		},
+		{
+			title: 'Jobs added this week',
+			icon: JobIcon,
+			href: '/',
+			tag: '5+ jobs',
+		},
+		{
+			title: 'Sponsored jobs',
+			icon: SponsorIcon,
+			href: '/',
+			tag: '5+ jobs',
+		},
+	];
+
 	return (
 		<div className={styles.DashboardHome}>
 			<Flex.Column gap={6}>
@@ -29,13 +62,19 @@ export const DashboardHome = () => {
 			</Flex.Column>
 			{hasSetup ? (
 				<Flex gap={18} flexWrap="wrap">
-					{Array.from({ length: 4 }).map((_, i) => (
+					{recommendationSections.map((rcmd, i) => (
 						<StackCard
-							title="All your matches"
-							icon={<img src="/images/dashboard/match.png" alt="matches" />}
+							title={rcmd.title}
+							icon={
+								typeof rcmd.icon === 'string' ? (
+									<img src="/images/dashboard/match.png" alt="matches" />
+								) : (
+									<rcmd.icon />
+								)
+							}
 							key={i}
-							href="/"
-							tag="5+ jobs"
+							href={rcmd.href}
+							tag={rcmd.tag}
 						/>
 					))}
 				</Flex>
@@ -47,7 +86,7 @@ export const DashboardHome = () => {
 				<Flex fullWidth gap={32} flexWrap="wrap">
 					<div className={styles.ActionCard}>
 						<div className={styles.ActionCardIcon}>
-							<Resumes />
+							<NewResume />
 						</div>
 						<Heading.h6 weight={800} fontSize="16px">
 							New Resume
@@ -76,7 +115,7 @@ export const DashboardHome = () => {
 					</div>
 					<div className={styles.ActionCard}>
 						<div className={styles.ActionCardIcon}>
-							<Resumes />
+							<Selection />
 						</div>
 						<Heading.h6 weight={800} fontSize="16px">
 							Update Job Preferences

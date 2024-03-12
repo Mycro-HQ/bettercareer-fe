@@ -54,8 +54,6 @@ const LinkedinFlow = () => {
 
 const UploadResumeFlow = () => {
 	const [files, setFiles] = useState<FileWithKey[]>([]);
-	const multiple: boolean = true;
-	const maxSize = 10;
 
 	function handleDeleteClick(indexToRemove: number) {
 		setFiles((prev) => {
@@ -111,16 +109,18 @@ const UploadResumeFlow = () => {
 							Seamlessly integrate your professional journey by uploading your
 							resume.
 						</Heading.h6>
+
 						{(!files || files.length !== 1) && (
 							<DragAndDrop
 								accept="application/pdf"
-								multiple={multiple}
+								multiple={false}
 								setFiles={setFiles}
 								onDrop={(files) => {}}
 								onDragOver={() => {}}
-								maxSize={maxSize}
+								maxSize={10}
 							/>
 						)}
+
 						{files &&
 							filesWithError.map((file) => (
 								<Text key={file.key} color="var(--primary-error)" size="sm">
@@ -135,7 +135,7 @@ const UploadResumeFlow = () => {
 										alignItems="center"
 										justifyContent="space-between"
 										key={file.key}
-										className={styles.FileListItem}
+										className={`${styles.FileListItem} mt-6`}
 									>
 										<Flex>
 											<DocumentImage className={styles.FileListDocumentIcon} />

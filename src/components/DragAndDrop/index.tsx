@@ -57,7 +57,7 @@ export default function DragAndDrop({
 	onDragOver,
 	setFiles,
 	maxSize,
-}: DragAndDrop) {
+}: Readonly<DragAndDrop>) {
 	const [dragIsOver, setDragIsOver] = useState(false);
 
 	function validateFile(file: File) {

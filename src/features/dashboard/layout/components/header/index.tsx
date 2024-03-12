@@ -7,6 +7,10 @@ import { useRouter } from 'next/router';
 
 import MagnifyingGlassIcon from '@labs/icons/dashboard/search.svg';
 import BellIcon from '@labs/icons/dashboard/notification.svg';
+import Profile from '@labs/icons/dashboard/profile.svg';
+import SettingsIcon from '@labs/icons/dashboard/settings.svg';
+import LogoutIcon from '@labs/icons/dashboard/logout.svg';
+import PreferencesIcon from '@labs/icons/dashboard/preference.svg';
 
 import Logo from '@labs/icons/logo.svg';
 import Help from '@labs/icons/dashboard/help.svg';
@@ -14,6 +18,7 @@ import ArrowDown from '@labs/icons/dashboard/down.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
 
 import styles from './header.module.scss';
+
 const NAVIGATION = [
 	{
 		title: 'Home',
@@ -113,7 +118,7 @@ export const DashboardHeader = () => {
 						</Link>
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
-								<div className={styles.DashboardHeaderProfile}>
+								<button className={styles.DashboardHeaderProfile}>
 									<Flex alignItems="center" gap={8}>
 										<Avatar
 											src=""
@@ -124,13 +129,45 @@ export const DashboardHeader = () => {
 										/>
 										<ArrowDown />
 									</Flex>
-								</div>
+								</button>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content>
-								<DropdownMenu.Item>Account Profile</DropdownMenu.Item>
-								<DropdownMenu.Item>Settings</DropdownMenu.Item>
-								<DropdownMenu.Separator />
-								<DropdownMenu.Item color="red">Logout</DropdownMenu.Item>
+								<DropdownMenu.Item>
+									<Link href="/dashboard/profile">
+										<Flex.Row gap={8} alignItems="center">
+											<Profile />
+											<Text size="sm">Account Profile</Text>
+										</Flex.Row>
+									</Link>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item>
+									<Link href="/dashboard/profile">
+										<Flex.Row gap={8} alignItems="center">
+											<PreferencesIcon />
+											<Text size="sm">Job Preference</Text>
+										</Flex.Row>
+									</Link>
+								</DropdownMenu.Item>
+
+								<DropdownMenu.Item>
+									<Link href="/dashboard/profile">
+										<Flex.Row gap={8} alignItems="center">
+											<SettingsIcon />
+											<Text size="sm">Setting</Text>
+										</Flex.Row>
+									</Link>
+								</DropdownMenu.Item>
+
+								<DropdownMenu.Item color="red">
+									<Link href="/dashboard/profile">
+										<Flex.Row gap={8} alignItems="center">
+											<LogoutIcon />
+											<Text size="sm" color="red">
+												Logout
+											</Text>
+										</Flex.Row>
+									</Link>
+								</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					</Flex>
