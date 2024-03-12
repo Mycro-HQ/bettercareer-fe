@@ -99,6 +99,7 @@ export const buildFlex = (type: '' | 'row' | 'column' = '') => {
 				md,
 				xl,
 				lg,
+				fullWidth,
 				...rest
 			},
 			ref
@@ -114,6 +115,7 @@ export const buildFlex = (type: '' | 'row' | 'column' = '') => {
 				scrollable && 'custom-scrollbar',
 				scrollable && styles.FlexScroll,
 				responsiveScroll && styles.FlexResponsiveScroll,
+				fullWidth && 'w-full',
 				className,
 				dynamicClassName,
 				buildProperties(rest),
