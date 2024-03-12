@@ -160,7 +160,6 @@
 	background: #fff;
 	width: 100%;
 	padding: rem(18px);
-	margin: 0;
 
 	button:hover > svg > path {
 		fill: #d92d20;
@@ -170,9 +169,4 @@
 .FileListDocumentIcon {
 	margin-right: rem(14px);
 	min-width: rem(20px);
-}
-
-.FileListItemTitle {
-	color: #0f1f2e;
-	font-family: Figtree;
 }

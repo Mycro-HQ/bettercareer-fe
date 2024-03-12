@@ -4,6 +4,28 @@
 	> svg {
 		position: absolute;
 		right: 16px;
+
+		@keyframes fadeIn {
+			0% {
+				transform: translate(-10px, 10px);
+			}
+			50% {
+				transform: translate(4px, -4px);
+			}
+			100% {
+				transform: translate(0, 0);
+			}
+		}
+	}
+
+	&:hover {
+		> svg {
+			animation: fadeIn 0.3s linear;
+			transition: all 0.3s ease;
+			path {
+				fill: color-variant(#1388f2, 500);
+			}
+		}
 	}
 
 	&::before {
@@ -82,7 +104,7 @@
 
 	h6 {
 		color: var(--text-black);
-		max-width: 135px;
+		max-width: 124px;
 		line-height: 23px;
 	}
 }

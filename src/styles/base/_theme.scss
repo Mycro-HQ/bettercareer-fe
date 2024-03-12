@@ -50,12 +50,19 @@
 
 .radix-themes {
 	--container-4: 1440px;
+	--indigo-9: var(--primary-blue);
+	--shadow-5: 0px 12px 32px rgba(15, 31, 46, 0.08);
 	--default-font-family: var(--font-secondary);
 	h1,
 	h2,
 	h3,
 	h4 {
 		--heading-font-family: var(--font-base);
+	}
+
+	.rt-BaseMenuViewport {
+		padding: 12px 8px;
+		gap: 8px;
 	}
 }
 
