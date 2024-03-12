@@ -79,7 +79,7 @@ export default function Notifications() {
 			</Flex.Column>
 			<NotificationListContainer>
 				<NotificationListItem title="" />
-				<NotificationListItem title="job" description="mad man apply" />
+				<NotificationListItem title="job" description="man apply" />
 				<NotificationListItem title="" />
 			</NotificationListContainer>
 		</div>
