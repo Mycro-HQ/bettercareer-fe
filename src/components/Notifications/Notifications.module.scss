@@ -1,6 +1,8 @@
 @use '@/styles/base/utils' as *;
 
 .NotificationsContainer {
+	font-family: var(--font-secondary);
+
 	.NotificationListContainer {
 		.NotificationListItem {
 			background: #fff;
