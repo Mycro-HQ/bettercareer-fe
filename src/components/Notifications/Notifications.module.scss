@@ -10,13 +10,6 @@
 			width: 100%;
 			display: grid;
 			grid-template-columns: 72px 6fr 2fr;
-
-			&:first-child {
-				padding: rem(24px);
-				transform: scale(1.05);
-				border-radius: 12px;
-				box-shadow: 0px 4px 33px 0px rgba(0, 0, 0, 0.02);
-			}
 		}
 	}
 }
