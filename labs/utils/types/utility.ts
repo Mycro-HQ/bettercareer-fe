@@ -39,6 +39,7 @@ export interface FileWithKey {
 }
 
 export interface NotificationListItemProps {
+	size?: 'normal' | 'large';
 	type?: 'projectSetup' | 'job';
 	title: string;
 	description: string;
