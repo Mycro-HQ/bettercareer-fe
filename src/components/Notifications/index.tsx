@@ -22,7 +22,7 @@ export function NotificationListItem({
 			className={classNames(
 				styles.NotificationListItem,
 				size === 'large' &&
-					'first:p-6 first:scale-105 first:rounded-xl first:shadow-[0px_4px_33px_0px_rgba(0,0,0,0.02)]'
+					'first:p-6 first:!scale-x-100 first:scale-y-100 first:rounded-xl first:shadow-[0px_4px_33px_0px_rgba(0,0,0,0.02)]'
 			)}
 		>
 			<div className="rounded-[38px] aspect-square p-4 border-2 border-[#F3F4F4] bg-[#F9FAFA] mr-6">
