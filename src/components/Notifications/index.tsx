@@ -5,6 +5,7 @@ import { CallToAction, Flex, Text } from '@labs/components';
 import JobIcon from '@labs/icons/dashboard/jobs.svg';
 import CheckMonochromeIcon from '@labs/icons/dashboard/check_monochrome.svg';
 import CloseIcon from '@labs/icons/dashboard/X.svg';
+import { NotificationListItemProps } from '@labs/utils/types/utility';
 
 export function NotificationListContainer({
 	children,
@@ -22,13 +23,6 @@ export function NotificationListContainer({
 	);
 }
 
-interface NotificationListItemProps {
-	type?: 'projectSetup' | 'job';
-	title: string;
-	description: string;
-	time: string;
-}
-
 export function NotificationListItem({
 	title,
 	description,
@@ -44,7 +38,9 @@ export function NotificationListItem({
 				<Text color="var(--text-black)" weight={600} fontSize="17px">
 					{title}
 				</Text>
-				<Text color="var(--text-gray)">{description}</Text>
+				<Text color="#3F4C58" fontSize="14px" weight={500}>
+					{description}
+				</Text>
 				<Text color="#3F4C58" fontSize="11px" weight={600} className="mt-4">
 					{time} ago
 				</Text>
