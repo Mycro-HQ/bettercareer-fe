@@ -1,13 +1,12 @@
 import React from 'react';
 import styles from './Notifications.module.scss';
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
+import { CallToAction, Flex, Text } from '@labs/components';
 
-import BellIcon from '@labs/icons/dashboard/bell.svg';
 import JobIcon from '@labs/icons/dashboard/jobs.svg';
 import CheckMonochromeIcon from '@labs/icons/dashboard/check_monochrome.svg';
 import CloseIcon from '@labs/icons/dashboard/X.svg';
 
-function NotificationListContainer({
+export function NotificationListContainer({
 	children,
 }: {
 	children: React.ReactNode;
@@ -26,12 +25,14 @@ function NotificationListContainer({
 interface NotificationListItemProps {
 	type?: 'projectSetup' | 'job';
 	title: string;
-	description?: string;
+	description: string;
+	time: string;
 }
 
-function NotificationListItem({
+export function NotificationListItem({
 	title,
 	description,
+	time,
 	type = 'job',
 }: NotificationListItemProps) {
 	return (
@@ -40,10 +41,12 @@ function NotificationListItem({
 				{type === 'job' ? <JobIcon /> : <CheckMonochromeIcon />}
 			</div>
 			<Flex.Column gap={6}>
-				<Heading.h4 weight={400}>{title}</Heading.h4>
-				<Text color="var(--text-gray)">
-					{description ??
-						'This opportunity closely aligns with your skills and preferences. Act fast, applications close soon!'}
+				<Text color="var(--text-black)" weight={600} fontSize="17px">
+					{title}
+				</Text>
+				<Text color="var(--text-gray)">{description}</Text>
+				<Text color="#3F4C58" fontSize="11px" weight={600} className="mt-4">
+					{time} ago
 				</Text>
 			</Flex.Column>
 			<div className="justify-end">
@@ -64,34 +67,14 @@ function NotificationListItem({
 	);
 }
 
-export default function Notifications() {
+export default function Notifications({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	return (
 		<div className={styles.NotificationsContainer}>
-			<Flex.Column gap={6}>
-				<Flex alignItems="center" gap={12}>
-					<Heading.h3 weight={400} animate="slide">
-						Notifications
-					</Heading.h3>
-					<BellIcon />
-				</Flex>
-
-				<Text color="var(--text-gray)" animate="fade" className="mb-[40px]">
-					Lets catch you up on what you missed.
-				</Text>
-			</Flex.Column>
-			<NotificationListContainer>
-				<NotificationListItem title="Top Job Match: Product Designer at Dribbble" />
-				<NotificationListItem
-					title="Top Job Match: Product Designer at Dribbble"
-					description="man apply"
-				/>
-				<NotificationListItem title="Top Job Match: Product Designer at Dribbble" />
-				<NotificationListItem
-					type="projectSetup"
-					title="Your profile is 75% complete"
-					description="Adding a few details can significantly increase your visibility to recruiters. Finish setting up your profile today."
-				/>
-			</NotificationListContainer>
+			<NotificationListContainer>{children}</NotificationListContainer>
 		</div>
 	);
 }
