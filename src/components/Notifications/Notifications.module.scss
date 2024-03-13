@@ -1,16 +1,16 @@
 @use '@/styles/base/utils' as *;
 
 .NotificationsContainer {
-	font-family: var(--font-secondary);
-	padding-bottom: rem(32px);
+	padding-top: rem(58px);
+	padding-bottom: rem(58px);
 
 	.NotificationListContainer {
+		padding-top: rem(52px);
+
 		.NotificationListItem {
-			background: #fff;
 			width: 100%;
 			display: grid;
 			grid-template-columns: 72px 6fr 2fr;
-			transform: scaleX(0.95);
 		}
 	}
 }
