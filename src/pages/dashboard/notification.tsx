@@ -39,7 +39,6 @@ const notificationArray: NotificationListItemWithKey[] = [
 		description:
 			'This opportunity closely aligns with your skills and preferences. Act fast, applications close soon!',
 		time: '30 mins',
-		size: 'large',
 	},
 	{
 		key: '1',
