@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from './Notifications.module.scss';
-import { CallToAction, Flex, Heading, Text, Container } from '@labs/components';
+import { CallToAction, Flex, Heading, Text } from '@labs/components';
+
 import BellIcon from '@labs/icons/dashboard/bell.svg';
 import JobIcon from '@labs/icons/dashboard/jobs.svg';
 import CheckMonochromeIcon from '@labs/icons/dashboard/check_monochrome.svg';
+import CloseIcon from '@labs/icons/dashboard/X.svg';
 
 function NotificationListContainer({
 	children,
@@ -14,6 +16,7 @@ function NotificationListContainer({
 		<Flex.Column
 			alignItems="center"
 			className={styles.NotificationListContainer}
+			gap={40}
 		>
 			{children}
 		</Flex.Column>
@@ -24,25 +27,18 @@ interface NotificationListItemProps {
 	type?: 'projectSetup' | 'job';
 	title: string;
 	description?: string;
-	sideButtons?: boolean;
 }
 
 function NotificationListItem({
 	title,
 	description,
 	type = 'job',
-	sideButtons = true,
 }: NotificationListItemProps) {
 	return (
-		<Flex direction="row" className={styles.NotificationListItem}>
-			<Flex
-				alignItems="center"
-				justifyContent="center"
-				shrink={1}
-				className="rounded-[50%] border-2 border-solid border-[#F3F4F4] bg-[#F9FAFA] mr-6"
-			>
+		<div className={styles.NotificationListItem}>
+			<div className="rounded-[38px] aspect-square p-4 border-2 border-[#F3F4F4] bg-[#F9FAFA] mr-6">
 				{type === 'job' ? <JobIcon /> : <CheckMonochromeIcon />}
-			</Flex>
+			</div>
 			<Flex.Column gap={6}>
 				<Heading.h4 weight={400}>{title}</Heading.h4>
 				<Text color="var(--text-gray)">
@@ -51,14 +47,20 @@ function NotificationListItem({
 				</Text>
 			</Flex.Column>
 			<div className="justify-end">
-				{sideButtons && (
-					<Flex.Row gap={8} className="justify-self-end">
-						<CallToAction outline>Save</CallToAction>
-						<CallToAction>Apply</CallToAction>
-					</Flex.Row>
-				)}
+				<Flex.Row gap={8} className="justify-self-end justify-end">
+					{type === 'job' ? (
+						<>
+							<CallToAction outline>Save</CallToAction>
+							<CallToAction>Apply</CallToAction>
+						</>
+					) : (
+						<CallToAction variant="clear">
+							<CloseIcon />
+						</CallToAction>
+					)}
+				</Flex.Row>
 			</div>
-		</Flex>
+		</div>
 	);
 }
 
@@ -78,9 +80,17 @@ export default function Notifications() {
 				</Text>
 			</Flex.Column>
 			<NotificationListContainer>
-				<NotificationListItem title="" />
-				<NotificationListItem title="job" description="man apply" />
-				<NotificationListItem title="" />
+				<NotificationListItem title="Top Job Match: Product Designer at Dribbble" />
+				<NotificationListItem
+					title="Top Job Match: Product Designer at Dribbble"
+					description="man apply"
+				/>
+				<NotificationListItem title="Top Job Match: Product Designer at Dribbble" />
+				<NotificationListItem
+					type="projectSetup"
+					title="Your profile is 75% complete"
+					description="Adding a few details can significantly increase your visibility to recruiters. Finish setting up your profile today."
+				/>
 			</NotificationListContainer>
 		</div>
 	);
