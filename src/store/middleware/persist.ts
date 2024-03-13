@@ -16,11 +16,14 @@ import { reportException } from './report';
  *
  * export { useUserStore };
  */
-export const createPersistMiddleware = (name?: string) => (storeCreator: any) =>
-	create(
-		reportException(
+export const createPersistMiddleware = <T>(
+	name: string,
+	storeCreator: StateCreator<T>
+) =>
+	create<T>(
+		reportException<T>(
 			persist(storeCreator, {
 				name: name || 'z:root',
-			}) as StateCreator<unknown>
+			}) as StateCreator<T>
 		)
 	);

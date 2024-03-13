@@ -5,14 +5,15 @@
 // https://bettercareer-staging-api.fly.dev/
 import { createSmartApi } from '@lib/usable-query';
 import Cookies from 'js-cookie';
+import { UserData } from './types/user';
 
 export const authApiCreator = createSmartApi({
 	key: 'auth',
 	endpoints: (builder) => ({
 		getProfile: builder.query<
-			{},
+			undefined,
 			{
-				profile: any;
+				profile: UserData;
 			}
 		>({
 			key: 'user',
@@ -23,7 +24,7 @@ export const authApiCreator = createSmartApi({
 
 		oAuth: builder.mutation<
 			{ email?: string; password?: string; provider?: string; token?: string },
-			{ token: string; user: any; isNewUser?: boolean }
+			{ token: string; user: UserData; isNewUser?: boolean }
 		>({
 			key: 'oauth',
 			mutationFn: ({ provider, token }) => ({
@@ -44,9 +45,9 @@ export const authApiCreator = createSmartApi({
 		}),
 
 		logOut: builder.query<
-			{},
+			undefined,
 			{
-				user: any;
+				user: UserData;
 			}
 		>({
 			key: 'logout',
@@ -66,11 +67,9 @@ authApiCreator.startListening({
 				 * Evidently, this is needed to ensure that the cookie is set as Nextjs middleware is having stale date
 				 * @see https://github.com/vercel/next.js/issues/49442
 				 */
-				(window as any).rewardful('convert', {
-					email: action.data?.user?.email,
-				});
-				const res = Cookies.set('token', action.data?.token, {
+				const res = Cookies.set('bc_token', action.data?.token, {
 					path: '/',
+					sameSite: 'Lax',
 					secure: process.env.NODE_ENV === 'production',
 					expires: new Date(
 						Date.now() + 1000 * 60 * 60 * 24 * 30
@@ -80,6 +79,7 @@ authApiCreator.startListening({
 				if (res !== undefined) {
 					resolve();
 				} else {
+					reject();
 					throw new Error('Failed to set token');
 				}
 			});

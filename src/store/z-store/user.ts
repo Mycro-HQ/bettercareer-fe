@@ -1,21 +1,24 @@
+import { UserData } from '@/queries/types/user';
 import { createReportableStore } from '../middleware/report';
+import { createPersistMiddleware } from '../middleware/persist';
 
 interface UserStore {
 	loading: boolean;
-	user: any;
+	profile?: UserData | null;
 	error: string;
-	setUser?: (user: any) => void;
+	setUser: (user: any) => void;
 }
 
 const initialState: UserStore = {
 	loading: false,
-	user: null,
+	profile: null,
 	error: '',
+	setUser: () => {},
 };
 
-const useUserStore = createReportableStore<UserStore>((set) => ({
+const useUserStore = createPersistMiddleware<UserStore>('user', (set) => ({
 	...initialState,
-	setUser: (user) => set({ user }),
+	setUser: (user) => set({ profile: user }),
 }));
 
 export { useUserStore };
