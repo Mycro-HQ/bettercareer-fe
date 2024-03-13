@@ -5,32 +5,26 @@ import { CallToAction, Flex, Text } from '@labs/components';
 import JobIcon from '@labs/icons/dashboard/jobs.svg';
 import CheckMonochromeIcon from '@labs/icons/dashboard/check_monochrome.svg';
 import CloseIcon from '@labs/icons/dashboard/X.svg';
-import { NotificationListItemProps } from '@labs/utils/types/utility';
 
-export function NotificationListContainer({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
-	return (
-		<Flex.Column
-			alignItems="center"
-			className={styles.NotificationListContainer}
-			gap={40}
-		>
-			{children}
-		</Flex.Column>
-	);
-}
+import classNames from 'classnames';
+
+import { NotificationListItemProps } from '@labs/utils/types/utility';
 
 export function NotificationListItem({
 	title,
 	description,
 	time,
 	type = 'job',
+	size = 'normal',
 }: NotificationListItemProps) {
 	return (
-		<div className={styles.NotificationListItem}>
+		<div
+			className={classNames(
+				styles.NotificationListItem,
+				size === 'large' &&
+					'first:p-6 first:scale-105 first:rounded-xl first:shadow-[0px_4px_33px_0px_rgba(0,0,0,0.02)]'
+			)}
+		>
 			<div className="rounded-[38px] aspect-square p-4 border-2 border-[#F3F4F4] bg-[#F9FAFA] mr-6">
 				{type === 'job' ? <JobIcon /> : <CheckMonochromeIcon />}
 			</div>
@@ -70,7 +64,13 @@ export default function Notifications({
 }) {
 	return (
 		<div className={styles.NotificationsContainer}>
-			<NotificationListContainer>{children}</NotificationListContainer>
+			<Flex.Column
+				alignItems="center"
+				className={styles.NotificationListContainer}
+				gap={40}
+			>
+				{children}
+			</Flex.Column>
 		</div>
 	);
 }
