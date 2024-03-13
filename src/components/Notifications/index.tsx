@@ -29,13 +29,13 @@ export function NotificationListItem({
 				{type === 'job' ? <JobIcon /> : <CheckMonochromeIcon />}
 			</div>
 			<Flex.Column gap={6}>
-				<Text color="var(--text-black)" weight={600} fontSize="17px">
+				<Text color="var(--text-black)" weight={600} fontSize="16px">
 					{title}
 				</Text>
 				<Text color="#3F4C58" fontSize="14px" weight={500}>
 					{description}
 				</Text>
-				<Text color="#3F4C58" fontSize="11px" weight={600} className="mt-4">
+				<Text color="#3F4C58" fontSize="12px" weight={600} className="mt-4">
 					{time} ago
 				</Text>
 			</Flex.Column>
