@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import type { PropsWithChildren } from 'react';
 import { StyleProvider } from './style-creator';
+import { FeedbackProvider } from '../toast';
 
 const canUseDOM = Boolean(
 	typeof window !== 'undefined' &&
@@ -36,7 +37,9 @@ export const SSRProvider: React.FC<PropsWithChildren & {}> = (props) => {
 
 	return (
 		<SSRContext.Provider value={ctx}>
-			<StyleProvider>{children}</StyleProvider>
+			<FeedbackProvider>
+				<StyleProvider>{children}</StyleProvider>
+			</FeedbackProvider>
 		</SSRContext.Provider>
 	);
 };
