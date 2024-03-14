@@ -3,10 +3,11 @@ import React, { useEffect, useCallback } from 'react';
 import { GOOGLE_AUTH_ID } from '@lib/config';
 import GoogleIcon from '@labs/icons/socials/google.svg';
 
-import { CallToAction } from '@labs/index';
+import { CallToAction, useToast } from '@labs/index';
+import { useOAuthMutation } from '@/queries/user';
+import { useAuthSuccess } from './use-auth';
 
 import styles from '../onboarding.module.scss';
-import { useOAuthMutation } from '@/queries/user';
 
 declare global {
 	interface Window {
@@ -19,10 +20,18 @@ type LoginWithGoogleProps = {
 };
 
 const LoginWithGoogle = (props: LoginWithGoogleProps) => {
+	const { createToast } = useToast();
+	const handleAuthSuccess = useAuthSuccess();
+
 	const { mutate: authWithGoogle, isPending } = useOAuthMutation({
-		onSuccess: (data) => {},
+		onSuccess: (data) => {
+			handleAuthSuccess(data);
+		},
 		onError: (error: any) => {
-			// handle error
+			createToast({
+				message: error?.message || 'An error occurred',
+				variant: 'error',
+			});
 		},
 	});
 
@@ -37,12 +46,10 @@ const LoginWithGoogle = (props: LoginWithGoogleProps) => {
 		}) => {
 			const credential = response.credential;
 
-			const res = await authWithGoogle({
+			await authWithGoogle({
 				token: credential,
 				provider: 'google',
 			});
-
-			console.log(res);
 		},
 		[authWithGoogle, props.intent]
 	);

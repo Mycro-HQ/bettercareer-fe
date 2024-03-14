@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import {
 	APP_URL,
@@ -11,28 +11,33 @@ import {
 	CallToAction,
 	getLocationFromPopup,
 	openPopupWindow,
+	useToast,
 } from '@labs/index';
 
 import { useOAuthMutation } from '@/queries/user';
 import queryString from 'query-string';
-
-declare global {
-	interface Window {
-		google: any;
-	}
-}
+import { useAuthSuccess } from './use-auth';
 
 type LoginWithLinkedinProps = {
 	intent: 'login' | 'signup';
 };
 
 const LoginWithLinkedin = (props: LoginWithLinkedinProps) => {
+	const { createToast } = useToast();
+	const handleAuthSuccess = useAuthSuccess();
+
 	const { mutate: authWithLinkedin, isPending } = useOAuthMutation({
-		onSuccess: (data) => {},
+		onSuccess: (data) => {
+			handleAuthSuccess(data);
+		},
 		onError: (error: any) => {
-			// handle error
+			createToast({
+				message: error?.message || 'An error occurred',
+				variant: 'error',
+			});
 		},
 	});
+
 	const callbackUrl = `${APP_URL}/${props.intent}`;
 
 	function getLinkedVerifier() {
@@ -42,7 +47,7 @@ const LoginWithLinkedin = (props: LoginWithLinkedinProps) => {
 			)}&scope=r_liteprofile%20r_emailaddress`
 		) as Window;
 
-		return getLocationFromPopup(popup).then((location: any) => {
+		return getLocationFromPopup(popup).then((location: { search: string }) => {
 			const query = queryString.parse(location.search) || {};
 			const oauthVerifier = query.oauth_verifier;
 
