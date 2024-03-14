@@ -14,10 +14,16 @@ import { SetupChecklist } from './components/setup-checklist';
 
 import { StackCard } from './components/stack-card/stack-card';
 
+import { type UserData } from '@/queries/types/user';
+
 import styles from './home.module.scss';
 
-export const DashboardHome = () => {
-	const hasSetup = true;
+export const DashboardHome = ({
+	profile,
+}: {
+	profile: UserData | null | undefined;
+}) => {
+	const hasSetup = false;
 
 	const recommendationSections = [
 		{
