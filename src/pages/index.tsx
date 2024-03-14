@@ -165,7 +165,15 @@ export const Home = () => {
 							description="Transform your CV into a powerful tool that stands out. Our advanced algorithms and professional insights ensure your resume not only shines but also highlights your unique strengths and skills, making you irresistible to employers."
 						/>
 					</Flex.Column>
-					<div></div>
+					<div className="w-1/2 text-right">
+						<Text
+							fontSize="150px"
+							weight={500}
+							className="font-[Recoleta] text-[#F3F4F4]"
+						>
+							01
+						</Text>
+					</div>
 				</Flex>
 			</Flex.Column>
 		</Flex.Column>
