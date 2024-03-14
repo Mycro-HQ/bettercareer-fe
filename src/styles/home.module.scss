@@ -2,6 +2,8 @@
 
 .HomeContainer {
 	background-image: url('/images/Home.png');
+	background-repeat: no-repeat;
+	background-size: cover;
 	box-sizing: border-box;
 	padding-inline: rem(20px);
 }
