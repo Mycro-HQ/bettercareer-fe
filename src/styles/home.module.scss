@@ -3,8 +3,22 @@
 .HomeContainer {
 	background-image: url('/images/Home.png');
 	box-sizing: border-box;
+	padding-inline: rem(20px);
 }
 
-// * {
-// 	background: #0000000f;
-// }
+.PeoplePill {
+	border-radius: rem(80px);
+	padding: rem(8px);
+	padding-right: rem(14px);
+	background-color: rgba(255, 255, 255, 0.38);
+	border: 1px solid rgba(0, 0, 0, 0.059);
+	backdrop-filter: blur(12px);
+}
+
+.AccordionItem {
+	width: 100%;
+	> summary {
+		list-style: none;
+		cursor: pointer;
+	}
+}
