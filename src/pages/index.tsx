@@ -74,7 +74,7 @@ export const Home = () => {
 			<Flex
 				justifyContent="space-between"
 				alignItems="center"
-				className="w-full px-28 pt-16 mb-12 xl:mb-24 xl:pt-28"
+				className="w-full p-16 mb-16"
 			>
 				<Flex alignItems="center" gap={9}>
 					<Logo />
@@ -125,7 +125,7 @@ export const Home = () => {
 			</Flex>
 			<Flex.Column
 				alignItems="center"
-				className="bg-white pt-[60px] xl:pt-[72px] w-4/6 px-16 rounded-[32px] shadow-[0px_4px_94px_0px_rgba(0,0,0,0.04)]"
+				className="bg-white pt-[60px] xl:pt-[72px] w-4/6 px-16 pb-28 mb-32 rounded-[32px] shadow-[0px_4px_94px_0px_rgba(0,0,0,0.04)]"
 			>
 				<PeoplePill
 					text="Be the first to get access"
@@ -145,7 +145,7 @@ export const Home = () => {
 					We polish your dating profile (your CV!) and set you up with your
 					dream job.
 				</Text>
-				<Flex className="w-full">
+				<Flex className="w-full pb-52">
 					<Flex.Column gap={60} className="w-1/2">
 						<AccordionItem
 							title="Resume Optimization"
@@ -175,7 +175,19 @@ export const Home = () => {
 						</Text>
 					</div>
 				</Flex>
+				<Heading.h4 weight={500} className="mb-6">
+					Already Impressed ?
+				</Heading.h4>
+				<CallToAction>Join Waitlist</CallToAction>
 			</Flex.Column>
+			<Text
+				color="var(--text-gray)"
+				fontSize="var(--font-h6)"
+				weight={600}
+				className="mb-24"
+			>
+				Made with ❤️ by the Mycro Team
+			</Text>
 		</Flex.Column>
 	);
 };
