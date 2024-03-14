@@ -18,6 +18,7 @@ import ArrowDown from '@labs/icons/dashboard/down.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
 
 import styles from './header.module.scss';
+import { useUserStore } from '@/store/z-store/user';
 
 const NAVIGATION = [
 	{
@@ -41,7 +42,13 @@ const NAVIGATION = [
 export const DashboardHeader = () => {
 	const router = useRouter();
 	const [isScrolled, setIsScrolled] = React.useState(false);
+	const { profile } = useUserStore();
 
+	const getFallback = () => {
+		if (!profile?.name) return '';
+		const [first, last] = profile?.name.split(' ');
+		return `${first[0]}${last[0]}`;
+	};
 	React.useEffect(() => {
 		const handleScroll = () => {
 			if (window.scrollY > 0) {
@@ -121,8 +128,8 @@ export const DashboardHeader = () => {
 								<button className={styles.DashboardHeaderProfile}>
 									<Flex alignItems="center" gap={8}>
 										<Avatar
-											src=""
-											fallback={'AW'}
+											src={profile?.photo}
+											fallback={getFallback()}
 											variant="solid"
 											radius="full"
 											size="2"

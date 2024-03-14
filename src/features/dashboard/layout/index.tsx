@@ -5,6 +5,7 @@ import { Container } from '@labs/components';
 import { DashboardHeader } from './components/header';
 
 import { Seo } from '@/components/seo';
+import { type UserData } from '@/queries/types/user';
 
 import styles from './layout.module.scss';
 
@@ -23,10 +24,12 @@ export const DashboardLayout = ({
 	children,
 	title = 'Dashboard',
 	backdropThreshold = 'md',
+	profile,
 }: {
 	children: React.ReactNode;
 	title?: string;
 	backdropThreshold?: 'sm' | 'md' | 'lg';
+	profile: UserData | null | undefined;
 }) => {
 	return (
 		<div
