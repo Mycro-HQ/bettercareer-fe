@@ -125,7 +125,7 @@ export const Home = () => {
 			</Flex>
 			<Flex.Column
 				alignItems="center"
-				className="bg-white pt-[60px] xl:pt-[72px] w-4/6 px-16"
+				className="bg-white pt-[60px] xl:pt-[72px] w-4/6 px-16 rounded-[32px] shadow-[0px_4px_94px_0px_rgba(0,0,0,0.04)]"
 			>
 				<PeoplePill
 					text="Be the first to get access"
