@@ -1,8 +1,5 @@
-import {
-	StyleContext,
-	useStyleContext,
-} from '@labs/components/provider/style-creator';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useStyleContext } from '@labs/components/provider/style-creator';
+import { useMemo } from 'react';
 
 /**
  * useDynamicStyle is a hook that takes a styles object and returns a string of
