@@ -1,17 +1,20 @@
-import React, { useState, DragEvent } from 'react';
+import React, { useState, useEffect, DragEvent } from 'react';
 import { Flex, Text } from '@labs/components';
 import styles from './DragAndDrop.module.scss';
 import { generateUUID } from '@labs/utils';
-import { FileWithKey } from '@labs/utils/types/utility';
 import classNames from 'classnames';
 import DragAndDropImage from '@labs/icons/dragAndDrop.svg';
+import { getSizeFormat } from '@labs/utils';
+import { FileWithKey } from '@labs/utils/types/utility';
+
+import DocumentImage from '@labs/icons/document.svg';
+import DeleteImage from '@labs/icons/delete.svg';
 
 interface DragAndDrop {
 	multiple?: boolean;
 	accept?: 'application/pdf';
 	onDrop: (files: File[]) => void;
 	onDragOver?: () => void;
-	setFiles?: React.Dispatch<React.SetStateAction<FileWithKey[]>>;
 	maxSize?: number;
 }
 
@@ -55,10 +58,42 @@ export default function DragAndDrop({
 	accept = 'application/pdf',
 	onDrop,
 	onDragOver,
-	setFiles = () => {},
 	maxSize = 10,
 }: Readonly<DragAndDrop>) {
 	const [dragIsOver, setDragIsOver] = useState(false);
+	const [files, setFiles] = useState<FileWithKey[]>([]);
+
+	function handleDeleteClick(indexToRemove: number) {
+		setFiles((prev) => {
+			const newFiles = [...prev];
+			newFiles.splice(indexToRemove, 1);
+			return newFiles;
+		});
+	}
+
+	const filesWithError = files.filter((file) => file.status.length !== 0);
+	const filesWithoutError = files.filter((file) => file.status.length === 0);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (filesWithError.length > 0) {
+				setFiles((prev) => {
+					const firstErrorIndex = prev.findIndex(
+						(file) => file.status.length !== 0
+					);
+					if (firstErrorIndex !== -1) {
+						return [
+							...prev.slice(0, firstErrorIndex),
+							...prev.slice(firstErrorIndex + 1),
+						];
+					}
+					return prev;
+				});
+			}
+		}, 3000);
+
+		return () => clearInterval(interval);
+	}, [files]);
 
 	function validateFile(file: File) {
 		const errors: string[] = [];
@@ -130,57 +165,99 @@ export default function DragAndDrop({
 	};
 
 	return (
-		<Flex.Column
-			alignItems="center"
-			gap="4"
-			className={classNames(
-				styles.DragAndDrop,
-				dragIsOver ? 'bg-[#E7F3FE]' : 'bg-[#f9fcff]',
-				'mt-9 mb-9'
-			)}
-			onDragOver={handleDragOver}
-			onDragLeave={handleDragLeave}
-			onDrop={handleDrop}
-		>
-			<Flex.Column alignItems="center">
-				<DragAndDropImage
-					style={{
-						transform: !dragIsOver ? 'scale(1)' : 'scale(1.4)',
-						transition: 'transform 0.3s ease-in-out',
-					}}
-				/>
-				<Flex.Column alignItems="center">
-					{dragIsOver ? (
-						<Text as="span">Drop your file here</Text>
-					) : (
-						<>
-							<Flex gap="2" alignItems="center">
-								<Text as="span">Drag and drop file or </Text>
-								<label
-									htmlFor="DragAndDrop"
-									role="button"
-									className="cursor-pointer"
-								>
-									Browse
-								</label>
-							</Flex>
-							<Text className="mt-[2px]" size="sm" color="var(--text-gray)">
-								Up to 10MB in PDF
-							</Text>
-						</>
+		<div className="py-4">
+			{(!files || files.length !== 1) && (
+				<Flex.Column
+					alignItems="center"
+					gap="4"
+					className={classNames(
+						styles.DragAndDrop,
+						dragIsOver ? 'bg-[#E7F3FE]' : 'bg-[#f9fcff]',
+						'mt-9 mb-9'
 					)}
+					onDragOver={handleDragOver}
+					onDragLeave={handleDragLeave}
+					onDrop={handleDrop}
+				>
+					<Flex.Column alignItems="center">
+						<DragAndDropImage
+							style={{
+								transform: !dragIsOver ? 'scale(1)' : 'scale(1.4)',
+								transition: 'transform 0.3s ease-in-out',
+							}}
+						/>
+						<Flex.Column alignItems="center">
+							{dragIsOver ? (
+								<Text as="span">Drop your file here</Text>
+							) : (
+								<>
+									<Flex gap="2" alignItems="center">
+										<Text as="span">Drag and drop file or </Text>
+										<label
+											htmlFor="DragAndDrop"
+											role="button"
+											className="cursor-pointer"
+										>
+											Browse
+										</label>
+									</Flex>
+									<Text className="mt-[2px]" size="sm" color="var(--text-gray)">
+										Up to 10MB in PDF
+									</Text>
+								</>
+							)}
 
-					<input
-						type="file"
-						id="DragAndDrop"
-						name="DragAndDrop"
-						accept={accept}
-						multiple={multiple}
-						className="opacity-0 w-0 h-0"
-						onChange={handleFileUpload}
-					/>
+							<input
+								type="file"
+								id="DragAndDrop"
+								name="DragAndDrop"
+								accept={accept}
+								multiple={multiple}
+								className="opacity-0 w-0 h-0"
+								onChange={handleFileUpload}
+							/>
+						</Flex.Column>
+					</Flex.Column>
 				</Flex.Column>
-			</Flex.Column>
-		</Flex.Column>
+			)}
+			{files &&
+				filesWithError.map((file) => (
+					<Text key={file.key} color="var(--primary-error)" size="sm">
+						{file.status.map((status) => status + '\n')}
+					</Text>
+				))}
+			{files &&
+				filesWithoutError.map((file, index) => {
+					return (
+						<Flex
+							direction="row"
+							alignItems="center"
+							justifyContent="space-between"
+							key={file.key}
+							className={`${styles.FileListItem} mt-6`}
+						>
+							<Flex>
+								<DocumentImage className={styles.FileListDocumentIcon} />
+								<Flex.Column gap={4}>
+									<Text
+										className={styles.FileListItemTitle}
+										fontSize="var(--font-p)"
+										weight={600}
+										lineHeight="18px"
+									>
+										{file.blob.name}
+									</Text>
+									<Text color="var(--text-gray)" size="sm">
+										{getSizeFormat(file.blob.size)}
+									</Text>
+								</Flex.Column>
+							</Flex>
+							<button onClick={() => handleDeleteClick(index)}>
+								<DeleteImage />
+							</button>
+						</Flex>
+					);
+				})}
+		</div>
 	);
 }
