@@ -153,7 +153,7 @@ export const Waitlist = () => {
 					scale: 0.95,
 					opacity: 0,
 				}}
-				viewport={{ once: true, amount: 0.3 }}
+				viewport={{ once: true, amount: 0.35 }}
 				whileInView={{
 					scale: 1,
 					opacity: 1,
