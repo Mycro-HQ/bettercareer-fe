@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '@/styles/home.module.scss';
 import { Flex, Text, CallToAction, Heading } from '@labs/components';
+import Image from 'next/image';
 import Logo from '../../public/images/Logo.svg';
 import PeopleOnWaitlist from '../../public/images/people_on_waitlist.svg';
 import FirstToGetAccess from '../../public/images/first_to_get_access.svg';
@@ -96,7 +97,7 @@ export const Home = () => {
 				weight={500}
 			>
 				Make your resume into
-				<br /> a{' '}
+				<br /> 
 				<Text
 					as="span"
 					fontSize="84px"
@@ -104,9 +105,8 @@ export const Home = () => {
 					lineHeight="84px"
 					className="!text-[#6F7982]"
 				>
-					job magnet
+					a job magnet with AI
 				</Text>{' '}
-				with AI
 			</Heading.h1>
 			<Text
 				color="var(--text-gray)"
@@ -165,14 +165,20 @@ export const Home = () => {
 							description="Transform your CV into a powerful tool that stands out. Our advanced algorithms and professional insights ensure your resume not only shines but also highlights your unique strengths and skills, making you irresistible to employers."
 						/>
 					</Flex.Column>
-					<div className="w-1/2 text-right">
+					<div className="relative w-1/2 text-right">
+						<div className={styles.resumeContainer}>
+							<Image src="/images/resume.png" alt='Resume analysis' sizes="100vw" priority width={0} height={0} style={{ width: '100%', height: '100%', objectFit:'contain' }} />
+						</div>
 						<Text
-							fontSize="150px"
+							fontSize="100px"
 							weight={500}
 							className="font-[Recoleta] text-[#F3F4F4]"
 						>
 							01
 						</Text>
+						<div className='absolute bottom-0'>
+							<Image src="/images/background_image.png" alt='Vector' sizes="100vw" priority width={500} height={500} />
+						</div>
 					</div>
 				</Flex>
 				<Heading.h4 weight={500} className="mb-6">
