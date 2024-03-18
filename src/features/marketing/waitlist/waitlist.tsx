@@ -3,43 +3,50 @@ import { CallToAction, Container, Flex, Heading, Text } from '@labs/components';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Logo from '@labs/icons/logo.svg';
+import Arrow from '@labs/icons/misc/arrow-right.svg';
+import Close from '@labs/icons/misc/close.svg';
+
+import { WaitlistInfo } from '.';
+import { Modal } from '@labs/components/modal';
 
 import styles from './waitlist.module.scss';
-import { WaitlistInfo } from '.';
+import DragAndDrop from '@/components/DragAndDrop';
+
+const boxVariant = {
+	hidden: {
+		opacity: 0,
+	},
+	visible: {
+		opacity: 1,
+		transition: {
+			when: 'beforeChildren',
+			staggerChildren: 0.15,
+			duration: 0.4,
+		},
+	},
+};
+
+const listVariant = {
+	hidden: {
+		y: 10,
+		opacity: 0,
+		scale: 0.95,
+	},
+	visible: {
+		y: 0,
+		opacity: 1,
+		scale: 1,
+
+		transition: {
+			type: 'spring',
+			damping: 5,
+			stiffness: 100,
+		},
+	},
+};
 
 export const Waitlist = () => {
-	const boxVariant = {
-		hidden: {
-			opacity: 0,
-		},
-		visible: {
-			opacity: 1,
-			transition: {
-				when: 'beforeChildren',
-				staggerChildren: 0.15,
-				duration: 0.4,
-			},
-		},
-	};
-
-	const listVariant = {
-		hidden: {
-			y: 10,
-			opacity: 0,
-			scale: 0.95,
-		},
-		visible: {
-			y: 0,
-			opacity: 1,
-			scale: 1,
-
-			transition: {
-				type: 'spring',
-				damping: 5,
-				stiffness: 100,
-			},
-		},
-	};
+	const [isOpen, setIsOpen] = React.useState(false);
 
 	const [currentIndex, setCurrentIndex] = React.useState(0);
 
@@ -50,9 +57,9 @@ export const Waitlist = () => {
 					<div className={styles.WaitlistHeaderNavLogo}>
 						<Logo />
 					</div>
-					<CallToAction.a href="/about" aria-label="About">
+					<CallToAction.button onClick={() => setIsOpen(true)}>
 						Join Waitlist
-					</CallToAction.a>
+					</CallToAction.button>
 				</nav>
 			</Container>
 
@@ -65,7 +72,11 @@ export const Waitlist = () => {
 							animate="visible"
 							initial="hidden"
 						>
-							<motion.a href="#" variants={listVariant} key="6">
+							<motion.button
+								onClick={() => setIsOpen(true)}
+								variants={listVariant}
+								key="6"
+							>
 								<Flex
 									className={styles.WaitlistTagline}
 									justifyContent="space-between"
@@ -78,7 +89,7 @@ export const Waitlist = () => {
 										Join over 1k people on our waitlist
 									</Text>
 								</Flex>
-							</motion.a>
+							</motion.button>
 							<motion.span
 								className="text-center"
 								variants={listVariant}
@@ -119,10 +130,10 @@ export const Waitlist = () => {
 							</motion.span>
 							<motion.div variants={listVariant} key="3">
 								<Flex gap={12}>
-									<CallToAction.a href="/about" aria-label="About">
+									<CallToAction.button onClick={() => setIsOpen(true)}>
 										Join Waitlist
-									</CallToAction.a>
-									<CallToAction.a href="/about" outline>
+									</CallToAction.button>
+									<CallToAction.a href="#section" outline>
 										Learn More
 									</CallToAction.a>
 								</Flex>
@@ -136,6 +147,7 @@ export const Waitlist = () => {
 			</div>
 
 			<motion.section
+				id="section"
 				className={styles.WaitlistSection}
 				initial={{
 					scale: 0.95,
@@ -194,9 +206,25 @@ export const Waitlist = () => {
 									}
 								>
 									<Flex.Column className={styles.AccordionContent} gap={14}>
-										<Heading.h4 weight={400} animate="fade">
-											{info.title}
-										</Heading.h4>
+										<Flex
+											fullWidth
+											justifyContent="space-between"
+											alignItems="center"
+											gap={8}
+										>
+											<Heading.h4 weight={400} animate="fade">
+												{info.title}
+											</Heading.h4>
+											<AnimatePresence></AnimatePresence>`
+											<motion.span
+												key={index}
+												initial={{ opacity: 0, x: 10 }}
+												animate={{ opacity: 1, x: 0 }}
+												exit={{ opacity: 0 }}
+											>
+												{index === currentIndex ? <Close /> : <Arrow />}
+											</motion.span>
+										</Flex>
 										{index === currentIndex && (
 											<Text color="#57636D" weight={500} animate="fade">
 												{info.description}
@@ -240,44 +268,101 @@ export const Waitlist = () => {
 						<Heading.h4 weight={400} className="mt-[14px]" animate="slide">
 							Already Impressed ?
 						</Heading.h4>
-						<CallToAction.a href="/about" aria-label="About">
+						<CallToAction.button onClick={() => setIsOpen(true)}>
 							Join Waitlist
-						</CallToAction.a>
+						</CallToAction.button>
 					</Flex.Column>
 				</Container>
 			</motion.section>
-
-			<footer className={styles.WaitlistFooter}>
-				<Heading.h6
-					color="#57636D"
-					weight={500}
-					className="text-center"
-					style={{
-						lineHeight: '1.5',
-					}}
-				>
-					Made with ❤️ by the{' '}
-					<a
-						href="https://twitter.com/mycroHQ"
-						target="_blank"
-						rel="noopener noreferrer"
+			<Container maxWidth="lg">
+				<footer className={styles.WaitlistFooter}>
+					<Text
+						color="#57636D"
+						weight={500}
+						className="text-center"
+						style={{
+							lineHeight: '1.5',
+						}}
 					>
-						<Text.span color="var(--primary-blue)" weight={500} inheritFont>
-							Mycro
-						</Text.span>{' '}
-						{''}
-					</a>
-					team
-				</Heading.h6>
-			</footer>
+						Made with ❤️ by the{' '}
+						<a
+							href="https://twitter.com/mycroHQ"
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Text.span color="var(--primary-blue)" weight={500} inheritFont>
+								Mycro
+							</Text.span>{' '}
+							{''}
+						</a>
+						team
+					</Text>
+
+					<Flex.Row gap={12}>
+						<Text color="#57636D" weight={700}>
+							Follow us on:{' '}
+						</Text>
+						<a
+							href="https://twitter.com/mycroHQ"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="underline"
+						>
+							Twitter
+						</a>
+						<a
+							href="https://www.linkedin.com/showcase/102231354/admin/feed/posts/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="underline"
+						>
+							Linkedin
+						</a>
+					</Flex.Row>
+				</footer>
+				<WaitListModal isOpen={isOpen} setIsOpen={setIsOpen} />
+			</Container>
 		</div>
 	);
 };
 
-// const Accordion = () => {
-//   return (
-//     <div className={styles.Accordion}>
-
-//     </div>
-//   )
-// }
+const WaitListModal = ({
+	isOpen,
+	setIsOpen,
+}: {
+	isOpen: boolean;
+	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+	return (
+		<Modal in={isOpen} onClose={() => setIsOpen(false)}>
+			<Flex.Column gap={2} alignItems="center">
+				<Heading.h4 weight={400} animate="slide" align="center">
+					Join waitlist for early access
+				</Heading.h4>
+				<Text align="center" color="#57636D" animate="fade">
+					Just a little more details and we are good
+				</Text>
+			</Flex.Column>
+			<Container>
+				<form className={styles.WaitlistForm}>
+					<Flex.Column gap={8}>
+						<input type="text" placeholder="Full Name" />
+						<input type="email" placeholder="Email" />
+					</Flex.Column>
+					<label className="mt-[22px] block -mb-[14px]">
+						<Text color="#57636D" weight={700}>
+							Your CV (optional)
+						</Text>
+						<Text color="#6F7982" size="sm">
+							Let's give you a free resume analysis before you launch
+						</Text>
+					</label>
+					<DragAndDrop onDrop={null} />
+					<CallToAction.button className="ml-auto">
+						Join Waitlist
+					</CallToAction.button>
+				</form>
+			</Container>
+		</Modal>
+	);
+};

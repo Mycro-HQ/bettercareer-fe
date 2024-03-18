@@ -29,14 +29,17 @@
 			height: 850px;
 			width: 100%;
 			margin-top: -14%;
-			animation: scaleInF 5s ease forwards alternate infinite;
+			animation: scaleInF 8s linear forwards alternate-reverse infinite;
+			animation-fill-mode: both;
 
 			@keyframes scaleInF {
 				0% {
-					scale: 1.3;
+					transform: scale(1.35) rotate(9deg);
+					opacity: 0.8;
 				}
 				100% {
-					scale: 1;
+					transform: scale(1) rotate(0deg);
+					opacity: 1;
 				}
 			}
 		}
@@ -86,7 +89,9 @@
 			align-items: flex-start;
 			justify-content: flex-start;
 
-			h1 {
+			h1,
+			h6,
+			h5 {
 				text-align: left;
 			}
 		}
@@ -115,7 +120,7 @@
 				height: auto;
 			}
 
-			a {
+			button {
 				display: none;
 			}
 		}
@@ -203,5 +208,26 @@
 			height: auto;
 			flex: 1;
 		}
+	}
+
+	.WaitlistFooter {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		gap: 14px;
+		width: 100%;
+	}
+}
+
+.WaitlistForm {
+	margin-top: 32px;
+	input {
+		padding: 18px 22px;
+		width: 100%;
+		display: block;
+		border: 1px solid #e7e9eb;
+		border-radius: 12px;
 	}
 }

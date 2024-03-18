@@ -1,0 +1,241 @@
+@use '@/styles/base/utils' as *;
+/** modal CSS File */
+
+.ModalSection {
+	display: flex;
+	width: 100%;
+	position: fixed;
+	inset: 0px;
+	height: var(--bc-labs-vh);
+	z-index: 1100;
+	-webkit-box-pack: center;
+	justify-content: center;
+	align-items: flex-start;
+	overflow: auto;
+	overscroll-behavior-y: none;
+
+	@include media('md', 'max') {
+		.Modal {
+			margin: 0 !important;
+			height: 100% !important;
+		}
+
+		.ModalContent {
+			padding: 65px 14px 14px;
+			height: 100%;
+			margin: 0;
+			border-radius: 0;
+
+			&.hug {
+				padding: 0;
+			}
+		}
+
+		.ModalHeader {
+			padding: 14px;
+		}
+
+		.ModalActionBar {
+			margin-bottom: 8px;
+			width: 100%;
+			position: fixed;
+			width: 100%;
+			left: env(safe-area-inset-left, 0px);
+			content: '';
+			display: flex;
+			align-items: center;
+			z-index: 100;
+			padding: 16px 16px !important;
+			top: 0px;
+			background: #fff;
+			height: 50px;
+
+			.Close {
+				right: 10px;
+				margin-top: 0px;
+				width: 14px;
+				height: 14px;
+				z-index: 100;
+			}
+		}
+	}
+}
+
+.ModalBackdrop {
+	position: fixed;
+	inset: 0;
+	width: 100%;
+	height: var(--bc-labs-vh);
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 1100;
+
+	@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+		background: rgba(0, 0, 0, 0.69);
+		-webkit-backdrop-filter: blur(12.5px);
+		backdrop-filter: blur(12.5px);
+	}
+}
+
+.Modal {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	width: 100%;
+	outline: transparent solid 2px;
+	height: 100%;
+	margin: auto;
+	outline-offset: 2px;
+	color: inherit;
+	z-index: 1100;
+
+	&.maxHeight {
+		max-height: 720px;
+	}
+
+	&:not(.centered) {
+		margin: 2rem 0;
+		height: calc(100% - 4rem);
+	}
+
+	@include media('md', 'max') {
+		margin: 0 15px;
+		max-width: 100% !important;
+	}
+
+	&.lg {
+		max-width: 720px;
+	}
+
+	&.md {
+		max-width: 500px;
+	}
+
+	&.sm {
+		max-width: 300px;
+
+		.ModalActionBar {
+			padding: 4px 0;
+		}
+	}
+
+	&.xlg {
+		max-width: 900px;
+	}
+
+	&.xxlg {
+		max-width: 1200px;
+	}
+
+	&.centered {
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+.ModalContent {
+	background: #fff;
+	border-radius: 24px;
+	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.05);
+	width: 100%;
+	padding: 4px 18px 24px;
+	margin: 28px auto;
+	height: fit-content;
+	max-height: 100%;
+	overflow: auto;
+	overscroll-behavior-y: none;
+
+	&.hug {
+		padding: 0;
+		width: fit-content;
+		background: transparent;
+	}
+
+	:global([data-amlabs-field-wrapper]) {
+		background: bg('white', 'faint');
+		* {
+			&::placeholder {
+				color: var(--text-gray);
+			}
+		}
+	}
+}
+
+.ModalHeader {
+	padding: 20px;
+	display: flex;
+	position: sticky;
+	top: -15px;
+	background: #fff;
+	z-index: 1;
+	align-items: center;
+	border-bottom: 2px solid var(--gray-lighter);
+	justify-content: center;
+
+	&.noBorder {
+		border-bottom: none;
+	}
+
+	h3 {
+		@include typography('h6');
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+}
+
+.Footer {
+	padding: 15px;
+	display: flex;
+	align-items: center;
+	border-top: 1px solid var(--gray-lighter);
+}
+
+.ModalBody {
+	padding: 24px 15px;
+	&.noPadding {
+		padding: 0;
+	}
+}
+
+.ModalActionBar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16px 4px;
+	position: sticky;
+	top: -8px;
+	margin: 0 -2px;
+	background: #fff;
+	position: sticky;
+	top: -12px;
+	z-index: 1;
+
+	&.hasTitle {
+		padding: 16px 4px;
+		margin-bottom: 16px;
+
+		> p {
+			opacity: 0.8;
+			background: #fff;
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+	}
+
+	svg {
+		width: 14px;
+		height: 14px;
+
+		path {
+			stroke-width: 14px;
+		}
+	}
+
+	.Close {
+		border: none;
+		cursor: pointer;
+		width: 12px;
+		height: 12px;
+		margin-left: auto;
+	}
+}

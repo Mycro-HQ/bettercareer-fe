@@ -7,12 +7,12 @@ import classNames from 'classnames';
 import DragAndDropImage from '@labs/icons/dragAndDrop.svg';
 
 interface DragAndDrop {
-	multiple: boolean;
-	accept: 'application/pdf';
+	multiple?: boolean;
+	accept?: 'application/pdf';
 	onDrop: (files: File[]) => void;
-	onDragOver: () => void;
-	setFiles: React.Dispatch<React.SetStateAction<FileWithKey[]>>;
-	maxSize: number;
+	onDragOver?: () => void;
+	setFiles?: React.Dispatch<React.SetStateAction<FileWithKey[]>>;
+	maxSize?: number;
 }
 
 /**
@@ -52,11 +52,11 @@ interface DragAndDrop {
  */
 export default function DragAndDrop({
 	multiple,
-	accept,
+	accept = 'application/pdf',
 	onDrop,
 	onDragOver,
-	setFiles,
-	maxSize,
+	setFiles = () => {},
+	maxSize = 10,
 }: Readonly<DragAndDrop>) {
 	const [dragIsOver, setDragIsOver] = useState(false);
 
@@ -97,7 +97,9 @@ export default function DragAndDrop({
 	const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
 		setDragIsOver(true);
-		onDragOver();
+		if (onDragOver) {
+			onDragOver();
+		}
 	};
 
 	const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
