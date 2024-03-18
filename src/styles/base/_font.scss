@@ -38,6 +38,14 @@
 }
 
 @font-face {
+	font-family: 'Recoleta';
+	src: url('../../../public/assets/fonts/Recoleta-Medium.woff2') format('woff2');
+	font-weight: 300 400;
+	font-display: swap;
+	font-style: normal;
+}
+
+@font-face {
 	font-family: 'Figtree';
 	src: url('../../../public/assets/fonts/Figtree-Medium.woff2') format('woff2');
 	font-weight: 300 400 500;
