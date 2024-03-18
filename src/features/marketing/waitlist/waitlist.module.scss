@@ -178,7 +178,13 @@
 		.FeatureImage {
 			width: 100%;
 			max-width: 490px;
+			min-width: 490px;
 			height: auto;
+
+			@include media('md', 'max') {
+				order: 2;
+				min-width: 100%;
+			}
 
 			img {
 				width: 100%;
