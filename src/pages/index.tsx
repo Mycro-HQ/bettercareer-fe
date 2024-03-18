@@ -5,6 +5,12 @@ import Logo from '../../public/images/Logo.svg';
 import PeopleOnWaitlist from '../../public/images/people_on_waitlist.svg';
 import FirstToGetAccess from '../../public/images/first_to_get_access.svg';
 import classNames from 'classnames';
+import {
+	AccordionWrapper,
+	AccordionContent,
+	AccordionTrigger,
+	AccordionItem,
+} from '@labs/components/accordion';
 
 function PeoplePill({
 	text,
@@ -29,44 +35,36 @@ function PeoplePill({
 	);
 }
 
-function AccordionItem({
-	title,
-	description,
-	open = false,
-}: {
-	title: string;
-	description: string;
-	open?: boolean;
-}) {
-	function Wrapper({ children }: { children: React.ReactNode }) {
-		return open ? (
-			<details open className={styles.AccordionItem}>
-				{children}
-			</details>
-		) : (
-			<details className={styles.AccordionItem}>{children}</details>
-		);
-	}
+// function AccordionItem({
+// 	title,
+// 	description,
+// 	open = false,
+// }: {
+// 	title: string;
+// 	description: string;
+// 	open?: boolean;
+// }) {
+// 	function Wrapper({ children }: { children: React.ReactNode }) {
+// 		return open ? (
+// 			<details open className={styles.AccordionItem}>
+// 				{children}
+// 			</details>
+// 		) : (
+// 			<details className={styles.AccordionItem}>{children}</details>
+// 		);
+// 	}
 
-	return (
-		<Wrapper>
-			<summary>
-				<Heading.h4 color="#273643" weight={500} className="mb-[14px]">
-					{title}
-				</Heading.h4>
-			</summary>
-			<Text
-				as="p"
-				color="#6F7982"
-				weight={500}
-				lineHeight="25px"
-				className="mb-1"
-			>
-				{description}
-			</Text>
-		</Wrapper>
-	);
-}
+// 	return (
+// 		<Wrapper>
+// 			<summary>
+// 				<Heading.h4 color="#273643" weight={500} className="mb-[14px]">
+// 					{title}
+// 				</Heading.h4>
+// 			</summary>
+
+// 		</Wrapper>
+// 	);
+// }
 
 export const Home = () => {
 	return (
@@ -147,23 +145,100 @@ export const Home = () => {
 				</Text>
 				<Flex className="w-full pb-52">
 					<Flex.Column gap={60} className="w-1/2">
-						<AccordionItem
-							title="Resume Optimization"
-							description="Transform your CV into a powerful tool that stands out. Our advanced algorithms and professional insights ensure your resume not only shines but also highlights your unique strengths and skills, making you irresistible to employers."
-							open
-						/>
-						<AccordionItem
-							title="AI-Powered Job Matching"
-							description="Transform your CV into a powerful tool that stands out. Our advanced algorithms and professional insights ensure your resume not only shines but also highlights your unique strengths and skills, making you irresistible to employers."
-						/>
-						<AccordionItem
-							title="Real-Time Job Alerts"
-							description="Transform your CV into a powerful tool that stands out. Our advanced algorithms and professional insights ensure your resume not only shines but also highlights your unique strengths and skills, making you irresistible to employers."
-						/>
-						<AccordionItem
-							title="Community Access"
-							description="Transform your CV into a powerful tool that stands out. Our advanced algorithms and professional insights ensure your resume not only shines but also highlights your unique strengths and skills, making you irresistible to employers."
-						/>
+						<AccordionWrapper
+							className="w-full"
+							type="single"
+							defaultValue="item-1"
+							collapsible
+						>
+							<AccordionItem value="item-1">
+								<AccordionTrigger className="mb-[14px]">
+									<Heading.h4 color="#273643" weight={500}>
+										Resume Optimization
+									</Heading.h4>
+								</AccordionTrigger>
+								<AccordionContent>
+									<Text
+										as="p"
+										color="#6F7982"
+										weight={500}
+										lineHeight="25px"
+										className="mb-1"
+									>
+										Transform your CV into a powerful tool that stands out. Our
+										advanced algorithms and professional insights ensure your
+										resume not only shines but also highlights your unique
+										strengths and skills, making you irresistible to employers.
+									</Text>
+								</AccordionContent>
+							</AccordionItem>
+
+							<AccordionItem value="item-2">
+								<AccordionTrigger className="mb-[14px]">
+									<Heading.h4 color="#273643" weight={500}>
+										AI-Powered Job Matching
+									</Heading.h4>
+								</AccordionTrigger>
+								<AccordionContent>
+									<Text
+										as="p"
+										color="#6F7982"
+										weight={500}
+										lineHeight="25px"
+										className="mb-1"
+									>
+										Transform your CV into a powerful tool that stands out. Our
+										advanced algorithms and professional insights ensure your
+										resume not only shines but also highlights your unique
+										strengths and skills, making you irresistible to employers.
+									</Text>
+								</AccordionContent>
+							</AccordionItem>
+
+							<AccordionItem value="item-3">
+								<AccordionTrigger className="mb-[14px]">
+									<Heading.h4 color="#273643" weight={500}>
+										Real-Time Job Alerts
+									</Heading.h4>
+								</AccordionTrigger>
+								<AccordionContent>
+									<Text
+										as="p"
+										color="#6F7982"
+										weight={500}
+										lineHeight="25px"
+										className="mb-1"
+									>
+										Transform your CV into a powerful tool that stands out. Our
+										advanced algorithms and professional insights ensure your
+										resume not only shines but also highlights your unique
+										strengths and skills, making you irresistible to employers.
+									</Text>
+								</AccordionContent>
+							</AccordionItem>
+
+							<AccordionItem value="item-4">
+								<AccordionTrigger className="mb-[14px]">
+									<Heading.h4 color="#273643" weight={500}>
+										Community Access
+									</Heading.h4>
+								</AccordionTrigger>
+								<AccordionContent>
+									<Text
+										as="p"
+										color="#6F7982"
+										weight={500}
+										lineHeight="25px"
+										className="mb-1"
+									>
+										Transform your CV into a powerful tool that stands out. Our
+										advanced algorithms and professional insights ensure your
+										resume not only shines but also highlights your unique
+										strengths and skills, making you irresistible to employers.
+									</Text>
+								</AccordionContent>
+							</AccordionItem>
+						</AccordionWrapper>
 					</Flex.Column>
 					<div className="w-1/2 text-right">
 						<Text
@@ -173,6 +248,7 @@ export const Home = () => {
 						>
 							01
 						</Text>
+						<div className={styles.HalfFlexBackground}></div>
 					</div>
 				</Flex>
 				<Heading.h4 weight={500} className="mb-6">
