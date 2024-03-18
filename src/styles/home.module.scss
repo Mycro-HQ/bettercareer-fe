@@ -29,3 +29,11 @@
 		cursor: pointer;
 	}
 }
+
+.resumeContainer{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+	margin-top: 20px;
+	z-index: 1px;
+}
