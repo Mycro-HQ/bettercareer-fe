@@ -118,15 +118,17 @@ export default function DragAndDrop({
 	}
 
 	function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
-		const files = Array.from(e.target.files!);
-		addKeysToFiles(files);
+		const files_ = Array.from(e.target.files!);
+		addKeysToFiles(files_);
 		setFiles((prev) =>
 			prev.map((file) => ({
 				...file,
 				status: validateFile(file.blob),
 			}))
 		);
-		onDrop(files);
+		// Without the keys and the status
+		const pureFilesArray = files.map((file) => file.blob);
+		onDrop(pureFilesArray);
 	}
 
 	const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
@@ -161,7 +163,9 @@ export default function DragAndDrop({
 				status: validateFile(file.blob),
 			}))
 		);
-		onDrop(droppedFiles);
+		// Without the keys and the status
+		const pureFilesArray = files.map((file) => file.blob);
+		onDrop(pureFilesArray);
 	};
 
 	return (
