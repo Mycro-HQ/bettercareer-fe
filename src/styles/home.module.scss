@@ -17,23 +17,10 @@
 	backdrop-filter: blur(12px);
 }
 
-.HalfFlexBackground {
-	background-image: url('/images/resume.png');
-	background-repeat: no-repeat;
-}
-
-.AccordionItem {
-	width: 100%;
-	> summary {
-		list-style: none;
-		cursor: pointer;
-	}
-}
-
-.resumeContainer{
+.resumeContainer {
 	position: absolute;
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 	margin-top: 20px;
 	z-index: 1px;
 }
