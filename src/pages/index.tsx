@@ -36,38 +36,43 @@ function PeoplePill({
 	);
 }
 
-// function AccordionItem({
-// 	title,
-// 	description,
-// 	open = false,
-// }: {
-// 	title: string;
-// 	description: string;
-// 	open?: boolean;
-// }) {
-// 	function Wrapper({ children }: { children: React.ReactNode }) {
-// 		return open ? (
-// 			<details open className={styles.AccordionItem}>
-// 				{children}
-// 			</details>
-// 		) : (
-// 			<details className={styles.AccordionItem}>{children}</details>
-// 		);
-// 	}
-
-// 	return (
-// 		<Wrapper>
-// 			<summary>
-// 				<Heading.h4 color="#273643" weight={500} className="mb-[14px]">
-// 					{title}
-// 				</Heading.h4>
-// 			</summary>
-
-// 		</Wrapper>
-// 	);
-// }
-
 export const Home = () => {
+	const [activeAccordion, setActiveAccordion] = React.useState(1);
+
+	function HomeAccordionItem({
+		title,
+		content,
+		accordionKey,
+	}: {
+		title: string;
+		content: string;
+		accordionKey: number;
+	}) {
+		return (
+			<AccordionItem
+				value={`item-${accordionKey}`}
+				onClick={() => setActiveAccordion(accordionKey)}
+			>
+				<AccordionTrigger className="mb-[14px]">
+					<Heading.h4 color="#273643" className="text-left" weight={500}>
+						{title}
+					</Heading.h4>
+				</AccordionTrigger>
+				<AccordionContent>
+					<Text
+						as="p"
+						color="#6F7982"
+						weight={500}
+						lineHeight="25px"
+						className="mb-1"
+					>
+						{content}
+					</Text>
+				</AccordionContent>
+			</AccordionItem>
+		);
+	}
+
 	return (
 		<Flex.Column alignItems="center" className={styles.HomeContainer}>
 			<Flex
@@ -104,7 +109,7 @@ export const Home = () => {
 					className="!text-[#6F7982]"
 				>
 					a job magnet with AI
-				</Text>{' '}
+				</Text>
 			</Heading.h1>
 			<Text
 				color="var(--text-gray)"
@@ -138,108 +143,53 @@ export const Home = () => {
 					align="center"
 					weight={500}
 					lineHeight="22px"
-					className="mb-20 xl:mb-32"
+					className="mb-20 xl:mb-32 text-center"
 				>
 					We polish your dating profile (your CV!) and set you up with your
 					dream job.
 				</Text>
-				<Flex className="w-full pb-52">
-					<Flex.Column gap={60} className="w-1/2">
+				<Flex className="w-full gap-5 xl:gap-7 pb-40 xl:pb-52">
+					<div className="w-1/2">
 						<AccordionWrapper
-							className="w-full"
+							className="w-full flex flex-col gap-6"
 							type="single"
 							defaultValue="item-1"
 							collapsible
 						>
-							<AccordionItem value="item-1">
-								<AccordionTrigger className="mb-[14px]">
-									<Heading.h4 color="#273643" weight={500}>
-										Resume Optimization
-									</Heading.h4>
-								</AccordionTrigger>
-								<AccordionContent>
-									<Text
-										as="p"
-										color="#6F7982"
-										weight={500}
-										lineHeight="25px"
-										className="mb-1"
-									>
-										Transform your CV into a powerful tool that stands out. Our
-										advanced algorithms and professional insights ensure your
-										resume not only shines but also highlights your unique
-										strengths and skills, making you irresistible to employers.
-									</Text>
-								</AccordionContent>
-							</AccordionItem>
-
-							<AccordionItem value="item-2">
-								<AccordionTrigger className="mb-[14px]">
-									<Heading.h4 color="#273643" weight={500}>
-										AI-Powered Job Matching
-									</Heading.h4>
-								</AccordionTrigger>
-								<AccordionContent>
-									<Text
-										as="p"
-										color="#6F7982"
-										weight={500}
-										lineHeight="25px"
-										className="mb-1"
-									>
-										Transform your CV into a powerful tool that stands out. Our
-										advanced algorithms and professional insights ensure your
-										resume not only shines but also highlights your unique
-										strengths and skills, making you irresistible to employers.
-									</Text>
-								</AccordionContent>
-							</AccordionItem>
-
-							<AccordionItem value="item-3">
-								<AccordionTrigger className="mb-[14px]">
-									<Heading.h4 color="#273643" weight={500}>
-										Real-Time Job Alerts
-									</Heading.h4>
-								</AccordionTrigger>
-								<AccordionContent>
-									<Text
-										as="p"
-										color="#6F7982"
-										weight={500}
-										lineHeight="25px"
-										className="mb-1"
-									>
-										Transform your CV into a powerful tool that stands out. Our
-										advanced algorithms and professional insights ensure your
-										resume not only shines but also highlights your unique
-										strengths and skills, making you irresistible to employers.
-									</Text>
-								</AccordionContent>
-							</AccordionItem>
-
-							<AccordionItem value="item-4">
-								<AccordionTrigger className="mb-[14px]">
-									<Heading.h4 color="#273643" weight={500}>
-										Community Access
-									</Heading.h4>
-								</AccordionTrigger>
-								<AccordionContent>
-									<Text
-										as="p"
-										color="#6F7982"
-										weight={500}
-										lineHeight="25px"
-										className="mb-1"
-									>
-										Transform your CV into a powerful tool that stands out. Our
-										advanced algorithms and professional insights ensure your
-										resume not only shines but also highlights your unique
-										strengths and skills, making you irresistible to employers.
-									</Text>
-								</AccordionContent>
-							</AccordionItem>
+							<HomeAccordionItem
+								accordionKey={1}
+								title="Resume Optimization"
+								content={`Transform your CV into a powerful tool that stands out. Our
+								advanced algorithms and professional insights ensure your
+								resume not only shines but also highlights your unique
+								strengths and skills, making you irresistible to employers.`}
+							/>
+							<HomeAccordionItem
+								accordionKey={2}
+								title="AI-Powered Job Matching"
+								content={`Transform your CV into a powerful tool that stands out. Our
+								advanced algorithms and professional insights ensure your
+								resume not only shines but also highlights your unique
+								strengths and skills, making you irresistible to employers.`}
+							/>
+							<HomeAccordionItem
+								accordionKey={3}
+								title="Real-Time Job Alerts"
+								content={`Transform your CV into a powerful tool that stands out. Our
+								advanced algorithms and professional insights ensure your
+								resume not only shines but also highlights your unique
+								strengths and skills, making you irresistible to employers.`}
+							/>
+							<HomeAccordionItem
+								accordionKey={4}
+								title="Community Access"
+								content={`Transform your CV into a powerful tool that stands out. Our
+								advanced algorithms and professional insights ensure your
+								resume not only shines but also highlights your unique
+								strengths and skills, making you irresistible to employers.`}
+							/>
 						</AccordionWrapper>
-					</Flex.Column>
+					</div>
 					<div className="relative w-1/2 text-right">
 						<div className={styles.resumeContainer}>
 							<Image
@@ -249,15 +199,15 @@ export const Home = () => {
 								priority
 								width={0}
 								height={0}
-								style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+								className="w-full h-full object-contain"
 							/>
 						</div>
 						<Text
-							fontSize="100px"
+							fontSize="150px"
 							weight={500}
-							className="font-[Recoleta] text-[#F3F4F4]"
+							className="font-[Recoleta] lg:-mt-20 z-[2px] text-[#F3F4F4]"
 						>
-							01
+							{activeAccordion.toString().padStart(2, '0')}
 						</Text>
 						<div className="absolute bottom-0">
 							<Image
