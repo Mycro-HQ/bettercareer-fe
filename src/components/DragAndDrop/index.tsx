@@ -127,7 +127,7 @@ export default function DragAndDrop({
 			}))
 		);
 		// Without the keys and the status
-		const pureFilesArray = files.map((file) => file.blob);
+		const pureFilesArray = filesWithoutError.map((file) => file.blob);
 		onDrop(pureFilesArray);
 	}
 
@@ -164,7 +164,7 @@ export default function DragAndDrop({
 			}))
 		);
 		// Without the keys and the status
-		const pureFilesArray = files.map((file) => file.blob);
+		const pureFilesArray = filesWithoutError.map((file) => file.blob);
 		onDrop(pureFilesArray);
 	};
 
