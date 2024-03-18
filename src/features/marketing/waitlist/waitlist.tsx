@@ -333,6 +333,29 @@ const WaitListModal = ({
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+	type WaitlistState = {
+		name: string;
+		email: string;
+		files: File[];
+	};
+
+	const [waitlistState, setWaitlistState] = React.useState<WaitlistState>({
+		name: '',
+		email: '',
+		files: [],
+	});
+
+	function updateStateValue(
+		key: 'name' | 'email' | 'files',
+		value: string | File[]
+	) {
+		setWaitlistState((prev) => ({ ...prev, [key]: value }));
+	}
+
+	function handleSubmit() {
+		// The data: waitlistState
+	}
+
 	return (
 		<Modal in={isOpen} onClose={() => setIsOpen(false)}>
 			<Flex.Column gap={2} alignItems="center">
@@ -346,8 +369,18 @@ const WaitListModal = ({
 			<Container>
 				<form className={styles.WaitlistForm}>
 					<Flex.Column gap={8}>
-						<input type="text" placeholder="Full Name" />
-						<input type="email" placeholder="Email" />
+						<input
+							type="text"
+							placeholder="Full Name"
+							value={waitlistState.name}
+							onChange={(e) => updateStateValue('name', e.target.value)}
+						/>
+						<input
+							type="email"
+							placeholder="Email"
+							value={waitlistState.email}
+							onChange={(e) => updateStateValue('email', e.target.value)}
+						/>
 					</Flex.Column>
 					<label className="mt-[22px] block -mb-[14px]">
 						<Text color="#57636D" weight={700}>
@@ -357,8 +390,8 @@ const WaitListModal = ({
 							Let's give you a free resume analysis before you launch
 						</Text>
 					</label>
-					<DragAndDrop onDrop={() => null} />
-					<CallToAction.button className="ml-auto">
+					<DragAndDrop onDrop={(files) => updateStateValue('files', files)} />
+					<CallToAction.button className="ml-auto" onClick={handleSubmit}>
 						Join Waitlist
 					</CallToAction.button>
 				</form>
