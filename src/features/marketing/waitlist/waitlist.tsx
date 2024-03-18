@@ -357,7 +357,7 @@ const WaitListModal = ({
 							Let's give you a free resume analysis before you launch
 						</Text>
 					</label>
-					<DragAndDrop onDrop={null} />
+					<DragAndDrop onDrop={() => null} />
 					<CallToAction.button className="ml-auto">
 						Join Waitlist
 					</CallToAction.button>
