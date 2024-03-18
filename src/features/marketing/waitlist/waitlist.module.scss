@@ -1,0 +1,201 @@
+@use '@/styles/base/utils' as *;
+.Waitlist {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 48px 0;
+	position: relative;
+	background: url('/images/waitlist/image_grain.png');
+	background-size: cover;
+	background-position: center;
+	min-height: var(--bc-labs-vh);
+
+	.WaitlistHeaderImage {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		width: 100%;
+		height: 100%;
+		transform: translateX(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: -1;
+		animation: scaleIn 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+		transform-origin: center;
+		overflow: hidden;
+
+		img {
+			height: 850px;
+			width: 100%;
+			margin-top: -14%;
+			animation: scaleInF 5s ease forwards alternate infinite;
+
+			@keyframes scaleInF {
+				0% {
+					scale: 1.3;
+				}
+				100% {
+					scale: 1;
+				}
+			}
+		}
+
+		@keyframes scaleIn {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		top: -150px;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: url('/images/waitlist/waitlist_header.png') no-repeat center
+			center;
+		background-size: cover;
+		z-index: -1;
+		animation: fade 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+		opacity: 0;
+		animation-fill-mode: both;
+	}
+
+	@keyframes fade {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	.WaitlistHeaderContent {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+
+		@include media('md', 'max') {
+			align-items: flex-start;
+			justify-content: flex-start;
+
+			h1 {
+				text-align: left;
+			}
+		}
+	}
+
+	.WaitlistHeaderNav {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		padding: 14px;
+		margin: 0 auto 64px;
+		animation: fade 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+		opacity: 0;
+		animation-fill-mode: both;
+
+		svg {
+			width: 180px;
+			height: auto;
+		}
+
+		@include media('md', 'max') {
+			margin: 0 auto 32px;
+			svg {
+				width: 130px;
+				height: auto;
+			}
+
+			a {
+				display: none;
+			}
+		}
+	}
+
+	.WaitlistTagline {
+		width: fit-content;
+		background: rgba(255, 255, 255, 0.38);
+		border: 1px solid rgba(0, 0, 0, 0.06);
+		backdrop-filter: blur(12px);
+		border-radius: 80px;
+	}
+
+	.WaitlistSection {
+		max-width: rem(1200px);
+		background: #ffffff;
+		box-shadow: 0px 4px 94px rgba(0, 0, 0, 0.04);
+		border-radius: 32px;
+		min-height: 700px;
+		height: 100%;
+
+		padding: rem(72px);
+		margin: rem(112px) auto;
+
+		@include media('md', 'max') {
+			padding: rem(48px) rem(8px);
+			margin: rem(72px) 24px;
+			width: 92%;
+		}
+
+		.WaitlistSectionContent {
+			@include media('md', 'max') {
+				align-items: flex-start;
+				justify-content: flex-start;
+			}
+		}
+	}
+
+	.FeatureGroup {
+		display: flex;
+		align-items: center;
+		margin-bottom: rem(64px);
+		margin-top: rem(112px);
+		justify-content: space-between;
+		gap: 24px;
+		flex-wrap: wrap;
+
+		@include media('md', 'max') {
+			flex-direction: column;
+			margin-top: rem(56px);
+			align-items: center;
+		}
+
+		.FeatureItem {
+			@include media('md', 'max') {
+				order: 1;
+			}
+		}
+
+		.FeatureImage {
+			width: 100%;
+			max-width: 490px;
+			height: auto;
+
+			img {
+				width: 100%;
+				height: auto;
+			}
+		}
+
+		.Feature {
+			@include media('md', 'max') {
+				order: 2;
+			}
+
+			text-align: left;
+			width: 100%;
+			max-width: 500px;
+			height: auto;
+			flex: 1;
+		}
+	}
+}

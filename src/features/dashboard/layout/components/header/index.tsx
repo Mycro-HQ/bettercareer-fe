@@ -49,6 +49,7 @@ export const DashboardHeader = () => {
 		const [first, last] = profile?.name.split(' ');
 		return `${first[0]}${last[0]}`;
 	};
+
 	React.useEffect(() => {
 		const handleScroll = () => {
 			if (window.scrollY > 0) {
