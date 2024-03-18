@@ -32,3 +32,20 @@
 		}
 	}
 }
+
+.FileListItem {
+	border-radius: 10px;
+	border: 1px solid #cfd2d5;
+	background: #fff;
+	width: 100%;
+	padding: rem(18px);
+
+	button:hover > svg > path {
+		fill: #d92d20;
+	}
+}
+
+.FileListDocumentIcon {
+	margin-right: rem(14px);
+	min-width: rem(20px);
+}
