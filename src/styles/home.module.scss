@@ -17,6 +17,11 @@
 	backdrop-filter: blur(12px);
 }
 
+.HalfFlexBackground {
+	background-image: url('/images/resume.png');
+	background-repeat: no-repeat;
+}
+
 .AccordionItem {
 	width: 100%;
 	> summary {
