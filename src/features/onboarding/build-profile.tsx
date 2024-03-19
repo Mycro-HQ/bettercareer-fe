@@ -17,6 +17,9 @@ import { FileWithKey } from '@labs/utils/types/utility';
 
 import DocumentImage from '@labs/icons/document.svg';
 import DeleteImage from '@labs/icons/delete.svg';
+import { useUserStore } from '@/store/z-store/user';
+import { useUploadFileMutation } from '@/queries/upload';
+import { useAuthSuccess } from './components/use-auth';
 
 export const BuildProfile = () => {
 	const [isLinkedin, setIsLinkedin] = useState(false);
@@ -54,6 +57,9 @@ const LinkedinFlow = () => {
 
 const UploadResumeFlow = () => {
 	const [files, setFiles] = useState<FileWithKey[]>([]);
+	const { profile } = useUserStore();
+
+	const { mutate: uploadFile, isPending } = useUploadFileMutation();
 
 	function handleDeleteClick(indexToRemove: number) {
 		setFiles((prev) => {
@@ -66,8 +72,10 @@ const UploadResumeFlow = () => {
 	function handleFileSubmit() {
 		// check if the files const contains files
 		if (files.length !== 0) {
-			// move those files to the zustand store
-			// or extract the data immediately?
+			const formData = new FormData();
+			formData.append('resume', files[0].blob);
+
+			uploadFile(formData);
 		}
 	}
 
@@ -160,9 +168,12 @@ const UploadResumeFlow = () => {
 								);
 							})}
 						<Flex gap={8} className="mt-[24px]">
-							<CallToAction.a href="/dashboard" onClick={handleFileSubmit}>
+							<CallToAction.button
+								onClick={handleFileSubmit}
+								isLoading={isPending}
+							>
 								Continue
-							</CallToAction.a>
+							</CallToAction.button>
 							<CallToAction.a href="/dashboard" outline>
 								Skip
 							</CallToAction.a>
