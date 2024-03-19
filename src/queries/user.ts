@@ -1,8 +1,3 @@
-// POST /oauth/:provider
-
-// :provider is google or linkedin
-// Body is { token: string }
-// https://bettercareer-staging-api.fly.dev/
 import { createSmartApi } from '@lib/usable-query';
 import Cookies from 'js-cookie';
 import { UserData } from './types/user';
