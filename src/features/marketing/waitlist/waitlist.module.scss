@@ -3,7 +3,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 48px 0;
+	padding: 40px 0;
 	position: relative;
 	background: url('/images/waitlist/image_grain.png');
 	background-size: cover;
@@ -143,7 +143,7 @@
 		height: 100%;
 
 		padding: rem(72px);
-		margin: rem(112px) auto;
+		margin: rem(120px) auto rem(64px) auto;
 
 		@include media('md', 'max') {
 			padding: rem(48px) rem(8px);
@@ -223,11 +223,14 @@
 
 .WaitlistForm {
 	margin-top: 32px;
+
 	input {
-		padding: 18px 22px;
-		width: 100%;
-		display: block;
-		border: 1px solid #e7e9eb;
-		border-radius: 12px;
+		&:not([type='file']) {
+			padding: 18px 22px;
+			width: 100%;
+			display: block;
+			border: 1px solid #e7e9eb;
+			border-radius: 12px;
+		}
 	}
 }

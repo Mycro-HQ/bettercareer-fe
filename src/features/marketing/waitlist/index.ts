@@ -5,24 +5,23 @@ export const WaitlistInfo = [
 		title: 'Free ATS Resume Builder',
 		image: '/images/waitlist/01.png',
 		description:
-			"Never get lost in the applicant pool again. Our free ATS Resume Builder helps your resume stand out to hiring managers by ensuring it's formatted and optimized for Applicant Tracking Systems (ATS) used by most companies today. Increase your chances of landing that interview and kickstart your dream job search.",
+			'Effortlessly craft ATS-beating Resumes with our AI powered resume builder. Our intuitive builder guides you in crafting a resume packed with the right keywords and formatting to bypass Applicant Tracking Systems (ATS) and reach human hiring managers.',
 	},
 	{
 		title: 'AI-Powered Job Matching',
 		image: '/images/waitlist/02.png',
-		description:
-			'Speed up your job search with AI: Let our advanced algorithm go beyond resumes and keywords to match you to opportunities you might have missed.',
+		description: `Your Job hunt shouldn't be a guessing game.  Imagine a powerful tool that analyzes your resume and connects you with the perfect job openings, eliminating the hours spent sorting through irrelevant postings. That's the magic of our AI-Powered Job Match. `,
 	},
 	{
 		image: '/images/waitlist/03.png',
 		title: 'Resume Optimization',
 		description:
-			"Get a strategic resume, optimized with the right keywords that lands you an interview. We'll show you how to tailor your resume for maximum impact, highlighting your most relevant skills and achievements with powerful language.",
+			"The traditional job search can feel like throwing your resume into a black hole. But what if there was a smarter way to get noticed by the right recruiters? Our advanced algorithm goes beyond just keywords and formatting. It analyzes your skills and experience to uncover hidden opportunities that perfectly match your profile, even if you haven't considered them before.",
 	},
 	{
 		image: '/images/waitlist/04.png',
 		title: 'Real-Time Job Alerts',
 		description:
-			'Cut out the job search grind! Get real-time alerts for your ideal positions and apply before anyone else. This fast-track approach puts you at the forefront of the hiring process, maximizing your chances of landing your dream role.',
+			'Be first in line! Get real-time alerts for your ideal positions and apply before anyone else. This fast-track approach puts you at the forefront of the hiring process, maximizing your chances of landing your dream role.',
 	},
 ];

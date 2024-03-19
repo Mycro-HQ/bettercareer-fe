@@ -1,5 +1,12 @@
-import React from 'react';
-import { CallToAction, Container, Flex, Heading, Text } from '@labs/components';
+import React, { useCallback } from 'react';
+import {
+	CallToAction,
+	Container,
+	Flex,
+	Heading,
+	Text,
+	useToast,
+} from '@labs/components';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import Logo from '@labs/icons/logo.svg';
@@ -10,7 +17,9 @@ import { WaitlistInfo } from '.';
 import { Modal } from '@labs/components/modal';
 
 import styles from './waitlist.module.scss';
-import DragAndDrop from '@/components/DragAndDrop';
+import DragAndDrop from '@/components/drag-and-drop';
+import { useSendWaitlistMutation } from '@/queries/marketing';
+import { formDataAppender } from '@labs/utils';
 
 const boxVariant = {
 	hidden: {
@@ -86,7 +95,7 @@ export const Waitlist = () => {
 								>
 									<img src="/images/waitlist/header_tagline.png" width={60} />
 									<Text color="#57636D" weight={500}>
-										Join over 1k people on our waitlist
+										Join our growing circle of early adopters.
 									</Text>
 								</Flex>
 							</motion.button>
@@ -100,13 +109,13 @@ export const Waitlist = () => {
 									align="center"
 									className="mt-[32px] mb-[40px]"
 									style={{
-										maxWidth: '725px',
+										maxWidth: '820px',
 										lineHeight: '1.06',
 									}}
 								>
-									Make your resume into{' '}
+									Boost your job search with{' '}
 									<Text.span inheritFont color="#6F7982">
-										a job magnet with AI
+										AI-resumes. Get hired!
 									</Text.span>
 								</Heading.h1>
 							</motion.span>
@@ -124,8 +133,8 @@ export const Waitlist = () => {
 										lineHeight: '1.5',
 									}}
 								>
-									Elevate your resume from Couch Potato to Career Hotshot with
-									the world best AI
+									Level up your job search with our AI assistant. Create
+									ATS-beating resumes & find jobs you'll love.
 								</Heading.h5>
 							</motion.span>
 							<motion.div variants={listVariant} key="3">
@@ -185,7 +194,7 @@ export const Waitlist = () => {
 						</a>
 
 						<Heading.h3 weight={400} className="mt-[14px]" animate="slide">
-							We're like your career matchmakers
+							Find Your Perfect Fit, Land Your Dream Job.
 						</Heading.h3>
 						<Text color="#57636D" animate="fade">
 							We polish your dating profile (your CV!) and set you up with your
@@ -333,6 +342,64 @@ const WaitListModal = ({
 	isOpen: boolean;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+	type WaitlistState = {
+		name: string;
+		email: string;
+		files: File[];
+	};
+	const { createToast } = useToast();
+	const { mutateAsync: joinWaitlist, isPending } = useSendWaitlistMutation();
+	const [waitlistState, setWaitlistState] = React.useState<WaitlistState>({
+		name: '',
+		email: '',
+		files: [],
+	});
+
+	const updateStateValue = useCallback(
+		(key: 'name' | 'email' | 'files', value: string | File[]) => {
+			setWaitlistState((prev) => ({ ...prev, [key]: value }));
+		},
+		[]
+	);
+
+	async function handleSubmit(e) {
+		e.preventDefault();
+		const { name, email, files } = waitlistState;
+
+		if (!name || !email) {
+			return createToast({
+				message: 'Please we need your name and email to join the waitlist',
+				variant: 'error',
+			});
+		}
+
+		try {
+			await joinWaitlist(
+				formDataAppender({
+					name,
+					email,
+					resume: files[0],
+				})
+			);
+
+			createToast({
+				message: 'You have successfully joined the waitlist',
+			});
+
+			setIsOpen(false);
+			setWaitlistState({
+				name: '',
+				email: '',
+				files: [],
+			});
+		} catch (error) {
+			createToast({
+				message: 'An error occurred, please try again',
+				variant: 'error',
+			});
+		}
+	}
+
 	return (
 		<Modal in={isOpen} onClose={() => setIsOpen(false)}>
 			<Flex.Column gap={2} alignItems="center">
@@ -346,19 +413,39 @@ const WaitListModal = ({
 			<Container>
 				<form className={styles.WaitlistForm}>
 					<Flex.Column gap={8}>
-						<input type="text" placeholder="Full Name" />
-						<input type="email" placeholder="Email" />
+						<input
+							type="text"
+							placeholder="Full Name"
+							required
+							value={waitlistState.name}
+							onChange={(e) => updateStateValue('name', e.target.value)}
+						/>
+						<input
+							type="email"
+							placeholder="Email"
+							required
+							value={waitlistState.email}
+							onChange={(e) => updateStateValue('email', e.target.value)}
+						/>
 					</Flex.Column>
-					<label className="mt-[22px] block -mb-[14px]">
-						<Text color="#57636D" weight={700}>
-							Your CV (optional)
-						</Text>
-						<Text color="#6F7982" size="sm">
-							Let's give you a free resume analysis before you launch
+					<label className="mt-[22px] block ">
+						<Text weight={700}>Your CV (optional)</Text>
+						<Text color="#57636D" size="sm">
+							Be among the first to get a free resume analysis before we launch
 						</Text>
 					</label>
-					<DragAndDrop onDrop={() => null} />
-					<CallToAction.button className="ml-auto">
+					<DragAndDrop
+						size="md"
+						className="mt-5 mb-6"
+						onDrop={(files) => {
+							return updateStateValue('files', files);
+						}}
+					/>
+					<CallToAction.button
+						isLoading={isPending}
+						className="ml-auto"
+						onClick={handleSubmit}
+					>
 						Join Waitlist
 					</CallToAction.button>
 				</form>
