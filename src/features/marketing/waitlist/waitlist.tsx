@@ -394,9 +394,9 @@ const WaitListModal = ({
 				email: '',
 				files: [],
 			});
-		} catch (error) {
+		} catch (error: any) {
 			createToast({
-				message: 'An error occurred, please try again',
+				message: error?.message ?? 'An error occurred, please try again',
 				variant: 'error',
 			});
 		}
@@ -406,10 +406,10 @@ const WaitListModal = ({
 		<Modal in={isOpen} onClose={() => setIsOpen(false)}>
 			<Flex.Column gap={2} alignItems="center">
 				<Heading.h4 weight={400} animate="slide" align="center">
-					Join waitlist for early access
+					Join waitlist and get early access
 				</Heading.h4>
 				<Text align="center" color="#57636D" animate="fade">
-					Just a little more details and we are good
+					Just a few clicks away from joining the future.
 				</Text>
 			</Flex.Column>
 			<Container>
@@ -419,6 +419,7 @@ const WaitListModal = ({
 							type="text"
 							placeholder="Full Name"
 							required
+							name="name"
 							value={waitlistState.name}
 							onChange={(e) => updateStateValue('name', e.target.value)}
 						/>
@@ -426,6 +427,8 @@ const WaitListModal = ({
 							type="email"
 							placeholder="Email"
 							required
+							pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+							name="email"
 							value={waitlistState.email}
 							onChange={(e) => updateStateValue('email', e.target.value)}
 						/>
