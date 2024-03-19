@@ -175,6 +175,7 @@
 		}
 
 		.FeatureItem {
+			flex: 1;
 			@include media('md', 'max') {
 				order: 1;
 			}
@@ -183,8 +184,9 @@
 		.FeatureImage {
 			width: 100%;
 			max-width: 490px;
-			min-width: 490px;
+			// min-width: 490px;
 			height: auto;
+			flex: 1;
 
 			@include media('md', 'max') {
 				order: 2;
@@ -204,9 +206,8 @@
 
 			text-align: left;
 			width: 100%;
-			max-width: 500px;
+			// max-width: 500px;
 			height: auto;
-			flex: 1;
 		}
 	}
 

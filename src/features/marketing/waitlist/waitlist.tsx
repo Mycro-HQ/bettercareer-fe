@@ -178,7 +178,7 @@ export const Waitlist = () => {
 						alignItems="center"
 						gap={8}
 					>
-						<a href="#">
+						<button onClick={() => setIsOpen(true)}>
 							<Flex
 								className={styles.WaitlistTagline}
 								justifyContent="space-between"
@@ -191,7 +191,7 @@ export const Waitlist = () => {
 									Be the first to get access
 								</Text>
 							</Flex>
-						</a>
+						</button>
 
 						<Heading.h3 weight={400} className="mt-[14px]" animate="slide">
 							Find Your Perfect Fit, Land Your Dream Job.
