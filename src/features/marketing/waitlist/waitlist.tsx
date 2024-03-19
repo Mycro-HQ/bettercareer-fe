@@ -416,10 +416,6 @@ const WaitListModal = ({
 				})
 			);
 
-			createToast({
-				message: 'You have successfully joined the waitlist',
-			});
-
 			setIsSuccess(true);
 
 			setTimeout(() => {
