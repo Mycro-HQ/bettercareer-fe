@@ -362,7 +362,9 @@ const WaitListModal = ({
 		[]
 	);
 
-	async function handleSubmit(e) {
+	async function handleSubmit(
+		e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+	) {
 		e.preventDefault();
 		const { name, email, files } = waitlistState;
 

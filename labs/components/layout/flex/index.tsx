@@ -131,6 +131,21 @@ export const buildFlex = (type: '' | 'row' | 'column' = '') => {
 				'greaterThan'
 			);
 
+			const excludeBuildProperties = (props: IFlex) => {
+				const {
+					justifyContent,
+					alignItems,
+					alignSelf,
+					alignContent,
+					flexWrap,
+					direction,
+					grow,
+					shrink,
+					...rest
+				} = props;
+				return rest;
+			};
+
 			return (
 				<div
 					ref={ref}
@@ -139,7 +154,7 @@ export const buildFlex = (type: '' | 'row' | 'column' = '') => {
 						...css,
 						...(matchQuery && isMediaQuery),
 					}}
-					{...rest}
+					{...excludeBuildProperties(rest)}
 				>
 					{children}
 				</div>
