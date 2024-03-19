@@ -3,21 +3,12 @@ module.exports = {
 		browser: true,
 		es2021: true,
 	},
-	plugins: ['@typescript-eslint', 'react', 'prettier'],
-	extends: [
-		'next',
-		'eslint:recommended',
-		'plugin:@typescript-eslint/recommended',
-		'plugin:react/recommended',
-		'plugin:prettier/recommended',
-	],
-	parser: '@typescript-eslint/parser',
+	plugins: ['react'],
+	extends: ['next', 'plugin:react/recommended', 'plugin:prettier/recommended'],
 	parserOptions: {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
-	sourceType: 'module',
-	project: './tsconfig.json',
 	rules: {
 		'prettier/prettier': 'error',
 	},
