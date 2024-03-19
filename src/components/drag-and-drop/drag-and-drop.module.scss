@@ -3,8 +3,13 @@
 .DragAndDrop {
 	border-radius: 16px;
 	border: 2px dashed #b8dbfb;
-	padding-top: rem(75px);
-	padding-bottom: rem(75px);
+	padding-top: rem(40px);
+	padding-bottom: rem(40px);
+
+	&.lg {
+		padding-top: rem(75px);
+		padding-bottom: rem(75px);
+	}
 
 	& > div {
 		place-content: center;
@@ -31,4 +36,21 @@
 			margin-bottom: rem(13px);
 		}
 	}
+}
+
+.FileListItem {
+	border-radius: 10px;
+	border: 1px solid #cfd2d5;
+	background: #fff;
+	width: 100%;
+	padding: rem(18px);
+
+	button:hover > svg > path {
+		fill: #d92d20;
+	}
+}
+
+.FileListDocumentIcon {
+	margin-right: rem(14px);
+	min-width: rem(20px);
 }
