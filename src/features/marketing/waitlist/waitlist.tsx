@@ -351,7 +351,7 @@ export const Waitlist = () => {
 							Linkedin
 						</a>
 						<a
-							href="https://www.instagram.com/withbettercareer/"
+							href="https://www.instagram.com/bettercareer.me?igsh=eTY2c3ZtYXdtYWFq"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="underline"
