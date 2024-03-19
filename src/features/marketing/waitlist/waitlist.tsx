@@ -143,7 +143,7 @@ export const Waitlist = () => {
 									}}
 								>
 									Level up your job search with our AI assistant. Create
-									ATS-beating resumes & find jobs you'll love.
+									ATS-beating resumes & find jobs you love.
 								</Heading.h5>
 							</motion.span>
 							<motion.div variants={listVariant} key="3">
@@ -216,8 +216,7 @@ export const Waitlist = () => {
 							Find Your Perfect Fit, Land Your Dream Job.
 						</Heading.h3>
 						<Text color="#57636D" animate="fade">
-							We polish your dating profile (your CV!) and set you up with your
-							dream job.
+							We refine your resume and and set you up with your dream job.
 						</Text>
 					</Flex.Column>
 
