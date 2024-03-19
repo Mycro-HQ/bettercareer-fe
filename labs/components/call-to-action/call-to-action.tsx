@@ -5,10 +5,9 @@ import classNames from 'classnames';
 import { forwardRefWrapper } from '@labs/utils';
 
 import type { NativeElementProps, Prettify } from '@labs/utils/types/utility';
+import { Spinner } from '../spinner';
 
 import styles from './call-to-action.module.scss';
-import { Spinner } from '../spinner';
-import { Flex } from '../layout';
 
 type CTASize = 'sm' | 'md' | 'lg' | 'block';
 type CTATheme = 'primary' | 'secondary' | 'clear' | 'error';

@@ -20,6 +20,7 @@ import styles from './waitlist.module.scss';
 import DragAndDrop from '@/components/drag-and-drop';
 import { useSendWaitlistMutation } from '@/queries/marketing';
 import { formDataAppender } from '@labs/utils';
+import analytics from '@lib/analytics';
 
 const boxVariant = {
 	hidden: {
@@ -66,7 +67,12 @@ export const Waitlist = () => {
 					<div className={styles.WaitlistHeaderNavLogo}>
 						<Logo />
 					</div>
-					<CallToAction.button onClick={() => setIsOpen(true)}>
+					<CallToAction.button
+						onClick={() => {
+							analytics.track('waitlist_join_clicked');
+							return setIsOpen(true);
+						}}
+					>
 						Join Waitlist
 					</CallToAction.button>
 				</nav>
@@ -82,7 +88,10 @@ export const Waitlist = () => {
 							initial="hidden"
 						>
 							<motion.button
-								onClick={() => setIsOpen(true)}
+								onClick={() => {
+									analytics.track('waitlist_join_clicked');
+									return setIsOpen(true);
+								}}
 								variants={listVariant}
 								key="6"
 							>
@@ -139,7 +148,12 @@ export const Waitlist = () => {
 							</motion.span>
 							<motion.div variants={listVariant} key="3">
 								<Flex gap={12}>
-									<CallToAction.button onClick={() => setIsOpen(true)}>
+									<CallToAction.button
+										onClick={() => {
+											analytics.track('waitlist_join_clicked');
+											return setIsOpen(true);
+										}}
+									>
 										Join Waitlist
 									</CallToAction.button>
 									<CallToAction.a href="#section" outline>
@@ -178,7 +192,12 @@ export const Waitlist = () => {
 						alignItems="center"
 						gap={8}
 					>
-						<button onClick={() => setIsOpen(true)}>
+						<button
+							onClick={() => {
+								analytics.track('waitlist_join_clicked');
+								return setIsOpen(true);
+							}}
+						>
 							<Flex
 								className={styles.WaitlistTagline}
 								justifyContent="space-between"
@@ -277,7 +296,12 @@ export const Waitlist = () => {
 						<Heading.h4 weight={400} className="mt-[14px]" animate="slide">
 							Already Impressed ?
 						</Heading.h4>
-						<CallToAction.button onClick={() => setIsOpen(true)}>
+						<CallToAction.button
+							onClick={() => {
+								analytics.track('waitlist_join_clicked');
+								return setIsOpen(true);
+							}}
+						>
 							Join Waitlist
 						</CallToAction.button>
 					</Flex.Column>
@@ -320,12 +344,20 @@ export const Waitlist = () => {
 							Twitter
 						</a>
 						<a
-							href="https://www.linkedin.com/showcase/102231354/admin/feed/posts/"
+							href="https://www.linkedin.com/showcase/better-career-me/about/"
 							target="_blank"
 							rel="noopener noreferrer"
 							className="underline"
 						>
 							Linkedin
+						</a>
+						<a
+							href="https://www.instagram.com/withbettercareer/"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="underline"
+						>
+							Instagram
 						</a>
 					</Flex.Row>
 				</footer>
