@@ -379,6 +379,7 @@ const WaitListModal = ({
 		files: File[];
 	};
 	const { createToast } = useToast();
+	const [isSuccess, setIsSuccess] = React.useState(false);
 	const { mutateAsync: joinWaitlist, isPending } = useSendWaitlistMutation();
 	const [waitlistState, setWaitlistState] = React.useState<WaitlistState>({
 		name: '',
@@ -419,7 +420,12 @@ const WaitListModal = ({
 				message: 'You have successfully joined the waitlist',
 			});
 
-			setIsOpen(false);
+			setIsSuccess(true);
+
+			setTimeout(() => {
+				setIsOpen(false);
+			}, 5000);
+
 			setWaitlistState({
 				name: '',
 				email: '',
@@ -435,57 +441,85 @@ const WaitListModal = ({
 
 	return (
 		<Modal in={isOpen} onClose={() => setIsOpen(false)}>
-			<Flex.Column gap={2} alignItems="center">
-				<Heading.h4 weight={400} animate="slide" align="center">
-					Join waitlist and get early access
-				</Heading.h4>
-				<Text align="center" color="#57636D" animate="fade">
-					Just a few clicks away from joining the future.
-				</Text>
-			</Flex.Column>
-			<Container>
-				<form className={styles.WaitlistForm}>
-					<Flex.Column gap={8}>
-						<input
-							type="text"
-							placeholder="Full Name"
-							required
-							name="name"
-							value={waitlistState.name}
-							onChange={(e) => updateStateValue('name', e.target.value)}
-						/>
-						<input
-							type="email"
-							placeholder="Email"
-							required
-							pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-							name="email"
-							value={waitlistState.email}
-							onChange={(e) => updateStateValue('email', e.target.value)}
-						/>
-					</Flex.Column>
-					<label className="mt-[22px] block ">
-						<Text weight={700}>Your CV (optional)</Text>
-						<Text color="#57636D" size="sm">
-							Be among the first to get a free resume analysis before we launch
+			{!isSuccess ? (
+				<>
+					<Flex.Column gap={2} alignItems="center">
+						<Heading.h4 weight={400} animate="slide" align="center">
+							Join waitlist and get early access
+						</Heading.h4>
+						<Text align="center" color="#57636D" animate="fade">
+							Just a few clicks away from joining the future.
 						</Text>
-					</label>
-					<DragAndDrop
-						size="md"
-						className="mt-5 mb-6"
-						onDrop={(files) => {
-							return updateStateValue('files', files);
-						}}
-					/>
-					<CallToAction.button
-						isLoading={isPending}
-						className="ml-auto"
-						onClick={handleSubmit}
+					</Flex.Column>
+					<Container>
+						<form className={styles.WaitlistForm}>
+							<Flex.Column gap={8}>
+								<input
+									type="text"
+									placeholder="Full Name"
+									required
+									name="name"
+									value={waitlistState.name}
+									onChange={(e) => updateStateValue('name', e.target.value)}
+								/>
+								<input
+									type="email"
+									placeholder="Email"
+									required
+									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+									name="email"
+									value={waitlistState.email}
+									onChange={(e) => updateStateValue('email', e.target.value)}
+								/>
+							</Flex.Column>
+							<label className="mt-[22px] block ">
+								<Text weight={700}>Your CV (optional)</Text>
+								<Text color="#57636D" size="sm">
+									Be among the first to get a free resume analysis before we
+									launch
+								</Text>
+							</label>
+							<DragAndDrop
+								size="md"
+								className="mt-5 mb-6"
+								onDrop={(files) => {
+									return updateStateValue('files', files);
+								}}
+							/>
+							<CallToAction.button
+								isLoading={isPending}
+								className="ml-auto"
+								onClick={handleSubmit}
+							>
+								Join Waitlist
+							</CallToAction.button>
+						</form>
+					</Container>
+				</>
+			) : (
+				<Flex.Column gap={2} alignItems="center">
+					<Logo width={120} />
+					<Heading.h4
+						weight={400}
+						animate="slide"
+						align="center"
+						className="max-w-[400px] m-auto mt-4 mb-2"
 					>
-						Join Waitlist
+						Congratulations! You have successfully joined the waitlist
+					</Heading.h4>
+					<Text align="center" color="#57636D" animate="fade" className="mb-6">
+						Keep an eye on your email for updates
+					</Text>
+					<CallToAction.button
+						className="mb-2"
+						onClick={() => {
+							return setIsOpen(false);
+						}}
+					>
+						Close
 					</CallToAction.button>
-				</form>
-			</Container>
+				</Flex.Column>
+			)}
 		</Modal>
 	);
 };
