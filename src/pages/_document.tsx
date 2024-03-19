@@ -6,6 +6,7 @@ import Document, {
 	DocumentContext,
 } from 'next/document';
 import { getSSRCssRules } from '@labs/utils';
+import { GA_ID } from '@lib/config';
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx: DocumentContext) {
@@ -21,7 +22,9 @@ class MyDocument extends Document {
 
 		return (
 			<Html lang="en">
-				<Head></Head>
+				<Head>
+					<GoogleAnalytics />
+				</Head>
 				<body>
 					<Main />
 					<NextScript />
@@ -31,4 +34,27 @@ class MyDocument extends Document {
 	}
 }
 
+const GoogleAnalytics = () => {
+	if (process.env.NODE_ENV !== 'production') return null;
+
+	return (
+		<>
+			<script
+				async
+				src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+			></script>
+			<script
+				dangerouslySetInnerHTML={{
+					__html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', '${GA_ID}');
+          `,
+				}}
+			></script>
+		</>
+	);
+};
 export default MyDocument;
