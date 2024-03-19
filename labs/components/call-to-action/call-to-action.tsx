@@ -123,9 +123,9 @@ const createCallToActionComponent = <T extends CTAElement>(component: T) =>
 						<Spinner
 							size={spinnerSize[size as keyof typeof spinnerSize]}
 							thickness="2"
-							spinner="logo"
+							spinner="default"
 							isLoading={isLoading}
-							color={variant === 'primary' && !outline ? '#fff' : undefined} // we need explicit colors here so we can get the right contrast
+							color={variant === 'primary' && !outline ? '#0f1f2e' : undefined} // we need explicit colors here so we can get the right contrast
 						/>
 					)}
 

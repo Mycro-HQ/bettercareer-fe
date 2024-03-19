@@ -66,13 +66,14 @@
 	inset: 0;
 	width: 100%;
 	height: var(--bc-labs-vh);
-	background: rgba(0, 0, 0, 0.7);
+	background: rgb(50 50 50 / 45%);
 	z-index: 1100;
+	-webkit-backdrop-filter: blur(10px);
 
 	@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-		background: rgba(0, 0, 0, 0.69);
-		-webkit-backdrop-filter: blur(12.5px);
-		backdrop-filter: blur(12.5px);
+		background: rgb(50 50 50 / 45%);
+		-webkit-backdrop-filter: blur(10px);
+		backdrop-filter: blur(10px);
 	}
 }
 
@@ -206,7 +207,7 @@
 	margin: 0 -2px;
 	background: #fff;
 	position: sticky;
-	top: -12px;
+	top: -4px;
 	z-index: 1;
 
 	&.hasTitle {

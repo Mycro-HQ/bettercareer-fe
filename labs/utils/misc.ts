@@ -145,3 +145,67 @@ export function getSizeFormat(
 
 	return `${b.toFixed(2)}Y${suffix}`;
 }
+
+/**
+ * Recursively appends data from an object to a FormData object, handling nested objects and arrays.
+ * @param data The object containing the data to append.
+ * @param parentKey A string representing the nested keys for form data (used internally for recursion).
+ * @param formData The FormData object to append data to. If not provided, a new instance is created.
+ * @returns The FormData object with appended data.
+ */
+export const formDataAppender = (
+	data: { [key: string]: any },
+	parentKey = '',
+	formData: FormData = new FormData()
+): FormData => {
+	Object.entries(data).forEach(([key, value]) => {
+		const newKey = parentKey ? `${parentKey}[${key}]` : key;
+
+		if (Array.isArray(value)) {
+			// Handle arrays: Recursively append each item.
+
+			value.forEach((item, index) => {
+				// Append each item in the array with the same key.
+
+				formData.append(`${newKey}[${index}]`, item);
+			});
+		} else if (
+			typeof value === 'object' &&
+			value !== null &&
+			!(value instanceof Blob)
+		) {
+			// Recursively handle nested objects, excluding Blobs.
+
+			formDataAppender(value, newKey, formData);
+		} else {
+			let _value = value;
+
+			if (
+				typeof _value === 'string' &&
+				(_value?.startsWith('data:') || _value?.includes('[object File]'))
+			) {
+				// Handle base64 encoded strings.
+				const file = data[key].split(',')[1];
+				const mimeType = data[key].split(';')[0].split(':')[1];
+				const blob = new Blob([file], { type: mimeType });
+
+				_value = blob;
+			}
+
+			formData.append(newKey, _value);
+		}
+	});
+
+	for (const [key, value] of formData.entries()) {
+		if (
+			typeof value === 'undefined' ||
+			value === 'undefined' ||
+			value === null ||
+			value === ''
+		) {
+			formData.delete(key);
+		}
+	}
+
+	return formData;
+};
