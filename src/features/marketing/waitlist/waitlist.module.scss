@@ -177,20 +177,25 @@
 		.FeatureItem {
 			flex: 1;
 			@include media('md', 'max') {
-				order: 1;
+				order: 2;
 			}
 		}
 
 		.FeatureImage {
 			width: 100%;
 			max-width: 490px;
-			// min-width: 490px;
 			height: auto;
 			flex: 1;
 
 			@include media('md', 'max') {
-				order: 2;
+				order: 1;
 				min-width: 100%;
+
+				img {
+					width: 85%;
+					height: auto;
+					margin: auto;
+				}
 			}
 
 			img {

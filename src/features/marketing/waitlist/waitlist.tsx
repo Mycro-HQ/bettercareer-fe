@@ -224,14 +224,14 @@ export const Waitlist = () => {
 											<Heading.h4 weight={400} animate="fade">
 												{info.title}
 											</Heading.h4>
-											<AnimatePresence></AnimatePresence>`
+											<AnimatePresence></AnimatePresence>
 											<motion.span
 												key={index}
 												initial={{ opacity: 0, x: 10 }}
 												animate={{ opacity: 1, x: 0 }}
 												exit={{ opacity: 0 }}
 											>
-												{index === currentIndex ? <Close /> : <Arrow />}
+												{index === currentIndex ? null : <Arrow />}
 											</motion.span>
 										</Flex>
 										{index === currentIndex && (
