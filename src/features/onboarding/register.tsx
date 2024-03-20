@@ -4,7 +4,7 @@ import { OnboardingLayout } from '.';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 
 import LinkedInIcon from '@labs/icons/socials/linkedin.svg';
-import GoogleIcon from '@labs/icons/socials/google.svg';
+import GoogleIcon from '@labs/icons`/socials/google.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
 import Link from 'next/link';

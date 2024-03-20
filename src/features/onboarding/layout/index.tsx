@@ -22,12 +22,17 @@ interface OnboardingLayoutProps {
 	 * @default ''
 	 */
 	adjacentContent?: React.ReactNode;
+
+	header?: boolean;
+	center?: boolean;
 }
 
 export const OnboardingLayout = ({
 	children,
 	title,
 	adjacentContent,
+	header = true,
+	center = true,
 }: OnboardingLayoutProps) => {
 	return (
 		<>
@@ -36,10 +41,15 @@ export const OnboardingLayout = ({
 				<div className={styles.LayoutContentContain}>
 					<Container fluid>
 						<div className={styles.LayoutContentWrap}>
-							<div className={styles.Logo}>
-								<Logo />
+							{header && (
+								<div className={styles.Logo}>
+									<Logo />
+								</div>
+							)}
+
+							<div className={center ? styles.LayoutContent : ''}>
+								{children}
 							</div>
-							<div className={styles.LayoutContent}>{children}</div>
 						</div>
 					</Container>
 				</div>
