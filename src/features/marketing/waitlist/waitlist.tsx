@@ -11,7 +11,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import Logo from '@labs/icons/logo.svg';
 import Arrow from '@labs/icons/misc/arrow-right.svg';
-import Close from '@labs/icons/misc/close.svg';
 
 import { WaitlistInfo } from '.';
 import { Modal } from '@labs/components/modal';
