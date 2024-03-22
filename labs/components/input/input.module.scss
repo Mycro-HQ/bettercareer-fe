@@ -1,0 +1,112 @@
+@use '@/styles/base/utils' as *;
+
+.Input {
+	border: 1px solid rgba(231, 233, 235, 1);
+	width: (748px) px;
+	height: 2em;
+	padding: 22px 16px 22px 16px;
+	gap: 8px;
+	border-radius: 12px;
+	margin: 0.7em 0px;
+}
+.Select { 
+	@extend .Input;
+padding-right: 1em;
+
+&::after {
+    content: '';
+    position: absolute;
+    top: calc(50% - 4px);
+    right: 12px;
+    border: solid black;
+    border-width: 0 1px 1px 0;
+    padding: 3px;
+    transform: rotate(45deg);
+  }
+}
+
+.adapt {
+}
+
+.InputContainer {
+}
+.top {
+	display: flex;
+	flex-direction: column;
+}
+
+.bottom {
+	display: flex;
+	flex-direction: column-reverse;
+
+	background: green;
+}
+.left {
+	display: flex;
+
+	background: blue;
+	// &--top {
+	// 	background: red;
+	// 	flex-direction: column;
+	// }
+	// &--bottom {
+	// 	flex-direction: column-reverse;
+	// }
+	// &--left {
+	flex-direction: row;
+	// }
+	// &--right {
+	// 	flex-direction: row-reverse;
+	// }
+}
+.right {
+	display: flex;
+
+	background: orange;
+	// &--top {
+	// 	background: red;
+	// 	flex-direction: column;
+	// }
+	// &--bottom {
+	// 	flex-direction: column-reverse;
+	// }
+	// &--left {
+	// 	flex-direction: row;
+	// }
+	// &--right {
+	flex-direction: row-reverse;
+	// }
+}
+.animate {
+	&--fade {
+		animation: fade 0.3s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+		opacity: 0;
+		animation-fill-mode: both;
+
+		@keyframes fade {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+	}
+
+	&--slide {
+		animation: slide 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) forwards;
+		opacity: 0;
+		animation-fill-mode: both;
+
+		@keyframes slide {
+			0% {
+				opacity: 0;
+				transform: translateY(10px) scale(0.985);
+			}
+			100% {
+				opacity: 1;
+				transform: translateY(0) scale(1);
+			}
+		}
+	}
+}

@@ -4,6 +4,9 @@ import Accordion from './accordion';
 import styles from './resume.module.scss';
 import AddIcon from '@labs/icons/misc/add.svg';
 import { Flex } from '@labs/components';
+import Heading from './builder-element/Heading';
+import RichTextEditor from './builder-element/RichText';
+import Skills from './builder-element/Skills';
 
 const reorder = (
 	list: Iterable<unknown> | ArrayLike<unknown>,
@@ -18,9 +21,9 @@ const reorder = (
 };
 
 const panels = [
-	{ title: 'Panel 1', content: 'Content for Panel 1' },
-	{ title: 'Panel 2', content: 'Content for Panel 2' },
-	{ title: 'Panel 3', content: 'Content for Panel 3' },
+	{ title: 'Heading', content: <Heading /> },
+	{ title: 'Summary', content: <RichTextEditor />},
+	{ title: 'Skills', content:  <Skills /> },
 ];
 const ResumeBody = () => {
 	const [items, setItems] = useState<any>(panels);
@@ -62,7 +65,6 @@ const ResumeBody = () => {
 							index: number
 						) => (
 							<Accordion.Panel key={index} title={panel.title} index={index}>
-								<Accordion.Title>{panel.title}</Accordion.Title>
 								<Accordion.Content>{panel.content}</Accordion.Content>
 							</Accordion.Panel>
 						)

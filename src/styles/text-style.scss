@@ -1,0 +1,87 @@
+/* Basic editor styles */
+
+.tip-tap-placeholder {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+  color: #aaa;
+  pointer-events: none; /* Make the placeholder unselectable */
+}
+
+.tip-tap-editor-content {
+  position: relative;
+  padding-top: 20px; /* Ensure content doesn't overlap placeholder */
+}
+.tip-tap-menu{ 
+  button { 
+    padding: 0.4em;
+    border-radius:0.3em ;
+
+  }
+  .is-active { 
+    background-color: #e5e7eb;
+  }
+}
+.tiptap {
+  height: 20em;
+
+  border: 1px solid rgba(231, 233, 235, 1);
+  padding:1em 1.5em;
+    > * + * {
+      margin-top: 0.75em;
+    }
+  
+    ul,
+    ol {
+      padding: 0 1rem;
+    }
+  
+
+    b{ 
+      background:'red';
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      line-height: 1.1;
+    }
+  
+    code {
+      background-color: rgba(#616161, 0.1);
+      color: #616161;
+    }
+  
+    pre {
+      background: #0D0D0D;
+      color: #FFF;
+      font-family: 'JetBrainsMono', monospace;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+  
+      code {
+        color: inherit;
+        padding: 0;
+        background: none;
+        font-size: 0.8rem;
+      }
+    }
+  
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  
+    blockquote {
+      padding-left: 1rem;
+      border-left: 2px solid rgba(#0D0D0D, 0.1);
+    }
+  
+    hr {
+      border: none;
+      border-top: 2px solid rgba(#0D0D0D, 0.1);
+      margin: 2rem 0;
+    }
+  }
