@@ -1,12 +1,9 @@
 import React from 'react';
 import { Avatar, DropdownMenu, TextField } from '@radix-ui/themes';
 import Link from 'next/link';
-import { Flex, Text, Container } from '@labs/components';
+import { Flex, Text, Container, CallToAction } from '@labs/components';
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
 
-import MagnifyingGlassIcon from '@labs/icons/dashboard/search.svg';
-import BellIcon from '@labs/icons/dashboard/notification.svg';
 import Profile from '@labs/icons/dashboard/profile.svg';
 import SettingsIcon from '@labs/icons/dashboard/settings.svg';
 import LogoutIcon from '@labs/icons/dashboard/logout.svg';
@@ -16,31 +13,12 @@ import Logo from '@labs/icons/logo.svg';
 import Help from '@labs/icons/dashboard/help.svg';
 import ArrowDown from '@labs/icons/dashboard/down.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
+import ElipseIcon from '@labs/icons/misc/text/more-horizontal.svg';
 
 import styles from '@/features/dashboard/layout/components/header/header.module.scss';
 import { useUserStore } from '@/store/z-store/user';
 
-const NAVIGATION = [
-	{
-		title: 'Home',
-		href: '/dashboard',
-	},
-	{
-		title: 'Jobs',
-		href: '/dashboard/jobs',
-	},
-	{
-		title: 'Applications',
-		href: '/dashboard/applications',
-	},
-	{
-		title: 'Resumes',
-		href: '/dashboard/resumes',
-	},
-];
-
 export const ResumeBuilderHeader = () => {
-	const router = useRouter();
 	const [isScrolled, setIsScrolled] = React.useState(false);
 	const { profile } = useUserStore();
 
@@ -79,51 +57,21 @@ export const ResumeBuilderHeader = () => {
 					>
 						<Logo className="hidden lg:block" />
 						<LogoMark className="lg:hidden block h-[40px]" />
-
-						<Flex
-							gap={24}
-							flexWrap="wrap"
-							className={styles.DashboardHeaderLeftItems}
-						>
-							{NAVIGATION.map((item, index) => (
-								<Link
-									href={item.href}
-									key={index}
-									className={classNames([
-										styles.DashboardHeaderMenuItem,
-										[router.asPath, router.pathname].includes(item.href) &&
-											styles.active,
-									])}
-								>
-									<Text>{item.title}</Text>
-								</Link>
-							))}
-						</Flex>
 					</Flex>
 					<Flex
 						className={styles.DashboardHeaderRight}
 						alignItems="center"
 						gap={18}
 					>
-						<TextField.Root className={styles.DashboardHeaderSearch}>
-							<TextField.Slot>
-								<MagnifyingGlassIcon height="16" width="16" />
-							</TextField.Slot>
-							<TextField.Input placeholder="Search in 400k jobs..." />
-						</TextField.Root>
-
 						<Link
 							href="/dashboard/notification"
 							className={styles.DashboardHeaderNotification}
 						>
 							<Help height="18" width="18" />
 						</Link>
-						<Link
-							href="/dashboard/notification"
-							className={styles.DashboardHeaderNotification}
-						>
-							<BellIcon height="18" width="18" />
-						</Link>
+						<button className={styles.DashboardHeaderProfile}>
+							<ElipseIcon />
+						</button>
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
 								<button className={styles.DashboardHeaderProfile}>

@@ -7,9 +7,11 @@ import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import StarIcon from '@labs/icons/misc/star.svg';
 import { ResumeBuilderHeader } from '@/features/resume-builder/header';
 import styles from '@/features/resume-builder/resume.module.scss';
+import { Button } from '@labs/components/button';
 
 export const Dashboard = () => {
 	const { profile } = useUserStore();
+	console.log('what is going on');
 
 	return (
 		<>
@@ -39,12 +41,9 @@ export const Dashboard = () => {
 								</Flex.Row>
 
 								<CallToAction.button
-									className={styles.ResumeButton}
-									outline
-									variant="primary"
-									style={{
-										background: 'red',
-									}}
+									size="xs"
+									variant="secondary"
+									className="bg-blue-400"
 								>
 									Tailor to Job
 								</CallToAction.button>

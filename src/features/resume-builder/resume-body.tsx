@@ -4,9 +4,13 @@ import Accordion from './accordion';
 import styles from './resume.module.scss';
 import AddIcon from '@labs/icons/misc/add.svg';
 import { Flex } from '@labs/components';
-import Heading from './builder-element/Heading';
 import RichTextEditor from './builder-element/RichText';
 import Skills from './builder-element/Skills';
+import Heading from './builder-element/heading';
+import Certification from './builder-element/cetification';
+import Education from './builder-element/education';
+import Project from './builder-element/projects';
+import Experience from './builder-element/experience';
 
 const reorder = (
 	list: Iterable<unknown> | ArrayLike<unknown>,
@@ -22,14 +26,17 @@ const reorder = (
 
 const panels = [
 	{ title: 'Heading', content: <Heading /> },
-	{ title: 'Summary', content: <RichTextEditor />},
-	{ title: 'Skills', content:  <Skills /> },
+	{ title: 'Summary', content: <RichTextEditor /> },
+	{ title: 'Skills', content: <Skills /> },
+	{ title: 'Education', content: <Education /> },
+	{ title: 'Experience', content: <Experience /> },
+	{ title: 'Certifications', content: <Certification /> },
+	{ title: 'Projects', content: <Project /> },
 ];
 const ResumeBody = () => {
 	const [items, setItems] = useState<any>(panels);
 
 	const onDragEnd = (result: any) => {
-		console.log('DDD');
 		// dropped outside the list
 		if (!result.destination) {
 			return;
@@ -41,7 +48,7 @@ const ResumeBody = () => {
 	};
 
 	return (
-		<>
+		<Flex.Column className="mt-4">
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Accordion>
 					{items.map(
@@ -82,7 +89,7 @@ const ResumeBody = () => {
 					<div className="ml-2">New Section</div>
 				</Flex.Row>
 			</button>
-		</>
+		</Flex.Column>
 	);
 };
 

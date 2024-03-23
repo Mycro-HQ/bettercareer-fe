@@ -4,6 +4,7 @@ import { Flex } from '@labs/components';
 import { Droppable, Draggable } from 'react-beautiful-dnd'; // Import Draggable and Droppable
 import styles from './resume.module.scss';
 import DragAndDropIcon from '@labs/icons/misc/DragAndDropIcon.svg';
+import DownArrowIcon from '@labs/icons/misc/arrow-down.svg';
 
 interface AccordionProps {
 	children: ReactNode;
@@ -64,11 +65,21 @@ const Accordion: React.FC<AccordionProps> & {
 												onClick={() => togglePanel(index)}
 												className="text-neutral-600 font-semibold"
 												alignItems="center"
+												justifyContent="space-between"
 											>
-												<DragAndDropIcon />
-												<div className="ml-2">
-													{child.props.title || 'Untitled'}
-												</div>
+												<Flex.Row alignItems="center">
+													<DragAndDropIcon />
+													<div className="ml-2">
+														{child.props.title || 'Untitled'}
+													</div>
+												</Flex.Row>
+
+												<motion.div
+													animate={{ rotate: selected === index ? 180 : 0 }}
+													transition={{ duration: 0.3 }}
+												>
+													<DownArrowIcon />
+												</motion.div>
 											</Flex.Row>
 											<AnimatePresence>
 												{selected === index && (
