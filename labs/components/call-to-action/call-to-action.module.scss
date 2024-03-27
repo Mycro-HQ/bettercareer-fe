@@ -15,13 +15,16 @@
 	* {
 		user-select: none;
 	}
+	&.xs {
+		padding: 0.5em 1em !important;
+		height: fit-content;
+		width: fit-content; // background-color: orange;
+	}
 
 	&.sm {
 		padding: 12px 22px;
 		@include typography('accent');
 		font-weight: 600;
-		height: fit-content;
-		width: fit-content;
 	}
 
 	&.md,

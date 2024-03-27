@@ -12,6 +12,14 @@ import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
 
 import DragAndDrop from '@/components/drag-and-drop';
+import { getSizeFormat } from '@labs/utils';
+import { FileWithKey } from '@labs/utils/types/utility';
+
+import DocumentImage from '@labs/icons/document.svg';
+import DeleteImage from '@labs/icons/delete.svg';
+import { useUserStore } from '@/store/z-store/user';
+import { useUploadFileMutation } from '@/queries/upload';
+import { useAuthSuccess } from './components/use-auth';
 
 export const BuildProfile = () => {
 	const [isLinkedin, setIsLinkedin] = useState(false);
@@ -48,6 +56,53 @@ const LinkedinFlow = () => {
 };
 
 const UploadResumeFlow = () => {
+	const [files, setFiles] = useState<FileWithKey[]>([]);
+	const { profile } = useUserStore();
+
+	const { mutate: uploadFile, isPending } = useUploadFileMutation();
+
+	function handleDeleteClick(indexToRemove: number) {
+		setFiles((prev) => {
+			const newFiles = [...prev];
+			newFiles.splice(indexToRemove, 1);
+			return newFiles;
+		});
+	}
+
+	function handleFileSubmit() {
+		// check if the files const contains files
+		if (files.length !== 0) {
+			const formData = new FormData();
+			formData.append('resume', files[0].blob);
+
+			uploadFile(formData);
+		}
+	}
+
+	const filesWithError = files.filter((file) => file.status.length !== 0);
+	const filesWithoutError = files.filter((file) => file.status.length === 0);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			if (filesWithError.length > 0) {
+				setFiles((prev) => {
+					const firstErrorIndex = prev.findIndex(
+						(file) => file.status.length !== 0
+					);
+					if (firstErrorIndex !== -1) {
+						return [
+							...prev.slice(0, firstErrorIndex),
+							...prev.slice(firstErrorIndex + 1),
+						];
+					}
+					return prev;
+				});
+			}
+		}, 3000);
+
+		return () => clearInterval(interval);
+	}, [files]);
+
 	return (
 		<AnimatePresence>
 			<div className={styles.AuthLayout}>
@@ -71,7 +126,12 @@ const UploadResumeFlow = () => {
 							maxSize={10}
 						/>
 						<Flex gap={8} className="mt-[24px]">
-							<CallToAction.a href="/dashboard">Continue</CallToAction.a>
+							<CallToAction.button
+								onClick={handleFileSubmit}
+								isLoading={isPending}
+							>
+								Continue
+							</CallToAction.button>
 							<CallToAction.a href="/dashboard" outline>
 								Skip
 							</CallToAction.a>

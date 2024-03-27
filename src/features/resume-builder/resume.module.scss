@@ -1,0 +1,18 @@
+@use '@/styles/base/utils' as *;
+
+.AccordionPanel {
+	border: 1px solid rgba(243, 244, 244, 1);
+	padding: 1em;
+	border-radius: 16px;
+	margin: 0.5em 0em;
+	width: 100%;
+}
+
+.AccordionContent {
+	margin-top: 2em;
+}
+
+.ResumeButton {
+	background-color: green;
+	height: 1em;
+}
