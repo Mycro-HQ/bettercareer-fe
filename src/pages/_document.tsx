@@ -6,7 +6,7 @@ import Document, {
 	DocumentContext,
 } from 'next/document';
 import { getSSRCssRules } from '@labs/utils';
-import { GA_ID, GA_TRACKING_ID } from '@lib/config';
+import { GA_TRACKING_ID } from '@lib/config';
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx: DocumentContext) {
