@@ -6,7 +6,7 @@ import Document, {
 	DocumentContext,
 } from 'next/document';
 import { getSSRCssRules } from '@labs/utils';
-import { GA_ID } from '@lib/config';
+import { GA_ID, GA_TRACKING_ID } from '@lib/config';
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx: DocumentContext) {
@@ -41,7 +41,7 @@ const GoogleAnalytics = () => {
 		<>
 			<script
 				async
-				src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+				src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`}
 			></script>
 			<script
 				dangerouslySetInnerHTML={{
@@ -50,7 +50,7 @@ const GoogleAnalytics = () => {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
         
-          gtag('config', '${GA_ID}');
+          gtag('config', '${GA_TRACKING_ID}');
           `,
 				}}
 			></script>

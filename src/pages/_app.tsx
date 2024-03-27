@@ -17,8 +17,6 @@ import analytics from '@lib/analytics';
 export default function App({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 
-	// useRedirectMiddleware();
-
 	useEffect(() => {
 		const handleRouteChange = (url: string) => {
 			analytics.pageView(url);
