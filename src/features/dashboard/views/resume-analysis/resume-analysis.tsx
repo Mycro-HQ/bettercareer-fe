@@ -1,8 +1,22 @@
 import { Heading, Text, Flex, CallToAction } from '@labs/components';
 import React from 'react';
 import styles from './resume-analysis.module.scss';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { ResumeAnalysisInfo } from '.';
+import { ScoreCounter } from '@/components/score-counter';
+
+import CaretDown from '@labs/icons/misc/caret-down.svg';
+import CaretUp from '@labs/icons/misc/caret-up.svg';
 
 export const ResumeAnalysis = () => {
+	const [currentIndex, setCurrentIndex] = React.useState(0);
+
+	// reduce the ResumeAnalysisInfo array to get the overall score percentage
+	const score =
+		ResumeAnalysisInfo.reduce((total, item) => total + item.score, 0) /
+		ResumeAnalysisInfo.length;
+
 	return (
 		<div className={styles.ResumeAnalysis}>
 			<Flex.Column gap={6}>
@@ -18,7 +32,55 @@ export const ResumeAnalysis = () => {
 			</Flex.Column>
 			<Flex.Row gap={32} className={styles.ResumeAnalysisSection}>
 				<aside className={styles.ResumeAnalysisAside}>
-					<div className={styles.ResumeAnalysisBox}></div>
+					<Flex.Column gap={19.03} className={styles.ResumeAnalysisBox}>
+						<Flex.Column
+							alignItems="center"
+							justifyContent="center"
+							className={styles.ResumeOverallScoreCounter}
+						>
+							<ScoreCounter className={styles.ResumeScoreSvg} score={0.8} />
+							<Text.p weight={700} fontSize="28px">
+								{score}
+							</Text.p>
+							<Text.p weight={500} size="sm">
+								Overall score
+							</Text.p>
+						</Flex.Column>
+						<Text.p weight={700}>Score Breakdown</Text.p>
+						<Flex.Column gap={19.03} className={styles.ResumeScoreBreakDown}>
+							{ResumeAnalysisInfo.map((item) => (
+								<div key={item.label} className={styles.ResumeScoreItem}>
+									<Flex.Row
+										key={item.label}
+										className={styles.ResumeScoreTitle}
+									>
+										<Text.p size="sm" casing="capitalize">
+											{item.label}
+										</Text.p>
+										<Text.p size="xs" weight={600} color={item.color}>
+											{item.score}/100
+										</Text.p>
+									</Flex.Row>
+									{/*
+									 * Render progress bar to visualize score
+									 * Added 20 as alpha value to get the proper opacity for the background
+									 */}
+									<div
+										style={{ background: item.color + '20' }}
+										className={styles.ResumeScoreCounter}
+									>
+										<div
+											style={{
+												width: `${item.score}%`,
+												background: item.color,
+											}}
+											className={styles.ResumeScoreCounterValue}
+										/>
+									</div>
+								</div>
+							))}
+						</Flex.Column>
+					</Flex.Column>
 				</aside>
 				<Flex.Column gap={24} className={styles.ResumeAnalysisMain}>
 					<Flex.Column gap={14} className={styles.ResumeAnalysisBox}>
@@ -32,10 +94,62 @@ export const ResumeAnalysis = () => {
 						<CallToAction className="mt-[10px]">Build Resume</CallToAction>
 					</Flex.Column>
 					<Flex.Column gap={12}>
-						<Heading.h5 weight={600} animate="slide">
+						<Heading.h5 fontSize="24px" weight={600} animate="slide">
 							Analysis
 						</Heading.h5>
-						<div className={styles.ResumeAnalysisBox}></div>
+						<Flex.Column gap={16} fullWidth>
+							{ResumeAnalysisInfo.map((item, index) => (
+								<div key={index} className={styles.ResumeAnalysisBox}>
+									<button
+										className={styles.AccordionButton}
+										onClick={() =>
+											setCurrentIndex(
+												Math.max(
+													0,
+													Math.min(ResumeAnalysisInfo.length - 1, index)
+												)
+											)
+										}
+									>
+										<Flex.Column fullWidth>
+											<Flex.Row
+												alignItems="center"
+												justifyContent="space-between"
+												fullWidth
+											>
+												<Flex.Row alignItems="center" gap={12}>
+													<Text.p
+														fontSize="20px"
+														weight={700}
+														casing="capitalize"
+													>
+														{item.label}
+													</Text.p>
+													<div className={styles.ResumeScoreIndicator}>
+														<Text.p weight={600} color={item.color} size="sm">
+															{item.score}/100
+														</Text.p>
+													</div>
+												</Flex.Row>
+												{index === currentIndex ? <CaretUp /> : <CaretDown />}
+											</Flex.Row>
+											<AnimatePresence>
+												{index === currentIndex && (
+													<motion.div className={styles.AccordionContent}>
+														<Text.p fontSize="18px" weight={600}>
+															Problem:
+														</Text.p>
+														<Text.p fontSize="18px" weight={600}>
+															Solution:
+														</Text.p>
+													</motion.div>
+												)}
+											</AnimatePresence>
+										</Flex.Column>
+									</button>
+								</div>
+							))}
+						</Flex.Column>
 					</Flex.Column>
 				</Flex.Column>
 			</Flex.Row>
