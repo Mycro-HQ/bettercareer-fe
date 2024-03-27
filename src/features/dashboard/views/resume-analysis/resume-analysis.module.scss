@@ -21,5 +21,69 @@
 		border: 1px solid #f3f4f4;
 		border-radius: 12px;
 		padding: 24px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		.ResumeOverallScoreCounter {
+			width: 100%;
+			height: 130px;
+			position: relative;
+			padding: 40px 0 0;
+
+			.ResumeScoreSvg {
+				position: absolute;
+				top: 0;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+		}
+
+		.ResumeScoreBreakDown {
+			width: 100%;
+
+			.ResumeScoreItem {
+				width: 100%;
+
+				.ResumeScoreTitle {
+					width: 100%;
+					align-items: center;
+					justify-content: space-between;
+				}
+
+				.ResumeScoreCounter {
+					width: 100%;
+					height: 6px;
+					border-radius: 6px;
+
+					.ResumeScoreCounterValue {
+						height: 100%;
+						border-radius: 6px;
+					}
+				}
+			}
+		}
+
+		.ResumeScoreIndicator {
+			width: 66px;
+			height: 28px;
+			border: 1px solid #f8e1cd;
+			border-radius: 8px;
+			padding: 4px 8px;
+			background: #fcf0e6;
+			text-align: center;
+		}
+
+		.AccordionButton {
+			width: 100%;
+
+			.AccordionContent {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+				text-align: left;
+			}
+		}
 	}
 }
