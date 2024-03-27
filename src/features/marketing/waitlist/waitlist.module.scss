@@ -85,6 +85,24 @@
 		align-items: center;
 		justify-content: center;
 
+		.WaitlistInput {
+			background: #ffffff;
+			border-radius: 50px;
+			overflow: hidden;
+			padding: 6px;
+			width: 100%;
+			border: 1px solid #0000001f;
+			max-width: 500px;
+			margin: auto;
+
+			input {
+				border-radius: 50px;
+				padding: 14px 18px;
+				flex: 1;
+				background: transparent;
+			}
+		}
+
 		@include media('md', 'max') {
 			align-items: flex-start;
 			justify-content: flex-start;
@@ -231,7 +249,7 @@
 	margin-top: 32px;
 
 	input {
-		&:not([type='file']) {
+		&:not([type='file']):not([type='checkbox']) {
 			padding: 18px 22px;
 			width: 100%;
 			display: block;

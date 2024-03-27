@@ -56,7 +56,7 @@ const listVariant = {
 
 export const Waitlist = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
-
+	const [email, setEmail] = React.useState('');
 	const [currentIndex, setCurrentIndex] = React.useState(0);
 
 	return (
@@ -145,8 +145,14 @@ export const Waitlist = () => {
 									ATS-beating resumes & find jobs you love.
 								</Heading.h5>
 							</motion.span>
-							<motion.div variants={listVariant} key="3">
-								<Flex gap={12}>
+							<motion.div variants={listVariant} key="3" className="w-full">
+								<Flex gap={12} className={styles.WaitlistInput}>
+									<input
+										placeholder="Enter your email"
+										type="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+									/>
 									<CallToAction.button
 										onClick={() => {
 											analytics.track('waitlist_join_clicked');
@@ -155,9 +161,6 @@ export const Waitlist = () => {
 									>
 										Join Waitlist
 									</CallToAction.button>
-									<CallToAction.a href="#section" outline>
-										Learn More
-									</CallToAction.a>
 								</Flex>
 							</motion.div>
 						</motion.div>
@@ -297,6 +300,7 @@ export const Waitlist = () => {
 						<CallToAction.button
 							onClick={() => {
 								analytics.track('waitlist_join_clicked');
+
 								return setIsOpen(true);
 							}}
 						>
@@ -359,7 +363,12 @@ export const Waitlist = () => {
 						</a>
 					</Flex.Row>
 				</footer>
-				<WaitListModal isOpen={isOpen} setIsOpen={setIsOpen} />
+				<WaitListModal
+					isOpen={isOpen}
+					email={email}
+					setEmail={setEmail}
+					setIsOpen={setIsOpen}
+				/>
 			</Container>
 		</div>
 	);
@@ -367,14 +376,19 @@ export const Waitlist = () => {
 
 const WaitListModal = ({
 	isOpen,
+	email,
 	setIsOpen,
+	setEmail,
 }: {
 	isOpen: boolean;
+	email: string;
+	setEmail: React.Dispatch<React.SetStateAction<string>>;
 	setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	type WaitlistState = {
 		name: string;
 		email: string;
+		wantFirst100: boolean;
 		files: File[];
 	};
 	const { createToast } = useToast();
@@ -382,12 +396,16 @@ const WaitListModal = ({
 	const { mutateAsync: joinWaitlist, isPending } = useSendWaitlistMutation();
 	const [waitlistState, setWaitlistState] = React.useState<WaitlistState>({
 		name: '',
-		email: '',
+		email: email,
+		wantFirst100: false,
 		files: [],
 	});
 
 	const updateStateValue = useCallback(
-		(key: 'name' | 'email' | 'files', value: string | File[]) => {
+		(
+			key: 'name' | 'email' | 'files' | 'wantFirst100',
+			value: string | boolean | File[]
+		) => {
 			setWaitlistState((prev) => ({ ...prev, [key]: value }));
 		},
 		[]
@@ -424,8 +442,10 @@ const WaitListModal = ({
 			setWaitlistState({
 				name: '',
 				email: '',
+				wantFirst100: false,
 				files: [],
 			});
+			setEmail('');
 		} catch (error: any) {
 			createToast({
 				message: error?.message ?? 'An error occurred, please try again',
@@ -440,7 +460,9 @@ const WaitListModal = ({
 				<>
 					<Flex.Column gap={2} alignItems="center">
 						<Heading.h4 weight={400} animate="slide" align="center">
-							Join waitlist and get early access
+							{email
+								? 'Just one more step'
+								: 'Join waitlist and get early access'}
 						</Heading.h4>
 						<Text align="center" color="#57636D" animate="fade">
 							Just a few clicks away from joining the future.
@@ -464,26 +486,50 @@ const WaitListModal = ({
 									pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
 									name="email"
 									value={waitlistState.email}
-									onChange={(e) => updateStateValue('email', e.target.value)}
+									onChange={(e) => {
+										setEmail(e.target.value);
+										updateStateValue('email', e.target.value);
+									}}
 								/>
 							</Flex.Column>
-							<label className="mt-[22px] block ">
-								<Text weight={700}>Your CV (optional)</Text>
-								<Text color="#57636D" size="sm">
-									Be among the first to get a free resume analysis before we
-									launch
-								</Text>
-							</label>
-							<DragAndDrop
-								size="md"
-								className="mt-5 mb-6"
-								onDrop={(files) => {
-									return updateStateValue('files', files);
-								}}
-							/>
+							<Flex gap={4} className="mt-3">
+								<input
+									type="checkbox"
+									name="first100"
+									id="first100"
+									checked={waitlistState.wantFirst100}
+									onChange={(e) =>
+										updateStateValue('wantFirst100', e.target.checked)
+									}
+								/>
+								<label htmlFor="first100">
+									<Text>
+										I want to be a part of the first 100 FREE CV Analysis
+									</Text>
+								</label>
+							</Flex>
+							{waitlistState.wantFirst100 && (
+								<>
+									<label className="mt-[22px] block ">
+										<Text weight={700}>Let's get your CV</Text>
+										<Text color="#57636D" size="sm">
+											Be among the first to get a free resume analysis before we
+											launch
+										</Text>
+									</label>
+									<DragAndDrop
+										size="md"
+										className="mt-5"
+										onDrop={(files) => {
+											return updateStateValue('files', files);
+										}}
+									/>
+								</>
+							)}
+
 							<CallToAction.button
 								isLoading={isPending}
-								className="ml-auto"
+								className="ml-auto mt-6"
 								onClick={handleSubmit}
 							>
 								Join Waitlist
