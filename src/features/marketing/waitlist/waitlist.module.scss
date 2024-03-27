@@ -94,6 +94,14 @@
 			border: 1px solid #0000001f;
 			max-width: 500px;
 			margin: auto;
+			flex-wrap: wrap;
+
+			@include media('sm', 'max') {
+				border-radius: 12px;
+				button {
+					width: 100%;
+				}
+			}
 
 			input {
 				border-radius: 50px;
@@ -150,6 +158,11 @@
 		border: 1px solid rgba(0, 0, 0, 0.06);
 		backdrop-filter: blur(12px);
 		border-radius: 80px;
+		p {
+			white-space: pre;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
 	}
 
 	.WaitlistSection {
