@@ -1,0 +1,17 @@
+@use '@/styles/base/utils' as *;
+
+.JobCard {
+	padding: rem(32px);
+	border-radius: rem(16px);
+	border: 1.5px solid #1388f2;
+	background: #fff;
+}
+
+.JobTag {
+	color: #3f4c58;
+	font-family: 'Figtree';
+	border-radius: rem(20px);
+	background: #f9fafa;
+	border: 1px solid #f3f4f4;
+	padding: rem(6px) rem(16px);
+}
