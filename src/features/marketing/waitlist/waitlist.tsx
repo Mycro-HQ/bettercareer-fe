@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
 	CallToAction,
 	Container,
@@ -400,6 +400,12 @@ const WaitListModal = ({
 		wantFirst100: false,
 		files: [],
 	});
+
+	useEffect(() => {
+		if (email) {
+			setWaitlistState((prev) => ({ ...prev, email }));
+		}
+	}, [email]);
 
 	const updateStateValue = useCallback(
 		(
