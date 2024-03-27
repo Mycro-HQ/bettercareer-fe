@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, DropdownMenu, TextField } from '@radix-ui/themes';
 import Link from 'next/link';
-import { Flex, Text, Container } from '@labs/components';
+import { Flex, Text, Container, CallToAction } from '@labs/components';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
@@ -39,7 +39,7 @@ const NAVIGATION = [
 	},
 ];
 
-export const DashboardHeader = () => {
+export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
 	const router = useRouter();
 	const [isScrolled, setIsScrolled] = React.useState(false);
 	const { profile } = useUserStore();
@@ -79,51 +79,65 @@ export const DashboardHeader = () => {
 					>
 						<Logo className="hidden lg:block" />
 						<LogoMark className="lg:hidden block h-[40px]" />
-
-						<Flex
-							gap={24}
-							flexWrap="wrap"
-							className={styles.DashboardHeaderLeftItems}
-						>
-							{NAVIGATION.map((item, index) => (
-								<Link
-									href={item.href}
-									key={index}
-									className={classNames([
-										styles.DashboardHeaderMenuItem,
-										[router.asPath, router.pathname].includes(item.href) &&
-											styles.active,
-									])}
-								>
-									<Text>{item.title}</Text>
-								</Link>
-							))}
-						</Flex>
+						{!bare && (
+							<Flex
+								gap={24}
+								flexWrap="wrap"
+								className={styles.DashboardHeaderLeftItems}
+							>
+								{NAVIGATION.map((item, index) => (
+									<Link
+										href={item.href}
+										key={index}
+										className={classNames([
+											styles.DashboardHeaderMenuItem,
+											[router.asPath, router.pathname].includes(item.href) &&
+												styles.active,
+										])}
+									>
+										<Text>{item.title}</Text>
+									</Link>
+								))}
+							</Flex>
+						)}
 					</Flex>
 					<Flex
 						className={styles.DashboardHeaderRight}
 						alignItems="center"
 						gap={18}
 					>
-						<TextField.Root className={styles.DashboardHeaderSearch}>
-							<TextField.Slot>
-								<MagnifyingGlassIcon height="16" width="16" />
-							</TextField.Slot>
-							<TextField.Input placeholder="Search in 400k jobs..." />
-						</TextField.Root>
+						{!bare ? (
+							<>
+								<TextField.Root className={styles.DashboardHeaderSearch}>
+									<TextField.Slot>
+										<MagnifyingGlassIcon height="16" width="16" />
+									</TextField.Slot>
+									<TextField.Input placeholder="Search in 400k jobs..." />
+								</TextField.Root>
 
-						<Link
-							href="/dashboard/notification"
-							className={styles.DashboardHeaderNotification}
-						>
-							<Help height="18" width="18" />
-						</Link>
-						<Link
-							href="/dashboard/notification"
-							className={styles.DashboardHeaderNotification}
-						>
-							<BellIcon height="18" width="18" />
-						</Link>
+								<Link
+									href="/dashboard/notification"
+									className={styles.DashboardHeaderNotification}
+								>
+									<Help height="18" width="18" />
+								</Link>
+								<Link
+									href="/dashboard/notification"
+									className={styles.DashboardHeaderNotification}
+								>
+									<BellIcon height="18" width="18" />
+								</Link>
+							</>
+						) : (
+							<CallToAction.button
+								outline
+								size="sm"
+								onClick={() => router.back()}
+							>
+								Go Back
+							</CallToAction.button>
+						)}
+
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
 								<button className={styles.DashboardHeaderProfile}>

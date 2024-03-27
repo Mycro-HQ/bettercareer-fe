@@ -47,25 +47,34 @@
 		top: 0px;
 		z-index: -1;
 
-		@supports (
-			background:
-				radial-gradient(
-					7.08% 35.82% at 1.49% 49.83%,
-					rgba(234, 224, 255, 0.12) 0%,
-					rgba(73, 0, 226, 0) 100%
-				)
-		) {
-			background:
-				radial-gradient(
-						7.08% 35.82% at 1.49% 49.83%,
-						rgba(234, 224, 255, 0.36) 0%,
-						rgba(234, 224, 255, 0) 100%
-					)
-					/* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
-				linear-gradient(96.68deg, #eef7ff -0.19%, #b4fff3 226.07%);
-		}
+		// @supports (
+		// 	background:
+		// 		radial-gradient(
+		// 			7.08% 35.82% at 1.49% 49.83%,
+		// 			rgba(234, 224, 255, 0.12) 0%,
+		// 			rgba(73, 0, 226, 0) 100%
+		// 		)
+		// ) {
+		// 	background:
+		// 		radial-gradient(
+		// 				7.08% 35.82% at 1.49% 49.83%,
+		// 				rgba(234, 224, 255, 0.36) 0%,
+		// 				rgba(234, 224, 255, 0) 100%
+		// 			)
+		// 			/* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+		// 		linear-gradient(96.68deg, #eef7ff -0.19%, #b4fff3 226.07%);
+		// }
+		// background: linear-gradient(96.68deg, #eef7ff -0.19%, #b4fff3 226.07%);
 
-		background: linear-gradient(96.68deg, #eef7ff -0.19%, #b4fff3 226.07%);
+		background: url('/images/dashboard/dashboard-mask.png'),
+			linear-gradient(
+				196.99deg,
+				rgba(51, 157, 255, 0.15) 7.09%,
+				rgba(153, 102, 255, 0.15) 106.59%,
+				rgba(251, 65, 255, 0.15) 86.59%
+			);
+		background-position: 50% 50%;
+		background-size: cover;
 		border: 1px solid #f3f4f4;
 	}
 

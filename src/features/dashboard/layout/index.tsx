@@ -25,11 +25,13 @@ export const DashboardLayout = ({
 	title = 'Dashboard',
 	backdropThreshold = 'md',
 	profile,
+	bare,
 }: {
 	children: React.ReactNode;
 	title?: string;
 	backdropThreshold?: 'sm' | 'md' | 'lg';
 	profile: UserData | null | undefined;
+	bare?: boolean;
 }) => {
 	return (
 		<div
@@ -42,7 +44,7 @@ export const DashboardLayout = ({
 			<nav className={styles.DashboardLayoutHeader}>
 				<div className={styles.DashboardLayoutBanner} />
 
-				<DashboardHeader />
+				<DashboardHeader bare={bare} />
 			</nav>
 			<main className={styles.DashboardLayoutMain}>
 				<Container maxWidth="lg">{children}</Container>
