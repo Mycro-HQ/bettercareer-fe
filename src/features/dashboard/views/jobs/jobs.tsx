@@ -25,6 +25,36 @@ const JobData = [
 		the mastermind behind everything from our logo and brand
 		guidelines to marketing materials and social media graphics.
 		`,
+		isRequirementsText: false,
+		requirementsArray: [
+			`
+			Minimum 3+ years of experience in brand design or a
+			related field, with a strong portfolio showcasing your
+			design expertise and ability to create a cohesive
+			brand identity.
+			`,
+			`
+			Software mastery: Proficiency in Adobe Creative Suite
+			(Photoshop, Illustrator, InDesign) or similar design
+			software is essential.
+			`,
+			`
+			Eye for detail: A keen eye for detail and a commitment
+			to producing high-quality, pixel-perfect designs are
+			non-negotiable.
+			`,
+			`
+			Brand storytelling: You possess a deep understanding
+			of how visual design can shape brand perception and
+      effectively communicate brand messages.
+			`,
+			`
+			Team player with a twist: You thrive in a
+			collaborative environment while maintaining the
+			creative independence to bring fresh ideas to the
+			table.
+			`,
+		],
 	},
 	{
 		key: 1,
@@ -45,6 +75,36 @@ const JobData = [
 		the mastermind behind everything from our logo and brand
 		guidelines to marketing materials and social media graphics.
 		`,
+		isRequirementsText: false,
+		requirementsArray: [
+			`
+			Minimum 3+ years of experience in brand design or a
+			related field, with a strong portfolio showcasing your
+			design expertise and ability to create a cohesive
+			brand identity.
+			`,
+			`
+			Software mastery: Proficiency in Adobe Creative Suite
+			(Photoshop, Illustrator, InDesign) or similar design
+			software is essential.
+			`,
+			`
+			Eye for detail: A keen eye for detail and a commitment
+			to producing high-quality, pixel-perfect designs are
+			non-negotiable.
+			`,
+			`
+			Brand storytelling: You possess a deep understanding
+			of how visual design can shape brand perception and
+      effectively communicate brand messages.
+			`,
+			`
+			Team player with a twist: You thrive in a
+			collaborative environment while maintaining the
+			creative independence to bring fresh ideas to the
+			table.
+			`,
+		],
 	},
 	{
 		key: 2,
@@ -65,6 +125,36 @@ const JobData = [
 		the mastermind behind everything from our logo and brand
 		guidelines to marketing materials and social media graphics.
 		`,
+		isRequirementsText: false,
+		requirementsArray: [
+			`
+			Minimum 3+ years of experience in brand design or a
+			related field, with a strong portfolio showcasing your
+			design expertise and ability to create a cohesive
+			brand identity.
+			`,
+			`
+			Software mastery: Proficiency in Adobe Creative Suite
+			(Photoshop, Illustrator, InDesign) or similar design
+			software is essential.
+			`,
+			`
+			Eye for detail: A keen eye for detail and a commitment
+			to producing high-quality, pixel-perfect designs are
+			non-negotiable.
+			`,
+			`
+			Brand storytelling: You possess a deep understanding
+			of how visual design can shape brand perception and
+      effectively communicate brand messages.
+			`,
+			`
+			Team player with a twist: You thrive in a
+			collaborative environment while maintaining the
+			creative independence to bring fresh ideas to the
+			table.
+			`,
+		],
 	},
 ];
 
@@ -167,40 +257,19 @@ export const Jobs = () => {
 								<div>
 									<JobDescriptionTitle title="Requirements" />
 									<JobDescriptionBody
-										isChildText={false}
+										isChildText={JobData[activeJobCardIndex].isRequirementsText}
 										children={
 											<ul className="list-disc list-inside">
-												<li>
-													Minimum 3+ years of experience in brand design or a
-													related field, with a strong portfolio showcasing your
-													design expertise and ability to create a cohesive
-													brand identity.
-												</li>
-												<br />
-												<li>
-													Software mastery: Proficiency in Adobe Creative Suite
-													(Photoshop, Illustrator, InDesign) or similar design
-													software is essential.
-												</li>
-												<br />
-												<li>
-													Eye for detail: A keen eye for detail and a commitment
-													to producing high-quality, pixel-perfect designs are
-													non-negotiable.
-												</li>
-												<br />
-												<li>
-													Brand storytelling: You possess a deep understanding
-													of how visual design can shape brand perception and
-													effectively communicate brand messages.
-												</li>
-												<br />
-												<li>
-													Team player with a twist: You thrive in a
-													collaborative environment while maintaining the
-													creative independence to bring fresh ideas to the
-													table.
-												</li>
+												{JobData[activeJobCardIndex].requirementsArray.map(
+													(req) => {
+														return (
+															<li key={req.slice(0, 10)}>
+																{req}
+																<br />
+															</li>
+														);
+													}
+												)}
 											</ul>
 										}
 									/>
