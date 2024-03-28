@@ -15,6 +15,16 @@ const JobData = [
 		salaryRange: '$120k - $140k',
 		tags: ['Remote', 'Internship', 'Full-Time'],
 		time: '1hr ago',
+		summary: `
+		Are you a creative visionary with a passion for crafting
+		exceptional brand experiences? Do you thrive in translating
+		brand strategies into captivating visuals that resonate with
+		audiences? If so, then we want you on our team! We're
+		searching for a talented Brand Designer to play a pivotal
+		role in shaping the visual identity of our brand. You'll be
+		the mastermind behind everything from our logo and brand
+		guidelines to marketing materials and social media graphics.
+		`,
 	},
 	{
 		key: 1,
@@ -25,6 +35,16 @@ const JobData = [
 		salaryRange: '$120k - $140k',
 		tags: ['Remote', 'Internship', 'Full-Time'],
 		time: '1hr ago',
+		summary: `
+		Are you a creative visionary with a passion for crafting
+		exceptional brand experiences? Do you thrive in translating
+		brand strategies into captivating visuals that resonate with
+		audiences? If so, then we want you on our team! We're
+		searching for a talented Brand Designer to play a pivotal
+		role in shaping the visual identity of our brand. You'll be
+		the mastermind behind everything from our logo and brand
+		guidelines to marketing materials and social media graphics.
+		`,
 	},
 	{
 		key: 2,
@@ -35,8 +55,50 @@ const JobData = [
 		salaryRange: '$120k - $140k',
 		tags: ['Remote', 'Internship', 'Full-Time'],
 		time: '1hr ago',
+		summary: `
+		Are you a creative visionary with a passion for crafting
+		exceptional brand experiences? Do you thrive in translating
+		brand strategies into captivating visuals that resonate with
+		audiences? If so, then we want you on our team! We're
+		searching for a talented Brand Designer to play a pivotal
+		role in shaping the visual identity of our brand. You'll be
+		the mastermind behind everything from our logo and brand
+		guidelines to marketing materials and social media graphics.
+		`,
 	},
 ];
+
+function JobDescriptionTitle({ title }: { title: string }) {
+	return (
+		<Text as="span" weight={600} className="mb-3">
+			{title}
+		</Text>
+	);
+}
+
+function JobDescriptionBody({
+	children,
+	isChildText = true,
+}: {
+	children: React.ReactNode;
+	isChildText?: boolean;
+}) {
+	return isChildText ? (
+		<Text
+			as="p"
+			size="sm"
+			weight={500}
+			lineHeight="20px"
+			className="text-[#273643]"
+		>
+			{children}
+		</Text>
+	) : (
+		<div className="text-sm font-medium leading-5 text-[#273643]">
+			{children}
+		</div>
+	);
+}
 
 export const Jobs = () => {
 	const [activeJobCardIndex, setActiveJobCardIndex] = React.useState<
@@ -97,51 +159,51 @@ export const Jobs = () => {
 							</Flex.Row>
 							<Flex.Column gap={32}>
 								<div>
-									<Text as="span" weight={600} className="mb-3">
-										Summary
-									</Text>
-									<Text
-										as="p"
-										size="sm"
-										weight={500}
-										lineHeight="20px"
-										className="text-[#273643]"
-									>
-										Are you a creative visionary with a passion for crafting
-										exceptional brand experiences? Do you thrive in translating
-										brand strategies into captivating visuals that resonate with
-										audiences? If so, then we want you on our team! We're
-										searching for a talented Brand Designer to play a pivotal
-										role in shaping the visual identity of our brand. You'll be
-										the mastermind behind everything from our logo and brand
-										guidelines to marketing materials and social media graphics.
-									</Text>
+									<JobDescriptionTitle title="Summary" />
+									<JobDescriptionBody
+										children={JobData[activeJobCardIndex].summary}
+									/>
 								</div>
 								<div>
-									<Text as="span" weight={600} className="mb-3">
-										Requirements
-									</Text>
-									<Text
-										as="p"
-										size="sm"
-										weight={500}
-										lineHeight="20px"
-										className="text-[#273643]"
-									>
-										Minimum 3+ years of experience in brand design or a related
-										field, with a strong portfolio showcasing your design
-										expertise and ability to create a cohesive brand identity.
-										Software mastery: Proficiency in Adobe Creative Suite
-										(Photoshop, Illustrator, InDesign) or similar design
-										software is essential. Eye for detail: A keen eye for detail
-										and a commitment to producing high-quality, pixel-perfect
-										designs are non-negotiable. Brand storytelling: You possess
-										a deep understanding of how visual design can shape brand
-										perception and effectively communicate brand messages. Team
-										player with a twist: You thrive in a collaborative
-										environment while maintaining the creative independence to
-										bring fresh ideas to the table.
-									</Text>
+									<JobDescriptionTitle title="Requirements" />
+									<JobDescriptionBody
+										isChildText={false}
+										children={
+											<ul className="list-disc list-inside">
+												<li>
+													Minimum 3+ years of experience in brand design or a
+													related field, with a strong portfolio showcasing your
+													design expertise and ability to create a cohesive
+													brand identity.
+												</li>
+												<br />
+												<li>
+													Software mastery: Proficiency in Adobe Creative Suite
+													(Photoshop, Illustrator, InDesign) or similar design
+													software is essential.
+												</li>
+												<br />
+												<li>
+													Eye for detail: A keen eye for detail and a commitment
+													to producing high-quality, pixel-perfect designs are
+													non-negotiable.
+												</li>
+												<br />
+												<li>
+													Brand storytelling: You possess a deep understanding
+													of how visual design can shape brand perception and
+													effectively communicate brand messages.
+												</li>
+												<br />
+												<li>
+													Team player with a twist: You thrive in a
+													collaborative environment while maintaining the
+													creative independence to bring fresh ideas to the
+													table.
+												</li>
+											</ul>
+										}
+									/>
 								</div>
 							</Flex.Column>
 						</Flex.Column>
