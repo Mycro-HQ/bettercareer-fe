@@ -261,14 +261,11 @@ export const Jobs = () => {
 										children={
 											<ul className="list-disc list-inside">
 												{JobData[activeJobCardIndex].requirementsArray.map(
-													(req) => {
-														return (
-															<li key={req.slice(0, 10)}>
-																{req}
-																<br />
-															</li>
-														);
-													}
+													(req) => (
+														<li key={req.slice(0, 10)} className="mb-4">
+															{req}
+														</li>
+													)
 												)}
 											</ul>
 										}
