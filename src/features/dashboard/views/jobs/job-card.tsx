@@ -1,8 +1,9 @@
 import React from 'react';
 import styles from './jobs.module.scss';
 import { Text, Flex } from '@labs/components';
+import classNames from 'classnames';
 
-type JobCardProps = {
+interface JobCardProps extends React.HTMLAttributes<HTMLDivElement> {
 	companyLogo: React.ReactNode;
 	jobTitle: string;
 	companyName: string;
@@ -10,7 +11,7 @@ type JobCardProps = {
 	salaryRange: string;
 	tags: string[];
 	time: string;
-};
+}
 
 export default function JobCard({
 	companyLogo,
@@ -20,9 +21,15 @@ export default function JobCard({
 	salaryRange,
 	tags,
 	time,
+	className,
+	onClick,
 }: JobCardProps) {
 	return (
-		<Flex.Column gap={32} className={styles.JobCard}>
+		<Flex.Column
+			gap={32}
+			className={classNames(styles.JobCard, className)}
+			onClick={onClick}
+		>
 			<Flex>
 				<div>
 					<Flex.Row gap={18}>
@@ -64,7 +71,7 @@ export default function JobCard({
 	);
 }
 
-function Seperator() {
+export function Seperator() {
 	return (
 		<Text as="span" weight={700} lineHeight="24px">
 			{' '}
