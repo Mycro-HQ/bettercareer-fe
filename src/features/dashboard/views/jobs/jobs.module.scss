@@ -3,8 +3,12 @@
 .JobCard {
 	padding: rem(32px);
 	border-radius: rem(16px);
-	border: 1.5px solid #1388f2;
+	border: 1.5px solid #e7e9eb;
 	background: #fff;
+
+	&:hover {
+		cursor: pointer;
+	}
 }
 
 .JobTag {
