@@ -3,12 +3,11 @@ import React from 'react';
 import { OnboardingLayout } from '.';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 
-import LinkedInIcon from '@labs/icons/socials/linkedin.svg';
-import GoogleIcon from '@labs/icons/socials/google.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
+import LoginWithLinkedin from './components/login-with-linkedin';
 import LoginWithGoogle from './components/login-with-google';
 
 export const Register = () => {
@@ -50,13 +49,7 @@ export const Register = () => {
 							</Heading.h5>
 
 							<Flex.Column gap={14} className={styles.AuthLayoutButtons}>
-								<CallToAction.a
-									href="/build-profile?linkedin=true"
-									leadingIcon={<LinkedInIcon />}
-									size="block"
-								>
-									Sign up with Linkedin
-								</CallToAction.a>
+								<LoginWithLinkedin intent="signup" />
 								<LoginWithGoogle intent="signup" />
 								<Text fontSize="16px" className="mt-[10px]">
 									Already have an account?{' '}

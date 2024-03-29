@@ -1,10 +1,6 @@
 import React, { useCallback } from 'react';
 
-import {
-	APP_URL,
-	LINKEDIN_CLIENT_ID,
-	LINKEDIN_CLIENT_SECRET,
-} from '@lib/config';
+import { APP_URL, LINKEDIN_CLIENT_ID } from '@lib/config';
 import LinkedInIcon from '@labs/icons/socials/linkedin.svg';
 
 import {
@@ -44,47 +40,24 @@ const LoginWithLinkedin = (props: LoginWithLinkedinProps) => {
 		const popup = openPopupWindow(
 			`https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${LINKEDIN_CLIENT_ID}&redirect_uri=${encodeURIComponent(
 				callbackUrl
-			)}&scope=r_liteprofile%20r_emailaddress`
+			)}&scope=profile%20email%20openid`
 		) as Window;
 
 		return getLocationFromPopup(popup).then((location: { search: string }) => {
 			const query = queryString.parse(location.search) || {};
-			const oauthVerifier = query.oauth_verifier;
 
 			popup.close();
-			return oauthVerifier;
+			return query.code;
 		});
 	}
 
-	const handleLogin = useCallback(async (code: string) => {
-		const data = await fetch('https://www.linkedin.com/oauth/v2/accessToken', {
-			method: 'POST',
-			body: new URLSearchParams({
-				grant_type: 'authorization_code',
-				code,
-				redirect_uri: callbackUrl,
-				client_id: LINKEDIN_CLIENT_ID,
-				client_secret: LINKEDIN_CLIENT_SECRET,
-			}),
-		}).then((response) => response.json());
-
-		const accessToken = data.access_token;
+	const handleLogin = useCallback(async () => {
+		const code = await getLinkedVerifier();
 
 		authWithLinkedin({
-			token: accessToken,
+			token: code as string,
 			provider: 'linkedin',
 		});
-	}, []);
-
-	const handleLinkedInCallback = () => {
-		const queryString = window.location.search;
-		const urlParams = new URLSearchParams(queryString);
-		const code = urlParams.get('code');
-		if (code) handleLogin(code);
-	};
-
-	React.useEffect(() => {
-		handleLinkedInCallback();
 	}, []);
 
 	return (
@@ -92,7 +65,7 @@ const LoginWithLinkedin = (props: LoginWithLinkedinProps) => {
 			size="block"
 			isLoading={isPending}
 			leadingIcon={<LinkedInIcon />}
-			onClick={getLinkedVerifier}
+			onClick={handleLogin}
 		>
 			{props.intent === 'login'
 				? 'Sign in with Linkedin'

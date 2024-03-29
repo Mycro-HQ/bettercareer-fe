@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { type UserData } from '@/queries/types/user';
 import { useCallback } from 'react';
 
-const ALLOWED_REDIRECT_PATHS = ['/login', '/register', '/forgot-password'];
+const ALLOWED_REDIRECT_PATHS = ['/login', '/signup', '/forgot-password'];
 const DEFAULT_REDIRECT_PATH = '/dashboard';
 
 export const useAuthSuccess = () => {
