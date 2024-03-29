@@ -1,0 +1,55 @@
+@use '@/styles/base/utils' as *;
+
+.BuildResumeLayout {
+	overflow: hidden;
+	height: var(--bc-labs-vh);
+	&__nav {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+		padding: 14px 24px;
+		background: #ffffff;
+		border-bottom: 1px solid #f3f4f4;
+		.BuildResumeLayout__nav__logo {
+			max-width: 120px;
+
+			path {
+				fill: var(--text-black);
+			}
+		}
+	}
+
+	.ContentWrap {
+		display: flex;
+		justify-content: space-between;
+		align-items: stretch;
+		min-height: calc(var(--bc-labs-vh) - 78.09px);
+	}
+
+	&__main {
+		display: flex;
+		flex-direction: column;
+		padding: 0 14px 98px;
+		background: #fff;
+		width: 100%;
+		height: auto;
+		flex: 1;
+		overflow-y: auto;
+		max-height: var(--bc-labs-vh);
+		position: relative;
+		@include custom-scrollbar;
+	}
+
+	&__aside {
+		width: 38%;
+		flex: 0 0 38%;
+		padding: 24px;
+		height: auto;
+
+		background: #f9fafa;
+		border-left: 1px solid #f2f8f6;
+
+		border-right: 1px solid #f3f4f4;
+	}
+}

@@ -1,0 +1,23 @@
+@use '@/styles/base/utils' as *;
+
+.BuildResumePane {
+	.FloatingResources {
+		margin-left: auto;
+		width: fit-content;
+		margin-top: 40px;
+	}
+
+	.AddSection {
+		width: 100%;
+		display: flex;
+		gap: 4px;
+		height: fit-content;
+		background: #ffffff;
+		border: 1px solid #f3f4f4;
+		border-radius: 12px;
+		padding: 18px;
+		transition: all 0.2s ease-in-out;
+		font-weight: 600;
+		align-items: center;
+	}
+}
