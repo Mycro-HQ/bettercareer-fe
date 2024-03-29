@@ -209,3 +209,7 @@ export const formDataAppender = (
 
 	return formData;
 };
+
+export function isDate(dateStr: string) {
+	return !isNaN(new Date(dateStr).getDate());
+}
