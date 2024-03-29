@@ -9,7 +9,7 @@ import { Spinner } from '../spinner';
 
 import styles from './call-to-action.module.scss';
 
-type CTASize = 'sm' | 'md' | 'lg' | 'block';
+type CTASize = 'xs' | 'sm' | 'md' | 'lg' | 'block';
 type CTATheme = 'primary' | 'secondary' | 'clear' | 'error';
 type CTAElement = 'button' | 'a';
 
