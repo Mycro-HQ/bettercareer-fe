@@ -1,0 +1,212 @@
+@use '@/styles/base/utils' as *;
+
+/** field CSS File */
+
+.FieldSet {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: 100%;
+	position: relative;
+}
+
+.FieldLabel {
+	@include typography('p');
+	font-weight: 600;
+}
+
+.FieldRequired {
+	color: var(--primary-red);
+}
+
+.FieldError {
+	@include typography('accent');
+	color: var(--primary-red);
+	margin-bottom: 4px;
+	margin-top: 4px;
+}
+
+.FieldWrapper {
+	background: #fff;
+	border: 1px solid #e7e9eb;
+	border-radius: 12px;
+
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+	overflow: hidden;
+
+	&[data-amlabs-field-wrapper='textarea'] {
+		align-items: flex-start;
+	}
+
+	&.disabled {
+		opacity: 0.6;
+		pointer-events: none;
+		user-select: none;
+		cursor: not-allowed;
+	}
+
+	&.rounded {
+		border-radius: 50px;
+	}
+
+	.leadingIcon,
+	.FieldPasswordToggle,
+	.trailingIcon {
+		margin: 16px 0px 16px 16px;
+		width: 18px;
+		height: 18px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		svg,
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+			display: block;
+		}
+	}
+
+	.trailingIcon {
+		margin-right: 16px;
+		width: auto;
+		height: auto;
+	}
+
+	.FieldPasswordToggle {
+		margin: 16px 16px 16px 6px;
+		width: 24px;
+		height: auto;
+		position: relative;
+
+		&:not(.FieldPasswordToggleActive) {
+			&:before {
+				content: '';
+				height: 20px;
+				width: 2px;
+				background: #545454;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%) rotate(45deg);
+			}
+		}
+	}
+
+	select {
+		background: url("data:image/svg+xml, %3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath d='M2.12001 1.29007L6.00001 5.17007L9.88001 1.29007C9.97259 1.19749 10.0825 1.12405 10.2035 1.07394C10.3244 1.02384 10.4541 0.998047 10.585 0.998047C10.7159 0.998047 10.8456 1.02384 10.9665 1.07394C11.0875 1.12405 11.1974 1.19749 11.29 1.29007C11.3826 1.38265 11.456 1.49256 11.5061 1.61352C11.5562 1.73449 11.582 1.86414 11.582 1.99507C11.582 2.126 11.5562 2.25565 11.5061 2.37661C11.456 2.49757 11.3826 2.60749 11.29 2.70007L6.70001 7.29007C6.60749 7.38277 6.4976 7.45632 6.37663 7.5065C6.25566 7.55668 6.12597 7.58251 5.99501 7.58251C5.86404 7.58251 5.73435 7.55668 5.61338 7.5065C5.49241 7.45632 5.38252 7.38277 5.29001 7.29007L0.700006 2.70007C0.607302 2.60755 0.533755 2.49767 0.483573 2.37669C0.433392 2.25572 0.407562 2.12604 0.407562 1.99507C0.407562 1.8641 0.433392 1.73442 0.483573 1.61344C0.533755 1.49247 0.607302 1.38258 0.700006 1.29007C1.09001 0.910068 1.73001 0.900068 2.12001 1.29007Z' fill='%23666666' /%3E%3C/svg%3E")
+			no-repeat right 16px center/12px 10px #fff !important;
+
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		appearance: none;
+		cursor: pointer;
+	}
+
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	textarea:-webkit-autofill,
+	textarea:-webkit-autofill:hover,
+	textarea:-webkit-autofill:focus,
+	select:-webkit-autofill,
+	select:-webkit-autofill:hover,
+	select:-webkit-autofill:focus {
+		color: var(--text-black);
+		transition: background-color 5000s ease-in-out 0s;
+		-webkit-text-fill-color: var(--text-black);
+		-webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+	}
+
+	input,
+	select,
+	textarea {
+		@include typography('p');
+		background: transparent;
+		font-weight: 500;
+		border: none;
+		outline: none;
+		width: 100%;
+		height: 100%;
+		padding: 18px;
+		color: var(--text-black);
+
+		&::placeholder {
+			color: var(--text-gray-light);
+		}
+
+		&:focus {
+			&::placeholder {
+				color: transparent;
+			}
+		}
+
+		&:disabled {
+			color: var(--text-gray-light);
+			opacity: 0.6;
+		}
+	}
+}
+
+.FieldPasswordHintValid {
+	color: var(--primary-blue);
+
+	li {
+		color: var(--primary-blue);
+		text-decoration: line-through;
+		opacity: 0.6;
+	}
+}
+
+.FieldPasswordHint {
+	@include typography('accent');
+	color: var(--text-black);
+
+	p {
+		margin-bottom: 8px;
+	}
+
+	ul {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		list-style: none;
+		list-style-position: inside;
+		flex-wrap: wrap;
+
+		.FieldPasswordHintValid {
+			text-decoration: line-through;
+			opacity: 0.6;
+		}
+
+		li {
+			flex-basis: 50%;
+			margin-bottom: 4px;
+			transition: all 0.2s ease-in;
+			will-change: all;
+
+			&:before {
+				content: '\2022';
+				color: var(--primary-blue);
+				font-weight: bold;
+				display: inline-block;
+				width: 1rem;
+				margin-left: 1px;
+			}
+		}
+	}
+}
+
+.FormField {
+	position: relative;
+	display: block;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
