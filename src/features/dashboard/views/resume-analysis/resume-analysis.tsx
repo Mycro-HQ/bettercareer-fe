@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { ResumeAnalysisInfo } from '.';
 import { ScoreCounter } from '@/components/score-counter';
+import { Accordion } from '@labs/components/accordion';
 
 import CaretDown from '@labs/icons/misc/caret-down.svg';
 import CaretUp from '@labs/icons/misc/caret-up.svg';
@@ -32,13 +33,17 @@ export const ResumeAnalysis = () => {
 			</Flex.Column>
 			<Flex.Row gap={32} className={styles.ResumeAnalysisSection}>
 				<aside className={styles.ResumeAnalysisAside}>
-					<Flex.Column gap={19.03} className={styles.ResumeAnalysisBox}>
+					<Flex.Column
+						gap={19.03}
+						alignItems="center"
+						className={styles.ResumeAnalysisBox}
+					>
 						<Flex.Column
 							alignItems="center"
 							justifyContent="center"
 							className={styles.ResumeOverallScoreCounter}
 						>
-							<ScoreCounter className={styles.ResumeScoreSvg} score={0.8} />
+							<ScoreCounter className={styles.ResumeScoreSvg} score={score} />
 							<Text.p weight={700} fontSize="28px">
 								{score}
 							</Text.p>
@@ -94,60 +99,63 @@ export const ResumeAnalysis = () => {
 						<CallToAction className="mt-[10px]">Build Resume</CallToAction>
 					</Flex.Column>
 					<Flex.Column gap={12}>
-						<Heading.h5 fontSize="24px" weight={600} animate="slide">
+						<Heading.h5 fontSize="20px" weight={600} animate="slide">
 							Analysis
 						</Heading.h5>
 						<Flex.Column gap={16} fullWidth>
 							{ResumeAnalysisInfo.map((item, index) => (
-								<div key={index} className={styles.ResumeAnalysisBox}>
-									<button
-										className={styles.AccordionButton}
-										onClick={() =>
-											setCurrentIndex(
-												Math.max(
-													0,
-													Math.min(ResumeAnalysisInfo.length - 1, index)
-												)
-											)
-										}
-									>
-										<Flex.Column fullWidth>
+								<Accordion.Group allowMultiple>
+									<Accordion
+										key={index}
+										className={styles.AccordionItem}
+										title={
 											<Flex.Row
 												alignItems="center"
 												justifyContent="space-between"
-												fullWidth
 											>
-												<Flex.Row alignItems="center" gap={12}>
+												<Flex.Row
+													alignItems="center"
+													gap={12}
+													className={styles.AccordionHeader}
+												>
 													<Text.p
-														fontSize="20px"
+														fontSize="18px"
 														weight={700}
 														casing="capitalize"
 													>
 														{item.label}
 													</Text.p>
-													<div className={styles.ResumeScoreIndicator}>
+													<div
+														style={{ background: item.color + '20' }}
+														className={styles.ResumeScoreIndicator}
+													>
 														<Text.p weight={600} color={item.color} size="sm">
 															{item.score}/100
 														</Text.p>
 													</div>
 												</Flex.Row>
-												{index === currentIndex ? <CaretUp /> : <CaretDown />}
 											</Flex.Row>
-											<AnimatePresence>
-												{index === currentIndex && (
-													<motion.div className={styles.AccordionContent}>
-														<Text.p fontSize="18px" weight={600}>
-															Problem:
-														</Text.p>
-														<Text.p fontSize="18px" weight={600}>
-															Solution:
-														</Text.p>
-													</motion.div>
-												)}
-											</AnimatePresence>
-										</Flex.Column>
-									</button>
-								</div>
+										}
+									>
+										<div className={styles.AccordionContent}>
+											<Text.p fontSize="16px" weight={600}>
+												Problem: {item.problem}
+											</Text.p>
+											<div className={styles.AccordionContentItem}>
+												<Text.p fontSize="16px" weight={600}>
+													Solution:
+												</Text.p>
+												<ul className={styles.ResumeList}>
+													{item.solutions.map((solution) => (
+														<li className={styles.ResumeListItem}>
+															{solution}
+														</li>
+													))}
+												</ul>
+											</div>
+										</div>
+									</Accordion>
+								</Accordion.Group>
 							))}
 						</Flex.Column>
 					</Flex.Column>

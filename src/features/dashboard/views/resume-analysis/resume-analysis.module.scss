@@ -23,7 +23,6 @@
 		padding: 24px;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 
 		.ResumeOverallScoreCounter {
 			width: 100%;
@@ -63,26 +62,38 @@
 				}
 			}
 		}
+	}
 
-		.ResumeScoreIndicator {
-			width: 66px;
-			height: 28px;
-			border: 1px solid #f8e1cd;
-			border-radius: 8px;
-			padding: 4px 8px;
-			background: #fcf0e6;
-			text-align: center;
+	.AccordionItem {
+		.AccordionHeader {
+			.ResumeScoreIndicator {
+				width: 66px;
+				height: 28px;
+				border: 1px solid #f8e1cd;
+				border-radius: 8px;
+				display: grid;
+				place-items: center;
+			}
 		}
 
-		.AccordionButton {
+		.AccordionContent {
 			width: 100%;
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			text-align: left;
+			padding: 16px 0;
 
-			.AccordionContent {
+			.AccordionContentItem {
 				width: 100%;
-				display: flex;
-				flex-direction: column;
-				gap: 16px;
-				text-align: left;
+				padding: 16px;
+
+				.ResumeList {
+					list-style-type: disc;
+					padding: 16px 24px 0;
+
+					// .ResumeListItem {}
+				}
 			}
 		}
 	}

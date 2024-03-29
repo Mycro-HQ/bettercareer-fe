@@ -6,9 +6,11 @@ declare module '@radix-ui/themes' {
 		Theme,
 		TextField,
 		Slot,
+		ScrollArea,
 	}: typeof RadixThemes = require('@radix-ui/themes/dist/cjs/components/avatar');
 }
 
+declare module 'react-datepicker';
 declare module 'js-cookie' {
 	interface CookieAttributes {
 		expires?: number | Date;

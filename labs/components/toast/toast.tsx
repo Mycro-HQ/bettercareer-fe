@@ -87,7 +87,7 @@ export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({
 	);
 };
 
-const Toast: React.FC<ToastDefinition & { onClose: () => void }> = ({
+export const Toast: React.FC<ToastDefinition & { onClose: () => void }> = ({
 	id,
 	message,
 	variant = 'secondary',

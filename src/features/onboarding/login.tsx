@@ -8,9 +8,8 @@ import LogoMark from '@labs/icons/logo-mark.svg';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import LoginWithGoogle from './components/login-with-google';
-
-import styles from './onboarding.module.scss';
 import LoginWithLinkedin from './components/login-with-linkedin';
+import styles from './onboarding.module.scss';
 
 export const Login = () => {
 	return (
@@ -57,7 +56,7 @@ export const Login = () => {
 								<Text fontSize="16px" className="mt-[10px]">
 									Don’t have an account?{' '}
 									<Text.span inheritFont color="var(--primary-blue)">
-										<Link href="/register">Sign Up</Link>
+										<Link href="/signup">Sign Up</Link>
 									</Text.span>
 								</Text>
 							</Flex.Column>
