@@ -39,6 +39,7 @@
 	--primary-success: #027a48;
 	--primary-error: #d92d20;
 	--primary-warning: #dc6803;
+	--gray-lightest: #f9f9f9;
 
 	--soft-yellow: #e7f731;
 	--soft-black: #16013c;
@@ -58,6 +59,10 @@
 	h3,
 	h4 {
 		--heading-font-family: var(--font-base);
+	}
+
+	.rt-CheckboxButton:where(.rt-variant-surface):where([data-state='checked']) {
+		background-color: var(--primary-blue) !important;
 	}
 
 	.rt-BaseMenuViewport {
