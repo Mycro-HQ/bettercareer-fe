@@ -1,0 +1,49 @@
+@use '@/styles/base/utils' as *;
+
+.Accordion {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	height: fit-content;
+	background: #ffffff;
+	border: 1px solid #f3f4f4;
+	border-radius: 12px;
+	transition: all 0.2s ease-in-out;
+
+	.AccordionHeader {
+		display: flex;
+		background: transparent;
+		box-shadow: none;
+		width: 100%;
+		border: none;
+		align-items: center;
+		justify-content: space-between;
+		cursor: pointer;
+		padding: 18px;
+
+		.arrow {
+			transition: all 0.2s ease-in-out;
+		}
+
+		&.isOpen {
+			padding-bottom: 0;
+			.arrow {
+				transform: rotate(180deg);
+			}
+		}
+
+		p {
+			text-align: left;
+		}
+	}
+
+	.AccordionBody {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		width: 100%;
+		padding: 18px;
+		padding-top: 0;
+	}
+}
