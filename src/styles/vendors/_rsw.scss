@@ -1,0 +1,60 @@
+.rsw-ce {
+	padding: 22px 16px !important;
+	i {
+		font-style: italic;
+	}
+
+	b {
+		font-weight: 800;
+	}
+
+	ol {
+		list-style-type: decimal;
+		padding-left: 20px;
+	}
+
+	ul {
+		list-style-type: disc;
+		padding-left: 20px;
+	}
+
+	a {
+		color: var(--primary-blue);
+		text-decoration: underline;
+	}
+}
+
+.rsw-toolbar {
+	padding: 6px 16px;
+	gap: 8px;
+	width: 100%;
+	background: #f9fafa !important;
+	border-radius: 12px 12px 0px 0px;
+	border-color: #e7e9eb !important;
+}
+
+.rsw-editor {
+	border: 1px solid #e7e9eb !important;
+	border-radius: 12px !important;
+	display: flex;
+	flex-direction: column;
+	min-height: 300px;
+	overflow: hidden;
+}
+
+.rsw-btn {
+	&[data-active='true'] {
+		background: #e1f0ff !important;
+	}
+
+	background: transparent;
+	border: 0;
+	color: #222;
+	cursor: pointer;
+	font-size: 1em;
+	height: fit-content !important;
+	outline: none;
+	padding: 8px !important;
+	border-radius: 6px;
+	width: fit-content !important;
+}
