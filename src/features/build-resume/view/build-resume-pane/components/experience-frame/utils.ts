@@ -1,4 +1,4 @@
-import { Field } from '@labs/components/field/field';
+import { Field } from '@labs/components/field';
 
 export const MODULE_OPTIONS = {
 	experience: {

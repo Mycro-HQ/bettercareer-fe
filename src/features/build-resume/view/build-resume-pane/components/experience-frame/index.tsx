@@ -8,6 +8,7 @@ import { CallToAction, Flex, Text } from '@labs/components';
 import Add from '@labs/icons/misc/add.svg';
 import Edit from '@labs/icons/dashboard/edit.svg';
 import Delete from '@labs/icons/dashboard/delete.svg';
+import { useBuildStore } from '@/store/z-store/builder';
 
 import ReadMore from '@/components/misc/read-more';
 
@@ -32,16 +33,16 @@ const ExperienceFrame = ({
 	editField: (field: any) => void;
 	removeField: (field: any) => void;
 }) => {
-	const [addNew, setAddNew] = React.useState(false);
+	const { moduleAdd, setModuleAdd: setAddNew } = useBuildStore();
 	const [isEditing, setIsEditing] = React.useState(false);
 	const [fieldData, setFieldData] = React.useState<any>({});
-
+	const addNew = moduleAdd[type];
 	const moduleOptions = MODULE_OPTIONS[type] || {};
 
 	const editFrame = useCallback(
 		(data: any) => {
 			setFieldData(data);
-			setAddNew(true);
+			setAddNew(type, true);
 			setIsEditing(true);
 		},
 		[setFieldData, setAddNew]
@@ -52,7 +53,7 @@ const ExperienceFrame = ({
 			<FrameEmpty
 				message={moduleOptions.emptyMessage}
 				title={moduleOptions.name}
-				onClick={() => setAddNew(true)}
+				onClick={() => setAddNew(type, true)}
 			/>
 		);
 	}
@@ -112,26 +113,41 @@ const ExperienceFrame = ({
 					</Flex>
 				);
 			})}
-			<CallToAction
-				variant="primary"
-				size="md"
-				className="ml-auto"
-				disabled={fieldData === field}
-				onClick={() => {
-					if (isEditing) {
-						editField(fieldData);
-						setAddNew(false);
-						setIsEditing(false);
-						return;
-					}
+			<Flex justifyContent="flex-end" fullWidth gap={8}>
+				{isEditing && (
+					<CallToAction
+						outline
+						variant="primary"
+						size="md"
+						onClick={() => {
+							removeField(fieldData);
+							setFieldData({});
+							setAddNew(type, false);
+							setIsEditing(false);
+						}}
+					>
+						Delete
+					</CallToAction>
+				)}
+				<CallToAction
+					variant="primary"
+					size="md"
+					disabled={fieldData === field}
+					onClick={() => {
+						if (isEditing) {
+							editField(fieldData);
+						} else {
+							setField(fieldData);
+						}
 
-					setField(fieldData);
-					setAddNew(false);
-					setIsEditing(false);
-				}}
-			>
-				Save
-			</CallToAction>
+						setAddNew(type, false);
+						setIsEditing(false);
+						setFieldData({});
+					}}
+				>
+					Save
+				</CallToAction>
+			</Flex>
 		</Flex>
 	);
 };
