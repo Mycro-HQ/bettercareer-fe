@@ -245,9 +245,9 @@ export const ResumeApp = ({
 												pageNumber={index + 1}
 												scale={2}
 												renderMode="canvas"
-												canvasRef={index + 1 === currentPage && canvasRef}
-												onGetTextSuccess={(text: string) => {
-													formatText(text);
+												canvasRef={index + 1 === currentPage ? canvasRef : null}
+												onGetTextSuccess={(text: any) => {
+													formatText(text.textContent);
 													setGenerateImage(false);
 												}}
 											/>

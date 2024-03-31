@@ -6,6 +6,7 @@ import {
 	BtnNumberedList,
 	Separator,
 	Toolbar,
+	ContentEditableEvent,
 } from 'react-simple-wysiwyg';
 
 import Bold from '@labs/icons/dashboard/editor/bold.svg';
@@ -63,7 +64,13 @@ export const BtnUnderline = createButton(
 	'underline'
 );
 
-export default function CustomEditor({ value, onChange }) {
+export default function CustomEditor({
+	value,
+	onChange,
+}: {
+	value: string;
+	onChange: (value: ContentEditableEvent) => void;
+}) {
 	return (
 		<EditorProvider>
 			<Editor value={value} onChange={onChange}>

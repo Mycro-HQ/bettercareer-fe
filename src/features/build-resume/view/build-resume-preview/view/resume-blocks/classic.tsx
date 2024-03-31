@@ -20,7 +20,7 @@ const renderElements = {
 	certifications: Certification,
 };
 
-export const ClassicTemplate = ({ modules }) => {
+export const ClassicTemplate = ({ modules }: { modules: any }) => {
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
@@ -74,8 +74,8 @@ export const ClassicTemplate = ({ modules }) => {
 			}),
 		[]
 	);
-	const getData = (key) => {
-		return modules.find((module) => module.key === key)?.data;
+	const getData = (key: string) => {
+		return modules.find((module: any) => module.key === key)?.data;
 	};
 
 	const heading = getData('heading');
@@ -138,7 +138,7 @@ function Experience({ data, styles }: { data: any; styles: any }) {
 			{data?.length ? (
 				<View style={styles.section}>
 					<DocText style={styles.sectionTitle}>Work Experience</DocText>
-					{data.map((exp) => {
+					{data.map((exp: any) => {
 						const {
 							title: _title,
 							company,
