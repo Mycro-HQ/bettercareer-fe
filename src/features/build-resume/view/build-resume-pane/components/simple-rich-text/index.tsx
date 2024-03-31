@@ -1,12 +1,12 @@
 import {
-	createButton,
-	Editor,
-	EditorProvider,
 	BtnBulletList,
 	BtnNumberedList,
+	ContentEditableEvent,
+	Editor,
+	EditorProvider,
 	Separator,
 	Toolbar,
-	ContentEditableEvent,
+	createButton,
 } from 'react-simple-wysiwyg';
 
 import Bold from '@labs/icons/dashboard/editor/bold.svg';

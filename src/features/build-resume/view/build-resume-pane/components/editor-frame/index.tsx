@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Field } from '@labs/components/field';
-import CustomEditor from '../simple-rich-text';
 import { useQuery } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
+
+import CustomEditor from '../simple-rich-text';
+
+import { Field } from '@labs/components/field';
 import { getDataIcons, useDebounce } from '@labs/utils';
 import { CallToAction, Flex } from '@labs/components';
-import { APP_URL } from '@lib/config';
-import { motion } from 'framer-motion';
+
 export const EditorModule = ({
 	type,
 	setField,

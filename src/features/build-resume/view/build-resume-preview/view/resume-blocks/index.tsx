@@ -1,17 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Font, StyleSheet, pdf } from '@react-pdf/renderer';
+import { Font, pdf } from '@react-pdf/renderer';
 import { Document, Page, pdfjs } from 'react-pdf';
-
 import { ScrollArea } from '@radix-ui/themes';
 
 import File from '@labs/icons/dashboard/file_2.svg';
-import styles from './resume-blocks.module.scss';
-
 import { useBuildStore } from '@/store/z-store/builder';
 import { isEmpty, useDebounce } from '@labs/utils';
 import { Spinner } from '@labs/components/spinner';
 import { Flex, Heading } from '@labs/components';
 
+import styles from './resume-blocks.module.scss';
 import { ClassicTemplate } from './classic';
 
 import 'react-pdf/dist/Page/TextLayer.css';

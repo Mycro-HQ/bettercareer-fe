@@ -1,19 +1,20 @@
 import { AxiosRequestConfig } from 'axios';
 import {
-	useQuery,
-	UseQueryOptions,
-	useMutation,
-	UseMutationOptions,
-	QueryClient,
-	useInfiniteQuery,
-	UseInfiniteQueryOptions,
 	InvalidateQueryFilters,
+	QueryClient,
+	UseInfiniteQueryOptions,
+	UseMutationOptions,
+	UseQueryOptions,
+	useInfiniteQuery,
+	useMutation,
+	useQuery,
 } from '@tanstack/react-query';
-import { baseQueryFn } from './base-query';
-import { queryClient } from './query-client';
 import { GetServerSidePropsContext } from 'next';
 import queryString from 'query-string';
 import { useEffect } from 'react';
+
+import { queryClient } from './query-client';
+import { baseQueryFn } from './base-query';
 
 type ListenerConfig<TData = unknown, TError = unknown> = {
 	matches: (action: { type: 'query' | 'mutation'; key: string }) => boolean;

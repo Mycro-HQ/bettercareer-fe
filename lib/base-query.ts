@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
+
 import { API_URL } from './config';
 
 export type BaseQueryFnType = <

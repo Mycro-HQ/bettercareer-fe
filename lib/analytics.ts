@@ -1,4 +1,5 @@
 import posthog from 'posthog-js';
+
 import * as config from './config';
 
 const isBrowser = typeof window !== 'undefined';

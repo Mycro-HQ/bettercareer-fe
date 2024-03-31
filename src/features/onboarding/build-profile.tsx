@@ -4,14 +4,13 @@ import Router from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useInterval } from '@labs/utils/hooks/useInterval';
+import { CallToAction, Flex, Heading, Text } from '@labs/components';
+import LogoMark from '@labs/icons/logo-mark.svg';
+import DragAndDrop from '@/components/drag-and-drop';
 
 import { OnboardingLayout } from '.';
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
 
-import LogoMark from '@labs/icons/logo-mark.svg';
 import styles from './onboarding.module.scss';
-
-import DragAndDrop from '@/components/drag-and-drop';
 
 export const BuildProfile = () => {
 	const [isLinkedin, setIsLinkedin] = useState(false);

@@ -1,10 +1,11 @@
 import Document, {
-	Html,
+	DocumentContext,
 	Head,
+	Html,
 	Main,
 	NextScript,
-	DocumentContext,
 } from 'next/document';
+
 import { getSSRCssRules } from '@labs/utils';
 import { GA_TRACKING_ID } from '@lib/config';
 

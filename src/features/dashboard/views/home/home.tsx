@@ -1,6 +1,6 @@
 import React from 'react';
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
 
+import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
 import FileIcon from '@labs/icons/dashboard/file.svg';
@@ -9,13 +9,10 @@ import Selection from '@labs/icons/dashboard/selection.svg';
 import JobIcon from '@labs/icons/dashboard/calendar.svg';
 import SponsorIcon from '@labs/icons/dashboard/tag.svg';
 import NewResume from '@labs/icons/dashboard/upload.svg';
-
-import { SetupChecklist } from './components/setup-checklist';
-
-import { StackCard } from './components/stack-card/stack-card';
-
 import { type UserData } from '@/queries/types/user';
 
+import { SetupChecklist } from './components/setup-checklist';
+import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
 
 export const DashboardHome = ({

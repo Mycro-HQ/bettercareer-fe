@@ -1,5 +1,7 @@
-import { Heading, Text, Flex, CallToAction } from '@labs/components';
 import React from 'react';
+
+import { CallToAction, Flex, Heading, Text } from '@labs/components';
+
 import styles from './resume-analysis.module.scss';
 
 export const ResumeAnalysis = () => {

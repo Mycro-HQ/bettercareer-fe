@@ -2,16 +2,14 @@ import React, { useCallback } from 'react';
 import classNames from 'classnames';
 import { format, isDate } from 'date-fns';
 
-import { MODULE_COMPONENTS, MODULE_OPTIONS } from './utils';
 import { CallToAction, Flex, Text } from '@labs/components';
-
 import Add from '@labs/icons/misc/add.svg';
 import Edit from '@labs/icons/dashboard/edit.svg';
 import Delete from '@labs/icons/dashboard/delete.svg';
 import { useBuildStore } from '@/store/z-store/builder';
-
 import ReadMore from '@/components/misc/read-more';
 
+import { MODULE_COMPONENTS, MODULE_OPTIONS } from './utils';
 import styles from './experience-frame.module.scss';
 
 type ExperienceTypes =

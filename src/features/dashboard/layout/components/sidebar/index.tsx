@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import { Avatar, DropdownMenu } from '@radix-ui/themes';
 
 import { Flex, Text } from '@labs/components';
-
 import Logo from '@labs/icons/logo.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
 
@@ -117,13 +116,13 @@ export const DashboardSidebar = ({
 					))}
 				</div>
 				<div className={styles.DashboardSidebarMenu}>
-					<a
+					<Link
 						href="/dashboard"
 						className={classNames([styles.DashboardSidebarMenuItem])}
 					>
 						<Help />
 						<Text>Help Center</Text>
-					</a>
+					</Link>
 				</div>
 			</Flex.Column>
 		</div>

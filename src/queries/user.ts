@@ -1,5 +1,7 @@
-import { createSmartApi } from '@lib/usable-query';
 import Cookies from 'js-cookie';
+
+import { createSmartApi } from '@lib/usable-query';
+
 import { UserData } from './types/user';
 
 export const authApiCreator = createSmartApi({

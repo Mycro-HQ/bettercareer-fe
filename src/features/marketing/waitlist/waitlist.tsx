@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+
 import {
 	CallToAction,
 	Container,
@@ -7,19 +9,17 @@ import {
 	Text,
 	useToast,
 } from '@labs/components';
-import { AnimatePresence, motion } from 'framer-motion';
-
 import Logo from '@labs/icons/logo.svg';
 import Arrow from '@labs/icons/misc/arrow-right.svg';
-
-import { WaitlistInfo } from '.';
 import { Modal } from '@labs/components/modal';
-
-import styles from './waitlist.module.scss';
 import DragAndDrop from '@/components/drag-and-drop';
 import { useSendWaitlistMutation } from '@/queries/marketing';
 import { formDataAppender } from '@labs/utils';
 import analytics from '@lib/analytics';
+
+import { WaitlistInfo } from '.';
+
+import styles from './waitlist.module.scss';
 
 const boxVariant = {
 	hidden: {
@@ -517,7 +517,7 @@ const WaitListModal = ({
 							{waitlistState.wantFirst100 && (
 								<>
 									<label className="mt-[22px] block ">
-										<Text weight={700}>Let's get your CV</Text>
+										<Text weight={700}>Let&#39;s get your CV</Text>
 										<Text color="#57636D" size="sm">
 											Be among the first to get a free resume analysis before we
 											launch

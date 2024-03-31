@@ -1,16 +1,17 @@
 import React, { Fragment, useMemo } from 'react';
-
 import {
 	Document,
+	Link,
 	Page,
+	StyleSheet,
 	Text,
 	View,
-	StyleSheet,
-	Link,
 } from '@react-pdf/renderer';
-import DocText from './components/text';
 import { format } from 'date-fns';
+
 import { fixText } from '@labs/utils';
+
+import DocText from './components/text';
 import { parseHtmlToReactPdf } from './components/rich-output';
 
 const renderElements = {

@@ -1,12 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Container } from '@labs/components';
-
-import { DashboardHeader } from './components/header';
-
 import { Seo } from '@/components/seo';
 import { type UserData } from '@/queries/types/user';
 
+import { DashboardHeader } from './components/header';
 import styles from './layout.module.scss';
 
 /**

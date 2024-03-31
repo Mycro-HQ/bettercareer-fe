@@ -1,5 +1,6 @@
-import { Text, useStyles } from '@labs/index';
 import React, { memo, useCallback, useState } from 'react';
+
+import { Text, useStyles } from '@labs/index';
 
 interface ReadMoreProps extends React.HTMLAttributes<HTMLSpanElement> {
 	text: string;

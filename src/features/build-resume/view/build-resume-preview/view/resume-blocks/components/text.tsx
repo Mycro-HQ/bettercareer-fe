@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Text, StyleSheet } from '@react-pdf/renderer';
+import { StyleSheet, Text } from '@react-pdf/renderer';
 
 const DocText = ({
 	children,

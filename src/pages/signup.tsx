@@ -1,5 +1,6 @@
-import { Register } from '@/features/onboarding';
 import React from 'react';
+
+import { Register } from '@/features/onboarding';
 
 const RegisterPage = () => {
 	return <Register />;

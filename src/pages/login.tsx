@@ -1,5 +1,6 @@
-import { Login, OnboardingLayout } from '@/features/onboarding';
 import React from 'react';
+
+import { Login } from '@/features/onboarding';
 
 const LoginPage = () => {
 	return <Login />;

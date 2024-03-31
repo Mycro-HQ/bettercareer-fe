@@ -1,14 +1,15 @@
 import React from 'react';
-
-import { OnboardingLayout } from '.';
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
-
-import LogoMark from '@labs/icons/logo-mark.svg';
-import styles from './onboarding.module.scss';
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
+
+import { Flex, Heading, Text } from '@labs/components';
+import LogoMark from '@labs/icons/logo-mark.svg';
+
+import { OnboardingLayout } from '.';
+
 import LoginWithLinkedin from './components/login-with-linkedin';
 import LoginWithGoogle from './components/login-with-google';
+import styles from './onboarding.module.scss';
 
 export const Register = () => {
 	return (

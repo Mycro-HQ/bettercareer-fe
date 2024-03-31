@@ -133,11 +133,11 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 		});
 	},
 	setModuleAdd: (key: string, status: boolean) => {
-		const module = get().moduleAdd[key];
+		const moduleAdd = get().moduleAdd[key];
 		set({
 			moduleAdd: {
 				...get().moduleAdd,
-				[key]: !!module ? false : status,
+				[key]: !!moduleAdd ? false : status,
 			},
 		});
 	},

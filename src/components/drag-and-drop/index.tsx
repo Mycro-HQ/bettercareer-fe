@@ -1,10 +1,9 @@
-import React, { useState, useEffect, DragEvent, useCallback } from 'react';
+import React, { DragEvent, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { Flex, Text } from '@labs/components';
 
+import { Flex, Text } from '@labs/components';
 import { generateUUID, getSizeFormat } from '@labs/utils';
 import { FileWithKey } from '@labs/utils/types/utility';
-
 import DragAndDropImage from '@labs/icons/dragAndDrop.svg';
 import DocumentImage from '@labs/icons/document.svg';
 import DeleteImage from '@labs/icons/delete.svg';

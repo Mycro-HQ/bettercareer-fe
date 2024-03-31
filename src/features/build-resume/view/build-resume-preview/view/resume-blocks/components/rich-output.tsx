@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, Link } from '@react-pdf/renderer';
+import { Link, StyleSheet, Text } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
 	paragraph: {

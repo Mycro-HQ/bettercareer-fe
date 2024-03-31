@@ -1,6 +1,6 @@
 import React from 'react';
+
 import { Field } from '@labs/components/field';
-import { CallToAction } from '@labs/components';
 
 export const HeadingModule = ({
 	setField,

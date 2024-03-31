@@ -1,7 +1,8 @@
-import { useUserStore } from '@/store/z-store/user';
 import { useRouter } from 'next/router';
-import { type UserData } from '@/queries/types/user';
 import { useCallback } from 'react';
+
+import { useUserStore } from '@/store/z-store/user';
+import { type UserData } from '@/queries/types/user';
 
 const ALLOWED_REDIRECT_PATHS = ['/login', '/signup', '/forgot-password'];
 const DEFAULT_REDIRECT_PATH = '/dashboard';

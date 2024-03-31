@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import classNames from 'classnames';
 
-import CheckIcon from '@labs/icons/dashboard/check.svg';
-
 import styles from '../home.module.scss';
+
+import { CallToAction, Flex, Heading, Text } from '@labs/components';
+import CheckIcon from '@labs/icons/dashboard/check.svg';
 
 export const SetupChecklist = () => {
 	const checklist = [

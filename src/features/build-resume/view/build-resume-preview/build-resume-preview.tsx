@@ -1,7 +1,7 @@
-import { CallToAction, Flex, Text } from '@labs/components';
-import React, { useState, useRef, useEffect, useCallback, use } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
+import { CallToAction, Flex, Text } from '@labs/components';
 import ZoomIn from '@labs/icons/dashboard/zoom-in.svg';
 import ZoomOut from '@labs/icons/dashboard/zoom-out.svg';
 import Settings from '@labs/icons/dashboard/settings.svg';

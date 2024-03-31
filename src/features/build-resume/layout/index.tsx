@@ -1,11 +1,12 @@
 import React from 'react';
 import { DropdownMenu } from '@radix-ui/themes';
-import { CallToAction, Flex, Text } from '@labs/components';
-import { BuildResumePane } from '../view/build-resume-pane';
+
 import { BuildResumePreview } from '../view/build-resume-preview/';
+import { BuildResumePane } from '../view/build-resume-pane';
+
+import { CallToAction, Flex, Text } from '@labs/components';
 import { useBuildStore } from '@/store/z-store/builder';
 import { downloadResume } from '@labs/utils';
-
 import ArrowDown from '@labs/icons/dashboard/down.svg';
 import FileIcon from '@labs/icons/dashboard/file.svg';
 import Logo from '@labs/icons/logo.svg';

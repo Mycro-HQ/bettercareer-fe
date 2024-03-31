@@ -1,6 +1,6 @@
-import { UserData } from '@/queries/types/user';
-import { createReportableStore } from '../middleware/report';
 import { createPersistMiddleware } from '../middleware/persist';
+
+import { UserData } from '@/queries/types/user';
 
 interface UserStore {
 	loading: boolean;

@@ -1,17 +1,16 @@
 import React, { useCallback } from 'react';
+import queryString from 'query-string';
 
 import { APP_URL, LINKEDIN_CLIENT_ID } from '@lib/config';
 import LinkedInIcon from '@labs/icons/socials/linkedin.svg';
-
 import {
 	CallToAction,
 	getLocationFromPopup,
 	openPopupWindow,
 	useToast,
 } from '@labs/index';
-
 import { useOAuthMutation } from '@/queries/user';
-import queryString from 'query-string';
+
 import { useAuthSuccess } from './use-auth';
 
 type LoginWithLinkedinProps = {

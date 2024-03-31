@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { Container, Heading, Text, Flex, CallToAction } from '@labs/components';
 import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 import { ScrollArea } from '@radix-ui/themes';
+import classNames from 'classnames';
 
-import { Accordion } from '@labs/components/accordion';
+import { COMPONENT_MAP } from '../../lib';
 import { StrictModeDroppable } from '../../components/sm-droppable';
 
+import { CallToAction, Container, Flex, Heading, Text } from '@labs/components';
+import { Accordion } from '@labs/components/accordion';
 import Add from '@labs/icons/misc/add.svg';
 import Bulb from '@labs/icons/misc/bulb.svg';
 import SparklesIcon from '@labs/icons/misc/sparkels.svg';
 import DNDIcon from '@labs/icons/misc/dnd.svg';
-import { COMPONENT_MAP } from '../../lib';
-
 import { useBuildStore } from '@/store/z-store/builder';
-import classNames from 'classnames';
 
 import styles from './build-resume-pane.module.scss';
 
