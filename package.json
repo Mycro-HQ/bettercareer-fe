@@ -12,6 +12,7 @@
   "dependencies": {
     "@radix-ui/react-progress": "^1.0.3",
     "@radix-ui/themes": "^2.0.3",
+    "@react-pdf/renderer": "^3.4.2",
     "@tanstack/react-query": "^5.25.0",
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
@@ -24,6 +25,8 @@
     "react-beautiful-dnd": "13.1.1",
     "react-datepicker": "4.11.0",
     "react-dom": "^18",
+    "react-pdf": "^7.7.1",
+    "react-simple-wysiwyg": "^3.0.2",
     "zustand": "^4.5.1"
   },
   "husky": {
