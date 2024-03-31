@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Heading, Text, Flex, CallToAction } from '@labs/components';
 import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 import { ScrollArea } from '@radix-ui/themes';
@@ -10,19 +10,22 @@ import Add from '@labs/icons/misc/add.svg';
 import Bulb from '@labs/icons/misc/bulb.svg';
 import SparklesIcon from '@labs/icons/misc/sparkels.svg';
 import DNDIcon from '@labs/icons/misc/dnd.svg';
+import { COMPONENT_MAP } from '../../lib';
 
 import { useBuildStore } from '@/store/z-store/builder';
+import classNames from 'classnames';
 
 import styles from './build-resume-pane.module.scss';
-import { COMPONENTMAP } from '../../lib';
 
 export const BuildResumePane = () => {
 	const {
 		modules: blocks,
+		moduleAdd,
 		setModules,
 		setModuleData,
 		removeModuleData,
 		editModuleData,
+		setModuleAdd: setAddNew,
 	} = useBuildStore();
 
 	function handleOnDragEnd(result: any) {
@@ -33,6 +36,8 @@ export const BuildResumePane = () => {
 
 		setModules(items);
 	}
+
+	const [defaultAccordionKey, setDefaultKey] = useState('0:block_item');
 
 	return (
 		<ScrollArea type="scroll" scrollbars="vertical">
@@ -65,11 +70,15 @@ export const BuildResumePane = () => {
 									ref={droppable.innerRef}
 									className="flex flex-col gap-[8px]"
 								>
-									<Accordion.Group defaultActiveKey="2:block_item">
+									<Accordion.Group defaultActiveKey={defaultAccordionKey}>
 										{blocks.map((block, index) => {
-											const Component = (COMPONENTMAP[
-												block.key as keyof typeof COMPONENTMAP
-											] || (() => null)) as any;
+											const Component = (COMPONENT_MAP[
+												block.key as keyof typeof COMPONENT_MAP
+											] ||
+												COMPONENT_MAP[
+													'default' as keyof typeof COMPONENT_MAP
+												]) as any;
+
 											return (
 												<Draggable
 													key={`${index}:blocks`}
@@ -95,13 +104,30 @@ export const BuildResumePane = () => {
 																		>
 																			<DNDIcon />
 																		</span>
-																		<Text weight={600}>{block.title}</Text>
+																		<Text weight={600}>
+																			{block.key.startsWith('new_section')
+																				? (block?.data as any)?.title ??
+																					block.title
+																				: block.title}
+																		</Text>
 																	</Flex>
 																}
 																trailingIcon={
 																	Array.isArray(block?.data) &&
 																	block?.data?.length ? (
-																		<Add />
+																		<span
+																			role="button"
+																			tabIndex={0}
+																			aria-label="add"
+																			className={classNames([
+																				moduleAdd[block.key] ? 'rotate-45' : '',
+																				styles.AddIcon,
+																				'cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60 ',
+																			])}
+																			onClick={() => setAddNew(block.key, true)}
+																		>
+																			<Add />
+																		</span>
 																	) : undefined
 																}
 															>
@@ -129,16 +155,17 @@ export const BuildResumePane = () => {
 									{droppable.placeholder}
 									<button
 										className={styles.AddSection}
-										onClick={() =>
-											setModules([
+										onClick={async () => {
+											await setModules([
 												...blocks,
 												{
 													key: `new_section:${blocks.length + 1}`,
 													title: 'New Section',
 													data: {},
 												},
-											])
-										}
+											]);
+											setDefaultKey(`${blocks.length}:block_item`);
+										}}
 									>
 										<Add /> New Section
 									</button>

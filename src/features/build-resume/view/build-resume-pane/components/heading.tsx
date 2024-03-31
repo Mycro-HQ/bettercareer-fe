@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from '@labs/components/field/field';
+import { Field } from '@labs/components/field';
 import { CallToAction } from '@labs/components';
 
 export const HeadingModule = ({
@@ -10,6 +10,7 @@ export const HeadingModule = ({
 	field: {
 		name: string;
 		email: string;
+		title: string;
 	};
 }) => {
 	return (
@@ -19,6 +20,12 @@ export const HeadingModule = ({
 				value={field.name}
 				placeholder="Your Name"
 				onChange={(e) => setField({ name: e.target.value })}
+			/>
+			<Field
+				label="Title"
+				value={field.title}
+				placeholder="E.g Software Engineer"
+				onChange={(e) => setField({ title: e.target.value })}
 			/>
 			<Field
 				label="Email"

@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Flex, Text } from '@labs/index';
+import { createErrorWithCode, Flex, Text } from '@labs/index';
 
 import ArrowDown from '@labs/icons/dashboard/down.svg';
 
@@ -24,7 +24,7 @@ interface AccordionProps extends PropsWithChildren {
 	/**
 	 * The key of the accordion to be selected
 	 */
-	dataKey?: string;
+	dataKey: string;
 	/**
 	 * The theme of the accordion
 	 */
@@ -51,16 +51,24 @@ const AccordionMain = memo<AccordionProps>(
 	({
 		title,
 		children,
-		theme = 'dark',
 		size = 'sm',
 		className,
+		dataKey,
 		leadingIcon,
 		trailingIcon,
 	}) => {
-		const [isOpen, setIsOpen] = useState(false);
+		const { activeKeys, handleAccordionClick } = useAccordion();
+
+		const isOpen = useMemo(() => {
+			if (Array.isArray(activeKeys)) {
+				return activeKeys.find((key) => `${key}` === `${dataKey}`);
+			}
+
+			return activeKeys === dataKey;
+		}, [activeKeys]);
 
 		const onToggle = useCallback(() => {
-			setIsOpen((prev) => !prev);
+			handleAccordionClick(dataKey || title?.toString()!);
 		}, []);
 
 		const renderChildren = useCallback(
@@ -86,14 +94,13 @@ const AccordionMain = memo<AccordionProps>(
 			() =>
 				classNames([
 					styles.Accordion,
-					styles[theme],
 					className,
 					{
 						[styles.isOpen]: isOpen,
 						[styles[size]]: size,
 					},
 				]),
-			[theme, className, isOpen, size]
+			[, className, isOpen, size]
 		);
 
 		return (
@@ -111,7 +118,12 @@ const AccordionMain = memo<AccordionProps>(
 							role="button"
 							tabIndex={0}
 							aria-label="accordion_icon"
-							onClick={(e) => e.stopPropagation()}
+							onClick={(e) => {
+								e.stopPropagation();
+								if (!isOpen) {
+									onToggle();
+								}
+							}}
 						>
 							{leadingIcon}
 						</span>
@@ -128,7 +140,12 @@ const AccordionMain = memo<AccordionProps>(
 							role="button"
 							tabIndex={0}
 							aria-label="accordion"
-							onClick={(e) => e.stopPropagation()}
+							onClick={(e) => {
+								e.stopPropagation();
+								if (!isOpen) {
+									onToggle();
+								}
+							}}
 						>
 							{trailingIcon}
 						</span>
@@ -143,6 +160,22 @@ const AccordionMain = memo<AccordionProps>(
 
 AccordionMain.displayName = 'Accordion';
 
+const AccordionContext = React.createContext<{
+	activeKeys: number[] | number | string;
+	handleAccordionClick: (index: number[] | number | string) => void;
+}>({
+	activeKeys: -1,
+	handleAccordionClick: () =>
+		createErrorWithCode(
+			'ACCORDION_CONTEXT_MISSING',
+			'handleAccordionClick',
+			`Before calling \`handleAccordionClick\`, wrap your accordion with \`<Accordion.Group>\`.`
+		),
+});
+
+export const useAccordion = () => {
+	return React.useContext(AccordionContext);
+};
 interface AccordionGroupProps extends PropsWithChildren {
 	/**
 	 * Allows multiple accordions to be open at the same time
@@ -151,100 +184,61 @@ interface AccordionGroupProps extends PropsWithChildren {
 	/**
 	 * default active key
 	 */
-	defaultActiveKey?: string | number;
+	defaultActiveKey?: number[] | number | string;
 }
 
-export const useAccordionGroupState = (
-	allowMultiple: boolean,
-	defaultActiveKey?: string | number
-) => {
-	const [activeKeys, setActiveKeys] = useState<number[] | number | string>(
-		allowMultiple ? [] : defaultActiveKey ?? -1
-	);
+const AccordionProvider = memo<AccordionGroupProps>(
+	({ children, allowMultiple = false, defaultActiveKey }) => {
+		const [activeKeys, setActiveKeys] = useState<number[] | number | string>(
+			allowMultiple ? [] : defaultActiveKey ?? -1
+		);
 
-	useEffect(() => {
-		if (defaultActiveKey) {
-			setActiveKeys(defaultActiveKey);
-		}
-	}, [defaultActiveKey]);
+		useEffect(() => {
+			if (defaultActiveKey) {
+				setActiveKeys(
+					allowMultiple ? [defaultActiveKey as number] : defaultActiveKey
+				);
+			}
+		}, [defaultActiveKey]);
 
-	const handleAccordionClick = useCallback(
-		(index: number) => {
-			setActiveKeys((prevactiveKeys) => {
-				if (allowMultiple) {
-					if (Array.isArray(prevactiveKeys) && prevactiveKeys.includes(index)) {
-						return prevactiveKeys.filter((i) => i !== index);
+		const handleAccordionClick = useCallback(
+			(index: any) => {
+				setActiveKeys((prevactiveKeys) => {
+					if (allowMultiple) {
+						if (
+							Array.isArray(prevactiveKeys) &&
+							prevactiveKeys.includes(index)
+						) {
+							return prevactiveKeys.filter((i) => i !== index);
+						}
+
+						return [...(prevactiveKeys as number[]), index];
+					} else {
+						return prevactiveKeys === index ? -1 : index;
 					}
-					return [...(prevactiveKeys as number[]), index];
-				} else {
-					return prevactiveKeys === index ? -1 : index;
-				}
-			});
-		},
-		[allowMultiple]
-	);
+				});
+			},
+			[allowMultiple]
+		);
 
-	return { activeKeys, handleAccordionClick };
-};
+		return (
+			<AccordionContext.Provider value={{ activeKeys, handleAccordionClick }}>
+				{children}
+			</AccordionContext.Provider>
+		);
+	}
+);
 
 const AccordionGroup = memo<AccordionGroupProps>(
 	({ children, allowMultiple = false, defaultActiveKey }) => {
-		const { activeKeys, handleAccordionClick } = useAccordionGroupState(
-			allowMultiple,
-			defaultActiveKey
+		return (
+			<AccordionProvider
+				allowMultiple={allowMultiple}
+				defaultActiveKey={defaultActiveKey}
+			>
+				{children}
+			</AccordionProvider>
 		);
-
-		const renderChildren = useCallback(
-			(children: ReactNode, parentIndex = 0) => {
-				return React.Children.map(children, (child: any, index) => {
-					if (!React.isValidElement(child)) {
-						return child;
-					}
-					const $child = child as React.ReactElement & {
-						type: { displayName: string };
-					};
-
-					let currentKey = $child.props.dataKey || parentIndex;
-
-					if (
-						$child.type?.displayName === 'Accordion' &&
-						!$child.props.dataKey
-					) {
-						currentKey = parentIndex++;
-					}
-
-					if (
-						$child.props.$children ||
-						typeof $child.props.children === 'object'
-					) {
-						child = React.cloneElement(child as any, {
-							children: renderChildren(
-								(child as any).props.children,
-								parentIndex
-							),
-						});
-					}
-
-					if (child.type === Accordion) {
-						const _currentKey = child.props.dataKey || currentKey;
-
-						return React.cloneElement(child, {
-							dataKey: _currentKey,
-							isOpen:
-								(Array.isArray(activeKeys) &&
-									activeKeys.includes(_currentKey)) ||
-								activeKeys === _currentKey,
-							onToggle: () => handleAccordionClick(_currentKey),
-						});
-					}
-
-					return child;
-				});
-			},
-			[activeKeys, handleAccordionClick]
-		);
-
-		return <>{renderChildren(children)}</>;
 	}
 );
 

@@ -230,3 +230,25 @@ export const fixText = (
 ) => {
 	return text ? `${options?.prefix || ''}${text}${options?.suffix || ''}` : '';
 };
+
+export const downloadResume = async (
+	raw: string,
+	name = 'resume',
+	type: 'pdf' | 'txt' = 'pdf'
+) => {
+	const applicationTypes = {
+		pdf: 'application/pdf',
+		txt: 'text/plain',
+	};
+
+	const url = window.URL.createObjectURL(
+		new Blob([raw], { type: applicationTypes[type] })
+	);
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = `${name}.${type}`;
+	document.body.appendChild(a);
+	a.click();
+	window.URL.revokeObjectURL(url);
+	document.body.removeChild(a);
+};
