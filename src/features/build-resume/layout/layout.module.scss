@@ -3,6 +3,7 @@
 .BuildResumeLayout {
 	overflow: hidden;
 	height: var(--bc-labs-vh);
+	--sidebar-width: 48%;
 	&__nav {
 		display: flex;
 		width: 100%;
@@ -30,7 +31,7 @@
 	&__main {
 		display: flex;
 		flex-direction: column;
-		padding: 0 14px 98px;
+		padding: 8px 14px 106px;
 		background: #fff;
 		width: 100%;
 		height: auto;
@@ -42,14 +43,14 @@
 	}
 
 	&__aside {
-		width: 38%;
-		flex: 0 0 38%;
+		width: var(--sidebar-width);
+		flex: 0 0 var(--sidebar-width);
 		padding: 24px;
 		height: auto;
 
 		background: #f9fafa;
-		border-left: 1px solid #f2f8f6;
+		border-right: 1px solid #f2f8f6;
 
-		border-right: 1px solid #f3f4f4;
+		border-left: 1px solid #f3f4f4;
 	}
 }

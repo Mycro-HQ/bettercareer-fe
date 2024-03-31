@@ -20,4 +20,10 @@
 		font-weight: 600;
 		align-items: center;
 	}
+
+	.AddIcon {
+		path {
+			stroke: var(--primary-blue);
+		}
+	}
 }

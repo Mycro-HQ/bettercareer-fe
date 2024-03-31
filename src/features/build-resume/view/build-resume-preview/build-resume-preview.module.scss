@@ -1,0 +1,43 @@
+@use '@/styles/base/utils' as *;
+
+.Preview {
+	&:hover,
+	&:focus {
+		.PreviewSnarkBar {
+			opacity: 1;
+			visibility: visible;
+		}
+	}
+}
+
+.PreviewSnarkBar {
+	position: fixed;
+	bottom: 18px;
+	left: 12px;
+	width: calc(var(--sidebar-width) - 10px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.3s ease-in-out;
+
+	.PreviewSnarkBar__inner {
+		backdrop-filter: blur(8px) saturate(1.5);
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		border-radius: 50px;
+		padding: 8px 16px 8px 8px;
+		background: #ffffffd9;
+		width: 100%;
+		box-shadow: 0px 12px 32px rgba(15, 31, 46, 0.1);
+		max-width: 550px;
+
+		svg {
+			width: 18px;
+			height: auto;
+		}
+	}
+}
