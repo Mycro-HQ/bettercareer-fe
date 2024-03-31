@@ -19,10 +19,9 @@ import {
 	forwardRefWrapper,
 	generateUUID,
 } from '../../utils';
-import { FieldDate } from './date-field';
-import { FormField, useFormField } from './form-field';
+
+import { useFormField } from './form-field';
 import { NativeElementProps, Prettify } from '@labs/utils/types/utility';
-import { Checkbox, Radio, Switch } from '../checkable-interactive';
 
 import styles from './field.module.scss';
 
@@ -161,7 +160,7 @@ const validationMap = {
 	},
 };
 
-const fieldFactory = <T extends FieldElementTypes>(component: T) =>
+export const fieldFactory = <T extends FieldElementTypes>(component: T) =>
 	forwardRefWrapper<NativeElementProps<T>, FieldInstance<T | 'input'>>(
 		`Field.${component}`,
 		{
@@ -507,32 +506,3 @@ const fieldFactory = <T extends FieldElementTypes>(component: T) =>
 			);
 		}
 	);
-
-/**
- * Creating a Field component that can be used to create input, textarea, and select fields.
- * @param {FieldProps} - Field props
- * @returns {React.ReactElement} - {Field, Field.Textarea, Field.Input, Field.Select, Field.Form} components
- *
- * @example
- *
- * <Field.Form>
- *  <Field.Input label="Email" name="email" required />
- *  <Field.Input label="Password" name="password" type="password" required />
- *   <Field.Select label="Country" name="country" required>
- *   <option value="US">United States</option>
- *  </Field.Select>
- *  <Field.Textarea label="Message" name="message" required />
- *  <Button type="submit">Submit</Button>
- * </Field.Form>
- */
-
-export const Field = Object.assign(fieldFactory('input'), {
-	Textarea: fieldFactory('textarea'),
-	Input: fieldFactory('input'),
-	Select: fieldFactory('select'),
-	Form: FormField,
-	Checkbox,
-	Switch,
-	Radio,
-	Date: FieldDate,
-});

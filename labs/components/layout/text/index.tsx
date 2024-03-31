@@ -112,7 +112,7 @@ const TextBase = forwardRefWrapper<HTMLParagraphElement, TypographyProps>(
 		]);
 
 		return (
-			<Element ref={ref} className={_class}>
+			<Element ref={ref} className={_class} {...rest}>
 				{children}
 			</Element>
 		);

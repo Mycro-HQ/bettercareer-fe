@@ -213,3 +213,20 @@ export const formDataAppender = (
 export function isDate(dateStr: string) {
 	return !isNaN(new Date(dateStr).getDate());
 }
+
+export function isEmpty(value: any) {
+	if (value === null || value === undefined) return true;
+	if (Array.isArray(value)) return value.length === 0;
+	if (typeof value === 'object') return Object.keys(value).length === 0;
+	return false;
+}
+
+export const fixText = (
+	text: string,
+	options?: {
+		prefix?: string;
+		suffix?: string;
+	}
+) => {
+	return text ? `${options?.prefix || ''}${text}${options?.suffix || ''}` : '';
+};
