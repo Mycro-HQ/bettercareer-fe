@@ -10,7 +10,7 @@ export const ReadMore = memo(
 		const [expanded, setExpanded] = useState(false);
 
 		const _styles = useStyles({
-			color: 'var(--primary-theme)',
+			color: 'var(--primary-blue)',
 		});
 		const toggleExpand = useCallback(() => {
 			setExpanded(!expanded);
@@ -28,12 +28,8 @@ export const ReadMore = memo(
 			<span aria-expanded={expanded} aria-label={text} {...rest}>
 				<Text>{expanded ? text : truncated}</Text>{' '}
 				{(shouldShowReadMore || expanded) && (
-					<button
-						className="read-more-link"
-						onClick={toggleExpand}
-						style={_styles}
-					>
-						<Text inheritFont weight={600}>
+					<button className="read-more-link" onClick={toggleExpand}>
+						<Text inheritFont weight={600} style={_styles}>
 							Read {expanded ? 'less' : 'more'}
 						</Text>
 					</button>

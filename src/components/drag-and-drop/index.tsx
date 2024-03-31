@@ -233,7 +233,7 @@ export default function DragAndDrop({
 						<Text
 							key={file.key}
 							className="mb-2"
-							color="var(--primary-error)"
+							color="var(--primary-red)"
 							size="sm"
 						>
 							{file.status.map((status) => status + '\n')}
