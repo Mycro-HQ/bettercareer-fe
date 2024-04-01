@@ -197,8 +197,7 @@ export const fieldFactory = <T extends FieldElementTypes>(component: T) =>
 				//----------------------------------------------------------------
 				...rest
 			} = props;
-			const { canSubmit, _setFormFieldCanSubmit: setCanSubmit } =
-				useFormField();
+			const { _setFormFieldCanSubmit: setCanSubmit } = useFormField();
 
 			if (!name && required)
 				throw createErrorWithCode(

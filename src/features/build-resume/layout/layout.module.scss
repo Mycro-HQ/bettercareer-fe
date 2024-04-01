@@ -3,7 +3,7 @@
 .BuildResumeLayout {
 	overflow: hidden;
 	height: var(--bc-labs-vh);
-	--sidebar-width: 48%;
+	--sidebar-width: 47%;
 	&__nav {
 		display: flex;
 		width: 100%;
@@ -31,7 +31,7 @@
 	&__main {
 		display: flex;
 		flex-direction: column;
-		padding: 8px 14px 106px;
+		padding: 8px 24px 106px;
 		background: #fff;
 		width: 100%;
 		height: auto;
@@ -48,9 +48,16 @@
 		padding: 24px;
 		height: auto;
 
-		background: #f9fafa;
+		background: linear-gradient(
+			345.12deg,
+			rgba(145, 202, 255, 0.15) -19.06%,
+			rgba(153, 102, 255, 0.15) 124.44%,
+			rgba(251, 65, 255, 0.15) 124.44%
+		);
+
+		// background: #f9fafa;
 		border-right: 1px solid #f2f8f6;
 
-		border-left: 1px solid #f3f4f4;
+		// border-left: 1px solid #f3f4f4;
 	}
 }

@@ -43,7 +43,7 @@ const ExperienceFrame = ({
 			setAddNew(type, true);
 			setIsEditing(true);
 		},
-		[setFieldData, setAddNew]
+		[setFieldData, setAddNew, type]
 	);
 
 	if (Array.isArray(field) && field.length === 0 && !addNew) {
@@ -78,6 +78,27 @@ const ExperienceFrame = ({
 					Component = () => null;
 				}
 
+				const outputs = (key: string, e: any) => {
+					if (key === 'checkbox') {
+						return e.target.checked;
+					}
+					if (key === 'textarea') {
+						return {
+							value: e?.target?.value ?? e,
+							textContent: e?.currentTarget?.outerText ?? e,
+						};
+					}
+					return e?.target?.value ?? e;
+				};
+
+				const inputs = (key: string) => {
+					if (key === 'textarea') {
+						return (
+							fieldData[newField.key as keyof typeof fieldData]?.value ?? ''
+						);
+					}
+					return fieldData[newField.key as keyof typeof fieldData] ?? '';
+				};
 				return (
 					<Flex
 						key={index}
@@ -89,8 +110,22 @@ const ExperienceFrame = ({
 							required={newField.required || false}
 							placeholder={newField.title}
 							name={newField.key}
-							value={fieldData[newField.key as keyof typeof fieldData] || ''}
-							isChecked={fieldData[newField.key as keyof typeof fieldData]}
+							value={inputs(newField.type)}
+							{...(newField.type === 'textarea' && {
+								toolbar: [
+									'bold',
+									'italic',
+									'underline',
+									'link',
+									'divider',
+									'bulletList',
+									'divider',
+									'clearFormatting',
+								],
+							})}
+							{...(newField.type === 'checkbox' && {
+								isChecked: fieldData[newField.key as keyof typeof fieldData],
+							})}
 							onChange={(e: any) => {
 								if (newField.key === 'current' && e.target.checked) {
 									setFieldData((prev: any) => ({
@@ -101,10 +136,7 @@ const ExperienceFrame = ({
 
 								setFieldData((prev: any) => ({
 									...prev,
-									[newField.key]:
-										newField.type === 'checkbox'
-											? e.target.checked
-											: e?.target?.value ?? e,
+									[newField.key]: outputs(newField.type, e),
 								}));
 							}}
 						/>
@@ -220,7 +252,11 @@ const FrameCards = ({
 		if (key === 'description') {
 			return (
 				<>
-					<ReadMore text={data?.toString()} limit={200} className="mt-3" />
+					<ReadMore
+						text={(data?.textContent || data)?.toString()}
+						limit={200}
+						className="mt-3"
+					/>
 				</>
 			);
 		}
@@ -232,7 +268,7 @@ const FrameCards = ({
 			{field.map((data: any, index: number) => {
 				return (
 					<Flex
-						key={index}
+						key={index + data.title}
 						className={styles.FrameCards__Card}
 						gap={16}
 						fullWidth
@@ -240,17 +276,19 @@ const FrameCards = ({
 						alignItems="flex-start"
 					>
 						<Flex.Column gap={4} className={styles.FrameCards__Card__Content}>
-							{Object.keys(extractValidKeysFromType).map((extrc: any) => {
-								return (
-									<Flex key={extrc.key} gap={4}>
-										{extractValidKeysFromType[
-											extrc as keyof typeof extractValidKeysFromType
-										].map((key: any, index: number) => (
-											<>{extractComponent(extrc, data[key], index)}</>
-										))}
-									</Flex>
-								);
-							})}
+							{Object.keys(extractValidKeysFromType).map(
+								(extrc: any, index: number) => {
+									return (
+										<Flex key={extrc.key + index} gap={4}>
+											{extractValidKeysFromType[
+												extrc as keyof typeof extractValidKeysFromType
+											].map((key: any, index: number) => (
+												<>{extractComponent(extrc, data[key], index)}</>
+											))}
+										</Flex>
+									);
+								}
+							)}
 						</Flex.Column>
 						<Flex
 							className={styles.FrameCards__Card__Actions}

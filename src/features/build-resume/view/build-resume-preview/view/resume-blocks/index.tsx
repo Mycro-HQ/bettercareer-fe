@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Font, pdf } from '@react-pdf/renderer';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { ScrollArea } from '@radix-ui/themes';
+import { useMutation } from '@tanstack/react-query';
 
 import File from '@labs/icons/dashboard/file_2.svg';
 import { useBuildStore } from '@/store/z-store/builder';
@@ -176,35 +177,15 @@ export const ResumeApp = ({
 		});
 	}
 
-	useEffect(() => {
-		if (!canvasRef.current || typeof window === 'undefined') return;
-
-		const canvas = canvasRef.current as HTMLCanvasElement;
-		const ctx = (canvas as any).getContext('2d', { alpha: false });
-		const img = new Image();
-		img.src = (canvas as any).toDataURL('image/png');
-		img.onload = () => {
-			setCanvasImage((canvas as any).toDataURL('image/png'));
-			ctx.drawImage(img, 0, 0);
-		};
-
-		img.crossOrigin = 'anonymous';
-		img.onerror = (e) => {
-			setPdfUrl(null);
-		};
-
-		return () => {
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-		};
-	}, [canvasRef.current]);
-
 	return (
 		<ScrollArea type="scroll">
 			<div className="w-fit m-auto max-h-[86vh] rounded-[12px] overflow-hidden">
 				{pdfUrl ? (
 					<>
-						{modules.some((module: any) => isEmpty(module.data)) &&
-						!canvasImage ? (
+						{modules.find((module: any) => !isEmpty(module.data)) &&
+						canvasImage ? (
+							<ImgZoom src={canvasImage} scale={scale} setScale={setScale} />
+						) : (
 							<div className={styles.PreviewPage}>
 								<Flex.Column
 									gap={12}
@@ -222,11 +203,9 @@ export const ResumeApp = ({
 									</Heading.h6>
 								</Flex.Column>
 							</div>
-						) : (
-							<ImgZoom src={canvasImage} scale={scale} setScale={setScale} />
 						)}
 
-						{generateImage && (
+						{generateImage ? (
 							<div className="hidden">
 								<Document
 									file={pdfUrl}
@@ -243,9 +222,29 @@ export const ResumeApp = ({
 												pageNumber={index + 1}
 												scale={2}
 												renderMode="canvas"
-												canvasRef={index + 1 === currentPage ? canvasRef : null}
+												canvasRef={canvasRef}
 												onGetTextSuccess={(text: any) => {
-													formatText(text.textContent);
+													formatText(text);
+												}}
+												onRenderSuccess={() => {
+													if (!canvasRef.current) return;
+													const canvas = canvasRef.current as HTMLCanvasElement;
+													const ctx = (canvas as any).getContext('2d', {
+														alpha: false,
+													});
+													const img = new Image();
+													img.src = (canvas as any).toDataURL('image/png');
+													img.onload = () => {
+														ctx.drawImage(img, 0, 0);
+														setCanvasImage(
+															(canvas as any).toDataURL('image/png')
+														);
+													};
+
+													img.crossOrigin = 'anonymous';
+													img.onerror = (e) => {
+														setPdfUrl(null);
+													};
 													setGenerateImage(false);
 												}}
 											/>
@@ -253,7 +252,7 @@ export const ResumeApp = ({
 									))}
 								</Document>
 							</div>
-						)}
+						) : null}
 					</>
 				) : (
 					<div className={styles.PreviewPage}>

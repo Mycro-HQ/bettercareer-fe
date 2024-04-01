@@ -252,3 +252,27 @@ export const downloadResume = async (
 	window.URL.revokeObjectURL(url);
 	document.body.removeChild(a);
 };
+
+/**
+ * Truncate a given text to a specified length and append an ellipsis if the text is longer
+ * than the specified length.
+ *
+ * @param {string} text - The text to be truncated.
+ * @param {number} length - The maximum length of the text.
+ *
+ * @returns {string} - The truncated text.
+ */
+export const truncateText = (
+	text: string,
+	length: number,
+	ellipsis = true
+): string => {
+	// Check if the text length is greater than the specified length.
+	// If not, simply return the original text.
+	if (text?.length <= length) {
+		return text;
+	}
+
+	// If the text is longer than the specified length, truncate it and append an ellipsis.
+	return `${text?.slice(0, length - 1)}${ellipsis ? '…' : ''}`;
+};

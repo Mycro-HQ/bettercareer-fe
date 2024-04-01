@@ -8,17 +8,18 @@ import {
 	View,
 } from '@react-pdf/renderer';
 import { format } from 'date-fns';
-
+import { RichOutput } from './components/rich-output';
 import { fixText } from '@labs/utils';
 
 import DocText from './components/text';
-import { parseHtmlToReactPdf } from './components/rich-output';
 
 const renderElements = {
 	summary: Summary,
 	experience: Experience,
 	education: Education,
 	certifications: Certification,
+	skills: Skills,
+	custom: CustomSection,
 };
 
 export const ClassicTemplate = ({ modules }: { modules: any }) => {
@@ -41,7 +42,7 @@ export const ClassicTemplate = ({ modules }: { modules: any }) => {
 					gap: 5,
 				},
 				heading: {
-					fontSize: 18,
+					fontSize: 20,
 					fontWeight: 'heavy',
 					letterSpacing: -0.2,
 				},
@@ -58,11 +59,15 @@ export const ClassicTemplate = ({ modules }: { modules: any }) => {
 					fontWeight: 'bold',
 					marginBottom: 5,
 					paddingBottom: 2,
-					borderBottom: '1px solid #6F7982',
+					borderBottom: '1px solid #B7B7B7',
 				},
 				content: {
 					fontSize: 10,
 					lineHeight: 1.5,
+				},
+				inline: {
+					flexDirection: 'row',
+					flexWrap: 'wrap',
 				},
 				link: {
 					color: '#0F1F2E',
@@ -83,7 +88,9 @@ export const ClassicTemplate = ({ modules }: { modules: any }) => {
 	const summary = getData('summary');
 
 	const generateDataByKey = (key: string[]) => {
-		return modules.filter((module: any) => key.includes(module.key));
+		return modules.filter((module: any) => {
+			return key.includes(module.key) || module.key.startsWith('new_section:');
+		});
 	};
 
 	return (
@@ -105,28 +112,65 @@ export const ClassicTemplate = ({ modules }: { modules: any }) => {
 
 				<Summary data={summary} styles={styles} />
 
-				{generateDataByKey(['experience', 'education', 'certifications']).map(
-					(module: any) => {
-						const Component =
-							renderElements[module.key as keyof typeof renderElements];
-						return (
-							<Component key={module.key} data={module.data} styles={styles} />
-						);
-					}
-				)}
+				{generateDataByKey([
+					'experience',
+					'education',
+					'certifications',
+					'skills',
+				]).map((module: any) => {
+					const Component =
+						renderElements[module.key as keyof typeof renderElements] ||
+						renderElements.custom;
+					return (
+						<Component key={module.key} data={module.data} styles={styles} />
+					);
+				})}
 			</Page>
 		</Document>
 	);
 };
 
+function Skills({ data, styles }: { data: any; styles: any }) {
+	return (
+		<View style={styles.section}>
+			{data?.length ? (
+				<>
+					<Text style={styles.sectionTitle}>Skills</Text>
+					<View style={styles.inline}>
+						{data.map((skill: any, index: number) => (
+							<Text key={skill?.$id} style={styles.content}>
+								{fixText(skill.value, {
+									prefix: index > 0 && index < data.length ? ', ' : '',
+								})}
+							</Text>
+						))}
+					</View>
+				</>
+			) : null}
+		</View>
+	);
+}
+
 function Summary({ data, styles }: { data: any; styles: any }) {
-	const parsedContent = parseHtmlToReactPdf(data?.value);
 	return (
 		<View style={styles.section}>
 			{data?.value ? (
 				<>
 					<Text style={styles.sectionTitle}>Summary</Text>
-					<Text style={styles.content}>{parsedContent}</Text>
+					<RichOutput style={styles.content} text={data.value} />
+				</>
+			) : null}
+		</View>
+	);
+}
+
+function CustomSection({ data, styles }: { data: any; styles: any }) {
+	return (
+		<View style={styles.section}>
+			{data?.title ? (
+				<>
+					<Text style={styles.sectionTitle}>{data.title}</Text>
+					<RichOutput style={styles.content} text={data?.value} />
 				</>
 			) : null}
 		</View>
@@ -134,6 +178,7 @@ function Summary({ data, styles }: { data: any; styles: any }) {
 }
 
 function Experience({ data, styles }: { data: any; styles: any }) {
+	console.log(data);
 	return (
 		<>
 			{data?.length ? (
@@ -170,15 +215,7 @@ function Experience({ data, styles }: { data: any; styles: any }) {
 									| {_date}
 								</DocText>
 								<View style={styles.content}>
-									{exp.description
-										.split('\n')
-										.map((detail: any, index: any) => (
-											<Fragment key={detail + index}>
-												<DocText style={styles.bulletPoint}>
-													{detail ? `• ${detail}` : ''}
-												</DocText>
-											</Fragment>
-										))}
+									<RichOutput text={exp.description?.value} />
 								</View>
 							</View>
 						);

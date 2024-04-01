@@ -16,6 +16,8 @@ import Link from '@labs/icons/dashboard/editor/links.svg';
 import Clear from '@labs/icons/dashboard/editor/clear.svg';
 import Undo from '@labs/icons/dashboard/editor/undo.svg';
 import Redo from '@labs/icons/dashboard/editor/redo.svg';
+import { generateUUID } from '@labs/utils';
+import { Flex } from '@labs/components';
 
 export const BtnBold = createButton('Bold', <Bold />, 'bold');
 
@@ -67,19 +69,78 @@ export const BtnUnderline = createButton(
 export default function CustomEditor({
 	value,
 	onChange,
+	label,
+
+	toolbar = [
+		'bold',
+		'italic',
+		'underline',
+		'strikeThrough',
+		'link',
+		'divider',
+		'numberedList',
+		'bulletList',
+		'divider',
+		'clearFormatting',
+	],
 }: {
 	value: string;
 	onChange: (value: ContentEditableEvent) => void;
+	label?: string;
+	toolbar?: Array<
+		| 'bold'
+		| 'italic'
+		| 'underline'
+		| 'strikeThrough'
+		| 'link'
+		| 'divider'
+		| 'clearFormatting'
+		| 'numberedList'
+		| 'bulletList'
+	>;
 }) {
-	return (
-		<EditorProvider>
-			<Editor value={value} onChange={onChange}>
-				<Toolbar>
-					<BtnUndo />
-					<BtnRedo />
-					<Separator />
+	const fieldId = generateUUID();
 
-					<BtnBold />
+	return (
+		<Flex.Column fullWidth gap={8}>
+			{label && (
+				<label htmlFor={fieldId} className="rsw_label">
+					{label}{' '}
+				</label>
+			)}
+			<EditorProvider>
+				<Editor value={value} onChange={onChange} id={fieldId}>
+					<Toolbar>
+						<BtnUndo />
+						<BtnRedo />
+						<Separator />
+
+						{toolbar.map((item, index) => {
+							const key = `${item}:${index}`;
+							switch (item) {
+								case 'bold':
+									return <BtnBold key={key} />;
+								case 'italic':
+									return <BtnItalic key={key} />;
+								case 'underline':
+									return <BtnUnderline key={key} />;
+								case 'strikeThrough':
+									return <BtnStrikeThrough key={key} />;
+								case 'link':
+									return <BtnLink key={key} />;
+								case 'divider':
+									return <Separator key={key} />;
+								case 'clearFormatting':
+									return <BtnClearFormatting key={key} />;
+								case 'numberedList':
+									return <BtnNumberedList key={key} />;
+								case 'bulletList':
+									return <BtnBulletList key={key} />;
+								default:
+									return null;
+							}
+						})}
+						{/* <BtnBold />
 					<BtnUnderline />
 					<BtnItalic />
 					<BtnStrikeThrough />
@@ -90,9 +151,10 @@ export default function CustomEditor({
 					<BtnBulletList />
 
 					<Separator />
-					<BtnClearFormatting />
-				</Toolbar>
-			</Editor>
-		</EditorProvider>
+					<BtnClearFormatting /> */}
+					</Toolbar>
+				</Editor>
+			</EditorProvider>
+		</Flex.Column>
 	);
 }

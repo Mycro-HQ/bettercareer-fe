@@ -6,10 +6,10 @@ const styles = StyleSheet.create({
 		marginBottom: 4,
 	},
 	bold: {
-		fontWeight: 'bold',
+		fontWeight: 'heavy',
 	},
 	italic: {
-		fontStyle: 'italic',
+		textTransform: 'uppercase',
 	},
 	underline: {
 		textDecoration: 'underline',
@@ -72,6 +72,15 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 					);
 				}
 
+				if (['LI'].includes(nodeName)) {
+					return (
+						<Text key={node.innerText} style={[style]}>
+							• {walkNodes(childNodes)}
+							{'\n'}
+						</Text>
+					);
+				}
+
 				return (
 					<Text style={style} key={node.innerText}>
 						{walkNodes(childNodes)}
@@ -82,4 +91,10 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 	};
 
 	return walkNodes(doc.body.childNodes);
+};
+
+export const RichOutput = ({ text, ...rest }: { text: string } & any) => {
+	const content = parseHtmlToReactPdf(text);
+
+	return <Text {...rest}>{content}</Text>;
 };

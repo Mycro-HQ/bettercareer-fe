@@ -6,7 +6,7 @@ import { BuildResumePane } from '../view/build-resume-pane';
 
 import { CallToAction, Flex, Text } from '@labs/components';
 import { useBuildStore } from '@/store/z-store/builder';
-import { downloadResume } from '@labs/utils';
+import { downloadResume, truncateText } from '@labs/utils';
 import ArrowDown from '@labs/icons/dashboard/down.svg';
 import FileIcon from '@labs/icons/dashboard/file.svg';
 import Logo from '@labs/icons/logo.svg';
@@ -30,7 +30,11 @@ export const BuildResumeLayout = () => {
 									aria-label="Resume Name"
 									suppressContentEditableWarning={true}
 									onBlur={(e) => {
-										alert('onBlur');
+										e.stopPropagation();
+										e.currentTarget.textContent = truncateText(
+											e.currentTarget.textContent!,
+											20
+										);
 									}}
 									onKeyDown={(e) => {
 										e.stopPropagation();

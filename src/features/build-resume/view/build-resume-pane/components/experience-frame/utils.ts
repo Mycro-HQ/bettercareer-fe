@@ -1,4 +1,5 @@
 import { Field } from '@labs/components/field';
+import CustomEditor from '../simple-rich-text';
 
 export const MODULE_OPTIONS = {
 	experience: {
@@ -226,7 +227,7 @@ export const MODULE_OPTIONS = {
 
 export const MODULE_COMPONENTS = {
 	text: Field,
-	textarea: Field.Textarea,
+	textarea: CustomEditor,
 	date: Field.Date,
 	checkbox: Field.Checkbox,
 };
