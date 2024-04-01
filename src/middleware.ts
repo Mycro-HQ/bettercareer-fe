@@ -2,15 +2,13 @@ import { NextURL } from 'next/dist/server/web/next-url';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-	matcher: ['/login', '/signup', '/dashboard/:path*'],
+	matcher: ['/login', '/register', '/dashboard/:path*'],
 	name: 'middleware',
 };
 
 export function middleware(req: NextRequest) {
 	const hasToken = req.cookies.has('bc_token');
 	const url = req.nextUrl.clone(); // Clone the URL to modify it
-
-	return NextResponse.next();
 
 	const redirectResponse = (url: string | NextURL) => {
 		const response = NextResponse.redirect(url);
@@ -24,8 +22,8 @@ export function middleware(req: NextRequest) {
 		return redirectResponse(url);
 	}
 
-	// Redirects for users with a token trying to access login, signup, or forgot-password
-	if (hasToken && ['/login', '/signup'].includes(url.pathname)) {
+	// Redirects for users with a token trying to access login, register, or forgot-password
+	if (hasToken && ['/login', '/register'].includes(url.pathname)) {
 		url.pathname = '/dashboard';
 		return redirectResponse(url);
 	}
