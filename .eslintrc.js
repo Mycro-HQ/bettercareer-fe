@@ -19,7 +19,7 @@ module.exports = {
 		'prettier/prettier': 'error',
 		'react/jsx-uses-react': 'off',
 		'no-unused-vars': 'off',
-		'unused-imports/no-unused-imports': 'error',
+		'unused-imports/no-unused-imports': 'warn',
 		'unused-imports/no-unused-vars': [
 			'warn',
 			{
