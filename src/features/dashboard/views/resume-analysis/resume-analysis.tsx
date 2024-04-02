@@ -26,7 +26,6 @@ export const ResumeAnalysis = () => {
 						Resume Analysis
 					</Heading.h3>
 				</Flex>
-
 				<Text color="var(--text-gray)" animate="fade" className="mb-[40px]">
 					A breakdown of how your resume can be better
 				</Text>
@@ -44,9 +43,7 @@ export const ResumeAnalysis = () => {
 							className={styles.ResumeOverallScoreCounter}
 						>
 							<ScoreCounter className={styles.ResumeScoreSvg} score={score} />
-							<Text.p weight={700} fontSize="28px">
-								{score}
-							</Text.p>
+							<Heading.h5 weight={700}>{score}</Heading.h5>
 							<Text.p weight={500} size="sm">
 								Overall score
 							</Text.p>
@@ -99,9 +96,9 @@ export const ResumeAnalysis = () => {
 						<CallToAction className="mt-[10px]">Build Resume</CallToAction>
 					</Flex.Column>
 					<Flex.Column gap={12}>
-						<Heading.h5 fontSize="20px" weight={600} animate="slide">
+						<Heading.h6 weight={600} animate="slide">
 							Analysis
-						</Heading.h5>
+						</Heading.h6>
 						<Flex.Column gap={16} fullWidth>
 							{ResumeAnalysisInfo.map((item, index) => (
 								<Accordion.Group allowMultiple>
@@ -138,16 +135,12 @@ export const ResumeAnalysis = () => {
 										}
 									>
 										<div className={styles.AccordionContent}>
-											<Text.p fontSize="16px" weight={600}>
-												Problem: {item.problem}
-											</Text.p>
+											<Text.p weight={600}>Problem: {item.problem}</Text.p>
 											<div className={styles.AccordionContentItem}>
-												<Text.p fontSize="16px" weight={600}>
-													Solution:
-												</Text.p>
+												<Text.p weight={600}>Solution:</Text.p>
 												<ul className={styles.ResumeList}>
-													{item.solutions.map((solution) => (
-														<li className={styles.ResumeListItem}>
+													{item.solutions.map((solution, index) => (
+														<li key={index} className={styles.ResumeListItem}>
 															{solution}
 														</li>
 													))}
