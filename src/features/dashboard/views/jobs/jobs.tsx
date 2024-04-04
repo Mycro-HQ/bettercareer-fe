@@ -197,9 +197,9 @@ export const Jobs = () => {
 	return (
 		<div>
 			{/* TODO: TEMP */}
-			<div className="min-h-[20vh]">Header</div>
+			<div className="min-h-[20vh]"></div>
 			<Flex.Row gap={32} className="mb-10">
-				<Flex.Column gap={24} flex="5">
+				<Flex.Column gap={24} flex="5.5">
 					{JobData.map((job) => (
 						<JobCard
 							{...job}
