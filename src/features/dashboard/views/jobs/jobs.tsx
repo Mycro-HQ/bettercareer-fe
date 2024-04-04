@@ -4,6 +4,7 @@ import styles from './jobs.module.scss';
 import JobCard from './job-card';
 import DribbbleLogo from '../../../../../public/images/dashboard/Company_Logo.svg';
 import { Seperator } from './job-card';
+import { Modal } from '@labs/components/modal';
 
 const JobData = [
 	{
@@ -215,64 +216,18 @@ export const Jobs = () => {
 				<Flex.Column
 					flex="8"
 					gap={40}
-					className="py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
+					className="!hidden md:!flex py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
 				>
 					{activeJobCardIndex !== null ? (
-						<Flex.Column gap={40}>
-							<Flex.Row justifyContent="space-between">
-								<Flex.Row gap={18}>
-									{JobData[activeJobCardIndex].companyLogo}
-									<Flex.Column gap={4} className="font-[Figtree]">
-										<Text as="span" weight={600} fontSize="18px" inheritFont>
-											{JobData[activeJobCardIndex].jobTitle}
-										</Text>
-										<Text
-											color="var(--text-gray)"
-											weight={500}
-											lineHeight="24px"
-											inheritFont
-										>
-											{JobData[activeJobCardIndex].companyName}
-											<Seperator />
-											{JobData[activeJobCardIndex].location}
-											<Seperator />
-											{JobData[activeJobCardIndex].salaryRange}
-										</Text>
-									</Flex.Column>
-								</Flex.Row>
-								<Flex.Row gap={8}>
-									<CallToAction size="sm">Apply</CallToAction>
-									<CallToAction outline size="sm">
-										Save
-									</CallToAction>
-								</Flex.Row>
-							</Flex.Row>
-							<Flex.Column gap={32}>
-								<div>
-									<JobDescriptionTitle title="Summary" />
-									<JobDescriptionBody
-										children={JobData[activeJobCardIndex].summary}
-									/>
-								</div>
-								<div>
-									<JobDescriptionTitle title="Requirements" />
-									<JobDescriptionBody
-										isChildText={JobData[activeJobCardIndex].isRequirementsText}
-										children={
-											<ul className="list-disc list-inside">
-												{JobData[activeJobCardIndex].requirementsArray.map(
-													(req) => (
-														<li key={req.slice(0, 10)} className="mb-4">
-															{req}
-														</li>
-													)
-												)}
-											</ul>
-										}
-									/>
-								</div>
-							</Flex.Column>
-						</Flex.Column>
+						<>
+							<Modal
+								in={!!activeJobCardIndex}
+								onClose={() => setActiveJobCardIndex(null)}
+							>
+								<JobDetails activeJobCardIndex={activeJobCardIndex} />
+							</Modal>
+							<JobDetails activeJobCardIndex={activeJobCardIndex} />
+						</>
 					) : (
 						<p>Pick a job on the left</p>
 					)}
@@ -281,3 +236,59 @@ export const Jobs = () => {
 		</div>
 	);
 };
+
+function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
+	return (
+		<Flex.Column gap={40}>
+			<Flex.Row justifyContent="space-between">
+				<Flex.Row gap={18}>
+					{JobData[activeJobCardIndex!].companyLogo}
+					<Flex.Column gap={4} className="font-[Figtree]">
+						<Text as="span" weight={600} fontSize="18px" inheritFont>
+							{JobData[activeJobCardIndex].jobTitle}
+						</Text>
+						<Text
+							color="var(--text-gray)"
+							weight={500}
+							lineHeight="24px"
+							inheritFont
+						>
+							{JobData[activeJobCardIndex].companyName}
+							<Seperator />
+							{JobData[activeJobCardIndex].location}
+							<Seperator />
+							{JobData[activeJobCardIndex].salaryRange}
+						</Text>
+					</Flex.Column>
+				</Flex.Row>
+				<Flex.Row gap={8} className="my-2">
+					<CallToAction size="sm">Apply</CallToAction>
+					<CallToAction outline size="sm">
+						Save
+					</CallToAction>
+				</Flex.Row>
+			</Flex.Row>
+			<Flex.Column gap={32}>
+				<div>
+					<JobDescriptionTitle title="Summary" />
+					<JobDescriptionBody children={JobData[activeJobCardIndex].summary} />
+				</div>
+				<div>
+					<JobDescriptionTitle title="Requirements" />
+					<JobDescriptionBody
+						isChildText={JobData[activeJobCardIndex].isRequirementsText}
+						children={
+							<ul className="list-disc list-inside">
+								{JobData[activeJobCardIndex].requirementsArray.map((req) => (
+									<li key={req.slice(0, 10)} className="mb-4">
+										{req}
+									</li>
+								))}
+							</ul>
+						}
+					/>
+				</div>
+			</Flex.Column>
+		</Flex.Column>
+	);
+}
