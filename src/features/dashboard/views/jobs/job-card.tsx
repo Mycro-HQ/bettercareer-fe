@@ -63,6 +63,7 @@ export default function JobCard({
 					size="sm"
 					color="var(--text-gray)"
 					weight={500}
+					className="py-[6px] px-4 md:p-0"
 				>
 					{time}
 				</Text>
