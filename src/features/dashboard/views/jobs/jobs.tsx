@@ -5,62 +5,13 @@ import JobCard from './job-card';
 import DribbbleLogo from '../../../../../public/images/dashboard/Company_Logo.svg';
 import { Seperator } from './job-card';
 import { Modal } from '@labs/components/modal';
+import useWindowDimensions from './useWindowDimensions';
 
 const JobData = [
 	{
-		key: 0,
-		companyLogo: <DribbbleLogo />,
-		jobTitle: 'Brand Designer',
-		companyName: 'Dribbble',
-		location: 'California',
-		salaryRange: '$120k - $140k',
-		tags: ['Remote', 'Internship', 'Full-Time'],
-		time: '1hr ago',
-		summary: `
-		Are you a creative visionary with a passion for crafting
-		exceptional brand experiences? Do you thrive in translating
-		brand strategies into captivating visuals that resonate with
-		audiences? If so, then we want you on our team! We're
-		searching for a talented Brand Designer to play a pivotal
-		role in shaping the visual identity of our brand. You'll be
-		the mastermind behind everything from our logo and brand
-		guidelines to marketing materials and social media graphics.
-		`,
-		isRequirementsText: false,
-		requirementsArray: [
-			`
-			Minimum 3+ years of experience in brand design or a
-			related field, with a strong portfolio showcasing your
-			design expertise and ability to create a cohesive
-			brand identity.
-			`,
-			`
-			Software mastery: Proficiency in Adobe Creative Suite
-			(Photoshop, Illustrator, InDesign) or similar design
-			software is essential.
-			`,
-			`
-			Eye for detail: A keen eye for detail and a commitment
-			to producing high-quality, pixel-perfect designs are
-			non-negotiable.
-			`,
-			`
-			Brand storytelling: You possess a deep understanding
-			of how visual design can shape brand perception and
-      effectively communicate brand messages.
-			`,
-			`
-			Team player with a twist: You thrive in a
-			collaborative environment while maintaining the
-			creative independence to bring fresh ideas to the
-			table.
-			`,
-		],
-	},
-	{
 		key: 1,
 		companyLogo: <DribbbleLogo />,
-		jobTitle: 'Brand Designer',
+		jobTitle: 'Brand Designer 1',
 		companyName: 'Dribbble',
 		location: 'California',
 		salaryRange: '$120k - $140k',
@@ -110,7 +61,57 @@ const JobData = [
 	{
 		key: 2,
 		companyLogo: <DribbbleLogo />,
-		jobTitle: 'Brand Designer',
+		jobTitle: 'Brand Designer 2',
+		companyName: 'Dribbble',
+		location: 'California',
+		salaryRange: '$120k - $140k',
+		tags: ['Remote', 'Internship', 'Full-Time'],
+		time: '1hr ago',
+		summary: `
+		Are you a creative visionary with a passion for crafting
+		exceptional brand experiences? Do you thrive in translating
+		brand strategies into captivating visuals that resonate with
+		audiences? If so, then we want you on our team! We're
+		searching for a talented Brand Designer to play a pivotal
+		role in shaping the visual identity of our brand. You'll be
+		the mastermind behind everything from our logo and brand
+		guidelines to marketing materials and social media graphics.
+		`,
+		isRequirementsText: false,
+		requirementsArray: [
+			`
+			Minimum 3+ years of experience in brand design or a
+			related field, with a strong portfolio showcasing your
+			design expertise and ability to create a cohesive
+			brand identity.
+			`,
+			`
+			Software mastery: Proficiency in Adobe Creative Suite
+			(Photoshop, Illustrator, InDesign) or similar design
+			software is essential.
+			`,
+			`
+			Eye for detail: A keen eye for detail and a commitment
+			to producing high-quality, pixel-perfect designs are
+			non-negotiable.
+			`,
+			`
+			Brand storytelling: You possess a deep understanding
+			of how visual design can shape brand perception and
+      effectively communicate brand messages.
+			`,
+			`
+			Team player with a twist: You thrive in a
+			collaborative environment while maintaining the
+			creative independence to bring fresh ideas to the
+			table.
+			`,
+		],
+	},
+	{
+		key: 3,
+		companyLogo: <DribbbleLogo />,
+		jobTitle: 'Brand Designer 3',
 		companyName: 'Dribbble',
 		location: 'California',
 		salaryRange: '$120k - $140k',
@@ -195,6 +196,8 @@ export const Jobs = () => {
 	const [activeJobCardIndex, setActiveJobCardIndex] = React.useState<
 		number | null
 	>(null);
+	const { width } = useWindowDimensions();
+
 	return (
 		<div>
 			{/* TODO: TEMP */}
@@ -213,39 +216,59 @@ export const Jobs = () => {
 						/>
 					))}
 				</Flex.Column>
-				<Flex.Column
-					flex="8"
-					gap={40}
-					className="!hidden md:!flex py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
-				>
-					{activeJobCardIndex !== null ? (
-						<>
+
+				{activeJobCardIndex !== null ? (
+					<CustomScreenWidthRenderer
+						width={width!}
+						lessThanWidth={
 							<Modal
 								in={!!activeJobCardIndex}
 								onClose={() => setActiveJobCardIndex(null)}
 							>
 								<JobDetails activeJobCardIndex={activeJobCardIndex} />
 							</Modal>
-							<JobDetails activeJobCardIndex={activeJobCardIndex} />
-						</>
-					) : (
-						<p>Pick a job on the left</p>
-					)}
-				</Flex.Column>
+						}
+						greaterThanWidth={
+							<Flex.Column
+								flex="8"
+								gap={40}
+								className="py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
+							>
+								<JobDetails activeJobCardIndex={activeJobCardIndex} />
+							</Flex.Column>
+						}
+					/>
+				) : (
+					<p className="hidden md:block">Pick a job on the left</p>
+				)}
 			</Flex.Row>
 		</div>
 	);
 };
 
+function CustomScreenWidthRenderer({
+	width,
+	lessThanWidth,
+	greaterThanWidth,
+}: {
+	width: number;
+	lessThanWidth: React.ReactNode;
+	greaterThanWidth: React.ReactNode;
+}) {
+	return width < 768 ? lessThanWidth : greaterThanWidth;
+}
+
 function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
+	const index = activeJobCardIndex - 1;
+
 	return (
 		<Flex.Column gap={40}>
 			<Flex.Row justifyContent="space-between">
 				<Flex.Row gap={18}>
-					{JobData[activeJobCardIndex!].companyLogo}
+					{JobData[index].companyLogo}
 					<Flex.Column gap={4} className="font-[Figtree]">
 						<Text as="span" weight={600} fontSize="18px" inheritFont>
-							{JobData[activeJobCardIndex].jobTitle}
+							{JobData[index].jobTitle}
 						</Text>
 						<Text
 							color="var(--text-gray)"
@@ -253,11 +276,11 @@ function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
 							lineHeight="24px"
 							inheritFont
 						>
-							{JobData[activeJobCardIndex].companyName}
+							{JobData[index].companyName}
 							<Seperator />
-							{JobData[activeJobCardIndex].location}
+							{JobData[index].location}
 							<Seperator />
-							{JobData[activeJobCardIndex].salaryRange}
+							{JobData[index].salaryRange}
 						</Text>
 					</Flex.Column>
 				</Flex.Row>
@@ -271,15 +294,15 @@ function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
 			<Flex.Column gap={32}>
 				<div>
 					<JobDescriptionTitle title="Summary" />
-					<JobDescriptionBody children={JobData[activeJobCardIndex].summary} />
+					<JobDescriptionBody children={JobData[index].summary} />
 				</div>
 				<div>
 					<JobDescriptionTitle title="Requirements" />
 					<JobDescriptionBody
-						isChildText={JobData[activeJobCardIndex].isRequirementsText}
+						isChildText={JobData[index].isRequirementsText}
 						children={
 							<ul className="list-disc list-inside">
-								{JobData[activeJobCardIndex].requirementsArray.map((req) => (
+								{JobData[index].requirementsArray.map((req) => (
 									<li key={req.slice(0, 10)} className="mb-4">
 										{req}
 									</li>
