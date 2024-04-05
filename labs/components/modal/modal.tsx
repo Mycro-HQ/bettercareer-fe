@@ -9,7 +9,7 @@
  *
  * Bootstrapped by Plop
  */
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useRef } from 'react';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -18,8 +18,7 @@ import { EphemeralPortal } from '../layout/ephemeral-portal';
 import { useMediaQuery } from '../media';
 import { forwardRefWrapper, generateUUID, getDataIcons } from '../../utils';
 
-import { Text } from '../layout';
-import { type NativeElementProps } from '@labs/utils/types/utility';
+import type { NativeElementProps } from '../../utils/types/utility';
 
 import styles from './modal.module.scss';
 
@@ -167,83 +166,86 @@ const ModalParent = forwardRefWrapper<HTMLDivElement, ModalParentProps>(
 			<AnimatePresence initial mode="wait">
 				{inProp ? (
 					<EphemeralPortal>
-						{/* <FocusScope contain restoreFocus={inProp}> */}
-						<section
-							className={classNames([
-								styles.ModalSection,
-								fluid && styles.fluid,
-							])}
-							data-amlabs-modal-backdrop
-							data-testid="modal-backdrop"
-							{...rest}
-						>
-							<motion.div
-								className={styles.ModalBackdrop}
-								aria-hidden="true"
-								data-amlabs-modal-backdrop
-								exit={{ opacity: 0, transition: { duration: 0.2 } }}
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ duration: 0.05 }}
-								key={MODAL_ID}
-								onClick={dismissible ? onClose : undefined}
-							/>
-							<motion.div
+						<FocusScope>
+							<section
 								className={classNames([
-									styles.Modal,
-									centered && styles.centered,
-									styles[size!],
-									maxHeight && styles.maxHeight,
+									styles.ModalSection,
+									fluid && styles.fluid,
 								])}
-								data-amlabs-modal
-								role="dialog"
-								aria-modal={inProp}
-								aria-hidden={!inProp}
-								aria-labelledby={title && MODAL_HEADER_ID}
-								aria-describedby={MODAL_BODY_ID}
-								tabIndex={-1}
-								initial={{ opacity: 0, scale: 0.8 }}
-								exit={{ opacity: 0, scale: 0.8 }}
-								animate={{ opacity: 1, scale: 1 }}
-								transition={{ duration: 0.2 }}
+								data-amlabs-modal-backdrop
+								data-testid="modal-backdrop"
+								{...rest}
 							>
-								<div
+								<motion.div
+									className={styles.ModalBackdrop}
+									aria-hidden="true"
+									data-amlabs-modal-backdrop
+									exit={{ opacity: 0 }}
+									initial={{ opacity: 0 }}
+									animate={{ opacity: 1 }}
+									transition={{ duration: 0.02 }}
+									key={MODAL_ID}
+									onClick={dismissible ? onClose : undefined}
+								/>
+								<motion.div
 									className={classNames([
-										styles.ModalContent,
-										hug && styles.hug,
-										'custom-scrollbar',
+										styles.Modal,
+										centered && styles.centered,
+										styles[size!],
+										maxHeight && styles.maxHeight,
 									])}
-									ref={ref}
+									data-amlabs-modal
+									role="dialog"
+									aria-modal={inProp}
+									aria-hidden={!inProp}
+									aria-labelledby={title && MODAL_HEADER_ID}
+									aria-describedby={MODAL_BODY_ID}
+									initial={{ opacity: 0, scale: 0.95, y: 10 }}
+									exit={{
+										opacity: 0,
+										scale: 0.95,
+										y: 0,
+									}}
+									animate={{ opacity: 1, scale: 1, y: -10 }}
+									transition={{ duration: 0.2 }}
 								>
-									{dismissible && (
-										<div
-											className={classNames([
-												styles.ModalActionBar,
-												title && styles.hasTitle,
-											])}
-										>
-											<button
-												aria-label="Close Modal"
-												type="button"
-												onClick={onClose}
-												className={styles.Close}
+									<div
+										className={classNames([
+											styles.ModalContent,
+											hug && styles.hug,
+											'custom-scrollbar',
+										])}
+										ref={ref}
+									>
+										{dismissible && (
+											<div
+												className={classNames([
+													styles.ModalActionBar,
+													title && styles.hasTitle,
+												])}
 											>
-												<img
-													src={getDataIcons('close', '#000')}
-													aria-hidden="true"
-													alt="close icon"
-												/>
-											</button>
-										</div>
-									)}
+												<button
+													aria-label="Close Modal"
+													type="button"
+													onClick={onClose}
+													className={styles.Close}
+												>
+													<img
+														src={getDataIcons('close', '#000')}
+														aria-hidden="true"
+														alt="close icon"
+													/>
+												</button>
+											</div>
+										)}
 
-									{/* Check if we have title props and render ModalHeader */}
+										{/* Check if we have title props and render ModalHeader */}
 
-									<div id={MODAL_BODY_ID}>{children}</div>
-								</div>
-							</motion.div>
-						</section>
-						{/* </FocusScope> */}
+										<div id={MODAL_BODY_ID}>{children}</div>
+									</div>
+								</motion.div>
+							</section>
+						</FocusScope>
 					</EphemeralPortal>
 				) : null}
 			</AnimatePresence>
@@ -316,6 +318,61 @@ const ModalBody: React.FC<ModalBodyProps> = ({
 };
 
 ModalBody.displayName = 'Modal.Body';
+
+interface FocusScopeProps {
+	children: React.ReactNode;
+}
+
+const FocusScope: React.FC<FocusScopeProps> = ({ children }) => {
+	const scopeRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Tab' && scopeRef.current) {
+				event.preventDefault();
+				const focusableElements = getFocusableElements(scopeRef.current);
+				const currentIndex = focusableElements.indexOf(
+					document.activeElement as HTMLElement
+				);
+				const nextIndex = event.shiftKey ? currentIndex - 1 : currentIndex + 1;
+				const nextElement =
+					focusableElements[nextIndex % focusableElements.length];
+				if (nextElement) {
+					(nextElement as HTMLElement).focus();
+				}
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	}, []);
+
+	const getFocusableElements = (container: HTMLElement): HTMLElement[] => {
+		const focusableElements: HTMLElement[] = Array.from(
+			container.querySelectorAll(
+				'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])'
+			)
+		);
+		return focusableElements.filter(
+			(element) => !element.hasAttribute('disabled') && isVisible(element)
+		);
+	};
+
+	const isVisible = (element: HTMLElement): boolean => {
+		const rect = element.getBoundingClientRect();
+		const viewHeight = Math.max(
+			document.documentElement.clientHeight,
+			window.innerHeight
+		);
+		return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+	};
+
+	return <div ref={scopeRef}>{children}</div>;
+};
+
+export default FocusScope;
 
 /**
  * Modal Component

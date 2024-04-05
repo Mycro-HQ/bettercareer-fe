@@ -96,7 +96,7 @@
 
 	&:not(.centered) {
 		margin: 2rem 0;
-		height: calc(100% - 4rem);
+		max-height: calc(100% - 4rem);
 	}
 
 	@include media('md', 'max') {
@@ -105,7 +105,7 @@
 	}
 
 	&.lg {
-		max-width: 720px;
+		max-width: 992px;
 	}
 
 	&.md {
@@ -116,7 +116,7 @@
 		max-width: 300px;
 
 		.ModalActionBar {
-			padding: 4px 0;
+			padding: 14px 4px 0px;
 		}
 	}
 
@@ -139,7 +139,7 @@
 	border-radius: 24px;
 	box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.05);
 	width: 100%;
-	padding: 4px 18px 24px;
+	padding: 4px 24px 24px;
 	margin: 18px auto;
 	height: fit-content;
 	max-height: 100%;
