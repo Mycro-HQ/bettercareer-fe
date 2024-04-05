@@ -238,7 +238,13 @@ export const Jobs = () => {
 						}
 					/>
 				) : (
-					<p className="hidden md:block">Pick a job on the left</p>
+					<Flex.Column
+						flex="8"
+						gap={40}
+						className="!hidden md:!flex py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
+					>
+						<p className="hidden md:block">Pick a job on the left</p>
+					</Flex.Column>
 				)}
 			</Flex.Row>
 		</div>
