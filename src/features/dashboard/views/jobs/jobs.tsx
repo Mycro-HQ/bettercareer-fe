@@ -218,9 +218,9 @@ export const Jobs = () => {
 				</Flex.Column>
 
 				{activeJobCardIndex !== null ? (
-					<CustomScreenWidthRenderer
+					<ResponsiveLayoutRenderer
 						width={width!}
-						lessThanWidth={
+						mobileLayout={
 							<Modal
 								in={!!activeJobCardIndex}
 								onClose={() => setActiveJobCardIndex(null)}
@@ -228,7 +228,7 @@ export const Jobs = () => {
 								<JobDetails activeJobCardIndex={activeJobCardIndex} />
 							</Modal>
 						}
-						greaterThanWidth={
+						desktopLayout={
 							<Flex.Column
 								flex="8"
 								gap={40}
@@ -246,16 +246,16 @@ export const Jobs = () => {
 	);
 };
 
-function CustomScreenWidthRenderer({
+function ResponsiveLayoutRenderer({
 	width,
-	lessThanWidth,
-	greaterThanWidth,
+	mobileLayout,
+	desktopLayout,
 }: {
 	width: number;
-	lessThanWidth: React.ReactNode;
-	greaterThanWidth: React.ReactNode;
+	mobileLayout: React.ReactNode;
+	desktopLayout: React.ReactNode;
 }) {
-	return width < 768 ? lessThanWidth : greaterThanWidth;
+	return width < 768 ? mobileLayout : desktopLayout;
 }
 
 function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
