@@ -27,3 +27,41 @@
 		}
 	}
 }
+
+.TagInput {
+	background: #fff;
+	border: 1px solid #e7e9eb;
+	border-radius: 12px;
+	width: 100%;
+	align-items: center;
+	overflow: hidden;
+	display: flex;
+	padding: 6px;
+	flex-wrap: wrap;
+	gap: 8px;
+	min-height: 55px;
+
+	input {
+		flex: 1;
+		font-size: var(--font-p);
+		font-weight: var(--font-weight-regular);
+		letter-spacing: var(--letter-spacing-regular);
+		line-height: 1.65;
+		background: transparent;
+		font-weight: 500;
+		border: none;
+		outline: none;
+		min-width: 220px;
+		width: 100%;
+		padding: 8px 10px;
+		color: var(--text-black);
+	}
+}
+
+.TagLabel {
+	font-size: var(--font-p);
+	font-weight: var(--font-weight-regular);
+	letter-spacing: var(--letter-spacing-regular);
+	line-height: 1.65;
+	font-weight: 600;
+}
