@@ -8,11 +8,11 @@ import {
 	Toolbar,
 	createButton,
 } from 'react-simple-wysiwyg';
+import { Popover } from '@radix-ui/themes';
+
 import { generateUUID } from '@labs/utils';
 import { CallToAction, Flex } from '@labs/components';
-import { Popover } from '@radix-ui/themes';
 import { Field } from '@labs/components/field';
-
 import Bold from '@labs/icons/dashboard/editor/bold.svg';
 import Italic from '@labs/icons/dashboard/editor/italics.svg';
 import Underline from '@labs/icons/dashboard/editor/underline.svg';
@@ -20,7 +20,6 @@ import Link from '@labs/icons/dashboard/editor/links.svg';
 import Clear from '@labs/icons/dashboard/editor/clear.svg';
 import Undo from '@labs/icons/dashboard/editor/undo.svg';
 import Redo from '@labs/icons/dashboard/editor/redo.svg';
-
 import SparklesIcon from '@labs/icons/misc/sparkels.svg';
 import AddAlt from '@labs/icons/misc/add-alt.svg';
 
@@ -170,7 +169,7 @@ export default function CustomEditor({
 							AI write
 						</CallToAction.button>
 					</Popover.Trigger>
-					<Popover.Content width="500px">
+					<Popover.Content size="1">
 						<Flex.Column gap={8}>
 							<Field.Textarea
 								placeholder={`e.g write a descriptive summary`}
