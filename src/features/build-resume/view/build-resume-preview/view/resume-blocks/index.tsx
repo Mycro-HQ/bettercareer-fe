@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Font, pdf } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { ScrollArea } from '@radix-ui/themes';
-import { useMutation } from '@tanstack/react-query';
+import { motion } from 'framer-motion';
 
 import File from '@labs/icons/dashboard/file_2.svg';
 import { useBuildStore } from '@/store/z-store/builder';
@@ -11,56 +11,23 @@ import { Spinner } from '@labs/components/spinner';
 import { Flex, Heading } from '@labs/components';
 
 import styles from './resume-blocks.module.scss';
-import { ClassicTemplate } from './classic';
 
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
+import { registerFonts, templateMaps } from './utils';
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
-Font.register({
-	family: 'Domine',
-	src: 'https://fonts.gstatic.com/s/domine/v20/L0xhDFMnlVwD4h3Lt9JWnbX3jG-2X0DAI10VErGuW8Q.ttf',
-});
-
-Font.register({
-	family: 'Open Sans',
-	fonts: [
-		{
-			src: `https://fonts.gstatic.com/s/opensans/v17/mem8YaGs126MiZpBA-UFW50e.ttf`,
-			fontWeight: 400,
-		},
-		{
-			src: `https://fonts.gstatic.com/s/opensans/v17/mem5YaGs126MiZpBA-UNirkOUuhs.ttf`,
-			fontWeight: 600,
-		},
-	],
-});
-
-Font.register({
-	family: 'Lato Body',
-	fonts: [
-		{
-			src: `https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHvxk6XweuBCY.ttf`,
-			fontWeight: 400,
-		},
-		{
-			src: `https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVSwiPHA3q5d0N7w.ttf`,
-			fontWeight: 700,
-		},
-		{
-			src: `https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVSwiPHA3q5d0N7w.ttf`,
-			fontWeight: 800,
-		},
-		{
-			src: `https://fonts.gstatic.com/s/lato/v24/S6u9w4BMUTPHh6UVSwiPHA3q5d0N7w.ttf`,
-			fontWeight: 900,
-		},
-	],
-});
+registerFonts();
 
 export const Resume = (props: any) => {
-	return <ClassicTemplate {...props} />;
+	const template = props.template;
+	const Comp =
+		templateMaps[template.name as keyof typeof templateMaps] ||
+		templateMaps['classic'];
+
+	return <Comp {...props} />;
 };
 
 export const ResumeApp = ({
@@ -70,7 +37,7 @@ export const ResumeApp = ({
 	scale: number;
 	setScale: (scale: number) => void;
 }) => {
-	const { modules: userData, setResumeBlob } = useBuildStore();
+	const { modules: userData, template, setResumeBlob } = useBuildStore();
 	const [numPages, setNumPages] = useState(1);
 
 	const blobToBase64 = (blob: Blob) => {
@@ -133,7 +100,12 @@ export const ResumeApp = ({
 
 		if (!isCancelled) {
 			const generatePdf = async () => {
-				const _blob = await pdf(<Resume modules={modules} />).toBlob();
+				const _blob = await pdf(
+					Resume({
+						modules,
+						template,
+					})
+				).toBlob();
 
 				const base64 = (await blobToBase64(_blob)) as string;
 
@@ -156,7 +128,7 @@ export const ResumeApp = ({
 		return () => {
 			isCancelled = true;
 		};
-	}, [modules]);
+	}, [modules, template]);
 
 	const onDocumentLoadSuccess = useCallback(
 		({ numPages }: { numPages: number }) => {
@@ -176,17 +148,30 @@ export const ResumeApp = ({
 			raw: textFinal as unknown as string,
 		});
 	}
+	const hasData = modules.find((module: any) => !isEmpty(module.data));
+	const hasValueInData = Object.values(hasData?.data || {}).reduce(
+		(a: any, b: any) => a?.toString() + b?.toString(),
+		''
+	) as string;
 
 	return (
-		<ScrollArea type="scroll">
-			<div className="w-fit m-auto max-h-[86vh] rounded-[12px] overflow-hidden">
-				{pdfUrl ? (
-					<>
-						{modules.find((module: any) => !isEmpty(module.data)) &&
-						canvasImage ? (
-							<ImgZoom src={canvasImage} scale={scale} setScale={setScale} />
-						) : (
-							<div className={styles.PreviewPage}>
+		<Flex.Column
+			className="w-full h-full m-auto rounded-[12px] h-full overflow-hidden"
+			alignItems="center"
+			justifyContent="center"
+		>
+			{pdfUrl ? (
+				<>
+					{hasData && hasValueInData?.trim() && canvasImage ? (
+						<ImgZoom src={canvasImage} scale={scale} setScale={setScale} />
+					) : (
+						<div className={styles.PreviewPage}>
+							<motion.div
+								key="preview"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{ duration: 0.2 }}
+							>
 								<Flex.Column
 									gap={12}
 									alignItems="center"
@@ -194,80 +179,82 @@ export const ResumeApp = ({
 									className="h-full max-w-[400px] m-auto text-center p-4"
 								>
 									<File className="w-[32px] h-[32px]" />
-									<Heading.h4 fontSize="16px" className="-mb-3">
-										Start Creating Your Resume
+									<Heading.h4 fontSize="18px" className="-mb-2" weight={400}>
+										Your Resume Preview will appear here
 									</Heading.h4>
 									<Heading.h6 fontSize="14px" color="var(--text-gray)">
-										Your resume is almost ready! Fill in the missing details to
-										get started.
+										Your resume is almost ready! Start building your resume to
+										see the preview
 									</Heading.h6>
 								</Flex.Column>
-							</div>
-						)}
+							</motion.div>
+						</div>
+					)}
 
-						{generateImage ? (
-							<div className="hidden">
-								<Document
-									file={pdfUrl}
-									key={`pdf_${pdfUrl}`}
-									renderMode="canvas"
-									onLoadSuccess={onDocumentLoadSuccess}
-								>
-									{Array.from(new Array(numPages), (el, index) => (
-										<article
-											key={`page_${index + 1}`}
-											data-page-number={index + 1}
-										>
-											<Page
-												pageNumber={index + 1}
-												scale={2}
-												renderMode="canvas"
-												canvasRef={canvasRef}
-												onGetTextSuccess={(text: any) => {
-													formatText(text);
-												}}
-												onRenderSuccess={() => {
-													if (!canvasRef.current) return;
-													const canvas = canvasRef.current as HTMLCanvasElement;
-													const ctx = (canvas as any).getContext('2d', {
-														alpha: false,
-													});
-													const img = new Image();
-													img.src = (canvas as any).toDataURL('image/png');
-													img.onload = () => {
-														ctx.drawImage(img, 0, 0);
-														setCanvasImage(
-															(canvas as any).toDataURL('image/png')
-														);
-													};
+					{generateImage ? (
+						<div className="hidden">
+							<Document
+								file={pdfUrl}
+								key={`pdf_${pdfUrl}`}
+								renderMode="canvas"
+								onLoadSuccess={onDocumentLoadSuccess}
+							>
+								{Array.from(new Array(numPages), (el, index) => (
+									<article
+										key={`page_${index + 1}`}
+										data-page-number={index + 1}
+									>
+										<Page
+											pageNumber={index + 1}
+											scale={3}
+											renderMode="canvas"
+											canvasRef={
+												index + 1 === currentPage ? canvasRef : undefined
+											}
+											onGetTextSuccess={(text: any) => {
+												formatText(text);
+											}}
+											onRenderSuccess={() => {
+												if (!canvasRef.current) return;
+												const canvas = canvasRef.current as HTMLCanvasElement;
+												const ctx = (canvas as any).getContext('2d', {
+													alpha: false,
+												});
+												const img = new Image();
+												img.src = (canvas as any).toDataURL('image/png');
+												img.onload = () => {
+													ctx.drawImage(img, 0, 0);
+													setCanvasImage(
+														(canvas as any).toDataURL('image/png')
+													);
+												};
 
-													img.crossOrigin = 'anonymous';
-													img.onerror = (e) => {
-														setPdfUrl(null);
-													};
-													setGenerateImage(false);
-												}}
-											/>
-										</article>
-									))}
-								</Document>
-							</div>
-						) : null}
-					</>
-				) : (
-					<div className={styles.PreviewPage}>
-						<Flex.Column
-							gap={4}
-							alignContent="center"
-							justifyContent="center"
-							className="h-full"
-						>
-							<Spinner center />
-						</Flex.Column>
-					</div>
-				)}
-			</div>
-		</ScrollArea>
+												img.crossOrigin = 'anonymous';
+												img.onerror = (e) => {
+													setPdfUrl(null);
+												};
+												setGenerateImage(false);
+											}}
+										/>
+									</article>
+								))}
+							</Document>
+						</div>
+					) : null}
+				</>
+			) : (
+				<div className={styles.PreviewPage}>
+					<Flex.Column
+						gap={4}
+						alignContent="center"
+						justifyContent="center"
+						className="h-full"
+					>
+						<Spinner center />
+					</Flex.Column>
+				</div>
+			)}
+		</Flex.Column>
 	);
 };
 
@@ -286,8 +273,12 @@ const ImgZoom = ({
 
 	const handleWheel = (e: MouseEvent | any) => {
 		const delta = e.deltaY * -0.01;
-		const newZoom = Math.min(Math.max(scale + delta, 1), 3);
-		setScale(newZoom);
+		const newZoom = Math.min(Math.max(scale + delta, 0.5), 1);
+		// on set zoom when the scroll bar is at the top or bottom of the page
+		// if (newZoom < 1) {
+		// 	setScale(newZoom);
+		// 	setPosition({ x: 0, y: 0 });
+		// }
 	};
 
 	useEffect(() => {
@@ -322,31 +313,31 @@ const ImgZoom = ({
 	};
 
 	return (
-		<div
-			style={{
-				overflow: 'hidden',
-				cursor: isDragging ? 'grabbing' : 'grab',
-				width: '100%',
-				height: '100%',
-			}}
-			onMouseUp={handleMouseUp}
-			onMouseLeave={handleMouseUp} // To handle the case when the mouse leaves the component while dragging
-		>
-			<img
-				src={src}
-				className={styles.PreviewPageImage}
-				style={
-					{
-						transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
-						transition: 'transform 0.1s',
-						transformOrigin: 'top center',
-					} as any
-				}
-				onWheel={handleWheel}
-				onMouseDown={handleMouseDown}
-				onMouseMove={handleMouseMove}
-			/>
-		</div>
+		<ScrollArea type="scroll">
+			<div
+				className={`w-full max-h-[88vh] h-full ${
+					isDragging ? 'cursor-grabbing' : 'cursor-grab'
+				} `}
+				onMouseUp={handleMouseUp}
+				onMouseLeave={handleMouseUp} // To handle the case when the mouse leaves the component while dragging
+			>
+				<img
+					src={src}
+					className={styles.PreviewPageImage}
+					style={
+						{
+							transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
+							transition: 'transform 0.1s',
+							transformOrigin: 'top center',
+							willChange: 'transform',
+						} as any
+					}
+					onWheel={handleWheel}
+					onMouseDown={handleMouseDown}
+					onMouseMove={handleMouseMove}
+				/>
+			</div>
+		</ScrollArea>
 	);
 };
 export default ResumeApp;

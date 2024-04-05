@@ -1,10 +1,11 @@
 .PreviewPage {
-	min-height: 850px;
-	min-width: 690px;
-	width: fit-content;
+	max-height: 842px;
+	max-width: 595px;
+	width: 100%;
 	background: #fff;
 	display: flex;
-	height: auto;
+	height: 100%;
+	border-radius: 12px;
 	align-items: center;
 	justify-content: center;
 
