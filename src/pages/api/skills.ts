@@ -27,7 +27,6 @@ const skills = [
 	'React Native',
 	'Flutter',
 	'Ionic',
-	'Angular',
 	'Vue.js',
 	'Express.js',
 	'Django',
