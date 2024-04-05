@@ -6,6 +6,7 @@ declare module '@radix-ui/themes' {
 		Theme,
 		TextField,
 		Slot,
+		Popover,
 		ScrollArea,
 	}: typeof RadixThemes = require('@radix-ui/themes/dist/cjs/components/avatar');
 }
