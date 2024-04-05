@@ -8,6 +8,10 @@ import {
 	Toolbar,
 	createButton,
 } from 'react-simple-wysiwyg';
+import { generateUUID } from '@labs/utils';
+import { CallToAction, Flex } from '@labs/components';
+import { Popover } from '@radix-ui/themes';
+import { Field } from '@labs/components/field';
 
 import Bold from '@labs/icons/dashboard/editor/bold.svg';
 import Italic from '@labs/icons/dashboard/editor/italics.svg';
@@ -16,8 +20,9 @@ import Link from '@labs/icons/dashboard/editor/links.svg';
 import Clear from '@labs/icons/dashboard/editor/clear.svg';
 import Undo from '@labs/icons/dashboard/editor/undo.svg';
 import Redo from '@labs/icons/dashboard/editor/redo.svg';
-import { generateUUID } from '@labs/utils';
-import { Flex } from '@labs/components';
+
+import SparklesIcon from '@labs/icons/misc/sparkels.svg';
+import AddAlt from '@labs/icons/misc/add-alt.svg';
 
 export const BtnBold = createButton('Bold', <Bold />, 'bold');
 
@@ -50,7 +55,6 @@ export const BtnLink = createButton(
 	'Link',
 	<Link />,
 	({ $selection, ...rest }) => {
-		console.log('unlink', $selection, rest);
 		if ($selection?.nodeName === 'A') {
 			document.execCommand('unlink');
 		} else {
@@ -70,7 +74,7 @@ export default function CustomEditor({
 	value,
 	onChange,
 	label,
-
+	name,
 	toolbar = [
 		'bold',
 		'italic',
@@ -85,6 +89,7 @@ export default function CustomEditor({
 	],
 }: {
 	value: string;
+	name: string;
 	onChange: (value: ContentEditableEvent) => void;
 	label?: string;
 	toolbar?: Array<
@@ -100,6 +105,12 @@ export default function CustomEditor({
 	>;
 }) {
 	const fieldId = generateUUID();
+	const randomMap = {
+		summary: refinedSummary,
+		description: refinedExperienceDescriptions,
+	};
+
+	const randomText = randomMap[name as 'summary' | 'description'] || null;
 
 	return (
 		<Flex.Column fullWidth gap={8}>
@@ -140,21 +151,98 @@ export default function CustomEditor({
 									return null;
 							}
 						})}
-						{/* <BtnBold />
-					<BtnUnderline />
-					<BtnItalic />
-					<BtnStrikeThrough />
-					<BtnLink />
-
-					<Separator />
-					<BtnNumberedList />
-					<BtnBulletList />
-
-					<Separator />
-					<BtnClearFormatting /> */}
 					</Toolbar>
 				</Editor>
 			</EditorProvider>
+			<Flex gap={8} alignItems="center" className="mt-[8px]">
+				<Popover.Root>
+					<Popover.Trigger>
+						<CallToAction.button
+							size="sm"
+							outline
+							leadingIcon={
+								<SparklesIcon
+									width={16}
+									className="text-[var(--primary-blue)]"
+								/>
+							}
+						>
+							AI write
+						</CallToAction.button>
+					</Popover.Trigger>
+					<Popover.Content width="500px">
+						<Flex.Column gap={8}>
+							<Field.Textarea
+								placeholder={`e.g write a descriptive summary`}
+								style={{ height: 80 }}
+							/>
+							<CallToAction.button size="sm" variant="secondary">
+								Write
+							</CallToAction.button>
+						</Flex.Column>
+					</Popover.Content>
+				</Popover.Root>
+				{randomText?.length > 0 && (
+					<CallToAction.button
+						size="sm"
+						outline
+						onClick={(e) => {
+							e.preventDefault();
+							onChange({
+								target: {
+									value:
+										randomText[Math.floor(Math.random() * randomText.length)],
+								},
+							} as any);
+						}}
+						leadingIcon={
+							<AddAlt width={18} className="text-[var(--primary-blue)]" />
+						}
+					>
+						Suggest {name}
+					</CallToAction.button>
+				)}
+			</Flex>
 		</Flex.Column>
 	);
 }
+
+const refinedSummary = [
+	'Dynamic sales and customer service professional, distinguished by surpassing sales targets consistently and fostering outstanding customer relationships. Known for exceptional motivational skills and a deep commitment to excellence in service.',
+	'Experienced in sales and customer service, I am distinguished by my ability to exceed sales goals and cultivate excellent client relations, driven by a profound commitment to service quality and team success.',
+	'Skilled software developer with expertise in Python and JavaScript, adept in full-stack development, agile methodologies, and leveraging cloud technologies. I have a track record of successfully delivering innovative web and mobile applications.',
+	'Empathetic healthcare professional specializing in geriatric medicine, with over a decade of experience in enhancing patient care. Recognized for exceptional communication and the development of personalized care plans that significantly improve patient outcomes.',
+	'Energetic marketing specialist with a solid foundation in digital marketing, including SEO, PPC, and social media strategies. Proven success in elevating brand visibility and driving sales through creative and targeted marketing campaigns.',
+	'Analytical financial analyst with a keen acumen for market trends, financial modeling, and strategic investment. Noted for producing insightful financial analyses that drive informed strategic business decisions.',
+	'Creative graphic designer with a flair for crafting compelling visual identities across web, branding, and print mediums. Expert in Adobe Creative Suite, committed to translating client visions into impactful and engaging designs.',
+	'Innovative educator dedicated to fostering academic excellence across diverse age groups. Specialized in curriculum innovation and the application of engaging teaching methodologies that promote active learning and student achievement.',
+	'Environmental scientist with a zeal for developing sustainable solutions to contemporary environmental issues. Skilled in data analysis, impact assessments, and advocating for evidence-based environmental policy and practice.',
+	'Human resources manager with a comprehensive background in shaping HR policies, talent management, and fostering positive workplace environments. Recognized for enhancing organizational culture and employee engagement through strategic HR initiatives.',
+	'Forward-thinking engineer with a robust background in civil engineering and project management. Proven expertise in designing and supervising the construction of infrastructure projects, with a steadfast commitment to upholding industry standards and sustainability.',
+	'High-performing sales expert with a proven history of achieving and exceeding targets in competitive environments. Renowned for building lasting relationships and mastering negotiations to secure mutually beneficial outcomes.',
+	'Strategic IT consultant with extensive experience in crafting and executing technology strategies that bolster business objectives. Proficient in cybersecurity, network design, and cloud services, aiming to optimize operational efficiency and security.',
+	'Dedicated investigative journalist with a reputation for uncovering compelling stories through meticulous research and ethical journalism. Committed to delivering truth and transparency, supported by a strong network of sources.',
+];
+
+const refinedExperienceDescriptions = [
+	'Led a sales team to achieve a 150% increase in sales targets through strategic planning and exceptional leadership, resulting in significant market share growth.',
+	'Implemented innovative customer service strategies that enhanced customer satisfaction rates by 40%, driving repeat business and loyalty.',
+	'Developed and launched a multi-platform mobile application, leading to a 30% increase in user engagement and opening new revenue streams.',
+	'Directed patient care for geriatric patients, achieving a 20% improvement in patient health outcomes through personalized care plans and dedicated follow-up.',
+	'Executed a digital marketing campaign that increased brand awareness by 50% and sales by 35% through targeted social media ads and content marketing.',
+	'Conducted comprehensive market analysis that informed a pivotal shift in investment strategy, yielding a 25% increase in portfolio performance.',
+	"Designed a corporate identity package that revitalized a brand's image, resulting in a 60% increase in customer engagement and a 40% increase in sales.",
+	'Revamped an outdated curriculum with innovative teaching methods, leading to a 15% improvement in student test scores and a 25% increase in student engagement.',
+	'Led a research project on sustainable urban development, influencing local government policies and contributing to a 10% reduction in urban carbon emissions.',
+	'Overhauled the HR recruitment process, reducing hiring times by 30% and improving employee retention rates by 25% through strategic talent acquisition and management.',
+	'Managed the design and construction of a major infrastructure project, completing it 20% under budget and 30% ahead of schedule, while ensuring compliance with all safety and quality standards.',
+	'Achieved top salesperson status for three consecutive years by consistently exceeding sales targets and cultivating key relationships with high-value clients.',
+	'Developed a cybersecurity protocol that reduced data breaches by 90%, safeguarding company and customer data and enhancing trust and compliance.',
+	'Uncovered a major political scandal through investigative reporting, leading to national policy changes and receiving prestigious journalism awards for ethical reporting.',
+	'Led a team in developing an award-winning software solution that streamlined operational processes, resulting in a 40% increase in efficiency and significant cost savings.',
+	'Implemented a cloud migration strategy for a Fortune 500 company, leading to a 50% reduction in IT costs and a 35% increase in operational agility.',
+	'Directed a grassroots environmental campaign that successfully lobbied for the passage of critical legislation aimed at protecting local waterways from industrial pollution.',
+	'Designed and implemented a comprehensive employee wellness program that led to a 30% decrease in sick days and a 20% increase in overall employee productivity.',
+	'Coordinated a major international conference on climate change, bringing together stakeholders from over 50 countries to collaborate on actionable solutions, significantly raising awareness and funding for climate initiatives.',
+	'Developed a financial model for a startup that secured $5 million in funding, enabling the launch of an innovative service that disrupted the traditional market dynamics.',
+];
