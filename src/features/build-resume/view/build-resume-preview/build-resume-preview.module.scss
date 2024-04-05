@@ -1,6 +1,8 @@
 @use '@/styles/base/utils' as *;
 
 .Preview {
+	height: 100%;
+	width: 100%;
 	&:hover,
 	&:focus {
 		.PreviewSnarkBar {
