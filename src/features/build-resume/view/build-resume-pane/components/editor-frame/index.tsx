@@ -31,6 +31,7 @@ export const EditorModule = ({
 				/>
 			)}
 			<CustomEditor
+				name={type}
 				value={field.value}
 				onChange={(e: any) => setField({ value: e.target.value })}
 			/>
@@ -38,8 +39,7 @@ export const EditorModule = ({
 	);
 };
 
-export const SkillsModule = ({
-	type,
+export const SkillsAutoComplete = ({
 	setField,
 	field,
 	removeField,
@@ -101,37 +101,51 @@ export const SkillsModule = ({
 				}}
 			/>
 
-			<Flex.Row gap={8} className="mt-1">
-				{Array.isArray(field) &&
-					field?.length > 0 &&
-					field.map((item: any, index: number) => (
-						<motion.div
-							key={index}
-							initial={{ opacity: 0, scale: 0.9 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{
-								staggerChildren: 0.1,
-							}}
-						>
-							<CallToAction
-								size="sm"
-								variant="secondary"
-								key={index}
-								trailingIcon={
-									<img
-										src={getDataIcons('close', '#1388f2')}
-										className="w-[10px]"
-										aria-hidden="true"
-									/>
-								}
-								onClick={() => removeField(item)}
-							>
-								{item.value}
-							</CallToAction>
-						</motion.div>
-					))}
-				{/* {field.map} */}
-			</Flex.Row>
+			<AutoCompletePill field={field} removeField={removeField} />
 		</>
+	);
+};
+
+export const AutoCompletePill = ({
+	field,
+	removeField,
+}: {
+	field: {
+		title: string;
+		value: string;
+	};
+	removeField: (field: any) => void;
+}) => {
+	return (
+		<Flex.Row gap={8}>
+			{Array.isArray(field) &&
+				field?.length > 0 &&
+				field.map((item: any, index: number) => (
+					<motion.div
+						key={index}
+						initial={{ opacity: 0, scale: 0.9 }}
+						animate={{ opacity: 1, scale: 1 }}
+						transition={{
+							staggerChildren: 0.1,
+						}}
+					>
+						<CallToAction
+							size="sm"
+							variant="secondary"
+							key={index}
+							trailingIcon={
+								<img
+									src={getDataIcons('close', '#1388f2')}
+									className="w-[10px]"
+									aria-hidden="true"
+								/>
+							}
+							onClick={() => removeField(item)}
+						>
+							{item.value}
+						</CallToAction>
+					</motion.div>
+				))}
+		</Flex.Row>
 	);
 };

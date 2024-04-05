@@ -6,7 +6,14 @@ import classNames from 'classnames';
 import { COMPONENT_MAP } from '../../lib';
 import { StrictModeDroppable } from '../../components/sm-droppable';
 
-import { CallToAction, Container, Flex, Heading, Text } from '@labs/components';
+import {
+	CallToAction,
+	Container,
+	Flex,
+	Heading,
+	Text,
+	useToast,
+} from '@labs/components';
 import { Accordion } from '@labs/components/accordion';
 import Add from '@labs/icons/misc/add.svg';
 import Bulb from '@labs/icons/misc/bulb.svg';
@@ -26,13 +33,37 @@ export const BuildResumePane = () => {
 		editModuleData,
 		setModuleAdd: setAddNew,
 	} = useBuildStore();
-
+	const { createToast } = useToast();
+	const [isDropDisabled, setIsDropDisabled] = useState(false);
 	function handleOnDragEnd(result: any) {
 		if (!result.destination) return;
+		setIsDropDisabled(false);
+
+		if (result.destination) {
+			const getIndexOfAllDisabled = blocks
+				.map((block, index) => {
+					if (typeof block.draggable === 'boolean' && !block.draggable) {
+						return index;
+					}
+				})
+				.filter((index) => index !== undefined);
+
+			const isDisabled = getIndexOfAllDisabled.includes(
+				result.destination.index
+			);
+
+			if (isDisabled) {
+				createToast({
+					message: 'You cannot move this section up or down',
+					variant: 'error',
+				});
+				return setIsDropDisabled(true);
+			}
+		}
+
 		const items = Array.from(blocks);
 		const [reorderedItem] = items.splice(result.source.index, 1);
 		items.splice(result.destination.index, 0, reorderedItem);
-
 		setModules(items);
 	}
 
@@ -41,7 +72,10 @@ export const BuildResumePane = () => {
 	return (
 		<ScrollArea type="scroll" scrollbars="vertical">
 			<div className={styles.BuildResumePane}>
-				<DragDropContext onDragEnd={handleOnDragEnd}>
+				<DragDropContext
+					onDragEnd={handleOnDragEnd}
+					onDragStart={() => setIsDropDisabled(false)}
+				>
 					<Container className="my-[40px]" maxWidth="lg">
 						<Flex gap={8}>
 							<SparklesIcon />
@@ -62,12 +96,15 @@ export const BuildResumePane = () => {
 					</Container>
 
 					<Container maxWidth="lg">
-						<StrictModeDroppable droppableId="blocks">
+						<StrictModeDroppable
+							droppableId="blocks"
+							isDropDisabled={isDropDisabled}
+						>
 							{(droppable: any) => (
 								<div
 									{...droppable.droppableProps}
 									ref={droppable.innerRef}
-									className="flex flex-col gap-[8px]"
+									className={`flex flex-col gap-[8px]`}
 								>
 									<Accordion.Group defaultActiveKey={defaultAccordionKey}>
 										{blocks.map((block, index) => {
@@ -83,6 +120,10 @@ export const BuildResumePane = () => {
 													key={`${index}:blocks`}
 													draggableId={`${index}:blocks`}
 													index={index}
+													isDragDisabled={
+														typeof block.draggable === 'boolean' &&
+														!block.draggable
+													}
 												>
 													{(draggable: any) => (
 														<div
@@ -94,19 +135,24 @@ export const BuildResumePane = () => {
 																dataKey={`${index}:block_item`}
 																title={
 																	<Flex alignItems="center" gap={4}>
-																		<span
-																			{...draggable.dragHandleProps}
-																			role="button"
-																			tabIndex={0}
-																			aria-label="drag"
-																			onClick={(e) => e.stopPropagation()}
-																		>
-																			<DNDIcon />
-																		</span>
+																		{typeof block.draggable === 'boolean' &&
+																		!block.draggable ? null : (
+																			<span
+																				{...draggable.dragHandleProps}
+																				role="button"
+																				tabIndex={0}
+																				aria-label="drag"
+																				onClick={(e) => e.stopPropagation()}
+																			>
+																				<DNDIcon />
+																			</span>
+																		)}
+
 																		<Text weight={600}>
 																			{block.key.startsWith('new_section')
-																				? (block?.data as any)?.title ??
-																					block.title
+																				? (block?.data as any)?.title ||
+																					block.title ||
+																					'New Section'
 																				: block.title}
 																		</Text>
 																	</Flex>
@@ -133,9 +179,12 @@ export const BuildResumePane = () => {
 																<Component
 																	field={block.data}
 																	type={block.key}
-																	setField={(data: Array<any> | object) =>
-																		setModuleData(block.key, data)
-																	}
+																	setField={(
+																		data: Array<any> | object,
+																		options: {
+																			edit?: boolean;
+																		}
+																	) => setModuleData(block.key, data, options)}
 																	removeField={(index: number) =>
 																		removeModuleData(block.key, index)
 																	}
