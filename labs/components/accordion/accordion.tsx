@@ -10,6 +10,7 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+
 import { createErrorWithCode } from '../../utils';
 import { Flex, Text } from '../layout';
 
@@ -194,6 +195,10 @@ const AccordionProvider = ({
 	children,
 	allowMultiple = false,
 	defaultActiveKey,
+}: {
+	children: ReactNode;
+	allowMultiple: boolean;
+	defaultActiveKey?: number[] | number | string;
 }) => {
 	const [activeKeys, setActiveKeys] = useState<number[] | number | string>(
 		allowMultiple ? [] : defaultActiveKey ?? -1
