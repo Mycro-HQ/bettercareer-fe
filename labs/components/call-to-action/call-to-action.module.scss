@@ -16,6 +16,14 @@
 		user-select: none;
 	}
 
+	&.xs {
+		padding: 8px 14px;
+		@include typography('caption');
+		font-weight: 600;
+		height: fit-content;
+		width: fit-content;
+	}
+
 	&.sm {
 		padding: 10px 18px;
 		@include typography('accent');
@@ -88,6 +96,49 @@
 
 		&:focus-visible {
 			outline: 2px solid var(--primary-blue);
+			outline-offset: 2px;
+		}
+	}
+
+	&.CTAerror {
+		background: var(--primary-red);
+		color: #fff;
+		border: 1.4px solid transparent;
+
+		&-outline {
+			background-color: transparent;
+			border: 1.4px solid var(--primary-red);
+			border-style: solid;
+			color: var(--primary-red);
+
+			&.lg {
+				border-width: 2px;
+			}
+
+			&:disabled {
+				background: transparent;
+			}
+
+			&:hover,
+			&:focus {
+				opacity: 0.8;
+			}
+		}
+
+		&:disabled {
+			background: #a1cffa;
+			color: #fff;
+			cursor: not-allowed;
+		}
+
+		&:hover,
+		&:focus {
+			background: var(--primary-red);
+			transition: all 0.2s ease-in-out;
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--primary-red);
 			outline-offset: 2px;
 		}
 	}

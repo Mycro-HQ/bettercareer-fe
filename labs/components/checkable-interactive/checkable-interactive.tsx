@@ -16,8 +16,8 @@ import React, { FC, useState, useMemo } from 'react';
 import classNames from 'classnames';
 
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import { NativeElementProps } from '@labs/utils/types/utility';
-import { generateUUID, useDynamicStyle } from '@labs/utils';
+import type { NativeElementProps } from '../../utils/types/utility';
+import { generateUUID, useDynamicStyle } from '../../utils';
 
 import styles from './checkable-interactive.module.scss';
 

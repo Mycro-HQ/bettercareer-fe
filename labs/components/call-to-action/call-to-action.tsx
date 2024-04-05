@@ -2,9 +2,9 @@ import React from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
 
-import { forwardRefWrapper } from '@labs/utils';
+import { forwardRefWrapper } from '../../utils';
 
-import type { NativeElementProps, Prettify } from '@labs/utils/types/utility';
+import type { NativeElementProps, Prettify } from '../../utils/types/utility';
 import { Spinner } from '../spinner';
 
 import styles from './call-to-action.module.scss';
@@ -105,6 +105,7 @@ const createCallToActionComponent = <T extends CTAElement>(component: T) =>
 
 			const spinnerSize = {
 				sm: 14,
+				xs: 12,
 				md: 16,
 				lg: 18,
 				block: 20,
