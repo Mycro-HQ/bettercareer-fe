@@ -1,6 +1,5 @@
-import { Heading, Text, Flex, CallToAction } from '@labs/components';
+import { Text, Flex, CallToAction } from '@labs/components';
 import React from 'react';
-import styles from './jobs.module.scss';
 import JobCard from './job-card';
 import DribbbleLogo from '../../../../../public/images/dashboard/Company_Logo.svg';
 import { Seperator } from './job-card';
