@@ -1,14 +1,11 @@
 import { HeadingModule } from './view/build-resume-pane/components';
-import {
-	EditorModule,
-	SkillsModule,
-} from './view/build-resume-pane/components/editor-frame';
+import { EditorModule } from './view/build-resume-pane/components/editor-frame';
 import ExperienceFrame from './view/build-resume-pane/components/experience-frame';
 
 export const COMPONENT_MAP = {
 	heading: HeadingModule,
 	...(
-		['experience', 'education', 'certifications', 'projects'] as const
+		['experience', 'education', 'certifications', 'projects', 'skills'] as const
 	).reduce(
 		(acc, key) => ({
 			...acc,
@@ -16,7 +13,6 @@ export const COMPONENT_MAP = {
 		}),
 		{}
 	),
-	skills: SkillsModule,
 	...(['summary', 'default'] as const).reduce(
 		(acc, key) => ({
 			...acc,

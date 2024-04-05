@@ -18,7 +18,7 @@
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",
-    "framer-motion": "^11.0.8",
+    "framer-motion": "^11.0.24",
     "js-cookie": "^3.0.5",
     "next": "14.1.0",
     "posthog-js": "^1.116.2",

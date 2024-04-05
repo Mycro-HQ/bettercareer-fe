@@ -1,5 +1,8 @@
-import { Field } from '@labs/components/field';
 import CustomEditor from '../simple-rich-text';
+
+import { Field } from '@labs/components/field';
+
+import { SkillsAutoComplete } from './components/skills-autocomplete';
 
 export const MODULE_OPTIONS = {
 	experience: {
@@ -186,7 +189,7 @@ export const MODULE_OPTIONS = {
 				span: 2,
 			},
 			{
-				title: 'Position Title',
+				title: 'Position',
 				type: 'text',
 				key: 'title',
 				span: 1,
@@ -223,6 +226,29 @@ export const MODULE_OPTIONS = {
 			},
 		],
 	},
+	skills: {
+		name: 'Skills',
+		emptyMessage:
+			'Add your skills: Highlight your abilities and make your resume stand out.',
+		card: {
+			title: ['name'],
+			subtitle: ['value'],
+		},
+		fields: [
+			{
+				title: 'Skills Title',
+				type: 'text',
+				key: 'name',
+				span: 2,
+			},
+			{
+				title: 'Skills',
+				type: 'autocomplete',
+				key: 'value',
+				span: 2,
+			},
+		],
+	},
 };
 
 export const MODULE_COMPONENTS = {
@@ -230,4 +256,5 @@ export const MODULE_COMPONENTS = {
 	textarea: CustomEditor,
 	date: Field.Date,
 	checkbox: Field.Checkbox,
+	autocomplete: SkillsAutoComplete,
 };

@@ -15,6 +15,7 @@ import styles from './layout.module.scss';
 
 export const BuildResumeLayout = () => {
 	const { resumeBlob } = useBuildStore();
+	const previewRef = React.useRef(null);
 	return (
 		<div className={styles.BuildResumeLayout}>
 			<nav className={styles.BuildResumeLayout__nav}>
@@ -100,8 +101,8 @@ export const BuildResumeLayout = () => {
 				</Flex>
 			</nav>
 			<div className={styles.ContentWrap}>
-				<aside className={styles.BuildResumeLayout__aside}>
-					<BuildResumePreview />
+				<aside className={styles.BuildResumeLayout__aside} ref={previewRef}>
+					<BuildResumePreview previewRef={previewRef} />
 				</aside>
 				<main className={styles.BuildResumeLayout__main}>
 					<BuildResumePane />

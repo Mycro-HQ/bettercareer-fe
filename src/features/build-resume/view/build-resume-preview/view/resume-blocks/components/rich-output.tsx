@@ -29,7 +29,7 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 	const doc = parser.parseFromString(htmlContent, 'text/html');
 
 	const walkNodes = (nodes: any) => {
-		return Array.from(nodes).map((node: any) => {
+		return Array.from(nodes).map((node: any, index) => {
 			if (node.nodeType === Node.TEXT_NODE) {
 				return <Text key={node.nodeValue}>{node.nodeValue}</Text>;
 			}
@@ -76,7 +76,7 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 					return (
 						<Text key={node.innerText} style={[style]}>
 							• {walkNodes(childNodes)}
-							{'\n'}
+							{index < nodes.length - 1 ? '\n' : null}
 						</Text>
 					);
 				}
@@ -96,5 +96,20 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 export const RichOutput = ({ text, ...rest }: { text: string } & any) => {
 	const content = parseHtmlToReactPdf(text);
 
-	return <Text {...rest}>{content}</Text>;
+	return (
+		<Text
+			{...rest}
+			style={[
+				rest.style,
+				{
+					flexDirection: 'column',
+					gap: 2,
+					fontSize: 10,
+					lineHeight: 1.5,
+				},
+			]}
+		>
+			{content}
+		</Text>
+	);
 };

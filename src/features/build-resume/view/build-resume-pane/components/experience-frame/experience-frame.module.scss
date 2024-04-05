@@ -4,6 +4,14 @@
 	margin-bottom: 8px;
 }
 
+.ExperienceFrame__Edit {
+	padding: 24px;
+
+	background: #fcfcfc;
+	border: 1px solid #f3f4f4;
+	border-radius: 12px;
+}
+
 .FrameEmpty {
 	display: flex;
 	flex-direction: column;
@@ -17,7 +25,7 @@
 
 .FrameCards__Card {
 	display: flex;
-	padding: 28px;
+	padding: 24px;
 	gap: 8px;
 
 	background: #fcfcfc;

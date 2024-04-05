@@ -116,10 +116,17 @@ $gray8: #b2b2b2;
 	width: auto;
 }
 
+.react-datepicker__month .react-datepicker__month-text,
+.react-datepicker__month .react-datepicker__quarter-text {
+	padding: 10px 0;
+	font-size: 14px;
+}
+
 .react-datepicker__header {
 	background: none;
 	border: 0;
 	padding: 0;
+	padding: 20px 24px 8px;
 }
 
 .react-datepicker__navigation {

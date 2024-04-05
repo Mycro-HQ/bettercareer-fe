@@ -1,13 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { Fragment, useCallback } from 'react';
 import classNames from 'classnames';
 import { format, isDate } from 'date-fns';
+import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 
-import { CallToAction, Flex, Text } from '@labs/components';
+import { CallToAction, Flex, Text, capitalize, useFeedback } from '@labs';
 import Add from '@labs/icons/misc/add.svg';
 import Edit from '@labs/icons/dashboard/edit.svg';
 import Delete from '@labs/icons/dashboard/delete.svg';
 import { useBuildStore } from '@/store/z-store/builder';
 import ReadMore from '@/components/misc/read-more';
+import DNDIcon from '@labs/icons/misc/dnd.svg';
+import { StrictModeDroppable } from '@/features/build-resume/components/sm-droppable';
 
 import { MODULE_COMPONENTS, MODULE_OPTIONS } from './utils';
 import styles from './experience-frame.module.scss';
@@ -16,7 +19,8 @@ type ExperienceTypes =
 	| 'experience'
 	| 'education'
 	| 'certifications'
-	| 'projects';
+	| 'projects'
+	| 'skills';
 
 const ExperienceFrame = ({
 	type,
@@ -31,6 +35,7 @@ const ExperienceFrame = ({
 	editField: (field: any) => void;
 	removeField: (field: any) => void;
 }) => {
+	const { createDisclosure } = useFeedback();
 	const { moduleAdd, setModuleAdd: setAddNew } = useBuildStore();
 	const [isEditing, setIsEditing] = React.useState(false);
 	const [fieldData, setFieldData] = React.useState<any>({});
@@ -56,129 +61,174 @@ const ExperienceFrame = ({
 		);
 	}
 
-	if (Array.isArray(field) && field.length > 0 && !addNew) {
-		return (
-			<FrameCards
-				field={field}
-				type={type}
-				editFrame={editFrame}
-				deleteFrame={removeField}
-			/>
-		);
-	}
+	const verifyAllRequiredFields = (fieldData: any) => {
+		const requiredFields = moduleOptions.fields
+			.filter((field: any) => field.required)
+			.map((field: any) => field.key);
+
+		return requiredFields.some((field: any) => {
+			if (field === 'to' && fieldData['current']) return false;
+
+			return !fieldData[field];
+		});
+	};
+
+	const deleteFrame = async (data: any) => {
+		await createDisclosure({
+			title: 'Delete',
+			message: 'Are you sure you want to delete this item?',
+		});
+
+		setFieldData({});
+		removeField(data);
+		setAddNew(type, false);
+		setIsEditing(false);
+	};
 
 	return (
-		<Flex flexWrap="wrap" gap={16} className={styles.ExperienceFrame}>
-			{moduleOptions.fields.map((newField: any, index: number) => {
-				let Component =
-					MODULE_COMPONENTS[newField.type as keyof typeof MODULE_COMPONENTS] ||
-					(() => null);
+		<Flex.Column gap={14}>
+			{addNew && (
+				<Flex
+					flexWrap="wrap"
+					gap={16}
+					className={classNames([
+						styles.ExperienceFrame,
+						styles.ExperienceFrame__Edit,
+					])}
+				>
+					{moduleOptions.fields.map((newField: any, index: number) => {
+						let Component =
+							MODULE_COMPONENTS[
+								newField.type as keyof typeof MODULE_COMPONENTS
+							] || (() => null);
 
-				if (fieldData?.current && newField.key === 'to') {
-					Component = () => null;
-				}
-
-				const outputs = (key: string, e: any) => {
-					if (key === 'checkbox') {
-						return e.target.checked;
-					}
-					if (key === 'textarea') {
-						return {
-							value: e?.target?.value ?? e,
-							textContent: e?.currentTarget?.outerText ?? e,
-						};
-					}
-					return e?.target?.value ?? e;
-				};
-
-				const inputs = (key: string) => {
-					if (key === 'textarea') {
-						return (
-							fieldData[newField.key as keyof typeof fieldData]?.value ?? ''
-						);
-					}
-					return fieldData[newField.key as keyof typeof fieldData] ?? '';
-				};
-				return (
-					<Flex
-						key={index}
-						className={styles.ExperienceFrame__Field}
-						basis={(newField.span / 2) * 100 - 1 + '%'}
-					>
-						<Component
-							label={newField.title}
-							required={newField.required || false}
-							placeholder={newField.title}
-							name={newField.key}
-							value={inputs(newField.type)}
-							{...(newField.type === 'textarea' && {
-								toolbar: [
-									'bold',
-									'italic',
-									'underline',
-									'link',
-									'divider',
-									'bulletList',
-									'divider',
-									'clearFormatting',
-								],
-							})}
-							{...(newField.type === 'checkbox' && {
-								isChecked: fieldData[newField.key as keyof typeof fieldData],
-							})}
-							onChange={(e: any) => {
-								if (newField.key === 'current' && e.target.checked) {
-									setFieldData((prev: any) => ({
-										...prev,
-										to: '',
-									}));
-								}
-
-								setFieldData((prev: any) => ({
-									...prev,
-									[newField.key]: outputs(newField.type, e),
-								}));
-							}}
-						/>
-					</Flex>
-				);
-			})}
-			<Flex justifyContent="flex-end" fullWidth gap={8}>
-				{isEditing && (
-					<CallToAction
-						outline
-						variant="primary"
-						size="md"
-						onClick={() => {
-							removeField(fieldData);
-							setFieldData({});
-							setAddNew(type, false);
-							setIsEditing(false);
-						}}
-					>
-						Delete
-					</CallToAction>
-				)}
-				<CallToAction
-					variant="primary"
-					size="md"
-					disabled={fieldData === field}
-					onClick={() => {
-						if (isEditing) {
-							editField(fieldData);
-						} else {
-							setField(fieldData);
+						if (fieldData?.current && newField.key === 'to') {
+							Component = () => null;
 						}
 
-						setAddNew(type, false);
-						setIsEditing(false);
-						setFieldData({});
-					}}
-				>
-					Save
-				</CallToAction>
-			</Flex>
-		</Flex>
+						const outputs = (key: string, e: any) => {
+							if (key === 'checkbox') {
+								return e.target.checked;
+							}
+							if (key === 'textarea') {
+								return {
+									value: e?.target?.value ?? e,
+									textContent: e?.currentTarget?.outerText ?? e,
+								};
+							}
+							return e?.target?.value ?? e;
+						};
+
+						const inputs = (key: string) => {
+							if (key === 'textarea') {
+								return (
+									fieldData[newField.key as keyof typeof fieldData]?.value ?? ''
+								);
+							}
+							return fieldData[newField.key as keyof typeof fieldData] ?? '';
+						};
+
+						return (
+							<Flex
+								key={index}
+								className={styles.ExperienceFrame__Field}
+								basis={(newField.span / 2) * 100 - 1.5 + '%'}
+								flexWrap="wrap"
+							>
+								<Component
+									label={newField.title}
+									required={newField.required || false}
+									placeholder={newField.title}
+									name={newField.key}
+									value={inputs(newField.type)}
+									{...(newField.type === 'textarea' && {
+										toolbar: [
+											'bold',
+											'italic',
+											'underline',
+											'link',
+											'divider',
+											'bulletList',
+											'divider',
+											'clearFormatting',
+										],
+									})}
+									{...(newField.type === 'checkbox' && {
+										isChecked:
+											fieldData[newField.key as keyof typeof fieldData],
+									})}
+									onChange={(e: any) => {
+										if (newField.key === 'current' && e.target.checked) {
+											setFieldData((prev: any) => ({
+												...prev,
+												to: '',
+											}));
+										}
+
+										setFieldData((prev: any) => ({
+											...prev,
+											[newField.key]: outputs(newField.type, e),
+										}));
+									}}
+								/>
+							</Flex>
+						);
+					})}
+					<Flex justifyContent="flex-end" fullWidth gap={8}>
+						{isEditing ? (
+							<CallToAction
+								outline
+								variant="error"
+								size="md"
+								onClick={() => deleteFrame(fieldData)}
+							>
+								Delete
+							</CallToAction>
+						) : (
+							<CallToAction
+								outline
+								variant="primary"
+								size="md"
+								onClick={() => {
+									setAddNew(type, false);
+									setIsEditing(false);
+								}}
+							>
+								Close
+							</CallToAction>
+						)}
+
+						<CallToAction
+							variant="primary"
+							size="md"
+							disabled={verifyAllRequiredFields(fieldData)}
+							onClick={() => {
+								if (isEditing) {
+									editField(fieldData);
+								} else {
+									setField(fieldData);
+								}
+
+								setAddNew(type, false);
+								setIsEditing(false);
+								setFieldData({});
+							}}
+						>
+							Save
+						</CallToAction>
+					</Flex>
+				</Flex>
+			)}
+			{Array.isArray(field) && field.length > 0 && (
+				<FrameCards
+					field={field}
+					type={type}
+					setField={setField}
+					editFrame={editFrame}
+					deleteFrame={deleteFrame}
+				/>
+			)}
+		</Flex.Column>
 	);
 };
 
@@ -212,13 +262,29 @@ const FrameCards = ({
 	type,
 	editFrame,
 	deleteFrame,
+	setField,
 }: {
 	field: any;
 	type: ExperienceTypes;
 	editFrame: (data: any) => void;
 	deleteFrame: (data: any) => void;
+	setField: (
+		field: any,
+		options: {
+			edit: boolean;
+		}
+	) => void;
 }) => {
 	const extractValidKeysFromType = MODULE_OPTIONS[type].card || {};
+
+	function handleOnDragEnd(result: any) {
+		if (!result.destination) return;
+		const items = Array.from(field);
+		const [reorderedItem] = items.splice(result.source.index, 1);
+		items.splice(result.destination.index, 0, reorderedItem);
+
+		setField(items, { edit: false });
+	}
 
 	const extractComponent = (key: string, data: any, index: number) => {
 		if (key === 'title') {
@@ -231,7 +297,7 @@ const FrameCards = ({
 					weight={700}
 				>
 					{index === 1 && !!data && '- '}
-					{data}
+					{data || capitalize(type)}
 				</Text>
 			);
 		}
@@ -253,7 +319,7 @@ const FrameCards = ({
 			return (
 				<>
 					<ReadMore
-						text={(data?.textContent || data)?.toString()}
+						text={(data?.textContent ?? data)?.toString()}
 						limit={200}
 						className="mt-3"
 					/>
@@ -261,61 +327,107 @@ const FrameCards = ({
 			);
 		}
 
-		return <Text>{data}</Text>;
+		return <Text>{data.toString()}</Text>;
 	};
 	return (
-		<Flex.Column flexWrap="wrap" gap={16} className={styles.FrameCards}>
-			{field.map((data: any, index: number) => {
-				return (
-					<Flex
-						key={index + data.title}
-						className={styles.FrameCards__Card}
-						gap={16}
-						fullWidth
-						justifyContent="space-between"
-						alignItems="flex-start"
-					>
-						<Flex.Column gap={4} className={styles.FrameCards__Card__Content}>
-							{Object.keys(extractValidKeysFromType).map(
-								(extrc: any, index: number) => {
-									return (
-										<Flex key={extrc.key + index} gap={4}>
-											{extractValidKeysFromType[
-												extrc as keyof typeof extractValidKeysFromType
-											].map((key: any, index: number) => (
-												<>{extractComponent(extrc, data[key], index)}</>
-											))}
-										</Flex>
-									);
-								}
-							)}
+		<DragDropContext onDragEnd={handleOnDragEnd}>
+			<StrictModeDroppable droppableId="blocks">
+				{(droppable: any) => (
+					<div {...droppable.droppableProps} ref={droppable.innerRef}>
+						<Flex.Column flexWrap="wrap" gap={16} className={styles.FrameCards}>
+							{field.map((data: any, index: number) => {
+								return (
+									<Draggable
+										key={`${index}:blocks`}
+										draggableId={`${index}:blocks`}
+										index={index}
+									>
+										{(draggable: any) => (
+											<div
+												ref={draggable.innerRef}
+												{...draggable.draggableProps}
+											>
+												<Flex
+													key={index + data.title}
+													className={styles.FrameCards__Card}
+													gap={14}
+													fullWidth
+													justifyContent="space-between"
+													alignItems="flex-start"
+												>
+													<Flex
+														gap={8}
+														className={styles.FrameCards__Card__Content}
+														justifyContent="center"
+														alignItems="flex-start"
+													>
+														<button
+															{...draggable.dragHandleProps}
+															role="button"
+															tabIndex={0}
+															aria-label="drag"
+															className="mt-[4px]"
+															onClick={(e) => e.stopPropagation()}
+														>
+															<DNDIcon width={20} height={20} />
+														</button>
+														<Flex.Column gap={4}>
+															{Object.keys(extractValidKeysFromType).map(
+																(extrc: any, index: number) => {
+																	return (
+																		<Flex key={`${extrc.key}:${index}`} gap={4}>
+																			{extractValidKeysFromType[
+																				extrc as keyof typeof extractValidKeysFromType
+																			].map((key: any, index: number) => (
+																				<Fragment key={`${key}:${index}`}>
+																					{extractComponent(
+																						extrc,
+																						data[key],
+																						index
+																					)}
+																				</Fragment>
+																			))}
+																		</Flex>
+																	);
+																}
+															)}
+														</Flex.Column>
+													</Flex>
+													<Flex
+														className={styles.FrameCards__Card__Actions}
+														gap={14}
+														alignItems="center"
+													>
+														<button
+															onClick={() => {
+																return editFrame(data);
+															}}
+															aria-label="Edit"
+															title="edit"
+														>
+															<Edit />
+														</button>
+														<button
+															onClick={() => deleteFrame(data)}
+															aria-label="Delete"
+															title="delete"
+														>
+															<Delete />
+														</button>
+													</Flex>
+												</Flex>
+												{draggable.placeholder}
+											</div>
+										)}
+									</Draggable>
+								);
+							})}
 						</Flex.Column>
-						<Flex
-							className={styles.FrameCards__Card__Actions}
-							gap={14}
-							alignItems="center"
-						>
-							<button
-								onClick={() => {
-									return editFrame(data);
-								}}
-								aria-label="Edit"
-								title="edit"
-							>
-								<Edit />
-							</button>
-							<button
-								onClick={() => deleteFrame(data)}
-								aria-label="Delete"
-								title="delete"
-							>
-								<Delete />
-							</button>
-						</Flex>
-					</Flex>
-				);
-			})}
-		</Flex.Column>
+						{droppable.placeholder}
+					</div>
+				)}
+			</StrictModeDroppable>
+		</DragDropContext>
 	);
 };
 export default ExperienceFrame;

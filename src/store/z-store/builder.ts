@@ -1,28 +1,30 @@
 import { createReportableStore } from '../middleware/report';
 
+import {
+	MOCK,
+	templatesConfig,
+} from '@/features/build-resume/view/build-resume-preview/view/resume-blocks/utils';
+
 interface BuildStore {
 	loading: boolean;
 	modules: typeof MODULES;
 	setLoading: (loading: boolean) => void;
 	setModules: (modules: Array<any>) => void;
-	setModuleData: (key: string, data: any) => void;
+	setModuleData: (
+		key: string,
+		data: any,
+		options: {
+			edit?: boolean;
+		}
+	) => void;
 	removeModuleData: (key: string, data: any) => void;
 	editModuleData: (key: string, data: any) => void;
 	setModuleAdd: (key: string, status: boolean) => void;
 	moduleAdd: { [key: string]: boolean };
 	setTheme: (theme: any) => void;
-	theme: {
-		font: {
-			heading: string;
-			body: string;
-			scale: number;
-		};
-		colors: {
-			primary: string;
-			primary_text: string;
-			text: string;
-			border: string;
-		};
+	template: {
+		name: string;
+		[key: string]: any;
 	};
 	resumeBlob: {
 		blob: string | null;
@@ -32,60 +34,29 @@ interface BuildStore {
 		blob?: string | null;
 		raw?: string | null;
 	}) => void;
+	setTemplate: (template: any) => void;
 }
 
-const themes = {
-	classic: {
-		colors: {
-			primary: '#F0F0F0',
-			primary_text: '#000',
-			border: '#6F7982',
-		},
-	},
-	dublin: {
-		colors: {
-			primary: '#0F1F2E',
-			primary_text: '#FFFFFF',
-		},
-	},
-	tokyo: {
-		colors: {
-			primary: '#F0F0F0',
-			primary_text: '#000',
-			border: '#6F7982',
-		},
-	},
-};
-
 export const MODULES = [
-	{ key: 'heading', title: 'Heading', data: {} },
-	{ key: 'summary', title: 'Summary', data: {} },
-	{ key: 'skills', title: 'Skills', data: [] },
-	{ key: 'education', title: 'Education', data: [] },
+	{ key: 'heading', title: 'Heading', data: {}, draggable: false },
+	{ key: 'summary', title: 'Summary', data: {}, draggable: false },
 	{ key: 'experience', title: 'Experience', data: [] },
+	{ key: 'education', title: 'Education', data: [] },
 	{ key: 'certifications', title: 'Certifications', data: [] },
+	{ key: 'skills', title: 'Skills', data: [] },
+	{ key: 'skills', title: 'Skills', data: [] },
 	{ key: 'projects', title: 'Projects', data: [] },
 ];
 
 const initialState: BuildStore = {
 	loading: false,
-	modules: MODULES,
+	modules: MOCK as any,
 	moduleAdd: {
 		experience: false,
 		education: false,
 	},
-	theme: {
-		font: {
-			heading: 'Oswald',
-			body: 'Open Sans',
-			scale: 1,
-		},
-		colors: {
-			primary: '#007bff',
-			primary_text: '#ffffff',
-			text: '#333333',
-			border: '#e5e5e5',
-		},
+	template: {
+		...templatesConfig[5],
 	},
 	resumeBlob: {
 		blob: null,
@@ -99,6 +70,7 @@ const initialState: BuildStore = {
 	setModuleAdd: () => {},
 	setResumeBlob: () => {},
 	setTheme: () => {},
+	setTemplate: () => {},
 };
 
 const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
@@ -116,12 +88,17 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 			modules: newModules,
 		});
 	},
-	setTheme: (theme: any) => {
+	// setTheme: (theme: any) => {
+	// 	set({
+	// 		theme: {
+	// 			...get().theme,
+	// 			...theme,
+	// 		},
+	// 	});
+	// },
+	setTemplate: (template: any) => {
 		set({
-			theme: {
-				...get().theme,
-				...theme,
-			},
+			template,
 		});
 	},
 	setResumeBlob: (data: any) => {
@@ -141,9 +118,24 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 			},
 		});
 	},
-	setModuleData: (key: string, data: any) => {
+	setModuleData: (
+		key: string,
+		data: any,
+		options: {
+			edit?: boolean;
+		} = {
+			edit: true,
+		}
+	) => {
 		const modules = get().modules.map((module) => {
 			if (module.key === key) {
+				if (!options.edit) {
+					return {
+						...module,
+						data: data,
+					};
+				}
+
 				return {
 					...module,
 					data: Array.isArray(MODULES.find((m) => m.key === key)?.data)

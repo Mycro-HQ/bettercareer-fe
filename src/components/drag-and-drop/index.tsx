@@ -98,7 +98,7 @@ export default function DragAndDrop({
 		}, 3000);
 
 		return () => clearInterval(interval);
-	}, [files]);
+	}, [files, filesWithError?.length]);
 
 	const validateFile = (file: File) => {
 		const errors = [];
@@ -132,7 +132,7 @@ export default function DragAndDrop({
 			const files = Array.from(event.target.files! || []);
 			addFiles(files);
 		},
-		[]
+		[addFiles]
 	);
 
 	const handleDragOver = useCallback(
@@ -161,7 +161,7 @@ export default function DragAndDrop({
 
 			addFiles(droppedFiles);
 		},
-		[multiple, accept]
+		[multiple, accept, addFiles]
 	);
 
 	return (

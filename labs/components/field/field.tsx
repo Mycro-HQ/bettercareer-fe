@@ -21,8 +21,7 @@ import {
 } from '../../utils';
 
 import { useFormField } from './form-field';
-import { NativeElementProps, Prettify } from '@labs/utils/types/utility';
-
+import type { NativeElementProps, Prettify } from '../../utils/types/utility';
 import styles from './field.module.scss';
 
 type FieldElementTypes = 'select' | 'input' | 'textarea';

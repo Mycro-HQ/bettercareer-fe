@@ -1,4 +1,4 @@
-import { useStyleContext } from '@labs/components/provider/style-creator';
+import { useStyleContext } from '../../components/provider/style-creator';
 import { useMemo } from 'react';
 
 /**

@@ -276,3 +276,7 @@ export const truncateText = (
 	// If the text is longer than the specified length, truncate it and append an ellipsis.
 	return `${text?.slice(0, length - 1)}${ellipsis ? '…' : ''}`;
 };
+
+export function capitalize(text: string): string {
+	return text.charAt(0).toUpperCase() + text.slice(1);
+}

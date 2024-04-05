@@ -4,7 +4,8 @@ import classNames from 'classnames';
 import { format, sub } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FieldInstance } from './field';
-import { generateUUID } from '@labs/utils';
+import { generateUUID } from '../../utils';
+
 import Calendar from '@labs/icons/dashboard/calendar.svg';
 
 import styles from './field.module.scss';
@@ -101,8 +102,9 @@ export const FieldDate: React.FC<IFieldDate> = ({
 						selected={value ? new Date(value) : null}
 						placeholderText={placeholder}
 						required={required}
-						onSelect={onSelect} //when day is clicked
-						onChange={onChange!} //only when value has changed
+						dateFormat="MM/yyyy"
+						onSelect={onSelect}
+						onChange={onChange!}
 						minDate={
 							new Date(
 								format(
@@ -112,16 +114,11 @@ export const FieldDate: React.FC<IFieldDate> = ({
 							)
 						}
 						showPopperArrow={false}
-						showMonthDropdown
+						showMonthYearPicker
 						showYearDropdown
 						dropdownMode="select"
 						maxDate={
-							new Date(
-								format(
-									sub(Date.now(), { years: 13 }),
-									"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-								)
-							)
+							new Date(format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
 						}
 						{...props}
 					/>

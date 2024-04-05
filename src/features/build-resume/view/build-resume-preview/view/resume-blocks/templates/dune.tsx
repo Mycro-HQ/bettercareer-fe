@@ -1,0 +1,437 @@
+import React, { Fragment, useMemo } from 'react';
+import { Document, Link, Page, StyleSheet } from '@react-pdf/renderer';
+import { format } from 'date-fns';
+
+import { RichOutput } from '../components/rich-output';
+import DocText from '../components/doc-text';
+import {
+	extractNameFromLink,
+	generateDataByKey,
+	getData,
+	getHref,
+} from '../utils';
+import { DocFlex } from '../components/doc-flex';
+
+import { fixText, isEmpty } from '@labs/utils';
+
+import { ModuleData } from './types';
+
+const renderElements = {
+	summary: Summary,
+	experience: Experience,
+	education: Education,
+	certifications: Certification,
+	skills: Skills,
+	projects: Projects,
+	custom: CustomSection,
+};
+
+const config = {
+	title: 'Dune',
+	name: 'dune',
+	details: 'Crafted from the sands of Arrakis.',
+	thumbnail: '/images/dashboard/resumes/dune.png',
+	colors: {
+		primary: '#0F1F2E',
+		primary_text: '#FFFFFF',
+	},
+};
+
+const DuneTemplate = ({ modules }: { modules: any }) => {
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				container: {
+					flexDirection: 'column',
+					padding: 24,
+					gap: 14,
+					borderTop: '4px solid #FFD37D',
+					color: '#141001',
+					backgroundColor: '#fffefa',
+					fontFamily: 'MerriWeather',
+				},
+				link: {
+					color: '#141001',
+					textDecoration: 'underline',
+				},
+			}),
+		[]
+	);
+
+	const heading = getData('heading', modules);
+
+	return (
+		<Document>
+			<Page size="A4" style={styles.container}>
+				{heading?.name ? (
+					<DocFlex
+						direction="column"
+						gap={4}
+						alignItems="center"
+						textAlign="center"
+					>
+						<DocText as="heading">{heading?.name}</DocText>
+						{heading?.title ? (
+							<DocText as="subheading">{heading?.title}</DocText>
+						) : null}
+						<DocText size="xs">
+							{heading?.subheading?.length
+								? heading?.subheading?.map((subheading: any, index: number) => (
+										<Fragment key={subheading.value}>
+											{index > 0 && index < heading?.subheading?.length
+												? ' | '
+												: ''}
+											<Link
+												href={getHref(subheading.value)}
+												style={styles.link}
+											>
+												{extractNameFromLink(subheading.value)}
+											</Link>
+										</Fragment>
+									))
+								: null}
+						</DocText>
+					</DocFlex>
+				) : null}
+
+				{generateDataByKey(
+					[
+						'summary',
+						'experience',
+						'education',
+						'certifications',
+						'skills',
+						'projects',
+						'skills',
+					],
+					modules
+				).map((module: any) => {
+					const Component =
+						renderElements[module.key as keyof typeof renderElements] ||
+						renderElements.custom;
+					if (isEmpty(module.data)) return null;
+					return (
+						<Component key={module.key} data={module.data} styles={styles} />
+					);
+				})}
+			</Page>
+		</Document>
+	);
+};
+
+function Skills({ data, styles }: ModuleData) {
+	return (
+		<DocFlex direction="column">
+			{data?.length ? (
+				<>
+					<DocText as="title" {...styles?.title}>
+						Skills
+					</DocText>
+					<DocFlex direction="column" gap={8}>
+						{data.map(
+							(skill: { name: string; value: string[]; $id: string }) => (
+								<DocText key={skill?.$id}>
+									•{' '}
+									{skill?.name ? (
+										<DocText size="xs" weight="heavy">
+											{skill.name}:{' '}
+										</DocText>
+									) : null}
+									{skill?.value?.map((value: any, index: number) => (
+										<DocText size="xs" key={index}>
+											{fixText(value, {
+												prefix: index > 0 && index < data.length ? ', ' : '',
+											})}
+										</DocText>
+									))}
+								</DocText>
+							)
+						)}
+					</DocFlex>
+				</>
+			) : null}
+		</DocFlex>
+	);
+}
+
+function Projects({ data, styles }: ModuleData) {
+	return (
+		<>
+			{data?.length ? (
+				<DocFlex direction="column">
+					<DocText as="title" {...styles?.title}>
+						Projects
+					</DocText>
+					<DocFlex direction="column" gap={4}>
+						{data.map((exp: any) => {
+							const { title: _title, name, from, to, url } = exp || {};
+
+							const _date = from
+								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								: '';
+
+							return (
+								<DocFlex direction="column" gap={4} key={exp?.$id}>
+									<DocFlex
+										direction="row"
+										alignItems="center"
+										justifyContent="space-between"
+										width="100%"
+									>
+										<DocText size="xs" weight="heavy">
+											<Link
+												style={styles.link}
+												href={url ?? `https://www.google.com/search?q=${name}`}
+											>
+												{name}
+											</Link>
+											{fixText(_title, {
+												prefix: ' | ',
+											})}
+										</DocText>
+										<DocText
+											size="xs"
+											weight="normal"
+											style={styles.rightAlign}
+										>
+											{_date}
+										</DocText>
+									</DocFlex>
+
+									<RichOutput text={exp.description?.value} />
+								</DocFlex>
+							);
+						})}
+					</DocFlex>
+				</DocFlex>
+			) : null}
+		</>
+	);
+}
+
+function Summary({ data, styles }: ModuleData) {
+	return (
+		<DocFlex direction="column">
+			{data?.value ? (
+				<>
+					<DocText as="title" {...styles?.title}>
+						Summary
+					</DocText>
+					<RichOutput text={data.value} />
+				</>
+			) : null}
+		</DocFlex>
+	);
+}
+
+function CustomSection({ data, styles }: ModuleData) {
+	return (
+		<DocFlex direction="column">
+			{data?.title ? (
+				<>
+					<DocText as="title" {...styles?.title}>
+						{data.title}
+					</DocText>
+					<RichOutput text={data?.value} />
+				</>
+			) : null}
+		</DocFlex>
+	);
+}
+
+function Experience({ data, styles }: ModuleData) {
+	return (
+		<>
+			{data?.length ? (
+				<DocFlex direction="column">
+					<DocText as="title" {...styles?.title}>
+						Work Experience
+					</DocText>
+					<DocFlex direction="column" gap={8}>
+						{data.map((exp: any) => {
+							const {
+								title: _title,
+								company,
+								location,
+								from,
+								to,
+								url,
+							} = exp || {};
+							const title = `${_title}${fixText(company, {
+								prefix: ', ',
+							})}`;
+							const _date = from
+								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								: '';
+
+							return (
+								<DocFlex direction="column" gap={4} key={exp?.$id}>
+									<DocFlex
+										direction="row"
+										alignItems="center"
+										justifyContent="space-between"
+										width="100%"
+									>
+										<DocText size="xs" weight="heavy">
+											<Link
+												style={styles.link}
+												href={
+													url ?? `https://www.google.com/search?q=${company}`
+												}
+											>
+												{title}
+											</Link>
+											{fixText(location, {
+												prefix: ' | ',
+											})}{' '}
+										</DocText>
+										<DocText
+											size="xs"
+											weight="normal"
+											style={styles.rightAlign}
+										>
+											{_date}
+										</DocText>
+									</DocFlex>
+
+									<RichOutput text={exp.description?.value} />
+								</DocFlex>
+							);
+						})}
+					</DocFlex>
+				</DocFlex>
+			) : null}
+		</>
+	);
+}
+function Education({ data, styles }: ModuleData) {
+	return (
+		<>
+			{data?.length ? (
+				<DocFlex direction="column">
+					<DocText as="title" {...styles?.title}>
+						Education
+					</DocText>
+					<DocFlex direction="column" gap={8}>
+						{data.map((exp: any) => {
+							const { degree, study, institution, grade, from, to } = exp || {};
+							const title = `${degree}${fixText(study, {
+								prefix: ' in ',
+							})}`;
+							const _date = from
+								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								: '';
+
+							return (
+								<DocFlex direction="column" gap={4} key={exp?.$id}>
+									<DocFlex
+										direction="row"
+										alignItems="center"
+										justifyContent="space-between"
+										width="100%"
+									>
+										<DocText size="xs" weight="heavy">
+											• {title},{' '}
+											{institution ? (
+												<Link
+													style={styles.link}
+													href={`https://www.google.com/search?q=${institution}`}
+												>
+													{institution}
+												</Link>
+											) : null}{' '}
+											{fixText(grade, {
+												prefix: ' | ',
+											})}{' '}
+										</DocText>
+										<DocText
+											size="xs"
+											weight="normal"
+											style={styles.rightAlign}
+										>
+											{_date}
+										</DocText>
+									</DocFlex>
+								</DocFlex>
+							);
+						})}
+					</DocFlex>
+				</DocFlex>
+			) : null}
+		</>
+	);
+}
+
+function Certification({ data, styles }: ModuleData) {
+	return (
+		<>
+			{data?.length ? (
+				<DocFlex direction="column">
+					<DocText as="title" {...styles?.title}>
+						Certificates
+					</DocText>
+					<DocFlex direction="column" gap={8}>
+						{data.map((exp: any) => {
+							const {
+								name,
+								organization,
+								url,
+								issued: from,
+								expires: to,
+							} = exp || {};
+
+							const _date = from
+								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								: '';
+
+							return (
+								<DocFlex direction="column" gap={4} key={exp?.$id}>
+									<DocFlex
+										direction="row"
+										alignItems="center"
+										justifyContent="space-between"
+										width="100%"
+									>
+										<DocText size="xs" weight="heavy">
+											•{' '}
+											<Link
+												style={styles.link}
+												href={
+													url ||
+													`https://www.google.com/search?q=${organization}`
+												}
+											>
+												{name}
+											</Link>
+											{fixText(organization, {
+												prefix: ', ',
+											})}{' '}
+										</DocText>
+										<DocText
+											size="xs"
+											weight="normal"
+											style={styles.rightAlign}
+										>
+											{_date}
+										</DocText>
+									</DocFlex>
+								</DocFlex>
+							);
+						})}
+					</DocFlex>
+				</DocFlex>
+			) : null}
+		</>
+	);
+}
+
+export const Dune = Object.assign(DuneTemplate, {
+	config,
+	Summary,
+	Experience,
+	Education,
+	Certification,
+	Skills,
+	Projects,
+	CustomSection,
+});

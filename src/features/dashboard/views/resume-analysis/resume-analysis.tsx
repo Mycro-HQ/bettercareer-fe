@@ -1,16 +1,12 @@
 import React from 'react';
 
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
-
-import styles from './resume-analysis.module.scss';
-import { AnimatePresence, motion } from 'framer-motion';
-
-import { ResumeAnalysisInfo } from '.';
 import { ScoreCounter } from '@/components/score-counter';
 import { Accordion } from '@labs/components/accordion';
 
-import CaretDown from '@labs/icons/misc/caret-down.svg';
-import CaretUp from '@labs/icons/misc/caret-up.svg';
+import { ResumeAnalysisInfo } from '.';
+
+import styles from './resume-analysis.module.scss';
 
 export const ResumeAnalysis = () => {
 	const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -102,10 +98,11 @@ export const ResumeAnalysis = () => {
 							Analysis
 						</Heading.h6>
 						<Flex.Column gap={16} fullWidth>
-							{ResumeAnalysisInfo.map((item, index) => (
-								<Accordion.Group allowMultiple>
+							<Accordion.Group allowMultiple>
+								{ResumeAnalysisInfo.map((item, index) => (
 									<Accordion
 										key={index}
+										dataKey={`${index}:accordion`}
 										className={styles.AccordionItem}
 										title={
 											<Flex.Row
@@ -150,8 +147,8 @@ export const ResumeAnalysis = () => {
 											</div>
 										</div>
 									</Accordion>
-								</Accordion.Group>
-							))}
+								))}
+							</Accordion.Group>
 						</Flex.Column>
 					</Flex.Column>
 				</Flex.Column>

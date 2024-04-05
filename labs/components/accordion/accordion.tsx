@@ -10,7 +10,9 @@ import React, {
 } from 'react';
 import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
-import { createErrorWithCode, Flex, Text } from '@labs/index';
+
+import { createErrorWithCode } from '../../utils';
+import { Flex, Text } from '../layout';
 
 import ArrowDown from '@labs/icons/dashboard/down.svg';
 
@@ -65,30 +67,11 @@ const AccordionMain = memo<AccordionProps>(
 			}
 
 			return activeKeys === dataKey;
-		}, [activeKeys]);
+		}, [activeKeys, dataKey]);
 
 		const onToggle = useCallback(() => {
 			handleAccordionClick(dataKey || title?.toString()!);
 		}, []);
-
-		const renderChildren = useCallback(
-			(children: ReactNode) => (
-				<AnimatePresence mode="wait">
-					{isOpen && (
-						<motion.div
-							initial={{ opacity: 0, height: 0 }}
-							animate={{ opacity: 1, height: '100%' }}
-							key={isOpen ? 'open' : 'closed'}
-							transition={{ type: 'ease' }}
-							className={styles.AccordionBody}
-						>
-							{children}
-						</motion.div>
-					)}
-				</AnimatePresence>
-			),
-			[isOpen]
-		);
 
 		const accordionClassName = useMemo(
 			() =>
@@ -152,7 +135,27 @@ const AccordionMain = memo<AccordionProps>(
 						<ArrowDown className={styles.arrow} />
 					</Flex>
 				</button>
-				{renderChildren(children)}
+				<AnimatePresence mode="wait">
+					{isOpen && (
+						<motion.div
+							initial={{ opacity: 0, height: 0 }}
+							animate={{ opacity: 1, height: '100%' }}
+							exit={{
+								opacity: 0,
+								height: 0,
+								overflow: 'hidden',
+								transition: {
+									opacity: { duration: 0.1 },
+								},
+							}}
+							transition={{ duration: 0.15 }}
+							key={dataKey}
+							className={styles.AccordionBody}
+						>
+							{children}
+						</motion.div>
+					)}
+				</AnimatePresence>
 			</motion.div>
 		);
 	}
@@ -176,6 +179,7 @@ const AccordionContext = React.createContext<{
 export const useAccordion = () => {
 	return React.useContext(AccordionContext);
 };
+
 interface AccordionGroupProps extends PropsWithChildren {
 	/**
 	 * Allows multiple accordions to be open at the same time
@@ -187,47 +191,50 @@ interface AccordionGroupProps extends PropsWithChildren {
 	defaultActiveKey?: number[] | number | string;
 }
 
-const AccordionProvider = memo<AccordionGroupProps>(
-	({ children, allowMultiple = false, defaultActiveKey }) => {
-		const [activeKeys, setActiveKeys] = useState<number[] | number | string>(
-			allowMultiple ? [] : defaultActiveKey ?? -1
-		);
+const AccordionProvider = ({
+	children,
+	allowMultiple = false,
+	defaultActiveKey,
+}: {
+	children: ReactNode;
+	allowMultiple: boolean;
+	defaultActiveKey?: number[] | number | string;
+}) => {
+	const [activeKeys, setActiveKeys] = useState<number[] | number | string>(
+		allowMultiple ? [] : defaultActiveKey ?? -1
+	);
 
-		useEffect(() => {
-			if (defaultActiveKey) {
-				setActiveKeys(
-					allowMultiple ? [defaultActiveKey as number] : defaultActiveKey
-				);
-			}
-		}, [defaultActiveKey]);
+	useEffect(() => {
+		if (defaultActiveKey) {
+			setActiveKeys(
+				allowMultiple ? [defaultActiveKey as number] : defaultActiveKey
+			);
+		}
+	}, [defaultActiveKey, allowMultiple]);
 
-		const handleAccordionClick = useCallback(
-			(index: any) => {
-				setActiveKeys((prevactiveKeys) => {
-					if (allowMultiple) {
-						if (
-							Array.isArray(prevactiveKeys) &&
-							prevactiveKeys.includes(index)
-						) {
-							return prevactiveKeys.filter((i) => i !== index);
-						}
-
-						return [...(prevactiveKeys as number[]), index];
-					} else {
-						return prevactiveKeys === index ? -1 : index;
+	const handleAccordionClick = useCallback(
+		(index: any) => {
+			setActiveKeys((prevactiveKeys) => {
+				if (allowMultiple) {
+					if (Array.isArray(prevactiveKeys) && prevactiveKeys.includes(index)) {
+						return prevactiveKeys.filter((i) => i !== index);
 					}
-				});
-			},
-			[allowMultiple]
-		);
 
-		return (
-			<AccordionContext.Provider value={{ activeKeys, handleAccordionClick }}>
-				{children}
-			</AccordionContext.Provider>
-		);
-	}
-);
+					return [...(prevactiveKeys as number[]), index];
+				} else {
+					return prevactiveKeys === index ? -1 : index;
+				}
+			});
+		},
+		[allowMultiple]
+	);
+
+	return (
+		<AccordionContext.Provider value={{ activeKeys, handleAccordionClick }}>
+			{children}
+		</AccordionContext.Provider>
+	);
+};
 
 const AccordionGroup = memo<AccordionGroupProps>(
 	({ children, allowMultiple = false, defaultActiveKey }) => {
