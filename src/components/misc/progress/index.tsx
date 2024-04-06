@@ -26,8 +26,14 @@ export const Progress = ({
 	...rest
 }: ProgressProps) => {
 	const [progress, setProgress] = React.useState(value);
+
+	const _value = useMemo(() => {
+		return Math.max(progress, value);
+	}, [value, progress]);
+
 	const progressId = useMemo(() => generateUUID(), []);
 	React.useEffect(() => {
+		if (!duration) return;
 		const timer = setInterval(
 			() => setProgress((prev) => (prev + Math.random() * 10) % 100),
 			duration
@@ -42,7 +48,18 @@ export const Progress = ({
 	}, [progress, onDone, duration]);
 
 	return (
-		<Flex.Column gap={8} className={styles.ProgressLabel}>
+		<Flex.Column
+			gap={8}
+			className={styles.ProgressWrap}
+			fullWidth
+			style={
+				{
+					'--progressPercent': `${_value}%`,
+					'--progressColor': color,
+					'--progressBackground': color + '20',
+				} as React.CSSProperties
+			}
+		>
 			{label && (
 				<Flex.Row
 					justifyContent="space-between"
@@ -52,20 +69,14 @@ export const Progress = ({
 				>
 					<label htmlFor={progressId}>{label}</label>
 
-					{showPercent && <span>{progress}%</span>}
+					{showPercent && <span className="font-bold">{_value}%</span>}
 				</Flex.Row>
 			)}
+
 			<progress
-				value={progress}
+				value={_value}
 				max={max}
 				id={progressId}
-				style={
-					{
-						'--progressPercent': `${value}%`,
-						'--progressColor': color,
-						'--progressBackground': color + '20',
-					} as React.CSSProperties
-				}
 				{...rest}
 				className={styles.Progress}
 			/>

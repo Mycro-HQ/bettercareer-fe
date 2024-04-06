@@ -140,7 +140,10 @@ export const AutoCompletePill = ({
 									aria-hidden="true"
 								/>
 							}
-							onClick={() => removeField(item)}
+							onClick={(e) => {
+								e.preventDefault();
+								removeField(item);
+							}}
 						>
 							{item.value}
 						</CallToAction>

@@ -326,8 +326,7 @@ const FrameCards = ({
 				</>
 			);
 		}
-
-		return <Text>{data.toString()}</Text>;
+		return <Text>{data?.toString()}</Text>;
 	};
 	return (
 		<DragDropContext onDragEnd={handleOnDragEnd}>

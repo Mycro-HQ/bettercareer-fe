@@ -1,4 +1,8 @@
+import { Document, Packer } from 'docx';
+
 import { APP_URL } from '@lib/config';
+
+import { createResumeDocument } from './text-docx';
 
 function getRandomBytes(byteCount: number): Uint8Array {
 	let randomBytes = new Uint8Array(byteCount);
@@ -234,16 +238,37 @@ export const fixText = (
 export const downloadResume = async (
 	raw: string,
 	name = 'resume',
-	type: 'pdf' | 'txt' = 'pdf'
+	type: 'pdf' | 'txt' | 'docx' = 'pdf'
 ) => {
 	const applicationTypes = {
 		pdf: 'application/pdf',
 		txt: 'text/plain',
+		docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 	};
+	let url = '';
+	if (type === 'docx') {
+		//get the text from the raw data
 
-	const url = window.URL.createObjectURL(
-		new Blob([raw], { type: applicationTypes[type] })
-	);
+		// Create a new document
+
+		const doc = createResumeDocument(raw);
+
+		const _doc = new Document({
+			sections: doc as any,
+			styles: { default: { heading1: { run: { size: 28, bold: true } } } },
+		});
+		// Write the document to a file
+		const buffer = await Packer.toBlob(_doc);
+
+		url = window.URL.createObjectURL(
+			new Blob([buffer], { type: applicationTypes[type] })
+		);
+	} else {
+		url = window.URL.createObjectURL(
+			new Blob([raw], { type: applicationTypes[type] })
+		);
+	}
+
 	const a = document.createElement('a');
 	a.href = url;
 	a.download = `${name}.${type}`;
@@ -279,4 +304,32 @@ export const truncateText = (
 
 export function capitalize(text: string): string {
 	return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function formatCount(count: number) {
+	const formattedCount = Number(count).toLocaleString('en-US', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 2,
+	});
+
+	return formattedCount;
+}
+
+export function pluralize(string: string, count: number, stringOnly = false) {
+	let pluralSuffix = 's';
+
+	if (count <= 1 || string.endsWith(pluralSuffix)) {
+		pluralSuffix = '';
+	}
+
+	const newString = `${string}${pluralSuffix}`;
+
+	if (stringOnly) {
+		return newString;
+	}
+
+	const countString = formatCount(count);
+	const resultString = `${countString} ${newString}`;
+
+	return resultString;
 }

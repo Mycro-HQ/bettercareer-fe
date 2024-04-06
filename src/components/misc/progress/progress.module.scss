@@ -5,7 +5,6 @@
 	position: relative;
 	appearance: none;
 	width: 100%;
-	max-width: 500px;
 	height: 6px;
 	transition: all 0.2s ease;
 	border: 0;
@@ -34,4 +33,7 @@
 
 .ProgressLabel {
 	@include typography('accent');
+	> span {
+		color: var(--progressColor, var(--primary-blue));
+	}
 }

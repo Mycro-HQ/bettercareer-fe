@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { TypographyProps as TypeProps } from '../heading';
-
 import { forwardRefWrapper, useDynamicStyle } from '../../../utils';
 
 import styles from './text.module.scss';
@@ -79,6 +78,7 @@ const TextBase = forwardRefWrapper<HTMLParagraphElement, TypographyProps>(
 			decoration,
 			children,
 			noOfLines,
+			className,
 			animate = 'none',
 			weight,
 			size,
@@ -107,8 +107,8 @@ const TextBase = forwardRefWrapper<HTMLParagraphElement, TypographyProps>(
 			noOfLines && styles[`noOfLines-${noOfLines}`],
 			inheritFont && styles.adapt,
 			animate && styles[`animate--${animate}`],
-			rest.className,
 			dynamicClass,
+			className,
 		]);
 
 		return (
