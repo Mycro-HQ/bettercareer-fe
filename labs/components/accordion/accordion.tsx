@@ -138,17 +138,17 @@ const AccordionMain = memo<AccordionProps>(
 				<AnimatePresence mode="wait">
 					{isOpen && (
 						<motion.div
-							initial={{ opacity: 0, height: 0 }}
-							animate={{ opacity: 1, height: '100%' }}
+							initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+							animate={{ opacity: 1, height: '100%', overflow: 'auto' }}
 							exit={{
 								opacity: 0,
 								height: 0,
 								overflow: 'hidden',
 								transition: {
-									opacity: { duration: 0.1 },
+									opacity: { duration: 0 },
 								},
 							}}
-							transition={{ duration: 0.15 }}
+							transition={{ duration: 0.1, ease: 'linear' }}
 							key={dataKey}
 							className={styles.AccordionBody}
 						>

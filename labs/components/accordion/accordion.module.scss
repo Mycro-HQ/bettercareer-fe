@@ -27,7 +27,7 @@
 		}
 
 		&.isOpen {
-			padding-bottom: 0;
+			margin-bottom: -18px;
 			.arrow {
 				transform: rotate(180deg);
 			}
