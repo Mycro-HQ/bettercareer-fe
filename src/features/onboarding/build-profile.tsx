@@ -137,7 +137,7 @@ const OnboardCards = () => {
 					key={activeMessage}
 				>
 					<LogoMark />
-					<Heading.h4 fontSize="18px" lineHeight="110%" weight={700}>
+					<Heading.h4 fontSize="18px" lineHeight="1.6" weight={500}>
 						{currentMessage.message}
 					</Heading.h4>
 					<Flex className={styles.AuthWrapAuthor}>

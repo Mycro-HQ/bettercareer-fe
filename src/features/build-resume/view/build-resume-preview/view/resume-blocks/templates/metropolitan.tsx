@@ -28,11 +28,11 @@ const renderElements = {
 const config = {
 	title: 'Metropolitan',
 	details: 'Dive into the city life!',
-	thumbnail: '/images/dashboard/resumes/metropolitan.png',
+	thumbnail: '/images/dashboard/resumes/cosmos.png',
 	colors: {
 		primary: '#0F1F2E',
-		primary_text: '#ffffff',
-		section: '#57636D',
+		primary_text: '#dedede',
+		section: '#0F1F2E',
 	},
 };
 

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import queryString from 'query-string';
 
-import { APP_URL, LINKEDIN_CLIENT_ID } from '@lib/config';
+import { API_URL, LINKEDIN_CLIENT_ID } from '@lib/config';
 import LinkedInIcon from '@labs/icons/socials/linkedin.svg';
 import {
 	CallToAction,
@@ -33,7 +33,7 @@ const LoginWithLinkedin = (props: LoginWithLinkedinProps) => {
 		},
 	});
 
-	const callbackUrl = `${APP_URL}/${props.intent}`;
+	const callbackUrl = `${API_URL}/auth/linkedin/callback`;
 
 	function getLinkedVerifier() {
 		const popup = openPopupWindow(

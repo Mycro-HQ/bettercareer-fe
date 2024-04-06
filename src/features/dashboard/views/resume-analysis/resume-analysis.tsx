@@ -3,6 +3,7 @@ import React from 'react';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import { ScoreCounter } from '@/components/score-counter';
 import { Accordion } from '@labs/components/accordion';
+import { Progress } from '@/components/misc/progress';
 
 import { ResumeAnalysisInfo } from '.';
 
@@ -65,18 +66,8 @@ export const ResumeAnalysis = () => {
 									 * Render progress bar to visualize score
 									 * Added 20 as alpha value to get the proper opacity for the background
 									 */}
-									<div
-										style={{ background: item.color + '20' }}
-										className={styles.ResumeScoreCounter}
-									>
-										<div
-											style={{
-												width: `${item.score}%`,
-												background: item.color,
-											}}
-											className={styles.ResumeScoreCounterValue}
-										/>
-									</div>
+
+									<Progress value={item.score} color={item.color} />
 								</div>
 							))}
 						</Flex.Column>
