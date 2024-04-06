@@ -5,6 +5,7 @@ declare module '@radix-ui/themes' {
 		DropdownMenu,
 		Theme,
 		TextField,
+		HoverCard,
 		Slot,
 		Popover,
 		ScrollArea,
