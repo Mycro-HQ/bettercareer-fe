@@ -53,47 +53,7 @@ export const ResumeApp = ({
 	const [canvasImage, setCanvasImage] = useState('');
 	const [generateImage, setGenerateImage] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1);
-	const modules = useDebounce(userData, 500);
-
-	// server implementation
-	// const { mutateAsync: mutate } = useMutation({
-	// 	mutationFn: async ({ modules }: { modules: any }) => {
-	// 		const response = await fetch(`${window.location.origin}/api/generate`, {
-	// 			method: 'POST',
-	// 			body: JSON.stringify({ modules }),
-	// 		});
-	// 		const _base64 = await response.blob();
-	// 		const base64 = (await blobToBase64(_base64)) as string;
-
-	// 		const binaryString = window.atob(base64.split(',')[1]);
-	// 		const bytes = new Uint8Array(binaryString.length);
-	// 		for (let i = 0; i < binaryString.length; i++) {
-	// 			bytes[i] = binaryString.charCodeAt(i);
-	// 		}
-	// 		const blob = new Blob([bytes], { type: 'application/pdf' });
-
-	// 		return {
-	// 			blob,
-	// 			raw: base64,
-	// 		};
-	// 	},
-	// 	onSuccess: (data: any) => {
-	// 		setPdfUrl(data?.blob);
-	// 		setResumeBlob({
-	// 			blob: data?.blob as unknown as string,
-	// 		});
-	// 		setGenerateImage(true);
-	// 	},
-	// });
-
-	// useEffect(() => {
-	// 	let isCancelled = false;
-
-	// 	if (!isCancelled) mutate({ modules });
-	// 	return () => {
-	// 		isCancelled = true;
-	// 	};
-	// }, [modules]);
+	const modules = useDebounce(userData, 200);
 
 	useEffect(() => {
 		let isCancelled = false;
@@ -128,7 +88,7 @@ export const ResumeApp = ({
 		return () => {
 			isCancelled = true;
 		};
-	}, [modules, template]);
+	}, [modules, template, setResumeBlob]);
 
 	const onDocumentLoadSuccess = useCallback(
 		({ numPages }: { numPages: number }) => {
@@ -141,7 +101,7 @@ export const ResumeApp = ({
 		let textFinal = '';
 		for (let i = 0; i < text.items.length; i++) {
 			const item = text.items[i] as any;
-			textFinal += item.str;
+			textFinal += `\n ${item.str}`;
 		}
 
 		setResumeBlob({

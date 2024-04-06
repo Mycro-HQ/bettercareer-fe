@@ -29,10 +29,12 @@ interface BuildStore {
 	resumeBlob: {
 		blob: string | null;
 		raw?: string | null;
+		score?: number;
 	};
 	setResumeBlob: (options?: {
 		blob?: string | null;
 		raw?: string | null;
+		score?: number;
 	}) => void;
 	setTemplate: (template: any) => void;
 }
