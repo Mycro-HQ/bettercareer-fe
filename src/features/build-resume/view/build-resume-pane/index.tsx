@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 import { ScrollArea } from '@radix-ui/themes';
 import classNames from 'classnames';
-import { Tooltip } from '@radix-ui/themes';
 import { HoverCard } from '@radix-ui/themes';
 
 import { COMPONENT_MAP } from '../../lib';
@@ -202,7 +201,7 @@ export const BuildResumePane = () => {
 												: 'Your resume is complete!'}
 										</Text>
 									</HoverCard.Trigger>
-									<HoverCard.Content maxWidth="100px">
+									<HoverCard.Content>
 										<Text
 											size="sm"
 											color="var(--text-gray)"
@@ -216,7 +215,6 @@ export const BuildResumePane = () => {
 										</Text>
 									</HoverCard.Content>
 								</HoverCard.Root>
-								<Tooltip content={message}></Tooltip>
 							</Flex.Column>
 						</Flex.Row>
 					</Container>
