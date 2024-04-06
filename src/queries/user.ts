@@ -29,7 +29,7 @@ export const authApiCreator = createSmartApi({
 				method: 'POST',
 				body: {
 					token,
-					redirect_uri: uri,
+					redirectUri: uri,
 				},
 			}),
 		}),
