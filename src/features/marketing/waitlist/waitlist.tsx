@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import { usePostHog } from 'posthog-js/react';
 
 import {
 	CallToAction,
@@ -59,6 +60,7 @@ const listVariant = {
 export const Waitlist = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const router = useRouter();
+	const posthog = usePostHog();
 	const { createDisclosure } = useFeedback();
 	const [email, setEmail] = React.useState('');
 	const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -76,16 +78,18 @@ export const Waitlist = () => {
 							text: 'Join the waitlist for BetterCareer.me',
 							url: window.location.href,
 						});
+						posthog.capture('shared_waitlist_native');
 						alert('Thanks for sharing!');
 					} catch (error) {
 						console.error('Error sharing content', error);
 					}
 				} else {
+					posthog.capture('shared_waitlist_twitter');
 					window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I am on the waitlist for BetterCareer, Join me on the waitlist for Bettercareer.me&url=${window.location.href}`)}`;
 				}
 			},
 		});
-	}, [createDisclosure]);
+	}, [createDisclosure, posthog]);
 
 	useEffect(() => {
 		if (!!router.query.share) {
@@ -426,6 +430,7 @@ const WaitListModal = ({
 		files: File[];
 	};
 	const { createToast } = useToast();
+	const posthog = usePostHog();
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const { mutateAsync: joinWaitlist, isPending } = useSendWaitlistMutation();
 	const [waitlistState, setWaitlistState] = React.useState<WaitlistState>({
@@ -473,6 +478,7 @@ const WaitListModal = ({
 				})
 			);
 
+			posthog.capture('waitlist_joined', { email });
 			setIsSuccess(true);
 
 			setTimeout(() => {
