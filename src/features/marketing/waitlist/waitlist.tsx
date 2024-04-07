@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import {
 	CallToAction,
@@ -8,6 +8,7 @@ import {
 	Flex,
 	Heading,
 	Text,
+	useFeedback,
 	useToast,
 } from '@labs/components';
 import Logo from '@labs/icons/logo.svg';
@@ -57,31 +58,44 @@ const listVariant = {
 
 export const Waitlist = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
+	const router = useRouter();
+	const { createDisclosure } = useFeedback();
 	const [email, setEmail] = React.useState('');
 	const [currentIndex, setCurrentIndex] = React.useState(0);
 
-	useEffect(() => {
-		const handleShare = async () => {
-			if (navigator.share) {
-				try {
-					await navigator.share({
-						title: 'BetterCareer.me',
-						text: 'Join the waitlist for BetterCareer.me',
-						url: window.location.href,
-					});
-					alert('Thanks for sharing!');
-				} catch (error) {
-					console.error('Error sharing content', error);
-				}
-			} else {
-				window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I am on the waitlist for BetterCareer, Join me on the waitlist for Bettercareer.me&url=${window.location.href}`)}`;
+	const handleShare = useCallback(async () => {
+		if (!navigator.share) {
+			try {
+				createDisclosure({
+					title: 'Share',
+					message: 'Share this page with your friends to join the waitlist.',
+					confirmText: 'Share',
+					onConfirm: async () => {
+						try {
+							await navigator.share({
+								title: 'BetterCareer.me',
+								text: 'Join the waitlist for BetterCareer.me',
+								url: window.location.href,
+							});
+							alert('Thanks for sharing!');
+						} catch (error) {
+							console.error('Error sharing content', error);
+						}
+					},
+				});
+			} catch (error) {
+				console.error('Error sharing content', error);
 			}
-		};
+		} else {
+			window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I am on the waitlist for BetterCareer, Join me on the waitlist for Bettercareer.me&url=${window.location.href}`)}`;
+		}
+	}, [createDisclosure]);
 
-		if (!!Router.query.share) {
+	useEffect(() => {
+		if (!!router.query.share) {
 			handleShare();
 		}
-	}, []);
+	}, [router.query.share, handleShare]);
 
 	return (
 		<div className={styles.Waitlist}>
