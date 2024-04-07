@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import Router from 'next/router';
 
 import {
 	CallToAction,
@@ -58,6 +59,29 @@ export const Waitlist = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [email, setEmail] = React.useState('');
 	const [currentIndex, setCurrentIndex] = React.useState(0);
+
+	useEffect(() => {
+		const handleShare = async () => {
+			if (navigator.share) {
+				try {
+					await navigator.share({
+						title: 'BetterCareer.me',
+						text: 'Join the waitlist for BetterCareer.me',
+						url: window.location.href,
+					});
+					alert('Thanks for sharing!');
+				} catch (error) {
+					console.error('Error sharing content', error);
+				}
+			} else {
+				window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I am on the waitlist for BetterCareer, Join me on the waitlist for Bettercareer.me&url=${window.location.href}`)}`;
+			}
+		};
+
+		if (!!Router.query.share) {
+			handleShare();
+		}
+	}, []);
 
 	return (
 		<div className={styles.Waitlist}>
