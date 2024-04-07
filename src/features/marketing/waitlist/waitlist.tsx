@@ -64,31 +64,27 @@ export const Waitlist = () => {
 	const [currentIndex, setCurrentIndex] = React.useState(0);
 
 	const handleShare = useCallback(async () => {
-		if (!navigator.share) {
-			try {
-				createDisclosure({
-					title: 'Share',
-					message: 'Share this page with your friends to join the waitlist.',
-					confirmText: 'Share',
-					onConfirm: async () => {
-						try {
-							await navigator.share({
-								title: 'BetterCareer.me',
-								text: 'Join the waitlist for BetterCareer.me',
-								url: window.location.href,
-							});
-							alert('Thanks for sharing!');
-						} catch (error) {
-							console.error('Error sharing content', error);
-						}
-					},
-				});
-			} catch (error) {
-				console.error('Error sharing content', error);
-			}
-		} else {
-			window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I am on the waitlist for BetterCareer, Join me on the waitlist for Bettercareer.me&url=${window.location.href}`)}`;
-		}
+		createDisclosure({
+			title: 'Share',
+			message: 'Share this with your friends to join the waitlist.',
+			confirmText: 'Share',
+			onConfirm: async () => {
+				if (navigator.share) {
+					try {
+						await navigator.share({
+							title: 'BetterCareer.me',
+							text: 'Join the waitlist for BetterCareer.me',
+							url: window.location.href,
+						});
+						alert('Thanks for sharing!');
+					} catch (error) {
+						console.error('Error sharing content', error);
+					}
+				} else {
+					window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I am on the waitlist for BetterCareer, Join me on the waitlist for Bettercareer.me&url=${window.location.href}`)}`;
+				}
+			},
+		});
 	}, [createDisclosure]);
 
 	useEffect(() => {
