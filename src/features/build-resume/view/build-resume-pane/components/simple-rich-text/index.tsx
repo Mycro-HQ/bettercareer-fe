@@ -76,7 +76,6 @@ export default function CustomEditor({
 	name,
 	toolbar = [
 		'bold',
-		'italic',
 		'underline',
 		'strikeThrough',
 		'link',
