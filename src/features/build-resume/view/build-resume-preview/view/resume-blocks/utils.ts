@@ -10,6 +10,7 @@ import {
 	Cosmos,
 	Metropolitan,
 } from './templates';
+import { COLOR_MAPS } from './templates/utils';
 
 export const templateMaps = {
 	classic: Classic,
@@ -23,6 +24,7 @@ export const templateMaps = {
 export const templatesConfig = Object.keys(templateMaps).map((key) => {
 	const template = templateMaps[key as keyof typeof templateMaps];
 	return {
+		complimentaryColors: COLOR_MAPS.primary,
 		...template.config,
 		name: key,
 	};

@@ -108,11 +108,14 @@ export const ResumeApp = ({
 			raw: textFinal as unknown as string,
 		});
 	}
-	const hasData = modules.find((module: any) => !isEmpty(module.data));
-	const hasValueInData = Object.values(hasData?.data || {}).reduce(
-		(a: any, b: any) => a?.toString() + b?.toString(),
-		''
-	) as string;
+	const hasData = modules.find(
+		(module: any) =>
+			!isEmpty(module.data) &&
+			Object.values(module.data || {}).reduce(
+				(a: any, b: any) => a?.toString() + b?.toString(),
+				''
+			)
+	);
 
 	return (
 		<Flex.Column
@@ -122,7 +125,7 @@ export const ResumeApp = ({
 		>
 			{pdfUrl ? (
 				<>
-					{hasData && hasValueInData?.trim() && canvasImage ? (
+					{hasData && canvasImage ? (
 						<ImgZoom src={canvasImage} scale={scale} setScale={setScale} />
 					) : (
 						<div className={styles.PreviewPage}>
