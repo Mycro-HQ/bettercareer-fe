@@ -32,6 +32,10 @@
 	background: #f9fafa !important;
 	border-radius: 12px 12px 0px 0px;
 	border-color: #e7e9eb !important;
+
+	@media (max-width: 768px) {
+		overflow-x: auto;
+	}
 }
 
 .rsw-editor {
