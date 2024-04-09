@@ -13,6 +13,7 @@ import { DocFlex } from '../components/doc-flex';
 import { isEmpty } from '@labs/utils';
 
 import { Classic } from './classic';
+import { MARGIN_MAP } from './utils';
 
 const renderElements = {
 	summary: Classic.Summary,
@@ -28,10 +29,9 @@ const config = {
 	title: 'Tokyo',
 	details: 'From the land of the rising sun',
 	thumbnail: '/images/dashboard/resumes/tokyo.png',
+	fontFamily: 'Inter',
 	colors: {
-		primary: '#3a58cf',
-		primary_text: '#000',
-		border: '#6F7982',
+		primary: '#0F70C8',
 	},
 };
 
@@ -43,20 +43,23 @@ const TokyoTemplate = ({
 	template: any;
 }) => {
 	const primaryColor = template.colors.primary;
+	const padding =
+		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
 				container: {
 					flexDirection: 'column',
 					color: '#0F1F2E',
-					fontFamily: 'Inter',
+					fontFamily: template.fontFamily,
 				},
 				link: {
 					color: 'inherit',
 					textDecoration: 'underline',
 				},
 			}),
-		[]
+		[template?.fontFamily]
 	);
 
 	const heading = getData('heading', modules);
@@ -69,7 +72,7 @@ const TokyoTemplate = ({
 						direction="column"
 						gap={4}
 						backgroundColor={primaryColor}
-						padding={24}
+						padding={padding}
 						color="#fff"
 					>
 						<DocText as="heading">
@@ -101,7 +104,11 @@ const TokyoTemplate = ({
 					</DocFlex>
 				) : null}
 
-				<DocFlex direction="column" padding={24} gap={12}>
+				<DocFlex
+					direction="column"
+					padding={padding}
+					gap={Math.max(padding - 14, 12)}
+				>
 					{generateDataByKey(
 						[
 							'summary',
