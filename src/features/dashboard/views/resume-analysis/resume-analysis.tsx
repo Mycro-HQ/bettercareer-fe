@@ -42,7 +42,9 @@ export const ResumeAnalysis = () => {
 							className={styles.ResumeOverallScoreCounter}
 						>
 							<ScoreCounter className={styles.ResumeScoreSvg} score={score} />
-							<Heading.h5 weight={700}>{score}</Heading.h5>
+							<Heading.h5 fontSize="28px" weight={700}>
+								{score}
+							</Heading.h5>
 							<Text.p weight={500} size="sm">
 								Overall score
 							</Text.p>
@@ -58,7 +60,7 @@ export const ResumeAnalysis = () => {
 										<Text.p size="sm" casing="capitalize">
 											{item.label}
 										</Text.p>
-										<Text.p size="xs" weight={600} color={item.color}>
+										<Text.p size="sm" weight={600} color={item.color}>
 											{item.score}/100
 										</Text.p>
 									</Flex.Row>
@@ -113,7 +115,10 @@ export const ResumeAnalysis = () => {
 														{item.label}
 													</Text.p>
 													<div
-														style={{ background: item.color + '20' }}
+														style={{
+															background: item.color + '20',
+															borderColor: item.color,
+														}}
 														className={styles.ResumeScoreIndicator}
 													>
 														<Text.p weight={600} color={item.color} size="sm">
