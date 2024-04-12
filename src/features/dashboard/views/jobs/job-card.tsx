@@ -32,7 +32,7 @@ export default function JobCard({
 			className={classNames(styles.JobCard, className)}
 			onClick={onClick}
 		>
-			<Flex gap={12}>
+			<Flex gap={12} justifyContent="space-between">
 				<Flex.Row gap={18}>
 					{companyLogo}
 					<Flex.Column gap={4} className="font-[Figtree]">
@@ -46,9 +46,9 @@ export default function JobCard({
 							inheritFont
 						>
 							{companyName}
-							<Seperator />
+							<Separator />
 							{location}
-							<Seperator />
+							<Separator />
 							{salaryRange}
 						</Text>
 					</Flex.Column>
@@ -77,7 +77,7 @@ export default function JobCard({
 	);
 }
 
-export function Seperator() {
+export function Separator() {
 	return (
 		<Text as="span" weight={700} lineHeight="24px">
 			{' '}
