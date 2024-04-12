@@ -7,7 +7,7 @@ export default function JobsPage() {
 	const { profile } = useUserStore();
 
 	return (
-		<DashboardLayout title="Jobs" backdropThreshold="md" profile={profile}>
+		<DashboardLayout title="Jobs" backdropThreshold="lg" profile={profile}>
 			<Jobs />
 		</DashboardLayout>
 	);
