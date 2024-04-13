@@ -2,7 +2,7 @@ import { NextURL } from 'next/dist/server/web/next-url';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
-	matcher: ['/login', '/register', '/dashboard/:path*'],
+	matcher: ['/login', '/register'],
 	name: 'middleware',
 };
 

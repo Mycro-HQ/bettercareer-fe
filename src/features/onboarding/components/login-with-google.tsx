@@ -59,6 +59,7 @@ const LoginWithGoogle = (props: LoginWithGoogleProps) => {
 		script.src = 'https://accounts.google.com/gsi/client';
 		script.async = true;
 		script.onload = () => {
+			console.log('GOOGLE_AUTH_ID:', process.env.NEXT_PUBLIC_GOOGLE_AUTH_ID);
 			window.google.accounts.id.initialize({
 				client_id: GOOGLE_AUTH_ID,
 				callback: handleCredentialResponse,

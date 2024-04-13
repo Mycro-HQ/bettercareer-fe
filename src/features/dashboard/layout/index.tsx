@@ -7,6 +7,7 @@ import { type UserData } from '@/queries/types/user';
 
 import { DashboardHeader } from './components/header';
 import styles from './layout.module.scss';
+import { useRouter } from 'next/router';
 
 /**
  * DashboardLayout
@@ -32,6 +33,7 @@ export const DashboardLayout = ({
 	profile: UserData | null | undefined;
 	bare?: boolean;
 }) => {
+	const router = useRouter();
 	return (
 		<div
 			className={classNames([
@@ -46,7 +48,11 @@ export const DashboardLayout = ({
 				<DashboardHeader bare={bare} />
 			</nav>
 			<main className={styles.DashboardLayoutMain}>
-				<Container maxWidth="lg">{children}</Container>
+				<Container
+					maxWidth={router.pathname === '/dashboard/jobs' ? 'xl' : 'lg'}
+				>
+					{children}
+				</Container>
 			</main>
 		</div>
 	);

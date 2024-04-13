@@ -1,0 +1,141 @@
+.SearchContainer{
+    max-width: 715px;
+    width: 100%;
+    border-radius: 1rem;
+    padding: 10px 24px;
+    background-color: var(--primary-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.SearchItem{
+    border-right: 1px solid #CFD2D5;
+}
+
+.SearchInput{
+    outline: none;
+    background-color: transparent;
+}
+
+.SearchBtn{
+    background-color: var(--primary-blue);
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.JobTabActive{
+    cursor: pointer;
+    p{
+        font-size: 18px;
+        font-family: var(--font-secondary);
+        font-weight: 600;
+        color: var(--text-black);
+    }
+}
+
+.JobTabInactive{
+    cursor: pointer;
+    p{
+        font-size: 18px;
+        font-family: var(--font-secondary);
+        font-weight: 600;
+        color: var(--text-gray);
+    }
+}
+
+.JobsTabDropdown{
+    font-size: 14px;
+    font-weight: 500;
+    font-family: var(--font-secondary);
+    color: var(--text-gray);
+    border-radius: 18px;
+    border: 1px solid #9FA5AB;
+    padding: 6px 16px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.JobCardContainer{
+    // max-width: 480px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    border: 1.5px solid #E7E9EB;
+
+    &:hover{
+        border: 1.5px solid var(--primary-blue);
+    }
+}
+
+.JobCardContainerActive{
+    width: 100%;
+    border-radius: 16px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    border: 1.5px solid var(--primary-blue);
+}
+
+.MatchBtn{
+    border: 1px solid #E7E9EB;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.JobTitle{
+    font-size: 18px;
+    font-family: var(--font-secondary);
+    color: var(--text-black);
+    font-weight: 600;
+}
+
+.JobTag{
+    border: 1px solid #F3F4F4;
+    background-color: #F9FAFA;
+    border-radius: 20px;
+    padding: 6px 1rem;
+}
+
+.JobDescriptionCard{
+    // max-width: 768px;
+    width: 59%;
+    border: 1px solid #F3F4F4;
+    background-color: var(--primary-white);
+    border-radius: 1rem;
+    padding: 32px 30px;
+
+    .ApplyBtn{
+        padding: 15px 38px;        
+        border-radius: 30px;
+        background: linear-gradient(196.99deg, #339DFF 7.09%, #2783D8 86.59%);
+        color: var(--primary-white);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .SaveBtn{
+        padding: 15px 38px;
+        border-radius: 30px;
+        border: 1.4px solid #CFD2D5;
+        color: #3F4C58;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .BulletPoint{
+        margin-right: 6px; 
+        font-size: 16px;
+    }
+}
+
+
+
+
+
+
