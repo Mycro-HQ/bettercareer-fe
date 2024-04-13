@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Flex, Heading, Text } from '@labs/components';
-import BriefcaseIcon from '@labs/icons/dashboard/briefcase.svg';
+import BriefcaseIcon from '@labs/icons/dashboard/Briefcase.svg';
 import SearchWhiteIcon from '@labs/icons/dashboard/search-white.svg';
 import JobSearchIcon from '@labs/icons/dashboard/search.svg';
 import JobTypeSearchIcon from '@labs/icons/dashboard/jobs-search.svg';
