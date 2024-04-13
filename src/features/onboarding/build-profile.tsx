@@ -47,6 +47,7 @@ const LinkedinFlow = () => {
 };
 
 const UploadResumeFlow = () => {
+	const [file, setFile] = useState<File | null>(null);
 	return (
 		<AnimatePresence>
 			<div className={styles.AuthLayout}>
@@ -65,7 +66,9 @@ const UploadResumeFlow = () => {
 							className="mt-9 mb-4"
 							accept="application/pdf"
 							multiple={false}
-							onDrop={(files) => {}}
+							onDrop={(files) => {
+								setFile(files[0]);
+							}}
 							onDragOver={() => {}}
 							maxSize={10}
 						/>

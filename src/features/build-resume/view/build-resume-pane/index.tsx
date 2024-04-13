@@ -17,11 +17,12 @@ import {
 	Flex,
 	Heading,
 	Text,
+	useFeedback,
 	useMediaQuery,
-	useToast,
 } from '@labs/components';
 import { Accordion } from '@labs/components/accordion';
 import Add from '@labs/icons/misc/add.svg';
+import Delete from '@labs/icons/delete.svg';
 import Bulb from '@labs/icons/misc/bulb.svg';
 import SparklesIcon from '@labs/icons/misc/sparkels.svg';
 import DNDIcon from '@labs/icons/misc/dnd.svg';
@@ -47,7 +48,7 @@ export const BuildResumePane = () => {
 		setShowPreview,
 		setModuleAdd: setAddNew,
 	} = useBuildStore();
-	const { createToast } = useToast();
+	const { createToast, createDisclosure } = useFeedback();
 	const [isDropDisabled, setIsDropDisabled] = useState(false);
 	const isMobile = useMediaQuery('md', 'greaterThan');
 
@@ -264,12 +265,18 @@ export const BuildResumePane = () => {
 												<Flex
 													alignItems="center"
 													gap={18}
-													fullWidth
+													className="w-[90%] md:w-full"
 													justifyContent="space-between"
 												>
 													<Text weight={600}>Customization</Text>
 													{Object.keys(template).length > 0 && (
-														<div className={styles.ColorPicker}>
+														<Flex
+															scrollable
+															className={classNames([
+																styles.ColorPicker,
+																'justify-start md:justify-end',
+															])}
+														>
 															{template?.complimentaryColors.map(
 																(color: string, index: number) => (
 																	<span
@@ -298,7 +305,7 @@ export const BuildResumePane = () => {
 																	></span>
 																)
 															)}
-														</div>
+														</Flex>
 													)}
 												</Flex>
 											}
@@ -318,10 +325,10 @@ export const BuildResumePane = () => {
 														});
 													}}
 												/>
-												<div className="w-[49%]">
+												<div className="w-[48.5%]">
 													<Field.Select
 														label="Font Size"
-														value={template?.fontSize}
+														value={template?.fontSize || 'md'}
 														options={[
 															{ value: 'sm', label: 'Small' },
 															{ value: 'md', label: 'Medium' },
@@ -335,7 +342,7 @@ export const BuildResumePane = () => {
 														}}
 													/>
 												</div>
-												<div className="w-[49%]">
+												<div className="w-[48.5%]">
 													<Field.Select
 														label="Margin Size"
 														value={template?.margin}
@@ -428,11 +435,34 @@ export const BuildResumePane = () => {
 																			className={classNames([
 																				moduleAdd[block.key] ? 'rotate-45' : '',
 																				styles.AddIcon,
-																				'cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60 ',
+																				'cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60 p-[4px]',
 																			])}
 																			onClick={() => setAddNew(block.key, true)}
 																		>
 																			<Add />
+																		</span>
+																	) : block.key.startsWith('new_section') ? (
+																		<span
+																			role="button"
+																			tabIndex={0}
+																			aria-label="add"
+																			className={classNames([
+																				'cursor-pointer block transition-all duration-200 ease-in-out hover:opacity-60 p-[4px]',
+																			])}
+																			onClick={async (e) => {
+																				e.stopPropagation();
+																				await createDisclosure({
+																					title: 'Remove Section',
+																					message:
+																						'Are you sure you want to remove this section?',
+																				});
+
+																				removeModuleData(block.key, null, {
+																					removeModule: true,
+																				});
+																			}}
+																		>
+																			<Delete />
 																		</span>
 																	) : undefined
 																}

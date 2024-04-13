@@ -403,6 +403,7 @@ const FrameCards = ({
 															}}
 															aria-label="Edit"
 															title="edit"
+															className="p-[4px] cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60"
 														>
 															<Edit />
 														</button>
@@ -410,6 +411,7 @@ const FrameCards = ({
 															onClick={() => deleteFrame(data)}
 															aria-label="Delete"
 															title="delete"
+															className="p-[4px] cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60"
 														>
 															<Delete />
 														</button>

@@ -97,20 +97,7 @@ const AccordionMain = memo<AccordionProps>(
 				>
 					<Flex fullWidth gap={8} alignItems="center">
 						{leadingIcon && (
-							<span
-								className={styles.leadingIcon}
-								role="button"
-								tabIndex={0}
-								aria-label="accordion_icon"
-								onClick={(e) => {
-									e.stopPropagation();
-									if (!isOpen) {
-										onToggle();
-									}
-								}}
-							>
-								{leadingIcon}
-							</span>
+							<span className={styles.leadingIcon}>{leadingIcon}</span>
 						)}
 
 						{typeof title === 'string' ? (
@@ -120,21 +107,8 @@ const AccordionMain = memo<AccordionProps>(
 						)}
 					</Flex>
 
-					<Flex gap={14}>
-						<span
-							className={styles.trailingIcon}
-							role="button"
-							tabIndex={0}
-							aria-label="accordion"
-							onClick={(e) => {
-								e.stopPropagation();
-								if (!isOpen) {
-									onToggle();
-								}
-							}}
-						>
-							{trailingIcon}
-						</span>
+					<Flex gap={8} alignItems="center">
+						<span className={styles.trailingIcon}>{trailingIcon}</span>
 						<ArrowDown className={styles.arrow} />
 					</Flex>
 				</button>
