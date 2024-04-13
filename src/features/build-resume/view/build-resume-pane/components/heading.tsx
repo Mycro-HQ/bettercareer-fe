@@ -1,13 +1,13 @@
 import React from 'react';
-
-import { Field } from '@labs/components/field';
-import { Flex, Text } from '@labs/components';
-
-import { getDataIcons } from '@labs/utils';
-import { CallToAction } from '@labs/components';
 import { motion } from 'framer-motion';
 
 import styles from '../build-resume-pane.module.scss';
+
+import { Field } from '@labs/components/field';
+import { Flex } from '@labs/components';
+import { getDataIcons } from '@labs/utils';
+import { CallToAction } from '@labs/components';
+
 export const HeadingModule = ({
 	setField,
 	field,
@@ -77,7 +77,10 @@ export const HeadingModule = ({
 											aria-hidden="true"
 										/>
 									}
-									onClick={() => removeField(item)}
+									onClick={(e) => {
+										e.preventDefault();
+										removeField(item);
+									}}
 								>
 									{item.value}
 								</CallToAction>

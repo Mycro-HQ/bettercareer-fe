@@ -42,11 +42,11 @@ interface AccordionProps extends PropsWithChildren {
 	/**
 	 * leading icon
 	 */
-	leadingIcon?: React.ReactElement;
+	leadingIcon?: React.ReactElement | null;
 	/**
 	 * trailing icon
 	 */
-	trailingIcon?: React.ReactElement;
+	trailingIcon?: React.ReactElement | null;
 }
 
 const AccordionMain = memo<AccordionProps>(
@@ -95,21 +95,24 @@ const AccordionMain = memo<AccordionProps>(
 					])}
 					onClick={onToggle}
 				>
-					<Flex>
-						<span
-							className={styles.leadingIcon}
-							role="button"
-							tabIndex={0}
-							aria-label="accordion_icon"
-							onClick={(e) => {
-								e.stopPropagation();
-								if (!isOpen) {
-									onToggle();
-								}
-							}}
-						>
-							{leadingIcon}
-						</span>
+					<Flex fullWidth gap={8} alignItems="center">
+						{leadingIcon && (
+							<span
+								className={styles.leadingIcon}
+								role="button"
+								tabIndex={0}
+								aria-label="accordion_icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									if (!isOpen) {
+										onToggle();
+									}
+								}}
+							>
+								{leadingIcon}
+							</span>
+						)}
+
 						{typeof title === 'string' ? (
 							<Text.span weight={700}>{title}</Text.span>
 						) : (

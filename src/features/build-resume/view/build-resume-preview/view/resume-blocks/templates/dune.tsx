@@ -15,6 +15,7 @@ import { DocFlex } from '../components/doc-flex';
 import { fixText, isEmpty } from '@labs/utils';
 
 import { ModuleData } from './types';
+import { COLOR_MAPS, MARGIN_MAP } from './utils';
 
 const renderElements = {
 	summary: Summary,
@@ -31,31 +32,41 @@ const config = {
 	name: 'dune',
 	details: 'Crafted from the sands of Arrakis.',
 	thumbnail: '/images/dashboard/resumes/dune.png',
+	fontFamily: 'MerriWeather',
 	colors: {
-		primary: '#0F1F2E',
-		primary_text: '#FFFFFF',
+		primary: '#FFD37D',
 	},
+	complimentaryColors: COLOR_MAPS.secondary,
 };
 
-const DuneTemplate = ({ modules }: { modules: any }) => {
+const DuneTemplate = ({
+	template,
+	modules,
+}: {
+	modules: any;
+	template: any;
+}) => {
+	const padding =
+		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
 				container: {
 					flexDirection: 'column',
-					padding: 24,
-					gap: 14,
-					borderTop: '4px solid #FFD37D',
-					color: '#141001',
-					backgroundColor: '#fffefa',
-					fontFamily: 'MerriWeather',
+					padding: padding,
+					fontFamily: template.fontFamily,
+					gap: Math.max(padding - 14, 12),
+					borderTop: `4px solid ${template.colors.primary}`,
+					color: '#121210',
+					backgroundColor: template.colors.primary + '06',
 				},
 				link: {
-					color: '#141001',
+					color: '#121210',
 					textDecoration: 'underline',
 				},
 			}),
-		[]
+		[template.fontFamily, template.colors.primary, padding]
 	);
 
 	const heading = getData('heading', modules);

@@ -6,6 +6,10 @@
 	--sidebar-width: 47%;
 	--nav-height: 74px;
 
+	@include media('xl', 'max') {
+		--sidebar-width: 100%;
+	}
+
 	&__nav {
 		display: flex;
 		width: 100%;
@@ -28,6 +32,7 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: stretch;
+		flex-wrap: wrap;
 		min-height: calc(var(--bc-labs-vh) - 78.09px);
 	}
 
@@ -43,6 +48,11 @@
 		max-height: var(--bc-labs-vh);
 		position: relative;
 		@include custom-scrollbar;
+
+		@include media('xl', 'max') {
+			padding: 8px;
+			padding-bottom: 106px;
+		}
 	}
 
 	&__aside {
@@ -58,9 +68,26 @@
 			rgba(251, 65, 255, 0.15) 124.44%
 		);
 
+		@include media('xl', 'max') {
+			transform: translateY(150%);
+			position: fixed;
+			top: var(--nav-height);
+			left: 0;
+			z-index: 100;
+			transition: transform 0.2s ease-in-out;
+
+			&.open {
+				transform: translateY(0);
+				background: linear-gradient(
+					345.12deg,
+					rgb(239 238 255) -19.06%,
+					rgb(240 234 255) 124.44%,
+					rgb(240 236 255) 124.44%
+				);
+			}
+		}
+
 		// background: #f9fafa;
 		border-right: 1px solid #f2f8f6;
-
-		// border-left: 1px solid #f3f4f4;
 	}
 }

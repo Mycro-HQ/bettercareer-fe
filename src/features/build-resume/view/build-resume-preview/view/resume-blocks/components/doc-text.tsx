@@ -13,8 +13,8 @@ const asMap = {
 	},
 	title: {
 		fontWeight: 'bold',
-		marginBottom: 4,
-		paddingBottom: 2,
+		marginBottom: 6,
+		paddingBottom: 1,
 		borderBottom: '1px solid #c0c0c0',
 	},
 } as const;
@@ -53,6 +53,7 @@ const DocText = ({
 					fontFamily: theme?.font?.body || undefined,
 					fontSize: fontSize / (theme?.font.scale || 1),
 					lineHeight: 1.5,
+					letterSpacing: -0.12,
 					fontWeight: (weight as any) || 400,
 					...(color && { color }),
 				},

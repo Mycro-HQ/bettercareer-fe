@@ -15,6 +15,7 @@ import { DocFlex } from '../components/doc-flex';
 import { fixText, isEmpty } from '@labs/utils';
 
 import { ModuleData } from './types';
+import { MARGIN_MAP } from './utils';
 
 const renderElements = {
 	summary: Summary,
@@ -30,30 +31,39 @@ const config = {
 	title: 'Classic',
 	details: '1995 called, they want their resume back.',
 	thumbnail: '/images/dashboard/resumes/classic.png',
+	fontFamily: 'Lato Body',
+	margin: 'md',
 	colors: {
-		primary: '#F0F0F0',
-		primary_text: '#000',
-		border: '#6F7982',
+		primary: '#0F1F2E',
 	},
+	complimentaryColors: ['#000', '#0F1F2E', '#333333', '#545454'],
 };
 
-const ClassicTemplate = ({ modules }: { modules: any }) => {
+const ClassicTemplate = ({
+	template,
+	modules,
+}: {
+	template: any;
+	modules: any;
+}) => {
+	const padding =
+		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
 				container: {
 					flexDirection: 'column',
-					padding: 24,
-					gap: 12,
-					color: '#0F1F2E',
-					fontFamily: 'Lato Body',
+					padding: padding,
+					gap: Math.max(padding - 14, 12),
+					color: template.colors.primary,
+					fontFamily: template.fontFamily,
 				},
 				link: {
-					color: '#141001',
+					color: template.colors.primary,
 					textDecoration: 'underline',
 				},
 			}),
-		[]
+		[template.fontFamily, template.colors.primary, padding]
 	);
 
 	const heading = getData('heading', modules);

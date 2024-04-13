@@ -22,7 +22,7 @@ export const TemplateModal = ({
 	return (
 		<Modal size="lg" in={show} onClose={onClose} centered={false}>
 			<Heading.h4 className="mb-[24px]">Choose your resume template</Heading.h4>
-			<Flex.Row gap={18} className={styles.TemplateList}>
+			<Flex.Row gap={32} className={styles.TemplateList}>
 				{templatesConfig.map((item) => (
 					<button
 						onClick={() => {
@@ -40,7 +40,9 @@ export const TemplateModal = ({
 							<Heading.h6 weight={700} className="mt-[12px]">
 								{item.title}
 							</Heading.h6>
-							<Text size="sm">{truncateText(item.details, 40)}</Text>
+							<Text size="sm" color="var(--text-gray)">
+								{truncateText(item.details, 40)}
+							</Text>
 						</Flex.Column>
 					</button>
 				))}

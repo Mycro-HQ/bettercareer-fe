@@ -14,6 +14,7 @@ import { isEmpty } from '@labs/utils';
 
 import { Dune } from './dune';
 import { Classic } from './classic';
+import { COLOR_MAPS, MARGIN_MAP } from './utils';
 
 const renderElements = {
 	summary: Dune.Summary,
@@ -29,11 +30,11 @@ const config = {
 	title: 'Cosmos',
 	details: 'Reach for the stars!',
 	thumbnail: '/images/dashboard/resumes/cosmos.png',
+	fontFamily: 'Playfair',
 	colors: {
-		primary: '#fff',
-		primary_text: '#0F1F2E',
-		section: '#1388f2',
+		primary: '#0F70C8',
 	},
+	complimentaryColors: COLOR_MAPS.primary,
 };
 
 const CosmosTemplate = ({
@@ -44,20 +45,22 @@ const CosmosTemplate = ({
 	template: any;
 }) => {
 	const primaryColor = template.colors.primary;
+	const margin =
+		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
 				container: {
 					flexDirection: 'column',
 					color: '#0F1F2E',
-					fontFamily: 'Playfair',
+					fontFamily: template.fontFamily,
 				},
 				link: {
-					color: 'inherit',
+					color: '#0F1F2E',
 					textDecoration: 'underline',
 				},
 			}),
-		[]
+		[template.fontFamily]
 	);
 
 	const heading = getData('heading', modules);
@@ -69,10 +72,8 @@ const CosmosTemplate = ({
 					<DocFlex
 						direction="row"
 						justifyContent="space-between"
-						backgroundColor={primaryColor}
-						padding={24}
+						padding={margin}
 						paddingBottom={0}
-						color={template.colors.primary_text}
 					>
 						<DocFlex
 							direction="column"
@@ -95,7 +96,6 @@ const CosmosTemplate = ({
 												href={getHref(subheading.value)}
 												style={{
 													...styles.link,
-													color: template.colors.primary_text,
 												}}
 											>
 												{extractNameFromLink(subheading.value)} {'\n'}
@@ -109,11 +109,16 @@ const CosmosTemplate = ({
 
 				<DocFlex
 					direction="row"
-					padding={24}
-					gap={24}
+					padding={margin}
+					gap={margin}
 					justifyContent="space-between"
 				>
-					<DocFlex direction="column" gap={12} maxWidth={150} width="100%">
+					<DocFlex
+						direction="column"
+						gap={Math.max(margin - 14, 12)}
+						maxWidth={150}
+						width="100%"
+					>
 						{generateDataByKey(
 							['certifications', 'skills', 'education'],
 							modules
@@ -130,7 +135,7 @@ const CosmosTemplate = ({
 									styles={{
 										...styles,
 										title: {
-											color: template.colors.section || primaryColor,
+											color: primaryColor,
 											textTransform: 'uppercase',
 											fontSize: 10,
 											border: 0,
@@ -140,7 +145,7 @@ const CosmosTemplate = ({
 							);
 						})}
 					</DocFlex>
-					<DocFlex direction="column" gap={12} flex={1}>
+					<DocFlex direction="column" gap={Math.max(margin - 14, 12)} flex={1}>
 						{generateDataByKey(
 							['summary', 'experience', 'projects'],
 							modules
@@ -157,7 +162,7 @@ const CosmosTemplate = ({
 									styles={{
 										...styles,
 										title: {
-											color: template.colors.section || primaryColor,
+											color: primaryColor,
 											textTransform: 'uppercase',
 											fontSize: 10,
 											border: 0,

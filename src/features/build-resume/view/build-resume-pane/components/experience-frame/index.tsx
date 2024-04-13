@@ -365,10 +365,10 @@ const FrameCards = ({
 															role="button"
 															tabIndex={0}
 															aria-label="drag"
-															className="mt-[4px]"
+															className="mt-[8px]"
 															onClick={(e) => e.stopPropagation()}
 														>
-															<DNDIcon width={20} height={20} />
+															<DNDIcon width={13} height={13} />
 														</button>
 														<Flex.Column gap={4}>
 															{Object.keys(extractValidKeysFromType).map(

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Flex } from '@labs/components';
-import { generateUUID } from '@labs/utils';
 
 import styles from './progress.module.scss';
 
@@ -15,6 +14,7 @@ interface ProgressProps extends React.HTMLProps<HTMLProgressElement> {
 	onDone?: () => void;
 }
 
+let INDEX = 0;
 export const Progress = ({
 	value,
 	label,
@@ -31,7 +31,6 @@ export const Progress = ({
 		return Math.max(progress, value);
 	}, [value, progress]);
 
-	const progressId = useMemo(() => generateUUID(), []);
 	React.useEffect(() => {
 		if (!duration) return;
 		const timer = setInterval(
@@ -67,7 +66,7 @@ export const Progress = ({
 					gap={4}
 					alignItems="center"
 				>
-					<label htmlFor={progressId}>{label}</label>
+					<label htmlFor={`progress-${INDEX + 1}`}>{label}</label>
 
 					{showPercent && <span className="font-bold">{_value}%</span>}
 				</Flex.Row>
@@ -76,7 +75,7 @@ export const Progress = ({
 			<progress
 				value={_value}
 				max={max}
-				id={progressId}
+				id={`progress-${INDEX + 1}`}
 				{...rest}
 				className={styles.Progress}
 			/>
