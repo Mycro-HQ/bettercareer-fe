@@ -1,0 +1,19 @@
+.paceLoader {
+	position: fixed;
+	top: env(safe-area-inset-top, 0px);
+	left: env(safe-area-inset-left, 0px);
+	width: 100%;
+	height: fit-content;
+	z-index: 9999;
+	background-color: var(--soft-black);
+}
+
+.paceProgress {
+	position: absolute;
+	height: 100%;
+	width: 0;
+	height: 3px;
+	border-radius: 8px;
+	background-color: var(--primary-blue);
+	transition: width 0.2s ease-in-out;
+}
