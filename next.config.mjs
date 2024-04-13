@@ -3,6 +3,15 @@ const nextConfig = {
 	reactStrictMode: false,
 	swcMinify: true,
 
+	rewrites: async () => {
+		return [
+			{
+				source: '/dashboard/resume/build',
+				destination: '/dashboard/resume/build/new',
+			},
+		];
+	},
+
 	webpack: (config, { isServer }) => {
 		config.module.rules.push({
 			test: /\.svg$/i,
