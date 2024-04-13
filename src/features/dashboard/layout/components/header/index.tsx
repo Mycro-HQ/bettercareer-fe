@@ -41,7 +41,7 @@ const NAVIGATION = [
 export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
 	const router = useRouter();
 	const [isScrolled, setIsScrolled] = React.useState(false);
-	const { profile } = useUserStore();
+	const { profile, logOut } = useUserStore();
 
 	const getFallback = () => {
 		if (!profile?.name) return '';
@@ -179,15 +179,13 @@ export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
 									</Link>
 								</DropdownMenu.Item>
 
-								<DropdownMenu.Item color="red">
-									<Link href="/dashboard/profile">
-										<Flex.Row gap={8} alignItems="center">
-											<LogoutIcon />
-											<Text size="sm" color="red">
-												Logout
-											</Text>
-										</Flex.Row>
-									</Link>
+								<DropdownMenu.Item color="red" onClick={() => logOut()}>
+									<Flex.Row gap={8} alignItems="center">
+										<LogoutIcon />
+										<Text size="sm" color="red">
+											Logout
+										</Text>
+									</Flex.Row>
 								</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>

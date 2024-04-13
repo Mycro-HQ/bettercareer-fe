@@ -1,4 +1,6 @@
 import React from 'react';
+import { formatDate } from 'date-fns';
+import Link from 'next/link';
 
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
@@ -10,6 +12,7 @@ import JobIcon from '@labs/icons/dashboard/calendar.svg';
 import SponsorIcon from '@labs/icons/dashboard/tag.svg';
 import NewResume from '@labs/icons/dashboard/upload.svg';
 import { type UserData } from '@/queries/types/user';
+import { useGetResumesQuery } from '@/queries/resume';
 
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
@@ -20,7 +23,11 @@ export const DashboardHome = ({
 }: {
 	profile: UserData | null | undefined;
 }) => {
-	const hasSetup = false;
+	const hasSetup = Object.values(profile?.onboardingChecklist || {}).every(
+		Boolean
+	);
+
+	const { data: resumes } = useGetResumesQuery({});
 
 	const recommendationSections = [
 		{
@@ -82,7 +89,7 @@ export const DashboardHome = ({
 					))}
 				</Flex>
 			) : (
-				<SetupChecklist />
+				<SetupChecklist onboardingChecklist={profile?.onboardingChecklist!} />
 			)}
 			<Flex.Column gap={24} className={styles.Section}>
 				<Heading.h5 weight={800}>Resume Makeover</Heading.h5>
@@ -97,9 +104,14 @@ export const DashboardHome = ({
 						<Text size="sm" color="var(--text-gray)" weight={600}>
 							Craft specific resumes to highlight a perfect fit for each role.
 						</Text>
-						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
+						<CallToAction.a
+							href="/dashboard/resume/build"
+							variant="secondary"
+							size="sm"
+							className="mt-[20px]"
+						>
 							Add Resume
-						</CallToAction>
+						</CallToAction.a>
 					</div>
 					<div className={styles.ActionCard}>
 						<div className={styles.ActionCardIcon}>
@@ -134,22 +146,37 @@ export const DashboardHome = ({
 				</Flex>
 			</Flex.Column>
 			<Flex.Column gap={24} className={styles.Section}>
-				<Heading.h5 weight={800}>Past Resumes</Heading.h5>
-				<Flex fullWidth gap={32} flexWrap="wrap">
-					<div className={styles.PastResume}>
-						<div className={styles.PastResumeInfo}>
-							<Heading.h6 weight={800} fontSize="16px">
-								Adenekan_META_Resume
-							</Heading.h6>
-							<Flex gap={2} alignItems="center">
-								<FileIcon />
-								<Text size="sm" color="var(--text-gray-light)">
-									Built Feb 23, 2024
-								</Text>
-							</Flex>{' '}
-						</div>
-					</div>
-				</Flex>
+				{resumes?.data?.length > 0 && (
+					<>
+						<Heading.h5 weight={800}>Past Resumes</Heading.h5>
+						<Flex fullWidth gap={32} flexWrap="wrap">
+							{resumes?.data?.map((resume: any) => (
+								<Link
+									href={`/dashboard/resume/build/${resume.id}`}
+									key={resume.id}
+									className={styles.PastResume}
+								>
+									<img src="/images/dashboard/resumes/classic.png" />
+									<div className={styles.PastResumeInfo}>
+										<Heading.h6 weight={800} fontSize="16px">
+											{resume.name}
+										</Heading.h6>
+										<Flex gap={2} alignItems="center">
+											<FileIcon />
+											<Text size="sm" color="var(--text-gray-light)">
+												Opened{' '}
+												{formatDate(
+													new Date(resume.updatedAt),
+													'MMM dd, yyyy | p'
+												)}
+											</Text>
+										</Flex>
+									</div>
+								</Link>
+							))}
+						</Flex>
+					</>
+				)}
 			</Flex.Column>
 		</div>
 	);
