@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { DashboardHome } from '@/features/dashboard';
 import { DashboardLayout } from '@/features/dashboard/layout';
 import { useUserStore } from '@/store/z-store/user';
 import DashboardJobs from '@/features/dashboard/views/jobs/jobs';
