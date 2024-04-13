@@ -112,7 +112,11 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 	return walkNodes(doc.body.childNodes);
 };
 
-export const RichOutput = ({ text, ...rest }: { text: string } & any) => {
+export const RichOutput = ({
+	text,
+	scale,
+	...rest
+}: { text: string; scale?: number } & any) => {
 	const content = parseHtmlToReactPdf(text);
 
 	return (
@@ -123,7 +127,7 @@ export const RichOutput = ({ text, ...rest }: { text: string } & any) => {
 				{
 					flexDirection: 'column',
 					gap: 2,
-					fontSize: 10,
+					fontSize: 10 / scale,
 					lineHeight: 1.5,
 				},
 			]}

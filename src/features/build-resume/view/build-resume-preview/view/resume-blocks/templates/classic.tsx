@@ -15,7 +15,7 @@ import { DocFlex } from '../components/doc-flex';
 import { fixText, isEmpty } from '@labs/utils';
 
 import { ModuleData } from './types';
-import { MARGIN_MAP } from './utils';
+import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Summary,
@@ -48,6 +48,9 @@ const ClassicTemplate = ({
 }) => {
 	const padding =
 		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+	const scale =
+		SCALE_MAP[template.fontSize as keyof typeof SCALE_MAP] || SCALE_MAP.md;
+
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
@@ -73,13 +76,15 @@ const ClassicTemplate = ({
 			<Page size="A4" style={styles.container}>
 				{heading?.name ? (
 					<DocFlex direction="column" gap={4}>
-						<DocText as="heading">
+						<DocText scale={scale} as="heading">
 							{heading?.name}
 							{heading?.title ? (
-								<DocText as="subheading">, {heading?.title}</DocText>
+								<DocText scale={scale} as="subheading">
+									, {heading?.title}
+								</DocText>
 							) : null}
 						</DocText>
-						<DocText size="xs">
+						<DocText scale={scale} size="xs">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any, index: number) => (
 										<Fragment key={subheading.value}>
@@ -116,7 +121,14 @@ const ClassicTemplate = ({
 
 					if (isEmpty(module.data)) return null;
 					return (
-						<Component key={module.key} data={module.data} styles={styles} />
+						<Component
+							key={module.key}
+							data={module.data}
+							styles={{
+								...styles,
+								scale,
+							}}
+						/>
 					);
 				})}
 			</Page>
@@ -130,21 +142,21 @@ function Skills({ data, styles, variant }: Partial<ModuleData>) {
 		<DocFlex direction="column">
 			{data?.length ? (
 				<>
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Skills
 					</DocText>
 					<DocFlex direction="column" gap={8}>
 						{data.map(
 							(skill: { name: string; value: string[]; $id: string }) => (
-								<DocText key={skill?.$id}>
+								<DocText scale={styles?.scale} key={skill?.$id}>
 									{isSide ? null : <>• </>}
 									{skill?.name ? (
-										<DocText size="xs" weight="heavy">
+										<DocText scale={styles?.scale} size="xs" weight="heavy">
 											{skill.name}:{' '}
 										</DocText>
 									) : null}
 									{skill?.value?.map((value: any, index: number) => (
-										<DocText size="xs" key={index}>
+										<DocText scale={styles?.scale} size="xs" key={index}>
 											{fixText(value, {
 												prefix: index > 0 && index < data.length ? ', ' : '',
 											})}
@@ -165,10 +177,10 @@ function Summary({ data, styles }: Partial<ModuleData>) {
 		<DocFlex direction="column">
 			{data?.value ? (
 				<>
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Summary
 					</DocText>
-					<RichOutput text={data.value} />
+					<RichOutput scale={styles?.scale} text={data.value} />
 				</>
 			) : null}
 		</DocFlex>
@@ -180,10 +192,10 @@ function CustomSection({ data, styles }: Partial<ModuleData>) {
 		<DocFlex direction="column">
 			{data?.title ? (
 				<>
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						{data.title}
 					</DocText>
-					<RichOutput text={data?.value} />
+					<RichOutput scale={styles?.scale} text={data?.value} />
 				</>
 			) : null}
 		</DocFlex>
@@ -195,7 +207,7 @@ function Projects({ data, styles }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Projects
 					</DocText>
 					<DocFlex direction="column" gap={8}>
@@ -211,7 +223,7 @@ function Projects({ data, styles }: ModuleData) {
 
 							return (
 								<DocFlex gap={4} direction="column" key={exp?.$id}>
-									<DocText size="xs" weight="heavy">
+									<DocText scale={styles?.scale} size="xs" weight="heavy">
 										<Link
 											style={styles.link}
 											href={url ?? `https://www.google.com/search?q=${name}`}
@@ -224,7 +236,10 @@ function Projects({ data, styles }: ModuleData) {
 										| {_date}
 									</DocText>
 
-									<RichOutput text={exp.description?.value} />
+									<RichOutput
+										scale={styles?.scale}
+										text={exp.description?.value}
+									/>
 								</DocFlex>
 							);
 						})}
@@ -240,7 +255,7 @@ function Experience({ data, styles }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Work Experience
 					</DocText>
 					<DocFlex direction="column" gap={8}>
@@ -262,7 +277,7 @@ function Experience({ data, styles }: ModuleData) {
 
 							return (
 								<DocFlex gap={4} direction="column" key={exp?.$id}>
-									<DocText size="xs" weight="heavy">
+									<DocText scale={styles?.scale} size="xs" weight="heavy">
 										<Link
 											style={styles.link}
 											href={url ?? `https://www.google.com/search?q=${company}`}
@@ -275,7 +290,10 @@ function Experience({ data, styles }: ModuleData) {
 										| {_date}
 									</DocText>
 									<DocFlex direction="column">
-										<RichOutput text={exp.description?.value} />
+										<RichOutput
+											scale={styles?.scale}
+											text={exp.description?.value}
+										/>
 									</DocFlex>
 								</DocFlex>
 							);
@@ -293,7 +311,7 @@ function Education({ data, styles, variant }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Education
 					</DocText>
 					<DocFlex direction="column" gap={8}>
@@ -308,7 +326,11 @@ function Education({ data, styles, variant }: ModuleData) {
 
 							return (
 								<DocFlex gap={4} direction="column" key={exp?.$id}>
-									<DocText size="xs" weight={isSide ? 'normal' : 'heavy'}>
+									<DocText
+										scale={styles?.scale}
+										size="xs"
+										weight={isSide ? 'normal' : 'heavy'}
+									>
 										{isSide ? null : <>• </>}
 										{title}
 										{isSide ? '\n' : <>, </>}
@@ -345,7 +367,7 @@ function Certification({ data, styles, variant = 'full' }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Certificates
 					</DocText>
 					<DocFlex direction="column" gap={8}>
@@ -364,7 +386,11 @@ function Certification({ data, styles, variant = 'full' }: ModuleData) {
 
 							return (
 								<DocFlex gap={8} direction="column" key={exp?.$id}>
-									<DocText size="xs" weight={isSide ? 'normal' : 'heavy'}>
+									<DocText
+										scale={styles?.scale}
+										size="xs"
+										weight={isSide ? 'normal' : 'heavy'}
+									>
 										{isSide ? null : <>• </>}
 										<Link
 											style={{

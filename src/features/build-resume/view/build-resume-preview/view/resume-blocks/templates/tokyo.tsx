@@ -13,7 +13,7 @@ import { DocFlex } from '../components/doc-flex';
 import { isEmpty } from '@labs/utils';
 
 import { Classic } from './classic';
-import { MARGIN_MAP } from './utils';
+import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Classic.Summary,
@@ -45,6 +45,8 @@ const TokyoTemplate = ({
 	const primaryColor = template.colors.primary;
 	const padding =
 		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+	const scale =
+		SCALE_MAP[template.fontSize as keyof typeof SCALE_MAP] || SCALE_MAP.md;
 
 	const styles = useMemo(
 		() =>
@@ -75,13 +77,15 @@ const TokyoTemplate = ({
 						padding={padding}
 						color="#fff"
 					>
-						<DocText as="heading">
+						<DocText scale={scale} as="heading">
 							{heading?.name}
 							{heading?.title ? (
-								<DocText as="subheading">, {heading?.title}</DocText>
+								<DocText scale={scale} as="subheading">
+									, {heading?.title}
+								</DocText>
 							) : null}
 						</DocText>
-						<DocText size="xs">
+						<DocText scale={scale} size="xs">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any, index: number) => (
 										<Fragment key={subheading.value}>
@@ -136,6 +140,7 @@ const TokyoTemplate = ({
 										textTransform: 'uppercase',
 										border: 0,
 									},
+									scale,
 								}}
 							/>
 						);

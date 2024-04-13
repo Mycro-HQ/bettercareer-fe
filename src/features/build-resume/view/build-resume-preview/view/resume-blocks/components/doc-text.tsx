@@ -1,24 +1,6 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text } from '@react-pdf/renderer';
 
-const asMap = {
-	subheading: {
-		fontSize: 12,
-		fontWeight: 'normal',
-	},
-	heading: {
-		fontSize: 24,
-		fontWeight: 'heavy',
-		letterSpacing: -0.4,
-	},
-	title: {
-		fontWeight: 'bold',
-		marginBottom: 6,
-		paddingBottom: 1,
-		borderBottom: '1px solid #c0c0c0',
-	},
-} as const;
-
 const DocText = ({
 	children,
 	color,
@@ -27,6 +9,7 @@ const DocText = ({
 	style,
 	weight,
 	theme,
+	scale,
 	...rest
 }: {
 	children: string | number | React.ReactNode;
@@ -35,6 +18,7 @@ const DocText = ({
 	as?: 'heading' | 'subheading' | 'title';
 	style?: any;
 	theme?: any;
+	scale?: number;
 	weight?: number | string;
 } & React.CSSProperties) => {
 	const sizeMap = {
@@ -44,6 +28,24 @@ const DocText = ({
 		lg: 16,
 	} as const;
 
+	const asMap = {
+		subheading: {
+			fontSize: 12 / (scale || 1),
+			fontWeight: 'normal',
+		},
+		heading: {
+			fontSize: 24 / (scale || 1),
+			fontWeight: 'heavy',
+			letterSpacing: -0.4,
+		},
+		title: {
+			fontWeight: 'bold',
+			marginBottom: 6,
+			paddingBottom: 1,
+			borderBottom: '1px solid #c0c0c0',
+		},
+	} as const;
+
 	const fontSize = sizeMap[size as keyof typeof sizeMap] || sizeMap.sm;
 
 	const styles = useMemo(
@@ -51,14 +53,14 @@ const DocText = ({
 			StyleSheet.create({
 				text: {
 					fontFamily: theme?.font?.body || undefined,
-					fontSize: fontSize / (theme?.font.scale || 1),
+					fontSize: fontSize / (scale || 1),
 					lineHeight: 1.5,
 					letterSpacing: -0.12,
 					fontWeight: (weight as any) || 400,
 					...(color && { color }),
 				},
 			}),
-		[fontSize, color, weight, theme]
+		[fontSize, color, weight, theme, scale]
 	);
 
 	return (

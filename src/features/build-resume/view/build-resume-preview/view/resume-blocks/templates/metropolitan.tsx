@@ -14,7 +14,7 @@ import { isEmpty } from '@labs/utils';
 
 import { Dune } from './dune';
 import { Classic } from './classic';
-import { MARGIN_MAP } from './utils';
+import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Dune.Summary,
@@ -46,6 +46,9 @@ const MetropolitanTemplate = ({
 	const primaryColor = template.colors.primary;
 	const padding =
 		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+	const scale =
+		SCALE_MAP[template.fontSize as keyof typeof SCALE_MAP] || SCALE_MAP.md;
+
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
@@ -81,14 +84,16 @@ const MetropolitanTemplate = ({
 							alignItems="flex-start"
 							textAlign="left"
 						>
-							<DocText as="heading" marginBottom={0}>
+							<DocText scale={scale} as="heading" marginBottom={0}>
 								{heading?.name}
 							</DocText>
 							{heading?.title ? (
-								<DocText as="subheading">{heading?.title}</DocText>
+								<DocText scale={scale} as="subheading">
+									{heading?.title}
+								</DocText>
 							) : null}
 						</DocFlex>
-						<DocText size="xs" textAlign="right">
+						<DocText scale={scale} size="xs" textAlign="right">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any) => (
 										<Fragment key={subheading.value}>
@@ -133,9 +138,10 @@ const MetropolitanTemplate = ({
 										title: {
 											color: primaryColor,
 											textTransform: 'uppercase',
-											fontSize: 10,
+											fontSize: 10 / scale,
 											border: 0,
 										},
+										scale,
 									}}
 								/>
 							);
@@ -166,9 +172,10 @@ const MetropolitanTemplate = ({
 										title: {
 											color: primaryColor,
 											textTransform: 'uppercase',
-											fontSize: 10,
+											fontSize: 10 / scale,
 											border: 0,
 										},
+										scale,
 									}}
 								/>
 							);
