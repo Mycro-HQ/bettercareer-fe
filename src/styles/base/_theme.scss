@@ -69,6 +69,15 @@
 		padding: 12px 8px;
 		gap: 8px;
 	}
+
+	.rt-BaseMenuItem[data-highlighted] {
+		background-color: #0000000d !important;
+		color: unset;
+	}
+
+	.rt-BaseMenuItem {
+		cursor: pointer;
+	}
 }
 
 @media (max-width: 768px) {
