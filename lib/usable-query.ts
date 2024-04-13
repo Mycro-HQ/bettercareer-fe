@@ -80,7 +80,7 @@ type SmartApiDefinition<
 		? Z extends true
 			? ((
 					args: Args,
-					options?: UseQueryOptions<ResultType>
+					options?: Omit<UseQueryOptions<ResultType>, 'queryKey'>
 				) => ReturnType<typeof useQuery<ResultType>> &
 					Omit<
 						ReturnType<typeof useInfiniteQuery<ResultType>>,
@@ -502,7 +502,13 @@ function useCustomQuery(
 		if (result.isError && queryOptions.onError) {
 			queryOptions.onError(result.error);
 		}
-	}, [result.isSuccess, result.isError, result.data, result.error]);
+	}, [
+		result.isSuccess,
+		result.isError,
+		result.data,
+		result.error,
+		queryOptions,
+	]);
 
 	return result;
 }
