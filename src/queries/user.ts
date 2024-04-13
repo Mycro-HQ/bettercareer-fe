@@ -42,12 +42,7 @@ export const authApiCreator = createSmartApi({
 			}),
 		}),
 
-		logOut: builder.query<
-			undefined,
-			{
-				user: UserData;
-			}
-		>({
+		logOut: builder.query({
 			key: 'logout',
 			queryFn: () => ({
 				url: `/logout`,

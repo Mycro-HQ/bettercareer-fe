@@ -17,7 +17,13 @@ interface BuildStore {
 			edit?: boolean;
 		}
 	) => void;
-	removeModuleData: (key: string, data: any) => void;
+	removeModuleData: (
+		key: string,
+		data: any,
+		options?: {
+			removeModule: boolean;
+		}
+	) => void;
 	editModuleData: (key: string, data: any) => void;
 	setModuleAdd: (key: string, status: boolean) => void;
 	moduleAdd: { [key: string]: boolean };
@@ -48,13 +54,12 @@ export const MODULES = [
 	{ key: 'education', title: 'Education', data: [] },
 	{ key: 'certifications', title: 'Certifications', data: [] },
 	{ key: 'skills', title: 'Skills', data: [] },
-	{ key: 'skills', title: 'Skills', data: [] },
 	{ key: 'projects', title: 'Projects', data: [] },
 ];
 
 const initialState: BuildStore = {
 	loading: false,
-	modules: MOCK as any,
+	modules: MOCK,
 	moduleAdd: {
 		experience: false,
 		education: false,
@@ -172,25 +177,36 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 			modules,
 		});
 	},
-	removeModuleData: (key: string, data: any) => {
-		const modules = get().modules.map((module) => {
-			if (module.key === key) {
-				return {
-					...module,
-					data: Array.isArray(MODULES.find((m) => m.key === key)?.data)
-						? [
-								...((module.data as Array<any>) || []).filter(
-									(d) => d?.$id !== data?.$id
-								),
-							]
-						: {
-								...module.data,
-								...data,
-							},
-				};
-			}
-			return module;
-		});
+	removeModuleData: (
+		key: string,
+		data: any,
+		options?: {
+			removeModule: boolean;
+		}
+	) => {
+		let modules = get().modules;
+		if (options?.removeModule && key) {
+			modules = modules.filter((module) => module.key !== key);
+		} else {
+			modules = get().modules.map((module) => {
+				if (module.key === key) {
+					return {
+						...module,
+						data: Array.isArray(MODULES.find((m) => m.key === key)?.data)
+							? [
+									...((module.data as Array<any>) || []).filter(
+										(d) => d?.$id !== data?.$id
+									),
+								]
+							: {
+									...module.data,
+									...data,
+								},
+					};
+				}
+				return module;
+			});
+		}
 
 		set({
 			modules,

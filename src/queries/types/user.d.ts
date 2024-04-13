@@ -1,12 +1,20 @@
 export interface UserData {
-	createdAt: string;
-	deleted: boolean;
-	email: string;
 	id: string;
 	name: string;
 	photo: string;
-	session?: unknown;
+	email: string;
 	suspended: boolean;
-	updatedAt: string;
+	deleted: boolean;
 	verified: boolean;
+	session: Record<string, unknown>;
+	onboardingChecklist: {
+		hasBuiltResume: boolean;
+		hasJobPreferences: boolean;
+		hasUploadedResume: boolean;
+		hasConnectedAccount: boolean;
+	};
+	languages: string[];
+	links: Record<string, string>;
+	createdAt: string;
+	updatedAt: string;
 }
