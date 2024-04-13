@@ -1,27 +1,28 @@
 {
-  "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "strictNullChecks": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "downlevelIteration": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "noUncheckedIndexedAccess": false,
-    "paths": {
-      "@/*": ["./src/*"],
-      "@lib/*": ["./lib/*"],
-      "@labs/*": ["./labs/*"],
-      "@labs": ["./labs"]
-    }
-  },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "globals.d.ts"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noEmit": true,
+		"strictNullChecks": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"downlevelIteration": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
+		"noUncheckedIndexedAccess": false,
+		"paths": {
+			"@/*": ["./src/*"],
+			"@lib/*": ["./lib/*"],
+			"@labs/*": ["./labs/*"],
+			"@labs": ["./labs"],
+			"@public/*": ["./public/*"]
+		}
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "globals.d.ts"],
+	"exclude": ["node_modules"]
 }
