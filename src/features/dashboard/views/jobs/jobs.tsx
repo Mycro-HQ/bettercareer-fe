@@ -11,15 +11,13 @@ import useWindowDimensions from './hooks/useWindowDimensions';
 import { Modal } from '@labs/components/modal';
 import BriefCaseIcon from '@public/images/dashboard/Briefcase.svg';
 import DribbbleLogo from '@public/images/dashboard/Company_Logo.svg';
-import classNames from 'classnames';
-import styles from './jobs.module.scss';
 
 function Header() {
 	return (
 		<Flex
 			alignItems="center"
 			justifyContent="space-between"
-			className="flex-col lg:flex-row mb-4 md:mb-16"
+			className="flex-col min-[1100px]:flex-row mb-4 md:mb-16"
 		>
 			<Flex.Column gap={8}>
 				<Heading.h3
