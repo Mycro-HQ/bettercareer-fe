@@ -33,7 +33,7 @@ export function JobSearchForm() {
 			<Flex
 				alignItems="center"
 				gap={8}
-				className="bg-white mb-4 rounded-2xl pl-4 w-full"
+				className="bg-white rounded-2xl pl-4 md:pl-0 w-full"
 			>
 				{icon}
 				<input
@@ -56,7 +56,10 @@ export function JobSearchForm() {
 
 	return (
 		<form action="" className={styles.JobSearchForm}>
-			<Flex alignItems="center" className=" flex-col md:flex-row mb-4 md:mb-0">
+			<Flex
+				alignItems="center"
+				className="gap-y-4 flex-col md:flex-row mb-4 md:mb-0"
+			>
 				<JobSearchFormItem
 					icon={<SearchIcon />}
 					name="search"
