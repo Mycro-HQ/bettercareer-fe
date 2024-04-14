@@ -9,7 +9,10 @@ export function JobFilter() {
 			justifyContent="space-between"
 			className="items-center lg:items-start mb-4 md:mb-8 flex-col md:flex-row"
 		>
-			<div className="flex gap-x-4 md:gap-x-6 lg:gap-x-12 flex-col sm:flex-row mb-4 md:mb-0 py-2 items-center">
+			<Flex
+				alignItems="center"
+				className="gap-x-4 md:gap-x-6 lg:gap-x-12 flex-col sm:flex-row mb-4 md:mb-0 py-2"
+			>
 				<Text
 					weight={600}
 					as="span"
@@ -49,7 +52,7 @@ export function JobFilter() {
 				>
 					Sponsored Jobs
 				</Text>
-			</div>
+			</Flex>
 			<JobFilterDropDown />
 		</Flex>
 	);
