@@ -19,3 +19,22 @@
 	border: 1px solid #f3f4f4;
 	padding: rem(6px) rem(16px);
 }
+
+.JobSearchForm {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	background-color: transparent;
+	column-gap: rem(16px);
+	border-radius: rem(16px);
+	padding-top: rem(10px);
+	padding-bottom: rem(10px);
+
+	@include media('md', 'min') {
+		flex-direction: row;
+		width: min-content;
+		background-color: white;
+		padding-inline: rem(24px);
+		max-width: rem(calc(768px - 24px));
+	}
+}
