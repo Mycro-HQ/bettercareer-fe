@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Flex, CallToAction, Heading } from '@labs/components';
+import { Text, Flex, CallToAction } from '@labs/components';
 import JobCard, { Separator } from './components/job-card';
 import { JobFilter } from './components/job-filter';
 import { JobSearchForm } from './components/job-search-form';
@@ -9,39 +9,7 @@ import {
 } from './components/job-description';
 import useWindowDimensions from './hooks/useWindowDimensions';
 import { Modal } from '@labs/components/modal';
-import BriefCaseIcon from '@public/images/dashboard/Briefcase.svg';
 import DribbbleLogo from '@public/images/dashboard/Company_Logo.svg';
-
-function Header() {
-	return (
-		<Flex
-			alignItems="center"
-			justifyContent="space-between"
-			className="flex-col min-[1100px]:flex-row mb-4 md:mb-16"
-		>
-			<Flex.Column gap={8}>
-				<Heading.h3
-					weight={600}
-					animate="slide"
-					fontSize="28px"
-					className="inline-flex items-center gap-x-2"
-				>
-					Search for Jobs
-					<BriefCaseIcon width="24" height="24" />
-				</Heading.h3>
-
-				<Text
-					color="var(--text-gray)"
-					animate="fade"
-					className="mb-4 md:mb-[40px]"
-				>
-					See all open positions and dive into a fulfilling career
-				</Text>
-			</Flex.Column>
-			<JobSearchForm />
-		</Flex>
-	);
-}
 
 const JobData = [
 	{
@@ -204,7 +172,7 @@ export const Jobs = () => {
 
 	return (
 		<div>
-			<Header />
+			<JobSearchForm />
 			<JobFilter />
 			<Flex.Row gap={32} className="mb-10">
 				<Flex.Column gap={24} flex="6">

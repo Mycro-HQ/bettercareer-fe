@@ -2,59 +2,81 @@ import React from 'react';
 import { DropdownMenu } from '@radix-ui/themes';
 import { Text, Flex, CallToAction } from '@labs/components';
 import DownIcon from '@public/images/dashboard/Down.svg';
+import classNames from 'classnames';
+
+function JobFilterText({
+	text,
+	index,
+	selectedFilter,
+	setSelectedFilter,
+}: {
+	text: string;
+	index: number;
+	selectedFilter: number;
+	setSelectedFilter: (index: number) => void;
+}) {
+	const isSelected = selectedFilter === index;
+
+	return (
+		<button onClick={() => setSelectedFilter(index)}>
+			<Text
+				weight={500}
+				as="span"
+				className={classNames(
+					'rounded-[450px] py-2 px-4 cursor-pointer transition-colors duration-200',
+					isSelected
+						? 'bg-[#e7f3fe] text-[#1286f3] hover:bg-[#d9eafe]'
+						: 'text-[#878f97] hover:text-[#1388F2]'
+				)}
+			>
+				{text}
+			</Text>
+		</button>
+	);
+}
 
 export function JobFilter() {
+	const [selectedFilter, setSelectedFilter] = React.useState(0);
+
 	return (
-		<Flex
-			justifyContent="space-between"
-			className="items-center lg:items-start mb-4 md:mb-8 flex-col md:flex-row"
-		>
+		<div className="md:justify-between w-full flex items-center lg:items-start mb-4 md:mb-8 flex-col md:flex-row">
 			<Flex
 				alignItems="center"
-				className="gap-x-4 md:gap-x-6 lg:gap-x-12 flex-col sm:flex-row mb-4 md:mb-0 py-2"
+				className="gap-x-2 xl:gap-x-4 flex-col sm:flex-row mb-4 md:mb-0 py-2"
 			>
-				<Text
-					weight={600}
-					as="span"
-					className="cursor-pointer text-base md:text-lg"
-				>
-					All Jobs
-				</Text>
-				<Text
-					weight={600}
-					color="var(--text-gray)"
-					as="span"
-					className="cursor-pointer text-base md:text-lg"
-				>
-					Best Matches
-				</Text>
-				<Text
-					weight={600}
-					color="var(--text-gray)"
-					as="span"
-					className="cursor-pointer text-base md:text-lg"
-				>
-					Based on Resume
-				</Text>
-				<Text
-					weight={600}
-					color="var(--text-gray)"
-					as="span"
-					className="cursor-pointer text-base md:text-lg"
-				>
-					Posted this Week
-				</Text>
-				<Text
-					weight={600}
-					color="var(--text-gray)"
-					as="span"
-					className="cursor-pointer text-base md:text-lg"
-				>
-					Sponsored Jobs
-				</Text>
+				<JobFilterText
+					index={0}
+					text="All Jobs"
+					selectedFilter={selectedFilter}
+					setSelectedFilter={setSelectedFilter}
+				/>
+				<JobFilterText
+					index={1}
+					text="Best Matches"
+					selectedFilter={selectedFilter}
+					setSelectedFilter={setSelectedFilter}
+				/>
+				<JobFilterText
+					index={2}
+					text="Based on Resume"
+					selectedFilter={selectedFilter}
+					setSelectedFilter={setSelectedFilter}
+				/>
+				<JobFilterText
+					index={3}
+					text="Posted this Week"
+					selectedFilter={selectedFilter}
+					setSelectedFilter={setSelectedFilter}
+				/>
+				<JobFilterText
+					index={4}
+					text="Sponsored Jobs"
+					selectedFilter={selectedFilter}
+					setSelectedFilter={setSelectedFilter}
+				/>
 			</Flex>
 			<JobFilterDropDown />
-		</Flex>
+		</div>
 	);
 }
 

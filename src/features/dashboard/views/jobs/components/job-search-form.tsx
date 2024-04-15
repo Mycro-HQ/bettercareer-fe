@@ -55,42 +55,48 @@ export function JobSearchForm() {
 	}
 
 	return (
-		<form action="" className={styles.JobSearchForm}>
-			<Flex
-				alignItems="center"
-				className="gap-y-4 flex-col md:flex-row mb-4 md:mb-0"
-			>
-				<JobSearchFormItem
-					icon={<SearchIcon />}
-					name="search"
-					placeholder="Search jobs"
-					value={formData.search}
-				/>
-				<JobSearchSeparator />
-				<JobSearchFormItem
-					icon={<LocationIcon />}
-					name="location"
-					placeholder="Location"
-					value={formData.location}
-				/>
-				<JobSearchSeparator />
-				<JobSearchFormItem
-					icon={<JobTypeIcon />}
-					name="jobType"
-					placeholder="Job Type"
-					value={formData.jobType}
-				/>
-			</Flex>
-			<button
-				type="submit"
-				title="Search"
-				className="hidden md:block rounded-xl p-3 bg-[#1388F2]"
-			>
-				<SearchWhiteIcon />
-			</button>
-			<CallToAction type="submit" size="sm" className="md:!hidden self-center">
-				Search
-			</CallToAction>
-		</form>
+		<Flex className="w-full md:mb-[25%] lg:mb-[15%]" justifyContent="center">
+			<form action="" className={styles.JobSearchForm}>
+				<Flex
+					alignItems="center"
+					className="gap-y-4 flex-col md:flex-row mb-4 md:mb-0"
+				>
+					<JobSearchFormItem
+						icon={<SearchIcon />}
+						name="search"
+						placeholder="Search jobs"
+						value={formData.search}
+					/>
+					<JobSearchSeparator />
+					<JobSearchFormItem
+						icon={<LocationIcon />}
+						name="location"
+						placeholder="Location"
+						value={formData.location}
+					/>
+					<JobSearchSeparator />
+					<JobSearchFormItem
+						icon={<JobTypeIcon />}
+						name="jobType"
+						placeholder="Job Type"
+						value={formData.jobType}
+					/>
+				</Flex>
+				<button
+					type="submit"
+					title="Search"
+					className="hidden md:block rounded-xl p-3 bg-[#1388F2]"
+				>
+					<SearchWhiteIcon />
+				</button>
+				<CallToAction
+					type="submit"
+					size="sm"
+					className="md:!hidden self-center"
+				>
+					Search
+				</CallToAction>
+			</form>
+		</Flex>
 	);
 }
