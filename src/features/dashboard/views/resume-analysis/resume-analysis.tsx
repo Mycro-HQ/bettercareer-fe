@@ -108,7 +108,7 @@ export const ResumeAnalysis = () => {
 													className={styles.AccordionHeader}
 												>
 													<Text.p
-														fontSize="18px"
+														fontSize="20px"
 														weight={700}
 														casing="capitalize"
 													>
