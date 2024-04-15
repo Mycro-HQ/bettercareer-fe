@@ -35,6 +35,14 @@ function JobFilterText({
 	);
 }
 
+const filterOptions = [
+	{ index: 0, text: 'All Jobs' },
+	{ index: 1, text: 'Best Matches' },
+	{ index: 2, text: 'Based on Resume' },
+	{ index: 3, text: 'Posted this Week' },
+	{ index: 4, text: 'Sponsored Jobs' },
+];
+
 export function JobFilter() {
 	const [selectedFilter, setSelectedFilter] = React.useState(0);
 
@@ -44,36 +52,15 @@ export function JobFilter() {
 				alignItems="center"
 				className="gap-x-2 xl:gap-x-4 flex-col sm:flex-row mb-4 md:mb-0 py-2"
 			>
-				<JobFilterText
-					index={0}
-					text="All Jobs"
-					selectedFilter={selectedFilter}
-					setSelectedFilter={setSelectedFilter}
-				/>
-				<JobFilterText
-					index={1}
-					text="Best Matches"
-					selectedFilter={selectedFilter}
-					setSelectedFilter={setSelectedFilter}
-				/>
-				<JobFilterText
-					index={2}
-					text="Based on Resume"
-					selectedFilter={selectedFilter}
-					setSelectedFilter={setSelectedFilter}
-				/>
-				<JobFilterText
-					index={3}
-					text="Posted this Week"
-					selectedFilter={selectedFilter}
-					setSelectedFilter={setSelectedFilter}
-				/>
-				<JobFilterText
-					index={4}
-					text="Sponsored Jobs"
-					selectedFilter={selectedFilter}
-					setSelectedFilter={setSelectedFilter}
-				/>
+				{filterOptions.map(({ index, text }) => (
+					<JobFilterText
+						key={index}
+						index={index}
+						text={text}
+						selectedFilter={selectedFilter}
+						setSelectedFilter={setSelectedFilter}
+					/>
+				))}
 			</Flex>
 			<JobFilterDropDown />
 		</div>
