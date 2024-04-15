@@ -116,8 +116,8 @@ export const ResumeAnalysis = () => {
 													</Text.p>
 													<div
 														style={{
-															background: item.color + '20',
-															borderColor: item.color,
+															background: item.color + '10',
+															borderColor: item.color + '20',
 														}}
 														className={styles.ResumeScoreIndicator}
 													>
