@@ -1,10 +1,14 @@
 @use '@/styles/base/utils' as *;
 
 .JobCard {
-	padding: rem(32px);
+	padding: rem(24px);
 	border-radius: rem(16px);
 	border: 1.5px solid #e7e9eb;
 	background: #fff;
+
+	@include media('md', 'min') {
+		padding: rem(32px);
+	}
 
 	&:hover {
 		cursor: pointer;

@@ -60,7 +60,7 @@ export default function JobCard({
 					/>
 				</div>
 			</Flex>
-			<Flex.Row justifyContent="space-between" alignItems="center">
+			<Flex.Row justifyContent="space-between" alignItems="center" gap={4}>
 				<JobTagsContainer tags={tags} />
 				<Text
 					as="span"
@@ -68,7 +68,7 @@ export default function JobCard({
 					size="sm"
 					color="var(--text-gray)"
 					weight={500}
-					className="py-[6px] px-4 md:p-0"
+					className="mr-4 md:p-0"
 				>
 					{time}
 				</Text>
