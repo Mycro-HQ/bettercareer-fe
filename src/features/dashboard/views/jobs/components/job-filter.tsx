@@ -50,7 +50,7 @@ export function JobFilter() {
 		<div className="md:justify-between w-full flex items-center lg:items-start mb-4 md:mb-8 flex-col md:flex-row">
 			<Flex
 				alignItems="center"
-				className="gap-x-2 xl:gap-x-4 flex-col sm:flex-row mb-4 md:mb-0 py-2"
+				className="gap-2 xl:gap-x-4 flex-col sm:flex-row mb-4 md:mb-0 py-2"
 			>
 				{filterOptions.map(({ index, text }) => (
 					<JobFilterText
