@@ -9,9 +9,11 @@ import ArchiveIcon from '../../../../../public/images/dashboard/archive-02.svg';
 import RocketIcon from '../../../../../public/images/dashboard/rocket.svg';
 import DribbbleIcon from '../../../../../public/images/dashboard/Dribbble.svg';
 import OptionsIcon from '../../../../../public/images/dashboard/more-horizontal.svg';
+import DownIcon from '../../../../../public/images/dashboard/Down.svg';
 
 import { generateUUID } from '@labs/utils/misc';
 import { Flex, Heading, Text } from '@labs/components';
+import { Modal } from '@labs/components/modal';
 
 import type {
 	ApplicationOptions,
@@ -131,6 +133,57 @@ const applicationsOptions: ApplicationOptions[] = [
 	},
 ];
 
+const applicationData = {
+	key: 1,
+	companyLogo: <DribbbleIcon />,
+	jobTitle: 'Brand Designer 1',
+	companyName: 'Dribbble',
+	location: 'California',
+	salaryRange: '$120k - $140k',
+	tags: ['Remote', 'Internship', 'Full-Time'],
+	time: '1hr ago',
+	summary: `
+	Are you a creative visionary with a passion for crafting
+	exceptional brand experiences? Do you thrive in translating
+	brand strategies into captivating visuals that resonate with
+	audiences? If so, then we want you on our team! We're
+	searching for a talented Brand Designer to play a pivotal
+	role in shaping the visual identity of our brand. You'll be
+	the mastermind behind everything from our logo and brand
+	guidelines to marketing materials and social media graphics.
+	`,
+	isRequirementsText: false,
+	requirementsArray: [
+		`
+		Minimum 3+ years of experience in brand design or a
+		related field, with a strong portfolio showcasing your
+		design expertise and ability to create a cohesive
+		brand identity.
+		`,
+		`
+		Software mastery: Proficiency in Adobe Creative Suite
+		(Photoshop, Illustrator, InDesign) or similar design
+		software is essential.
+		`,
+		`
+		Eye for detail: A keen eye for detail and a commitment
+		to producing high-quality, pixel-perfect designs are
+		non-negotiable.
+		`,
+		`
+		Brand storytelling: You possess a deep understanding
+		of how visual design can shape brand perception and
+		effectively communicate brand messages.
+		`,
+		`
+		Team player with a twist: You thrive in a
+		collaborative environment while maintaining the
+		creative independence to bring fresh ideas to the
+		table.
+		`,
+	],
+};
+
 function ApplicationsGrid() {
 	const applicationStateDefaultData: ApplicationJob[] = [
 		{
@@ -224,10 +277,27 @@ function ApplicationsGrid() {
 		ApplicationJob[]
 	>(applicationStateDefaultData);
 
+	function handleCategoryChange(from: string, to: ApplicationState) {
+		const job = applicationState.find((job) => job.id === from);
+		if (job) {
+			setApplicationState((prev) => {
+				const newApplications = prev.filter(
+					(application) => application.id !== from
+				);
+				const oldApplicationJobString = job.id.split('_')[1];
+				job.id = to + '_' + oldApplicationJobString;
+				return [...newApplications, job];
+			});
+		}
+	}
+
 	function ApplicationsGridColumn({ icon, id }: { icon: any; id: string }) {
 		const customApplicationOptions = applicationsOptions.filter(
 			(option) => option.id !== id
 		);
+		const selectedApplicationOption = applicationsOptions.filter(
+			(option) => option.id === id
+		)[0];
 		const applicationsFiltered = applicationState.filter((application) =>
 			application.id.startsWith(id)
 		);
@@ -261,8 +331,17 @@ function ApplicationsGrid() {
 		jobDetails: ApplicationJob;
 		options: ApplicationOptions[];
 	}) {
+		const [isModalOpen, setIsModalOpen] = React.useState(false);
+
 		return (
-			<Flex gap={10} className={styles.applicationGridItem}>
+			<Flex
+				gap={10}
+				className={styles.applicationGridItem}
+				onClick={() => setIsModalOpen(true)}
+			>
+				<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)}>
+					<ApplicationModal options={options} id={jobDetails.id} />
+				</Modal>
 				<div>{jobDetails.icon}</div>
 				<div className="mr-2">
 					<Text as="p">{jobDetails.title}</Text>
@@ -281,27 +360,101 @@ function ApplicationsGrid() {
 		);
 	}
 
+	function ApplicationModal({
+		options,
+		id,
+	}: {
+		options: ApplicationOptions[];
+		id: string;
+	}) {
+		return (
+			<Flex.Column gap={40}>
+				<Flex.Row justifyContent="space-between">
+					<Flex.Row gap={18}>
+						{applicationData.companyLogo}
+						<Flex.Column gap={4} className="font-[Figtree]">
+							<Text as="span" weight={600} fontSize="18px" inheritFont>
+								{applicationData.jobTitle}
+							</Text>
+							<Text
+								color="var(--text-gray)"
+								weight={500}
+								lineHeight="24px"
+								inheritFont
+							>
+								{applicationData.companyName} . {applicationData.location} .{' '}
+								{applicationData.salaryRange}
+							</Text>
+						</Flex.Column>
+					</Flex.Row>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							<Flex.Row gap={8} className="cursor-pointer mt-2 sm:mt-0 my-2">
+								<Text>Applied</Text>
+								<DownIcon />
+							</Flex.Row>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content
+							className={classNames('z-[1200]', styles.optionsDropdown)}
+						>
+							{options.map((data) => (
+								<DropdownMenu.Item
+									key={data.id}
+									// onClick={() => handleCategoryChange(id, data.id)}
+									className={classNames('group', styles.optionsDropdownItem)}
+								>
+									<div className="group-hover:[&>svg>path]:stroke-white">
+										{data.icon}
+									</div>
+									<Text
+										as="span"
+										color="#273643"
+										size="sm"
+										weight={500}
+										className="group-hover:text-white"
+									>
+										Move to {data.id}
+									</Text>
+								</DropdownMenu.Item>
+							))}
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				</Flex.Row>
+				<Flex.Column gap={32}>
+					<div>
+						<Text as="span" weight={600} className="mb-3">
+							Summary
+						</Text>
+						<div className="text-sm font-medium leading-5 text-[#273643]">
+							{applicationData.summary}
+						</div>
+					</div>
+					<div>
+						<Text as="span" weight={600} className="mb-3">
+							Requirements
+						</Text>
+						<div className="text-sm font-medium leading-5 text-[#273643]">
+							<ul className="list-disc list-inside">
+								{applicationData.requirementsArray.map((req) => (
+									<li key={req.slice(0, 10)} className="mb-4">
+										{req}
+									</li>
+								))}
+							</ul>
+						</div>
+					</div>
+				</Flex.Column>
+			</Flex.Column>
+		);
+	}
+
 	function OptionsDropDown({
 		id,
 		options,
 	}: {
 		id: string;
-		options: typeof applicationsOptions;
+		options: ApplicationOptions[];
 	}) {
-		function handleCategoryChange(from: string, to: ApplicationState) {
-			const job = applicationState.find((job) => job.id === from);
-			if (job) {
-				setApplicationState((prev) => {
-					const newApplications = prev.filter(
-						(application) => application.id !== from
-					);
-					const oldApplicationJobString = job.id.split('_')[1];
-					job.id = to + '_' + oldApplicationJobString;
-					return [...newApplications, job];
-				});
-			}
-		}
-
 		return (
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
