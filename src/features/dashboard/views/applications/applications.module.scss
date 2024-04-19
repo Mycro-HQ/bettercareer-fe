@@ -33,7 +33,7 @@
 	}
 }
 
-@include media('md', 'max') {
+@include media('lg', 'max') {
 	.applicationGridItem {
 		> div:first-of-type > svg {
 			width: 64px;
