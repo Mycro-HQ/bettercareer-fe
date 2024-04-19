@@ -295,9 +295,6 @@ function ApplicationsGrid() {
 		const customApplicationOptions = applicationsOptions.filter(
 			(option) => option.id !== id
 		);
-		const selectedApplicationOption = applicationsOptions.filter(
-			(option) => option.id === id
-		)[0];
 		const applicationsFiltered = applicationState.filter((application) =>
 			application.id.startsWith(id)
 		);
@@ -333,13 +330,17 @@ function ApplicationsGrid() {
 	}) {
 		const [isModalOpen, setIsModalOpen] = React.useState(false);
 
+		function handleModalClose() {
+			setIsModalOpen(false);
+		}
+
 		return (
 			<Flex
 				gap={10}
 				className={styles.applicationGridItem}
 				onClick={() => setIsModalOpen(true)}
 			>
-				<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)}>
+				<Modal in={isModalOpen} onClose={handleModalClose}>
 					<ApplicationModal options={options} id={jobDetails.id} />
 				</Modal>
 				<div>{jobDetails.icon}</div>
@@ -367,6 +368,7 @@ function ApplicationsGrid() {
 		options: ApplicationOptions[];
 		id: string;
 	}) {
+		const currentApplicationCategory = id.split('_')[0];
 		return (
 			<Flex.Column gap={40}>
 				<Flex.Row justifyContent="space-between">
@@ -389,8 +391,11 @@ function ApplicationsGrid() {
 					</Flex.Row>
 					<DropdownMenu.Root>
 						<DropdownMenu.Trigger>
-							<Flex.Row gap={8} className="cursor-pointer mt-2 sm:mt-0 my-2">
-								<Text>Applied</Text>
+							<Flex.Row
+								gap={8}
+								className="items-center cursor-pointer mt-2 sm:mt-0 my-2"
+							>
+								<Text>{currentApplicationCategory}</Text>
 								<DownIcon />
 							</Flex.Row>
 						</DropdownMenu.Trigger>
@@ -400,7 +405,7 @@ function ApplicationsGrid() {
 							{options.map((data) => (
 								<DropdownMenu.Item
 									key={data.id}
-									// onClick={() => handleCategoryChange(id, data.id)}
+									onClick={() => handleCategoryChange(id, data.id)}
 									className={classNames('group', styles.optionsDropdownItem)}
 								>
 									<div className="group-hover:[&>svg>path]:stroke-white">
