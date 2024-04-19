@@ -45,7 +45,7 @@ function Header() {
 					{/* <Briefcase width="24" height="24" /> */}
 				</Flex>
 
-				<Text color="var(--text-gray)" animate="fade" className="mb-[40px]">
+				<Text color="var(--text-gray)" animate="fade" className="mb-9">
 					Start your application journey here - explore, apply, and get started
 				</Text>
 			</Flex.Column>
@@ -244,13 +244,17 @@ function ApplicationsGrid() {
 		options: typeof applicationsOptions;
 	}) {
 		return (
-			<Flex gap={10} className={styles.applicationsGridItem}>
+			<Flex gap={10} className={styles.applicationGridItem}>
 				<div>{jobDetails.icon}</div>
 				<div className="mr-2">
-					<Text as="p" id="AGITitle">
-						{jobDetails.title}
-					</Text>
-					<Text as="span" color="var(--text-gray)" size="xs" weight={500}>
+					<Text as="p">{jobDetails.title}</Text>
+					<Text
+						as="span"
+						className={styles.aGIsubTitle}
+						color="var(--text-gray)"
+						size="xs"
+						weight={500}
+					>
 						{jobDetails.company} . {jobDetails.location} . {jobDetails.workMode}
 					</Text>
 				</div>
@@ -283,7 +287,7 @@ function ApplicationsGrid() {
 		return (
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
-					<div className="cursor-pointer">
+					<div className="cursor-pointer mt-2 sm:mt-0">
 						<OptionsIcon />
 					</div>
 				</DropdownMenu.Trigger>
@@ -297,7 +301,13 @@ function ApplicationsGrid() {
 							<div className="group-hover:[&>svg>path]:stroke-white">
 								{data.icon}
 							</div>
-							<Text as="span" color="#273643" size="sm" weight={500}>
+							<Text
+								as="span"
+								color="#273643"
+								size="sm"
+								weight={500}
+								className="group-hover:text-white"
+							>
 								Move to {data.id}
 							</Text>
 						</DropdownMenu.Item>
