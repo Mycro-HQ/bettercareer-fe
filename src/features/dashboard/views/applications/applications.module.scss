@@ -27,13 +27,26 @@
 	border: 1px solid #f9fafa;
 	background-color: #fcfcfc;
 
-	#AGITitle {
-		font-size: rem(12px);
+	p {
+		font-size: rem(14px);
 		font-weight: 600;
+	}
+}
 
-		// @include media('xl', 'max') {
-		// 	max-width: 100%;
-		// }
+@include media('md', 'max') {
+	.applicationGridItem {
+		> div:first-of-type > svg {
+			width: 64px;
+			height: 64px;
+		}
+
+		p {
+			font-size: rem(16px);
+		}
+
+		span.aGIsubTitle {
+			font-size: var(--font-accent);
+		}
 	}
 }
 
