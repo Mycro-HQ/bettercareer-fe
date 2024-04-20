@@ -108,7 +108,7 @@ export const ResumeAnalysis = () => {
 													className={styles.AccordionHeader}
 												>
 													<Text.p
-														fontSize="18px"
+														fontSize="20px"
 														weight={700}
 														casing="capitalize"
 													>
@@ -116,8 +116,8 @@ export const ResumeAnalysis = () => {
 													</Text.p>
 													<div
 														style={{
-															background: item.color + '20',
-															borderColor: item.color,
+															background: item.color + '10',
+															borderColor: item.color + '20',
 														}}
 														className={styles.ResumeScoreIndicator}
 													>
