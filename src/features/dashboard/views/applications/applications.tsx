@@ -6,8 +6,14 @@ import BriefcaseIcon from '@labs/icons/dashboard/briefcase.svg';
 import { Flex, Heading, Text } from '@labs/components';
 
 import ApplicationsGridColumn from './components/ApplicationGridColumn';
-import { applicationsOptions } from './data';
+import { applicationsOptions, applicationStateDefaultData } from './data';
+import { ApplicationJob, ApplicationContext } from './types';
 import styles from './applications.module.scss';
+
+export const ApplicationStateContext = React.createContext<ApplicationContext>({
+	applicationState: applicationStateDefaultData,
+	setApplicationState: () => {},
+});
 
 export const Applications = () => {
 	return (
@@ -73,20 +79,32 @@ function Header() {
 }
 
 function ApplicationsGrid() {
+	const [applicationState, setApplicationState] = React.useState<
+		ApplicationJob[]
+	>(applicationStateDefaultData);
+
 	return (
-		<div
-			className={classNames(
-				styles.applicationsGrid,
-				'-top-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:min-h-screen'
-			)}
+		<ApplicationStateContext.Provider
+			value={{
+				applicationState,
+				setApplicationState,
+			}}
 		>
-			{applicationsOptions.map((option) => (
-				<ApplicationsGridColumn
-					key={option.id}
-					icon={option.icon}
-					id={option.id}
-				/>
-			))}
-		</div>
+			<div
+				className={classNames(
+					styles.applicationsGrid,
+					'-top-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:min-h-screen'
+				)}
+			>
+				{applicationsOptions.map((option) => (
+					<ApplicationsGridColumn
+						key={option.id}
+						icon={option.icon}
+						id={option.id}
+						applications={applicationState}
+					/>
+				))}
+			</div>
+		</ApplicationStateContext.Provider>
 	);
 }

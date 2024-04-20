@@ -17,3 +17,8 @@ export type ApplicationOptions = {
 	id: ApplicationState;
 	icon: React.JSX.Element;
 };
+
+export type ApplicationContext = {
+	applicationState: ApplicationJob[];
+	setApplicationState: React.Dispatch<React.SetStateAction<ApplicationJob[]>>;
+};
