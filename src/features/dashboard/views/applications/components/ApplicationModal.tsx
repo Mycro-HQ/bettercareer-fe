@@ -100,8 +100,8 @@ export default function ApplicationModal({
 					<div className="text-sm font-medium leading-5 text-[#273643]">
 						<ul className="list-disc list-inside">
 							{applicationData.requirementsArray.map((req) => (
-								<li key={req.slice(0, 10)} className="mb-4">
-									{req}
+								<li key={req.key} className="mb-4">
+									{req.requirement}
 								</li>
 							))}
 						</ul>
