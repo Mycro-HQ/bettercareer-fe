@@ -18,42 +18,6 @@ export function JobSearchForm() {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	}
 
-	function JobSearchFormItem({
-		icon,
-		name,
-		placeholder,
-		value,
-	}: {
-		icon: any;
-		name: 'search' | 'location' | 'jobType';
-		placeholder: string;
-		value: string;
-	}) {
-		return (
-			<Flex
-				alignItems="center"
-				gap={8}
-				className="bg-white rounded-2xl pl-4 md:pl-0 w-full"
-			>
-				{icon}
-				<input
-					name={name}
-					type="text"
-					placeholder={placeholder}
-					value={value}
-					onChange={handleChange}
-					className="outline-none rounded-tr-2xl rounded-br-2xl py-[14px]"
-				/>
-			</Flex>
-		);
-	}
-
-	function JobSearchSeparator() {
-		return (
-			<div className="hidden md:block text-[#CFD2D5] mr-3 scale-y-150">|</div>
-		);
-	}
-
 	return (
 		<Flex className="w-full md:mb-[25%] lg:mb-[15%]" justifyContent="center">
 			<form action="" className={styles.JobSearchForm}>
@@ -66,6 +30,7 @@ export function JobSearchForm() {
 						name="search"
 						placeholder="Search jobs"
 						value={formData.search}
+						handleChange={handleChange}
 					/>
 					<JobSearchSeparator />
 					<JobSearchFormItem
@@ -73,6 +38,7 @@ export function JobSearchForm() {
 						name="location"
 						placeholder="Location"
 						value={formData.location}
+						handleChange={handleChange}
 					/>
 					<JobSearchSeparator />
 					<JobSearchFormItem
@@ -80,6 +46,7 @@ export function JobSearchForm() {
 						name="jobType"
 						placeholder="Job Type"
 						value={formData.jobType}
+						handleChange={handleChange}
 					/>
 				</Flex>
 				<button
@@ -98,5 +65,43 @@ export function JobSearchForm() {
 				</CallToAction>
 			</form>
 		</Flex>
+	);
+}
+
+function JobSearchFormItem({
+	icon,
+	name,
+	placeholder,
+	value,
+	handleChange,
+}: {
+	icon: any;
+	name: 'search' | 'location' | 'jobType';
+	placeholder: string;
+	value: string;
+	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
+	return (
+		<Flex
+			alignItems="center"
+			gap={8}
+			className="bg-white rounded-2xl pl-4 md:pl-0 w-full"
+		>
+			{icon}
+			<input
+				name={name}
+				type="text"
+				placeholder={placeholder}
+				value={value}
+				onChange={handleChange}
+				className="outline-none rounded-tr-2xl rounded-br-2xl py-[14px]"
+			/>
+		</Flex>
+	);
+}
+
+function JobSearchSeparator() {
+	return (
+		<div className="hidden md:block text-[#CFD2D5] mr-3 scale-y-150">|</div>
 	);
 }
