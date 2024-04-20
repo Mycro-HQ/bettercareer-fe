@@ -33,33 +33,48 @@ const JobData = [
 		`,
 		isRequirementsText: false,
 		requirementsArray: [
-			`
-			Minimum 3+ years of experience in brand design or a
-			related field, with a strong portfolio showcasing your
-			design expertise and ability to create a cohesive
-			brand identity.
-			`,
-			`
-			Software mastery: Proficiency in Adobe Creative Suite
-			(Photoshop, Illustrator, InDesign) or similar design
-			software is essential.
-			`,
-			`
-			Eye for detail: A keen eye for detail and a commitment
-			to producing high-quality, pixel-perfect designs are
-			non-negotiable.
-			`,
-			`
-			Brand storytelling: You possess a deep understanding
-			of how visual design can shape brand perception and
-      effectively communicate brand messages.
-			`,
-			`
-			Team player with a twist: You thrive in a
-			collaborative environment while maintaining the
-			creative independence to bring fresh ideas to the
-			table.
-			`,
+			{
+				key: 0,
+				requirement: `
+				Minimum 3+ years of experience in brand design or a
+				related field, with a strong portfolio showcasing your
+				design expertise and ability to create a cohesive
+				brand identity.
+				`,
+			},
+			{
+				key: 1,
+				requirement: `
+				Software mastery: Proficiency in Adobe Creative Suite
+				(Photoshop, Illustrator, InDesign) or similar design
+				software is essential.
+				`,
+			},
+			{
+				key: 2,
+				requirement: `
+				Eye for detail: A keen eye for detail and a commitment
+				to producing high-quality, pixel-perfect designs are
+				non-negotiable.
+				`,
+			},
+			{
+				key: 3,
+				requirement: `
+				Brand storytelling: You possess a deep understanding
+				of how visual design can shape brand perception and
+				effectively communicate brand messages.
+				`,
+			},
+			{
+				key: 4,
+				requirement: `
+				Team player with a twist: You thrive in a
+				collaborative environment while maintaining the
+				creative independence to bring fresh ideas to the
+				table.
+				`,
+			},
 		],
 	},
 	{
@@ -83,33 +98,48 @@ const JobData = [
 		`,
 		isRequirementsText: false,
 		requirementsArray: [
-			`
-			Minimum 3+ years of experience in brand design or a
-			related field, with a strong portfolio showcasing your
-			design expertise and ability to create a cohesive
-			brand identity.
-			`,
-			`
-			Software mastery: Proficiency in Adobe Creative Suite
-			(Photoshop, Illustrator, InDesign) or similar design
-			software is essential.
-			`,
-			`
-			Eye for detail: A keen eye for detail and a commitment
-			to producing high-quality, pixel-perfect designs are
-			non-negotiable.
-			`,
-			`
-			Brand storytelling: You possess a deep understanding
-			of how visual design can shape brand perception and
-      effectively communicate brand messages.
-			`,
-			`
-			Team player with a twist: You thrive in a
-			collaborative environment while maintaining the
-			creative independence to bring fresh ideas to the
-			table.
-			`,
+			{
+				key: 0,
+				requirement: `
+				Minimum 3+ years of experience in brand design or a
+				related field, with a strong portfolio showcasing your
+				design expertise and ability to create a cohesive
+				brand identity.
+				`,
+			},
+			{
+				key: 1,
+				requirement: `
+				Software mastery: Proficiency in Adobe Creative Suite
+				(Photoshop, Illustrator, InDesign) or similar design
+				software is essential.
+				`,
+			},
+			{
+				key: 2,
+				requirement: `
+				Eye for detail: A keen eye for detail and a commitment
+				to producing high-quality, pixel-perfect designs are
+				non-negotiable.
+				`,
+			},
+			{
+				key: 3,
+				requirement: `
+				Brand storytelling: You possess a deep understanding
+				of how visual design can shape brand perception and
+				effectively communicate brand messages.
+				`,
+			},
+			{
+				key: 4,
+				requirement: `
+				Team player with a twist: You thrive in a
+				collaborative environment while maintaining the
+				creative independence to bring fresh ideas to the
+				table.
+				`,
+			},
 		],
 	},
 	{
@@ -133,33 +163,48 @@ const JobData = [
 		`,
 		isRequirementsText: false,
 		requirementsArray: [
-			`
-			Minimum 3+ years of experience in brand design or a
-			related field, with a strong portfolio showcasing your
-			design expertise and ability to create a cohesive
-			brand identity.
-			`,
-			`
-			Software mastery: Proficiency in Adobe Creative Suite
-			(Photoshop, Illustrator, InDesign) or similar design
-			software is essential.
-			`,
-			`
-			Eye for detail: A keen eye for detail and a commitment
-			to producing high-quality, pixel-perfect designs are
-			non-negotiable.
-			`,
-			`
-			Brand storytelling: You possess a deep understanding
-			of how visual design can shape brand perception and
-      effectively communicate brand messages.
-			`,
-			`
-			Team player with a twist: You thrive in a
-			collaborative environment while maintaining the
-			creative independence to bring fresh ideas to the
-			table.
-			`,
+			{
+				key: 0,
+				requirement: `
+				Minimum 3+ years of experience in brand design or a
+				related field, with a strong portfolio showcasing your
+				design expertise and ability to create a cohesive
+				brand identity.
+				`,
+			},
+			{
+				key: 1,
+				requirement: `
+				Software mastery: Proficiency in Adobe Creative Suite
+				(Photoshop, Illustrator, InDesign) or similar design
+				software is essential.
+				`,
+			},
+			{
+				key: 2,
+				requirement: `
+				Eye for detail: A keen eye for detail and a commitment
+				to producing high-quality, pixel-perfect designs are
+				non-negotiable.
+				`,
+			},
+			{
+				key: 3,
+				requirement: `
+				Brand storytelling: You possess a deep understanding
+				of how visual design can shape brand perception and
+				effectively communicate brand messages.
+				`,
+			},
+			{
+				key: 4,
+				requirement: `
+				Team player with a twist: You thrive in a
+				collaborative environment while maintaining the
+				creative independence to bring fresh ideas to the
+				table.
+				`,
+			},
 		],
 	},
 ];
@@ -178,7 +223,14 @@ export const Jobs = () => {
 				<Flex.Column gap={24} flex="6">
 					{JobData.map((job) => (
 						<JobCard
-							{...job}
+							key={job.key}
+							companyLogo={job.companyLogo}
+							jobTitle={job.jobTitle}
+							companyName={job.companyName}
+							location={job.location}
+							salaryRange={job.salaryRange}
+							tags={job.tags}
+							time={job.time}
 							onClick={() => {
 								setActiveJobCardIndex(job.key);
 							}}
@@ -272,22 +324,19 @@ function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
 			<Flex.Column gap={32}>
 				<div>
 					<JobDescriptionTitle title="Summary" />
-					<JobDescriptionBody children={JobData[index].summary} />
+					<JobDescriptionBody>{JobData[index].summary}</JobDescriptionBody>
 				</div>
 				<div>
 					<JobDescriptionTitle title="Requirements" />
-					<JobDescriptionBody
-						isChildText={JobData[index].isRequirementsText}
-						children={
-							<ul className="list-disc list-inside">
-								{JobData[index].requirementsArray.map((req) => (
-									<li key={req.slice(0, 10)} className="mb-4">
-										{req}
-									</li>
-								))}
-							</ul>
-						}
-					/>
+					<JobDescriptionBody isChildText={JobData[index].isRequirementsText}>
+						<ul className="list-disc list-inside">
+							{JobData[index].requirementsArray.map((req) => (
+								<li key={req.key} className="mb-4">
+									{req.requirement}
+								</li>
+							))}
+						</ul>
+					</JobDescriptionBody>
 				</div>
 			</Flex.Column>
 		</Flex.Column>
