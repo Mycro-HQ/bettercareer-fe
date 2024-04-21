@@ -55,6 +55,7 @@ const LoginWithLinkedin = (props: LoginWithLinkedinProps) => {
 
 		authWithLinkedin({
 			token: code as string,
+			uri: callbackUrl,
 			provider: 'linkedin',
 		});
 	}, []);

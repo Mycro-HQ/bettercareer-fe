@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { CallToAction, Flex, Text } from '@labs/components';
 import ZoomIn from '@labs/icons/dashboard/zoom-in.svg';
 import ZoomOut from '@labs/icons/dashboard/zoom-out.svg';
-import Settings from '@labs/icons/dashboard/settings.svg';
+import { useBuildStore } from '@/store/z-store/builder';
 
 import styles from './build-resume-preview.module.scss';
 import { TemplateModal } from './view/template-modal/template-modal';
-import { useBuildStore } from '@/store/z-store/builder';
 
 const Resume = dynamic(
 	() => import('./view/resume-blocks').then((md) => md.ResumeApp),
@@ -38,7 +37,7 @@ export const BuildResumePreview = ({ previewRef }: { previewRef: any }) => {
 		);
 
 		handleZoomChange(zoom);
-	}, []);
+	}, [previewRef]);
 
 	useEffect(() => {
 		window.addEventListener('resize', handleZoomToFit);
@@ -69,7 +68,7 @@ export const BuildResumePreview = ({ previewRef }: { previewRef: any }) => {
 						}}
 					/>
 				</div>
-				<div className={styles.PreviewSnarkBar}>
+				<div className={styles.PreviewSnarkBar} data-zoomed={zoomLevel >= 1}>
 					<Flex
 						justifyContent="space-between"
 						className={styles.PreviewSnarkBar__inner}
@@ -92,14 +91,19 @@ export const BuildResumePreview = ({ previewRef }: { previewRef: any }) => {
 								onClick={() => {
 									handleZoomChange(zoomLevel + 0.1);
 								}}
+								className="hidden xl:block"
 							>
 								<ZoomIn />
 							</button>
-							<Text size="sm"> {Math.round(zoomLevel * 100)}%</Text>
+							<Text size="sm" className="hidden xl:block">
+								{' '}
+								{Math.round(zoomLevel * 100)}%
+							</Text>
 							<button
 								onClick={() => {
 									handleZoomChange(zoomLevel - 0.1);
 								}}
+								className="hidden xl:block"
 							>
 								<ZoomOut />
 							</button>
@@ -109,9 +113,7 @@ export const BuildResumePreview = ({ previewRef }: { previewRef: any }) => {
 							<button onClick={handleZoomToFit}>
 								<Text size="sm">Fit</Text>
 							</button>
-							<button>
-								<Settings />
-							</button>
+							<span className="block xl:hidden" />
 						</Flex>
 					</Flex>
 				</div>

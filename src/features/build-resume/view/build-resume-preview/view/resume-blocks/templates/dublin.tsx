@@ -13,6 +13,7 @@ import { DocFlex } from '../components/doc-flex';
 import { isEmpty } from '@labs/utils';
 
 import { Dune } from './dune';
+import { MARGIN_MAP } from './utils';
 
 const renderElements = {
 	summary: Dune.Summary,
@@ -28,10 +29,11 @@ const config = {
 	title: 'Dublin',
 	details: 'Reminiscent of the Irish capital',
 	thumbnail: '/images/dashboard/resumes/dublin.png',
+	fontFamily: 'Playfair',
 	colors: {
-		primary: '#1C885B',
-		primary_text: '#fff',
+		primary: '#1d885b',
 	},
+	complimentaryColors: ['#c6342a', '#0F70C8', '#4D18B8', '#0F1F2E', '#1d885b'],
 };
 
 const DublinTemplate = ({
@@ -42,20 +44,22 @@ const DublinTemplate = ({
 	template: any;
 }) => {
 	const primaryColor = template.colors.primary;
+	const padding =
+		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
 				container: {
 					flexDirection: 'column',
 					color: '#0F1F2E',
-					fontFamily: 'Playfair',
+					fontFamily: template.fontFamily,
 				},
 				link: {
 					color: 'inherit',
 					textDecoration: 'underline',
 				},
 			}),
-		[]
+		[template.fontFamily]
 	);
 
 	const heading = getData('heading', modules);
@@ -67,13 +71,17 @@ const DublinTemplate = ({
 					<DocFlex
 						direction="row"
 						justifyContent="space-between"
-						backgroundColor={primaryColor}
-						padding={24}
-						color={template.colors.primary_text}
+						alignItems="flex-end"
+						backgroundColor={primaryColor + '12'}
+						border={`0.5px solid #efefef`}
+						padding={padding}
+						margin={8}
+						marginBottom={0}
+						borderRadius={10}
+						color={primaryColor}
 					>
 						<DocFlex
 							direction="column"
-							gap={2}
 							alignItems="flex-start"
 							textAlign="left"
 						>
@@ -92,7 +100,7 @@ const DublinTemplate = ({
 												href={getHref(subheading.value)}
 												style={{
 													...styles.link,
-													color: template.colors.primary_text,
+													color: primaryColor,
 												}}
 											>
 												{extractNameFromLink(subheading.value)} {'\n'}
@@ -104,7 +112,11 @@ const DublinTemplate = ({
 					</DocFlex>
 				) : null}
 
-				<DocFlex direction="column" padding={24} gap={12}>
+				<DocFlex
+					direction="column"
+					padding={padding}
+					gap={Math.max(padding - 14, 12)}
+				>
 					{generateDataByKey(
 						[
 							'summary',

@@ -76,7 +76,6 @@ export default function CustomEditor({
 	name,
 	toolbar = [
 		'bold',
-		'italic',
 		'underline',
 		'strikeThrough',
 		'link',
@@ -186,8 +185,14 @@ export default function CustomEditor({
 						size="sm"
 						outline
 						onClick={(e) => {
+							const text =
+								randomText[Math.floor(Math.random() * randomText.length)];
+
 							e.preventDefault();
 							onChange({
+								currentTarget: {
+									outerText: text?.replace(/<[^>]*>?/gm, ''),
+								},
 								target: {
 									value:
 										randomText[Math.floor(Math.random() * randomText.length)],
@@ -224,24 +229,24 @@ const refinedSummary = [
 ];
 
 const refinedExperienceDescriptions = [
-	'Led a sales team to achieve a 150% increase in sales targets through strategic planning and exceptional leadership, resulting in significant market share growth.',
-	'Implemented innovative customer service strategies that enhanced customer satisfaction rates by 40%, driving repeat business and loyalty.',
-	'Developed and launched a multi-platform mobile application, leading to a 30% increase in user engagement and opening new revenue streams.',
-	'Directed patient care for geriatric patients, achieving a 20% improvement in patient health outcomes through personalized care plans and dedicated follow-up.',
-	'Executed a digital marketing campaign that increased brand awareness by 50% and sales by 35% through targeted social media ads and content marketing.',
-	'Conducted comprehensive market analysis that informed a pivotal shift in investment strategy, yielding a 25% increase in portfolio performance.',
+	'<ul><li>Led a sales team to achieve a 150% increase in sales targets through strategic planning and exceptional leadership, resulting in significant market share growth.</li></ul>',
+	'<ul><li>Implemented innovative customer service strategies that enhanced customer satisfaction rates by 40%, driving repeat business and loyalty.</li></ul>',
+	'<ul><li>Developed and launched a multi-platform mobile application, leading to a 30% increase in user engagement and opening new revenue streams.</li></ul>',
+	'<ul><li>Directed patient care for geriatric patients, achieving a 20% improvement in patient health outcomes through personalized care plans and dedicated follow-up.</li></ul>',
+	'<ul><li>Executed a digital marketing campaign that increased brand awareness by 50% and sales by 35% through targeted social media ads and content marketing.</li></ul>',
+	'<ul><li>Conducted comprehensive market analysis that informed a pivotal shift in investment strategy, yielding a 25% increase in portfolio performance.</li></ul>',
 	"Designed a corporate identity package that revitalized a brand's image, resulting in a 60% increase in customer engagement and a 40% increase in sales.",
-	'Revamped an outdated curriculum with innovative teaching methods, leading to a 15% improvement in student test scores and a 25% increase in student engagement.',
-	'Led a research project on sustainable urban development, influencing local government policies and contributing to a 10% reduction in urban carbon emissions.',
-	'Overhauled the HR recruitment process, reducing hiring times by 30% and improving employee retention rates by 25% through strategic talent acquisition and management.',
-	'Managed the design and construction of a major infrastructure project, completing it 20% under budget and 30% ahead of schedule, while ensuring compliance with all safety and quality standards.',
-	'Achieved top salesperson status for three consecutive years by consistently exceeding sales targets and cultivating key relationships with high-value clients.',
-	'Developed a cybersecurity protocol that reduced data breaches by 90%, safeguarding company and customer data and enhancing trust and compliance.',
-	'Uncovered a major political scandal through investigative reporting, leading to national policy changes and receiving prestigious journalism awards for ethical reporting.',
-	'Led a team in developing an award-winning software solution that streamlined operational processes, resulting in a 40% increase in efficiency and significant cost savings.',
-	'Implemented a cloud migration strategy for a Fortune 500 company, leading to a 50% reduction in IT costs and a 35% increase in operational agility.',
-	'Directed a grassroots environmental campaign that successfully lobbied for the passage of critical legislation aimed at protecting local waterways from industrial pollution.',
-	'Designed and implemented a comprehensive employee wellness program that led to a 30% decrease in sick days and a 20% increase in overall employee productivity.',
-	'Coordinated a major international conference on climate change, bringing together stakeholders from over 50 countries to collaborate on actionable solutions, significantly raising awareness and funding for climate initiatives.',
-	'Developed a financial model for a startup that secured $5 million in funding, enabling the launch of an innovative service that disrupted the traditional market dynamics.',
+	'<ul><li>Revamped an outdated curriculum with innovative teaching methods, leading to a 15% improvement in student test scores and a 25% increase in student engagement.</li></ul>',
+	'<ul><li>Led a research project on sustainable urban development, influencing local government policies and contributing to a 10% reduction in urban carbon emissions.</li></ul>',
+	'<ul><li>Overhauled the HR recruitment process, reducing hiring times by 30% and improving employee retention rates by 25% through strategic talent acquisition and management.</li></ul>',
+	'<ul><li>Managed the design and construction of a major infrastructure project, completing it 20% under budget and 30% ahead of schedule, while ensuring compliance with all safety and quality standards.</li></ul>',
+	'<ul><li>Achieved top salesperson status for three consecutive years by consistently exceeding sales targets and cultivating key relationships with high-value clients.</li></ul>',
+	'<ul><li>Developed a cybersecurity protocol that reduced data breaches by 90%, safeguarding company and customer data and enhancing trust and compliance.</li></ul>',
+	'<ul><li>Uncovered a major political scandal through investigative reporting, leading to national policy changes and receiving prestigious journalism awards for ethical reporting.</li></ul>',
+	'<ul><li>Led a team in developing an award-winning software solution that streamlined operational processes, resulting in a 40% increase in efficiency and significant cost savings.</li></ul>',
+	'<ul><li>Implemented a cloud migration strategy for a Fortune 500 company, leading to a 50% reduction in IT costs and a 35% increase in operational agility.</li></ul>',
+	'<ul><li>Directed a grassroots environmental campaign that successfully lobbied for the passage of critical legislation aimed at protecting local waterways from industrial pollution.</li></ul>',
+	'<ul><li>Designed and implemented a comprehensive employee wellness program that led to a 30% decrease in sick days and a 20% increase in overall employee productivity.</li></ul>',
+	'<ul><li>Coordinated a major international conference on climate change, bringing together stakeholders from over 50 countries to collaborate on actionable solutions, significantly raising awareness and funding for climate initiatives.</li></ul>',
+	'<ul><li>Developed a financial model for a startup that secured $5 million in funding, enabling the launch of an innovative service that disrupted the traditional market dynamics.</li></ul>',
 ];

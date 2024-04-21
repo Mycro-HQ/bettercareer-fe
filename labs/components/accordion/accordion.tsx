@@ -42,11 +42,11 @@ interface AccordionProps extends PropsWithChildren {
 	/**
 	 * leading icon
 	 */
-	leadingIcon?: React.ReactElement;
+	leadingIcon?: React.ReactElement | null;
 	/**
 	 * trailing icon
 	 */
-	trailingIcon?: React.ReactElement;
+	trailingIcon?: React.ReactElement | null;
 }
 
 const AccordionMain = memo<AccordionProps>(
@@ -95,21 +95,24 @@ const AccordionMain = memo<AccordionProps>(
 					])}
 					onClick={onToggle}
 				>
-					<Flex>
-						<span
-							className={styles.leadingIcon}
-							role="button"
-							tabIndex={0}
-							aria-label="accordion_icon"
-							onClick={(e) => {
-								e.stopPropagation();
-								if (!isOpen) {
-									onToggle();
-								}
-							}}
-						>
-							{leadingIcon}
-						</span>
+					<Flex fullWidth gap={8} alignItems="center">
+						{leadingIcon && (
+							<span
+								className={styles.leadingIcon}
+								role="button"
+								tabIndex={0}
+								aria-label="accordion_icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									if (!isOpen) {
+										onToggle();
+									}
+								}}
+							>
+								{leadingIcon}
+							</span>
+						)}
+
 						{typeof title === 'string' ? (
 							<Text.span weight={700}>{title}</Text.span>
 						) : (
@@ -138,17 +141,17 @@ const AccordionMain = memo<AccordionProps>(
 				<AnimatePresence mode="wait">
 					{isOpen && (
 						<motion.div
-							initial={{ opacity: 0, height: 0 }}
-							animate={{ opacity: 1, height: '100%' }}
+							initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
+							animate={{ opacity: 1, height: '100%', overflow: 'auto' }}
 							exit={{
 								opacity: 0,
 								height: 0,
 								overflow: 'hidden',
 								transition: {
-									opacity: { duration: 0.1 },
+									opacity: { duration: 0 },
 								},
 							}}
-							transition={{ duration: 0.15 }}
+							transition={{ duration: 0.1, ease: 'linear' }}
 							key={dataKey}
 							className={styles.AccordionBody}
 						>

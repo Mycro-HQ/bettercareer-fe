@@ -20,15 +20,16 @@ export const authApiCreator = createSmartApi({
 		}),
 
 		oAuth: builder.mutation<
-			{ email?: string; password?: string; provider?: string; token?: string },
+			{ uri?: string; password?: string; provider?: string; token?: string },
 			{ token: string; user: UserData; isNewUser?: boolean }
 		>({
 			key: 'oauth',
-			mutationFn: ({ provider, token }) => ({
+			mutationFn: ({ provider, token, uri }) => ({
 				url: `/oauth/${provider}`,
 				method: 'POST',
 				body: {
 					token,
+					redirectUri: uri,
 				},
 			}),
 		}),

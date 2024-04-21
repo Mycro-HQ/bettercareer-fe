@@ -16,6 +16,8 @@ export function middleware(req: NextRequest) {
 		return response;
 	};
 
+	return NextResponse.next();
+
 	// Redirect users to the home page if the app is in testing mode and they are not on the home page
 	if (process.env.NEXT_PUBLIC_TESTING === 'true' && url.pathname !== '/') {
 		url.pathname = '/';
@@ -30,7 +32,9 @@ export function middleware(req: NextRequest) {
 
 	// Redirect users without a token trying to access any dashboard/* path
 	if (!hasToken && url.pathname.startsWith('/dashboard')) {
-		url.pathname = '/login';
+		const oldPath = url.pathname;
+		url.pathname = `/login`;
+		url.search = `?redirectTo=${encodeURIComponent(oldPath)}`;
 		return redirectResponse(url);
 	}
 

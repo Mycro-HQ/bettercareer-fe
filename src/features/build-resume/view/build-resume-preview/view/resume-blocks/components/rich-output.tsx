@@ -8,9 +8,6 @@ const styles = StyleSheet.create({
 	bold: {
 		fontWeight: 'heavy',
 	},
-	italic: {
-		textTransform: 'uppercase',
-	},
 	underline: {
 		textDecoration: 'underline',
 	},
@@ -40,8 +37,6 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 				let style = {};
 				if (nodeName === 'B' || nodeName === 'STRONG') {
 					style = styles.bold;
-				} else if (nodeName === 'I' || nodeName === 'EM') {
-					style = styles.italic;
 				} else if (nodeName === 'U') {
 					style = styles.underline;
 				} else if (nodeName === 'S' || nodeName === 'STRIKE') {
@@ -72,13 +67,37 @@ export const parseHtmlToReactPdf = (htmlContent: string) => {
 					);
 				}
 
-				if (['LI'].includes(nodeName)) {
-					return (
-						<Text key={node.innerText} style={[style]}>
-							• {walkNodes(childNodes)}
-							{index < nodes.length - 1 ? '\n' : null}
-						</Text>
-					);
+				if (['OL'].includes(nodeName)) {
+					let _index = 0;
+
+					const listItems = Array.from(childNodes).filter(
+						(childNode: any) => childNode.nodeName === 'LI'
+					) as any[];
+
+					return listItems.map((listItem, $index) => {
+						_index += 1;
+						return (
+							<Text key={listItem.innerText} style={[style]}>
+								{index}. {walkNodes(listItem.childNodes)}
+								{$index === listItems.length - 1 ? null : '\n'}
+							</Text>
+						);
+					});
+				}
+
+				if (['UL'].includes(nodeName)) {
+					const listItems = Array.from(childNodes).filter(
+						(childNode: any) => childNode.nodeName === 'LI'
+					) as any[];
+
+					return listItems.map((listItem, $index) => {
+						return (
+							<Text key={listItem.innerText} style={[style]}>
+								• {walkNodes(listItem.childNodes)}
+								{$index === listItems.length - 1 ? null : '\n'}
+							</Text>
+						);
+					});
 				}
 
 				return (

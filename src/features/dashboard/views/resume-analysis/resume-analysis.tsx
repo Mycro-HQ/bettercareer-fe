@@ -3,6 +3,7 @@ import React from 'react';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import { ScoreCounter } from '@/components/score-counter';
 import { Accordion } from '@labs/components/accordion';
+import { Progress } from '@/components/misc/progress';
 
 import { ResumeAnalysisInfo } from '.';
 
@@ -41,7 +42,9 @@ export const ResumeAnalysis = () => {
 							className={styles.ResumeOverallScoreCounter}
 						>
 							<ScoreCounter className={styles.ResumeScoreSvg} score={score} />
-							<Heading.h5 weight={700}>{score}</Heading.h5>
+							<Heading.h5 fontSize="28px" weight={700}>
+								{score}
+							</Heading.h5>
 							<Text.p weight={500} size="sm">
 								Overall score
 							</Text.p>
@@ -57,7 +60,7 @@ export const ResumeAnalysis = () => {
 										<Text.p size="sm" casing="capitalize">
 											{item.label}
 										</Text.p>
-										<Text.p size="xs" weight={600} color={item.color}>
+										<Text.p size="sm" weight={600} color={item.color}>
 											{item.score}/100
 										</Text.p>
 									</Flex.Row>
@@ -65,18 +68,8 @@ export const ResumeAnalysis = () => {
 									 * Render progress bar to visualize score
 									 * Added 20 as alpha value to get the proper opacity for the background
 									 */}
-									<div
-										style={{ background: item.color + '20' }}
-										className={styles.ResumeScoreCounter}
-									>
-										<div
-											style={{
-												width: `${item.score}%`,
-												background: item.color,
-											}}
-											className={styles.ResumeScoreCounterValue}
-										/>
-									</div>
+
+									<Progress value={item.score} color={item.color} />
 								</div>
 							))}
 						</Flex.Column>
@@ -115,14 +108,17 @@ export const ResumeAnalysis = () => {
 													className={styles.AccordionHeader}
 												>
 													<Text.p
-														fontSize="18px"
+														fontSize="20px"
 														weight={700}
 														casing="capitalize"
 													>
 														{item.label}
 													</Text.p>
 													<div
-														style={{ background: item.color + '20' }}
+														style={{
+															background: item.color + '10',
+															borderColor: item.color + '20',
+														}}
 														className={styles.ResumeScoreIndicator}
 													>
 														<Text.p weight={600} color={item.color} size="sm">

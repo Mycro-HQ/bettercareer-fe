@@ -32,7 +32,7 @@ export interface FeedBackContext {
 	) => void | (() => void);
 	removeToast: (id: string) => void;
 	createDisclosure: (
-		options: Omit<ToastDefinition, 'id' | 'in'>
+		options: Omit<DisclosureDefinition, 'id' | 'in'>
 	) => void | Promise<unknown>;
 }
 

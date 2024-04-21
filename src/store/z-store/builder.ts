@@ -29,12 +29,16 @@ interface BuildStore {
 	resumeBlob: {
 		blob: string | null;
 		raw?: string | null;
+		score?: number;
 	};
+	showPreview: boolean;
 	setResumeBlob: (options?: {
 		blob?: string | null;
 		raw?: string | null;
+		score?: number;
 	}) => void;
 	setTemplate: (template: any) => void;
+	setShowPreview?: (showPreview: boolean) => void;
 }
 
 export const MODULES = [
@@ -56,12 +60,13 @@ const initialState: BuildStore = {
 		education: false,
 	},
 	template: {
-		...templatesConfig[5],
+		...templatesConfig[0],
 	},
 	resumeBlob: {
 		blob: null,
 		raw: null,
 	},
+	showPreview: false,
 	setLoading: () => {},
 	setModules: () => {},
 	setModuleData: () => {},
@@ -98,7 +103,10 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 	// },
 	setTemplate: (template: any) => {
 		set({
-			template,
+			template: {
+				...get().template,
+				...template,
+			},
 		});
 	},
 	setResumeBlob: (data: any) => {
@@ -107,6 +115,11 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 				...get().resumeBlob,
 				...data,
 			},
+		});
+	},
+	setShowPreview: (showPreview: boolean) => {
+		set({
+			showPreview,
 		});
 	},
 	setModuleAdd: (key: string, status: boolean) => {
