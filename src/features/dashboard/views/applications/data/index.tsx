@@ -5,7 +5,6 @@ import CheckMarkIcon from '@labs/icons/dashboard/checkmark-circle.svg';
 import ArchiveIcon from '@labs/icons/dashboard/archive.svg';
 import RocketIcon from '@labs/icons/dashboard/rocket.svg';
 import DribbbleIcon from '@labs/icons/dashboard/dribbble.svg';
-import { generateUUID } from '@labs/utils';
 
 export const applicationsOptions: ApplicationOptions[] = [
 	{
@@ -26,9 +25,10 @@ export const applicationsOptions: ApplicationOptions[] = [
 	},
 ];
 
-const appStateDefaultData: ApplicationJob[] = [
+export const applicationStateDefaultData: ApplicationJob[] = [
 	{
-		id: 'Applied_1',
+		key: '1',
+		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap1',
 		company: 'Dribbble',
@@ -36,7 +36,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Applied_2',
+		key: '2',
+		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap2',
 		company: 'Dribbble',
@@ -44,7 +45,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Applied_3',
+		key: '3',
+		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap3',
 		company: 'Dribbble',
@@ -52,7 +54,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Applied_4',
+		key: '4',
+		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap4',
 		company: 'Dribbble',
@@ -60,7 +63,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Applied_5',
+		key: '5',
+		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap5',
 		company: 'Dribbble',
@@ -68,7 +72,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Applied_6',
+		key: '6',
+		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap6',
 		company: 'Dribbble',
@@ -76,7 +81,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Interviewed_1',
+		key: '7',
+		categoryID: 'Interviewed',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer I1',
 		company: 'Dribbble',
@@ -84,7 +90,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Interviewed_2',
+		key: '8',
+		categoryID: 'Interviewed',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer I2',
 		company: 'Dribbble',
@@ -92,7 +99,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Interviewed_3',
+		key: '9',
+		categoryID: 'Interviewed',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer I3',
 		company: 'Dribbble',
@@ -100,7 +108,8 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		id: 'Offered_1',
+		key: '10',
+		categoryID: 'Offered',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer O1',
 		company: 'Dribbble',
@@ -108,14 +117,6 @@ const appStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 ];
-
-export const applicationStateDefaultData = appStateDefaultData.map((job) => {
-	// Return a new object with the modified id
-	return {
-		...job,
-		id: job.id.split('_')[0] + '_' + generateUUID(),
-	};
-});
 
 export const applicationData = {
 	key: 1,
