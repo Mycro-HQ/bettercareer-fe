@@ -1,0 +1,41 @@
+@use '@/styles/base/utils' as *;
+
+.Sidebar {
+	min-width: 145px;
+	padding: 32px 24px;
+
+	.SidebarList {
+		display: flex;
+		flex-direction: column;
+		gap: 25px;
+
+		.SidebarListItem {
+			gap: 8px;
+			align-items: center;
+
+			.SidebarListItemIndex {
+				width: 24px;
+				height: 24px;
+				border-radius: 50%;
+				border: 1px solid #9fa5ab;
+				color: #9fa5ab;
+				display: grid;
+				place-items: center;
+
+				&--true {
+					background: var(--primary-blue);
+					color: var(--primary-white);
+					border: none;
+				}
+			}
+
+			.SidebarListItemText {
+				color: #9fa5ab;
+
+				&--true {
+					color: var(--primary-blue);
+				}
+			}
+		}
+	}
+}

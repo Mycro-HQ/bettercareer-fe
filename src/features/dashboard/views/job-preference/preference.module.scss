@@ -1,0 +1,31 @@
+@use '@/styles/base/utils' as *;
+
+.JobPreference {
+	width: 100%;
+	height: 100%;
+
+	.JobPreferenceAside {
+		width: 217px;
+		height: 100%;
+	}
+
+	.JobPreferenceContent {
+		width: 759px;
+		height: 100%;
+
+		.JobPreferenceContentBody {
+			width: 100%;
+			height: 481px;
+			background: #fcfcfc;
+			border-top-right-radius: 24px;
+			padding: 83px 48px 0 56px;
+		}
+
+		.JobPreferenceContentFooter {
+			width: 100%;
+			height: 104px;
+			justify-content: end;
+			padding: 0 48px;
+		}
+	}
+}
