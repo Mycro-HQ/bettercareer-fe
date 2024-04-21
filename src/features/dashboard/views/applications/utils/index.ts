@@ -3,25 +3,24 @@ import React from 'react';
 import type { ApplicationState, ApplicationJob } from '../types';
 
 export function handleCategoryChange(
-	from: string,
-	to: ApplicationState,
+	key: string,
+	newCategoryID: ApplicationState,
 	state: ApplicationJob[],
 	setState: React.Dispatch<React.SetStateAction<ApplicationJob[]>>
 ) {
-	const job = state.find((job) => job.id === from);
+	const job = state.find((job) => job.key === key);
 	if (job) {
 		setState((prev) => {
 			const newApplications = prev.filter(
-				(application) => application.id !== from
+				(application) => application.key !== key
 			);
-			const oldApplicationJobString = job.id.split('_')[1];
-			job.id = to + '_' + oldApplicationJobString;
-			return [...newApplications, job];
+			const newJob = { ...job, categoryID: newCategoryID };
+			return [...newApplications, newJob];
 		});
 	}
 }
 
 export const filterApplicationsByID = (
 	appState: ApplicationJob[],
-	id: string
-) => appState.filter((application) => application.id.startsWith(id));
+	categoryID: ApplicationState
+) => appState.filter((application) => application.categoryID === categoryID);
