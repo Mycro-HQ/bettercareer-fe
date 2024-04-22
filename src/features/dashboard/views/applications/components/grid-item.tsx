@@ -1,4 +1,5 @@
 import React from 'react';
+import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 import type { ApplicationJob } from '../types';
 import { applicationsOptions } from '../data';
@@ -6,10 +7,10 @@ import styles from '../applications.module.scss';
 
 import { Modal } from '@labs/components/modal';
 import { Flex, Text } from '@labs/components';
+import DNDIcon from '@labs/icons/misc/dnd.svg';
 
 import ApplicationModal from './modal';
 import OptionsDropDown from './options-dropdown';
-import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
 interface ApplicationGridItem extends React.HTMLAttributes<HTMLDivElement> {
 	jobDetails: ApplicationJob;
@@ -34,7 +35,9 @@ const ApplicationsGridItem = React.forwardRef<
 			ref={ref}
 			{...otherProps}
 		>
-			<div {...dragHandleProps}>drag me</div>
+			<div className="flex justify-center items-center" {...dragHandleProps}>
+				<DNDIcon />
+			</div>
 			<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
 				<ApplicationModal options={options} id={jobDetails.categoryID} />
 			</Modal>
