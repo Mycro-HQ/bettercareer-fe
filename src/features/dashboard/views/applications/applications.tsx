@@ -13,7 +13,7 @@ import { Flex, Heading, Text } from '@labs/components';
 import ApplicationsGridColumn from './components/grid-column';
 import { applicationsOptions, applicationStateDefaultData } from './data';
 import { ApplicationJob, ApplicationContext, ApplicationState } from './types';
-import { reorderJobApplications, handleCategoryChange } from './utils';
+import { reorderJobApplications } from './utils';
 import styles from './applications.module.scss';
 
 export const ApplicationStateContext = React.createContext<ApplicationContext>({
@@ -118,11 +118,11 @@ function ApplicationsGrid() {
 					setApplicationState((prev) => {
 						if (job) {
 							// Index of the job in prev
-							const jobIndex = prev.findIndex((job_) => job_.key === job?.key);
+							const jobIndex = prev.findIndex((job_) => job_.key === job.key);
 							console.log('Job Index Before:', jobIndex);
 							console.log('Job Index After:', newJobIndex);
 							const otherApplications = prev.filter(
-								(application) => application.key !== job?.key || ''
+								(application) => application.key !== job.key
 							);
 							const newJob = {
 								...job,
