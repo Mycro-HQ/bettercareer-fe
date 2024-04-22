@@ -26,6 +26,11 @@ type Actions = {
 		newCategoryID: ApplicationState
 	) => void;
 	setApplications: (applications: ApplicationJob[]) => void;
+	reorderJobApplications: (
+		job: ApplicationJob,
+		oldJobIndex: number,
+		newJobIndex: number
+	) => void;
 };
 
 type Store = State & Actions;
@@ -71,6 +76,17 @@ const useApplicationStore = createReportableStore<Store>((set) => ({
 			),
 		})),
 	setApplications: (applications: ApplicationJob[]) => set({ applications }),
+	reorderJobApplications: (
+		job: ApplicationJob,
+		oldJobIndex: number,
+		newJobIndex: number
+	) =>
+		set((store: Store) => {
+			const items = [...store.applications];
+			const [_reorderedItem] = items.splice(oldJobIndex, 1);
+			items.splice(newJobIndex, 0, job);
+			return { applications: items };
+		}),
 }));
 
 export { useApplicationStore };
