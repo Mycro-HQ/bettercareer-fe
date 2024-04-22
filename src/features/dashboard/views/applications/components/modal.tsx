@@ -3,13 +3,12 @@ import classNames from 'classnames';
 import { DropdownMenu } from '@radix-ui/themes';
 
 import type { ApplicationOptions } from '../types';
-import { handleCategoryChange } from '../utils';
 import { applicationData } from '../data';
-import { ApplicationStateContext } from '../applications';
 import styles from '../applications.module.scss';
 
-import DownIcon from '@labs/icons/dashboard/down.svg';
+import { useApplicationStore } from '@/store/z-store/application';
 import { Flex, Text } from '@labs/components';
+import DownIcon from '@labs/icons/dashboard/down.svg';
 
 export default function ApplicationModal({
 	options,
@@ -18,9 +17,8 @@ export default function ApplicationModal({
 	options: ApplicationOptions[];
 	id: string;
 }) {
-	const { applicationState, setApplicationState } = React.useContext(
-		ApplicationStateContext
-	);
+	const { updateApplicationCategory } = useApplicationStore();
+
 	return (
 		<Flex.Column gap={40}>
 			<Flex.Row justifyContent="space-between">
@@ -57,14 +55,7 @@ export default function ApplicationModal({
 						{options.map((data) => (
 							<DropdownMenu.Item
 								key={data.id}
-								onClick={() =>
-									handleCategoryChange(
-										id,
-										data.id,
-										applicationState,
-										setApplicationState
-									)
-								}
+								onClick={() => updateApplicationCategory(id, data.id)}
 								className={classNames('group', styles.optionsDropdownItem)}
 							>
 								<div className="group-hover:[&>svg>path]:stroke-white">
