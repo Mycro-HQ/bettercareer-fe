@@ -1,7 +1,6 @@
 import React from 'react';
 import {
 	Draggable,
-	Droppable,
 	DroppableProvided,
 	DroppableStateSnapshot,
 } from 'react-beautiful-dnd';
@@ -10,7 +9,7 @@ import classNames from 'classnames';
 import type { ApplicationJob, ApplicationState } from '../types';
 import { filterApplicationsByID } from '../utils';
 
-// import { StrictModeDroppable } from '@/features/build-resume/components/sm-droppable';
+import { StrictModeDroppable } from '@/features/build-resume/components/sm-droppable';
 import { Flex, Text } from '@labs/components';
 
 import ApplicationsGridItem from './grid-item';
@@ -40,7 +39,7 @@ export default function ApplicationsGridColumn({
 				</Text>
 			</Flex>
 
-			<Droppable key={categoryID} droppableId={categoryID}>
+			<StrictModeDroppable key={categoryID} droppableId={categoryID}>
 				{(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
 					<Flex.Column
 						ref={provided.innerRef}
@@ -71,7 +70,7 @@ export default function ApplicationsGridColumn({
 						{provided.placeholder}
 					</Flex.Column>
 				)}
-			</Droppable>
+			</StrictModeDroppable>
 		</Flex.Column>
 	);
 }
