@@ -9,17 +9,12 @@ import classNames from 'classnames';
 import SearchIcon from '@labs/icons/dashboard/search.svg';
 import BriefcaseIcon from '@labs/icons/dashboard/briefcase.svg';
 import { Flex, Heading, Text } from '@labs/components';
+import { useApplicationStore } from '@/store/z-store/application';
 
 import ApplicationsGridColumn from './components/grid-column';
-import { applicationsOptions, applicationStateDefaultData } from './data';
-import { ApplicationJob, ApplicationContext, ApplicationState } from './types';
-import { reorderJobApplications } from './utils';
+import { applicationsOptions } from './data';
+import type { ApplicationState } from './types';
 import styles from './applications.module.scss';
-
-export const ApplicationStateContext = React.createContext<ApplicationContext>({
-	applicationState: applicationStateDefaultData,
-	setApplicationState: () => {},
-});
 
 export const Applications = () => {
 	return (
@@ -85,18 +80,16 @@ function Header() {
 }
 
 function ApplicationsGrid() {
-	const [applicationState, setApplicationState] = React.useState<
-		ApplicationJob[]
-	>(applicationStateDefaultData);
+	const { applications, reorderJobApplications } = useApplicationStore();
 
 	const handleOnDragEnd = React.useCallback(
 		(result: DropResult, _provided: ResponderProvided): void => {
 			const source = result.source;
 			const destination = result.destination;
-			const job = applicationState.find(
+			const job = applications.find(
 				(job) => `draggable-${job.key}` === result.draggableId
 			);
-			const jobIndex = applicationState.findIndex(
+			const jobIndex = applications.findIndex(
 				(job) => `draggable-${job.key}` === result.draggableId
 			);
 
@@ -111,72 +104,50 @@ function ApplicationsGrid() {
 						: jobIndex + (destinationIndex - sourceIndex);
 
 				if (destination.droppableId === source.droppableId) {
-					setApplicationState((prev) =>
-						reorderJobApplications(prev, job!, jobIndex, newJobIndex)
-					);
+					reorderJobApplications(job!, jobIndex, newJobIndex);
 				} else {
-					setApplicationState((prev) => {
-						if (job) {
-							// Index of the job in prev
-							const jobIndex = prev.findIndex((job_) => job_.key === job.key);
-							console.log('Job Index Before:', jobIndex);
-							console.log('Job Index After:', newJobIndex);
-							const otherApplications = prev.filter(
-								(application) => application.key !== job.key
-							);
-							const newJob = {
-								...job,
-								categoryID: destination.droppableId as ApplicationState,
-							};
-							const newJobApplications = [...otherApplications, newJob];
+					if (job) {
+						const jobIndex = applications.findIndex(
+							(job_) => job_.key === job.key
+						);
+						// console.log('Job Index Before:', jobIndex);
+						// console.log('Job Index After:', newJobIndex);
+						const newJob = {
+							...job,
+							categoryID: destination.droppableId as ApplicationState,
+						};
 
-							return reorderJobApplications(
-								newJobApplications,
-								newJob,
-								newJobApplications.length - 1,
-								newJobIndex
-							);
-						} else {
-							return prev;
-						}
-					});
-					console.log('HANDLE CHANGE RAN.');
+						reorderJobApplications(newJob, jobIndex, newJobIndex);
+					}
 				}
-				console.log(
-					`Source:\n\tDroppableId: ${source.droppableId}\n\tIndex:${sourceIndex}`
-				);
-				console.log(
-					`Destination:\n\tDroppableId: ${destination.droppableId}\n\tIndex:${destinationIndex}`
-				);
+				// console.log(
+				// 	`Source:\n\tDroppableId: ${source.droppableId}\n\tIndex:${sourceIndex}`
+				// );
+				// console.log(
+				// 	`Destination:\n\tDroppableId: ${destination.droppableId}\n\tIndex:${destinationIndex}`
+				// );
 			}
 		},
-		[applicationState]
+		[applications, reorderJobApplications]
 	);
 
 	return (
-		<ApplicationStateContext.Provider
-			value={{
-				applicationState,
-				setApplicationState,
-			}}
-		>
-			<DragDropContext onDragEnd={handleOnDragEnd}>
-				<div
-					className={classNames(
-						styles.applicationsGrid,
-						'-top-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:min-h-screen'
-					)}
-				>
-					{applicationsOptions.map((option) => (
-						<ApplicationsGridColumn
-							key={option.id}
-							icon={option.icon}
-							categoryID={option.id}
-							applications={applicationState}
-						/>
-					))}
-				</div>
-			</DragDropContext>
-		</ApplicationStateContext.Provider>
+		<DragDropContext onDragEnd={handleOnDragEnd}>
+			<div
+				className={classNames(
+					styles.applicationsGrid,
+					'-top-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:min-h-screen'
+				)}
+			>
+				{applicationsOptions.map((option) => (
+					<ApplicationsGridColumn
+						key={option.id}
+						icon={option.icon}
+						categoryID={option.id}
+						applications={applications}
+					/>
+				))}
+			</div>
+		</DragDropContext>
 	);
 }
