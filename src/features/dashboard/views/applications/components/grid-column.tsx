@@ -51,7 +51,6 @@ export default function ApplicationsGridColumn({
 						)}
 						{...provided.droppableProps}
 					>
-						{provided.placeholder}
 						{filteredApplications.map((application, index) => (
 							<Draggable
 								key={`draggable-${application.key}`}
@@ -69,6 +68,7 @@ export default function ApplicationsGridColumn({
 								)}
 							</Draggable>
 						))}
+						{provided.placeholder}
 					</Flex.Column>
 				)}
 			</Droppable>
