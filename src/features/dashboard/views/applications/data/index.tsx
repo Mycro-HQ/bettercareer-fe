@@ -27,7 +27,7 @@ export const applicationsOptions: ApplicationOptions[] = [
 
 export const applicationStateDefaultData: ApplicationJob[] = [
 	{
-		key: '1',
+		key: '1abc',
 		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap1',
@@ -36,7 +36,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '2',
+		key: '2dadd',
 		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap2',
@@ -45,7 +45,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '3',
+		key: '3rfwf',
 		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap3',
@@ -54,7 +54,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '4',
+		key: '4csdd',
 		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap4',
@@ -63,7 +63,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '5',
+		key: '5fscs',
 		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap5',
@@ -72,7 +72,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '6',
+		key: '6wfwec',
 		categoryID: 'Applied',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer Ap6',
@@ -81,7 +81,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '7',
+		key: '7cwdc',
 		categoryID: 'Interviewed',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer I1',
@@ -90,7 +90,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '8',
+		key: '8vrsd',
 		categoryID: 'Interviewed',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer I2',
@@ -99,7 +99,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '9',
+		key: '9bevrfed',
 		categoryID: 'Interviewed',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer I3',
@@ -108,7 +108,7 @@ export const applicationStateDefaultData: ApplicationJob[] = [
 		workMode: 'Remote',
 	},
 	{
-		key: '10',
+		key: '10vsd',
 		categoryID: 'Offered',
 		icon: <DribbbleIcon />,
 		title: 'Brand Designer O1',
