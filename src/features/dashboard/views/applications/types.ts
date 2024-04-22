@@ -1,5 +1,6 @@
 export type ApplicationJob = {
-	id: string;
+	key: string;
+	categoryID: ApplicationState;
 	icon: any;
 	title: string;
 	company: string;
