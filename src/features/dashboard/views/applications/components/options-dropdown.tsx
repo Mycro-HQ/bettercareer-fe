@@ -3,10 +3,9 @@ import classNames from 'classnames';
 import { DropdownMenu } from '@radix-ui/themes';
 
 import type { ApplicationOptions } from '../types';
-import { handleCategoryChange } from '../utils';
-import { ApplicationStateContext } from '../applications';
 import styles from '../applications.module.scss';
 
+import { useApplicationStore } from '@/store/z-store/application';
 import { Text } from '@labs/components';
 import OptionsIcon from '@labs/icons/dashboard/more-horizontal.svg';
 
@@ -17,9 +16,8 @@ export default function OptionsDropDown({
 	id: string;
 	options: ApplicationOptions[];
 }) {
-	const { applicationState, setApplicationState } = React.useContext(
-		ApplicationStateContext
-	);
+	const { updateApplicationCategory } = useApplicationStore();
+
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
@@ -31,14 +29,7 @@ export default function OptionsDropDown({
 				{options.map((data) => (
 					<DropdownMenu.Item
 						key={data.id}
-						onClick={() =>
-							handleCategoryChange(
-								id,
-								data.id,
-								applicationState,
-								setApplicationState
-							)
-						}
+						onClick={() => updateApplicationCategory(id, data.id)}
 						className={classNames('group', styles.optionsDropdownItem)}
 					>
 						<div className="group-hover:[&>svg>path]:stroke-white">
