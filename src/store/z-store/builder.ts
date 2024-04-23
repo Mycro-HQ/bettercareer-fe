@@ -1,9 +1,7 @@
 import { createReportableStore } from '../middleware/report';
 
-import {
-	MOCK,
-	templatesConfig,
-} from '@/features/build-resume/view/build-resume-preview/view/resume-blocks/utils';
+import { generateUUID } from '@labs/utils';
+import { templatesConfig } from '@/features/build-resume/view/build-resume-preview/view/resume-blocks/utils';
 
 interface BuildStore {
 	loading: boolean;
@@ -36,12 +34,14 @@ interface BuildStore {
 		blob: string | null;
 		raw?: string | null;
 		score?: number;
+		thumbnail?: string | null;
 	};
 	showPreview: boolean;
 	setResumeBlob: (options?: {
 		blob?: string | null;
 		raw?: string | null;
 		score?: number;
+		thumbnail?: string | null;
 	}) => void;
 	setTemplate: (template: any) => void;
 	setShowPreview?: (showPreview: boolean) => void;
@@ -50,8 +50,8 @@ interface BuildStore {
 export const MODULES = [
 	{ key: 'heading', title: 'Heading', data: {}, draggable: false },
 	{ key: 'summary', title: 'Summary', data: {}, draggable: false },
-	{ key: 'experience', title: 'Experience', data: [] },
-	{ key: 'education', title: 'Education', data: [] },
+	{ key: 'experiences', title: 'Experience', data: [] },
+	{ key: 'educations', title: 'Education', data: [] },
 	{ key: 'certifications', title: 'Certifications', data: [] },
 	{ key: 'skills', title: 'Skills', data: [] },
 	{ key: 'projects', title: 'Projects', data: [] },
@@ -59,10 +59,10 @@ export const MODULES = [
 
 const initialState: BuildStore = {
 	loading: false,
-	modules: MOCK,
+	modules: MODULES,
 	moduleAdd: {
-		experience: false,
-		education: false,
+		experiences: false,
+		educations: false,
 	},
 	template: {
 		...templatesConfig[0],
@@ -98,14 +98,7 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 			modules: newModules,
 		});
 	},
-	// setTheme: (theme: any) => {
-	// 	set({
-	// 		theme: {
-	// 			...get().theme,
-	// 			...theme,
-	// 		},
-	// 	});
-	// },
+
 	setTemplate: (template: any) => {
 		set({
 			template: {
@@ -160,7 +153,7 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 						? [
 								...((module.data as Array<any>) || []),
 								{
-									$id: Math.random().toString(36).substring(7),
+									$id: generateUUID(),
 									...data,
 								},
 							]

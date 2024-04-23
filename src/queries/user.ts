@@ -10,12 +10,12 @@ export const authApiCreator = createSmartApi({
 		getProfile: builder.query<
 			undefined,
 			{
-				profile: UserData;
+				user: UserData;
 			}
 		>({
 			key: 'user',
 			queryFn: () => ({
-				url: `/profile`,
+				url: `/users/me`,
 			}),
 		}),
 
