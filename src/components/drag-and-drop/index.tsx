@@ -14,9 +14,11 @@ interface DragAndDrop
 	extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onDrop'> {
 	multiple?: boolean;
 	accept?: 'application/pdf';
-	onDrop: (files: File[]) => void;
+	onDrop?: (files: File[]) => void;
 	onDragOver?: () => void;
+	setFiles?: React.Dispatch<React.SetStateAction<FileWithKey[]>>;
 	maxSize?: number;
+	files?: FileWithKey[];
 	size?: 'md' | 'lg';
 }
 
@@ -61,11 +63,13 @@ export default function DragAndDrop({
 	onDrop,
 	onDragOver,
 	maxSize = 10,
+	files,
+	setFiles = () => {},
 	size = 'lg',
 	...rest
 }: Readonly<DragAndDrop>) {
 	const [dragIsOver, setDragIsOver] = useState(false);
-	const [files, setFiles] = useState<FileWithKey[]>([]);
+	// const [files, setFiles] = useState<FileWithKey[]>(_files || []);
 
 	function handleDeleteClick(indexToRemove: number) {
 		setFiles((prev) => {
@@ -75,16 +79,18 @@ export default function DragAndDrop({
 		});
 	}
 
-	const filesWithError = files.filter((file) => file.status.length !== 0);
+	const filesWithError = files?.filter(
+		(file) => file?.status && file.status.length !== 0
+	);
 	const filesWithoutError =
-		files && files.filter((file) => file.status.length === 0);
+		files && files.filter((file) => file?.status && file.status.length === 0);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			if (filesWithError.length > 0) {
+			if (filesWithError && filesWithError?.length > 0) {
 				setFiles((prev) => {
 					const firstErrorIndex = prev.findIndex(
-						(file) => file.status.length !== 0
+						(file) => file?.status && file.status.length !== 0
 					);
 					if (firstErrorIndex !== -1) {
 						return [
@@ -101,6 +107,8 @@ export default function DragAndDrop({
 	}, [files, filesWithError?.length]);
 
 	const validateFile = (file: File) => {
+		if (!file) return [];
+
 		const errors = [];
 		if (file.size > maxSize * 1024 * 1024) {
 			errors.push(`File ${file.name}'s size should be less than ${maxSize}MB`);
@@ -110,9 +118,9 @@ export default function DragAndDrop({
 		return errors;
 	};
 
-	const addFiles = (filesToAdd: File[]) => {
+	const addFiles = useCallback((filesToAdd: File[]) => {
 		const newFiles = filesToAdd.map((file) => ({
-			blob: file,
+			file,
 			key: generateUUID(),
 			status: validateFile(file),
 		}));
@@ -121,11 +129,11 @@ export default function DragAndDrop({
 
 		const validFiles = newFiles
 			.filter((file) => file.status.length === 0)
-			.map((file) => file.blob);
-		if (validFiles.length > 0) {
+			.map((file) => file.file);
+		if (validFiles.length > 0 && onDrop) {
 			onDrop(validFiles);
 		}
-	};
+	}, []);
 
 	const handleFileUpload = useCallback(
 		(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -228,7 +236,7 @@ export default function DragAndDrop({
 
 			<Flex.Column gap={8}>
 				{files &&
-					filesWithError.map((file) => (
+					filesWithError?.map((file) => (
 						<Text
 							key={file.key}
 							className="mb-2"
@@ -238,7 +246,7 @@ export default function DragAndDrop({
 							{file.status.map((status) => status + '\n')}
 						</Text>
 					))}
-				{filesWithoutError.map((file, index) => {
+				{filesWithoutError?.map((file, index) => {
 					return (
 						<Flex
 							direction="row"
@@ -256,10 +264,10 @@ export default function DragAndDrop({
 										weight={600}
 										lineHeight="18px"
 									>
-										{file.blob.name}
+										{file.file.name}
 									</Text>
 									<Text color="var(--text-gray)" size="sm">
-										{getSizeFormat(file.blob.size)}
+										{getSizeFormat(file.file.size)}
 									</Text>
 								</Flex.Column>
 							</Flex>
