@@ -35,12 +35,9 @@ export const DashboardLayout = ({
 	bare?: boolean;
 }) => {
 	const { setUser } = useUserStore();
-	const { data } = useGetProfileQuery(
-		{},
-		{
-			enabled: Cookies.get('bc_token') !== undefined,
-		}
-	);
+	const { data } = useGetProfileQuery(undefined, {
+		enabled: Cookies.get('bc_token') !== undefined,
+	});
 
 	useEffect(() => {
 		if (data) {

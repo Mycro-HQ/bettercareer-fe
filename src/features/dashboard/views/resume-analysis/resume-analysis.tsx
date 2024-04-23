@@ -5,7 +5,6 @@ import { ScoreCounter } from '@/components/score-counter';
 import { Accordion } from '@labs/components/accordion';
 import { Progress } from '@/components/misc/progress';
 import Logo from '@labs/icons/logo-mark.svg';
-import { ResumeAnalysisInfo } from '.';
 
 import styles from './resume-analysis.module.scss';
 import classNames from 'classnames';
@@ -14,12 +13,12 @@ import { getDataIcons } from '@labs/utils';
 
 const COLORS = ['#2b94f4', '#4ea27f', '#ff973c', '#dd4237'];
 
-export const ResumeAnalysis = ({ data }) => {
+export const ResumeAnalysis = ({ data }: { data?: any }) => {
 	const [tab, setTab] = React.useState('analysis');
 
 	// reduce the ResumeAnalysisInfo array to get the overall score percentage
 
-	const getColorByScore = (score) => {
+	const getColorByScore = (score: number) => {
 		if (score >= 90) {
 			return COLORS[0];
 		} else if (score >= 80) {
@@ -206,14 +205,16 @@ export const ResumeAnalysis = ({ data }) => {
 													<div className={styles.AccordionContentItem}>
 														<Text.p weight={600}>Solution:</Text.p>
 														<ul className={styles.ResumeList}>
-															{item.solutions.map((solution, index) => (
-																<li
-																	key={index}
-																	className={styles.ResumeListItem}
-																>
-																	{solution}
-																</li>
-															))}
+															{item.solutions.map(
+																(solution: string, index: number) => (
+																	<li
+																		key={index}
+																		className={styles.ResumeListItem}
+																	>
+																		{solution}
+																	</li>
+																)
+															)}
 														</ul>
 													</div>
 												</div>

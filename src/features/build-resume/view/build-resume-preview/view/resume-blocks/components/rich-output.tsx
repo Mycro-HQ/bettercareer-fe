@@ -114,12 +114,12 @@ const styles = StyleSheet.create({
 // 	return walkNodes(doc.body.childNodes);
 // };
 
-const parseHtmlToReactPdf = (htmlContent) => {
+const parseHtmlToReactPdf = (htmlContent: string) => {
 	if (!htmlContent) return null;
 	const root = parse(htmlContent);
 
-	const walkNodes = (nodes) => {
-		return nodes.map((node, i) => {
+	const walkNodes = (nodes: any) => {
+		return nodes.map((node: any, i: number) => {
 			let style = {};
 			switch (node.tagName) {
 				case 'B':
