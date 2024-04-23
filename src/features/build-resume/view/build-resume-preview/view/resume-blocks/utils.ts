@@ -58,7 +58,7 @@ export const MOCK = [
 		draggable: false,
 	},
 	{
-		key: 'experience',
+		key: 'experiences',
 		title: 'Experience',
 		data: [
 			{
@@ -94,7 +94,7 @@ export const MOCK = [
 		],
 	},
 	{
-		key: 'education',
+		key: 'educations',
 		title: 'Education',
 		data: [
 			{
@@ -253,7 +253,7 @@ export const registerFonts = () => {
 		],
 	});
 	Font.register({
-		family: 'Lato Body',
+		family: 'Lato',
 		fonts: [
 			{
 				src: `https://fonts.gstatic.com/s/lato/v24/S6uyw4BMUTPHvxk6XweuBCY.ttf`,
@@ -276,7 +276,9 @@ export const registerFonts = () => {
 };
 
 export const getHref = (text: string) => {
-	if (text.startsWith('http')) return text;
+	if (!text) return '';
+
+	if (text?.startsWith('http')) return text;
 
 	if (text.includes('@')) return `mailto:${text}`;
 
@@ -286,6 +288,7 @@ export const getHref = (text: string) => {
 };
 
 export const extractNameFromLink = (link: string) => {
+	if (!link) return '';
 	const brands = ['facebook', 'twitter', 'linkedin', 'github', 'instagram'];
 	const brand = brands.find((b) => link.includes(b));
 	if (brand) return capitalize(brand);
