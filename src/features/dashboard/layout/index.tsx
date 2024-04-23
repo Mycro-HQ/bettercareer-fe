@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use, useEffect } from 'react';
 import classNames from 'classnames';
 
 import { Container } from '@labs/components';
@@ -7,6 +7,9 @@ import { type UserData } from '@/queries/types/user';
 
 import { DashboardHeader } from './components/header';
 import styles from './layout.module.scss';
+import { useGetProfileQuery } from '@/queries/user';
+import Cookies from 'js-cookie';
+import { useUserStore } from '@/store/z-store/user';
 
 /**
  * DashboardLayout
@@ -23,7 +26,6 @@ export const DashboardLayout = ({
 	children,
 	title = 'Dashboard',
 	backdropThreshold = 'md',
-	profile,
 	bare,
 }: {
 	children: React.ReactNode;
@@ -32,6 +34,19 @@ export const DashboardLayout = ({
 	profile: UserData | null | undefined;
 	bare?: boolean;
 }) => {
+	const { setUser } = useUserStore();
+	const { data } = useGetProfileQuery(
+		{},
+		{
+			enabled: Cookies.get('bc_token') !== undefined,
+		}
+	);
+
+	useEffect(() => {
+		if (data) {
+			setUser(data?.user);
+		}
+	}, [data]);
 	return (
 		<div
 			className={classNames([

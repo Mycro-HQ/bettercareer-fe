@@ -17,15 +17,16 @@ import { useGetResumesQuery } from '@/queries/resume';
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
+import { truncateText } from '@labs/utils';
 
 export const DashboardHome = ({
 	profile,
 }: {
 	profile: UserData | null | undefined;
 }) => {
-	const hasSetup = Object.values(profile?.onboardingChecklist || {}).every(
-		Boolean
-	);
+	const hasSetup =
+		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
+		profile?.onboardingChecklist?.hasBuiltResume;
 
 	const { data: resumes } = useGetResumesQuery({});
 
@@ -70,27 +71,32 @@ export const DashboardHome = ({
 					Launch your dream career journey today.
 				</Text>
 			</Flex.Column>
-			{hasSetup ? (
-				<Flex gap={18} flexWrap="wrap">
-					{recommendationSections.map((rcmd, i) => (
-						<StackCard
-							title={rcmd.title}
-							icon={
-								typeof rcmd.icon === 'string' ? (
-									<img src="/images/dashboard/match.png" alt="matches" />
-								) : (
-									<rcmd.icon />
-								)
-							}
-							key={i}
-							href={rcmd.href}
-							tag={rcmd.tag}
-						/>
-					))}
-				</Flex>
-			) : (
-				<SetupChecklist onboardingChecklist={profile?.onboardingChecklist!} />
-			)}
+
+			<Flex.Column gap={32}>
+				{profile?.onboardingChecklist?.hasBuiltResume && (
+					<Flex gap={18} flexWrap="wrap">
+						{recommendationSections.map((rcmd, i) => (
+							<StackCard
+								title={rcmd.title}
+								icon={
+									typeof rcmd.icon === 'string' ? (
+										<img src="/images/dashboard/match.png" alt="matches" />
+									) : (
+										<rcmd.icon />
+									)
+								}
+								key={i}
+								href={rcmd.href}
+								tag={rcmd.tag}
+							/>
+						))}
+					</Flex>
+				)}
+				{!Object.values(profile?.onboardingChecklist || {}).every(Boolean) && (
+					<SetupChecklist onboardingChecklist={profile?.onboardingChecklist!} />
+				)}
+			</Flex.Column>
+
 			<Flex.Column gap={24} className={styles.Section}>
 				<Heading.h5 weight={800}>Resume Makeover</Heading.h5>
 				<Flex fullWidth gap={32} flexWrap="wrap">
@@ -156,10 +162,13 @@ export const DashboardHome = ({
 									key={resume.id}
 									className={styles.PastResume}
 								>
-									<img src="/images/dashboard/resumes/classic.png" />
+									<img
+										src={resume?.thumbnail || '/images/dashboard/thumbnail.png'}
+										alt={resume.name}
+									/>
 									<div className={styles.PastResumeInfo}>
 										<Heading.h6 weight={800} fontSize="16px">
-											{resume.name}
+											{truncateText(resume.name, 36)}
 										</Heading.h6>
 										<Flex gap={2} alignItems="center">
 											<FileIcon />

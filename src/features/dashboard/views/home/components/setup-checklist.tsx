@@ -19,12 +19,13 @@ export const SetupChecklist = ({
 }) => {
 	const updateStatus = (key: string) => {
 		// Update the status of the checklist item
+		if (!onboardingChecklist) return false;
 
 		switch (key) {
 			case 'hasConnectedAccount':
-				return onboardingChecklist.hasConnectedAccount;
+				return onboardingChecklist?.hasConnectedAccount;
 			case 'hasUploadedResume':
-				return onboardingChecklist.hasUploadedResume;
+				return onboardingChecklist?.hasUploadedResume;
 			case 'hasBuiltResume':
 				return onboardingChecklist.hasBuiltResume;
 			case 'hasJobPreferences':
