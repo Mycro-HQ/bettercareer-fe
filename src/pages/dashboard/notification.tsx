@@ -2,12 +2,11 @@ import React from 'react';
 
 import BellIcon from '@labs/icons/dashboard/bell.svg';
 import { Flex, Heading, Text } from '@labs/components';
-
+import { useUserStore } from '@/store/z-store/user';
 import Notifications, {
 	NotificationListItem,
 } from '@/components/Notifications';
 import { DashboardLayout } from '@/features/dashboard/layout';
-
 import { NotificationListItemProps } from '@labs/utils/types/utility';
 
 function NotificationHeader() {
@@ -67,12 +66,18 @@ const notificationArray: NotificationListItemWithKey[] = [
 ];
 
 export default function Notification() {
+	const { profile } = useUserStore();
+
 	return (
-		<DashboardLayout backdropThreshold="md" title="Notifications">
+		<DashboardLayout
+			backdropThreshold="md"
+			title="Notifications"
+			profile={profile}
+		>
 			<NotificationHeader />
 			<Notifications>
 				{notificationArray.map((notification) => (
-					<NotificationListItem {...notification} />
+					<NotificationListItem {...notification} key={notification.key} />
 				))}
 			</Notifications>
 		</DashboardLayout>
