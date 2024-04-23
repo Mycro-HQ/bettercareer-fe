@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../jobs.module.scss';
 import { Text, Flex } from '@labs/components';
 import classNames from 'classnames';
-import LikeIcon from '@public/images/dashboard/like.svg';
+import LikeIcon from '@labs/icons/dashboard/match.svg';
 
 interface JobCardProps extends React.HTMLAttributes<HTMLDivElement> {
 	companyLogo: React.ReactNode;
@@ -79,7 +79,7 @@ export default function JobCard({
 
 export function Separator() {
 	return (
-		<Text as="span" weight={700} lineHeight="24px">
+		<Text as="span" weight={700} lineHeight="24px" inheritFont>
 			{' '}
 			.{' '}
 		</Text>
