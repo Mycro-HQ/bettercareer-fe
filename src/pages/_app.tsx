@@ -31,16 +31,16 @@ export default function App({ Component, pageProps }: AppProps) {
 	}, [router.events]);
 
 	return (
-		<QueryClientProvider client={queryClient}>
-			<Theme appearance="light">
-				<SSRProvider>
+		<Theme appearance="light">
+			<SSRProvider>
+				<QueryClientProvider client={queryClient}>
 					<PostHogProvider client={posthog}>
 						<PaceLoader />
 						<Component {...pageProps} />
 					</PostHogProvider>
-				</SSRProvider>
-			</Theme>
-			<ReactQueryDevtools initialIsOpen={false} />
-		</QueryClientProvider>
+					<ReactQueryDevtools initialIsOpen={false} />
+				</QueryClientProvider>
+			</SSRProvider>
+		</Theme>
 	);
 }

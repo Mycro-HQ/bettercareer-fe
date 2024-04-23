@@ -24,6 +24,12 @@ class MyDocument extends Document {
 		return (
 			<Html lang="en">
 				<Head>
+					<style
+						id="s2c:ssr-css-rules"
+						dangerouslySetInnerHTML={{
+							__html: Array.from(ssrCssRules || []).join(''),
+						}}
+					/>
 					<GoogleAnalytics />
 				</Head>
 				<body>
