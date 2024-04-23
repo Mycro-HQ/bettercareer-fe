@@ -21,7 +21,7 @@ export default function OptionsDropDown({
 	return (
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger>
-				<div className="cursor-pointer mt-2 sm:mt-0">
+				<div className="cursor-pointer mt-2 sm:mt-0 !h-4">
 					<OptionsIcon />
 				</div>
 			</DropdownMenu.Trigger>
