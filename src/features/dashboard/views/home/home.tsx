@@ -1,4 +1,6 @@
 import React from 'react';
+import { formatDate } from 'date-fns';
+import Link from 'next/link';
 
 import { JobPreference } from '../job-preference';
 
@@ -12,19 +14,23 @@ import JobIcon from '@labs/icons/dashboard/calendar.svg';
 import SponsorIcon from '@labs/icons/dashboard/tag.svg';
 import NewResume from '@labs/icons/dashboard/upload.svg';
 import { type UserData } from '@/queries/types/user';
-import CloseIcon from '@labs/icons/misc/close.svg';
+import { useGetResumesQuery } from '@/queries/resume';
 
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
+import { truncateText } from '@labs/utils';
 
 export const DashboardHome = ({
 	profile,
 }: {
 	profile: UserData | null | undefined;
 }) => {
-	const [isModalOpen, setIsModalOpen] = React.useState(false);
-	const hasSetup = false;
+	const hasSetup =
+		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
+		profile?.onboardingChecklist?.hasBuiltResume;
+
+	const { data: resumes } = useGetResumesQuery({});
 
 	const recommendationSections = [
 		{
@@ -67,27 +73,32 @@ export const DashboardHome = ({
 					Launch your dream career journey today.
 				</Text>
 			</Flex.Column>
-			{hasSetup ? (
-				<Flex gap={18} flexWrap="wrap">
-					{recommendationSections.map((rcmd, i) => (
-						<StackCard
-							title={rcmd.title}
-							icon={
-								typeof rcmd.icon === 'string' ? (
-									<img src="/images/dashboard/match.png" alt="matches" />
-								) : (
-									<rcmd.icon />
-								)
-							}
-							key={i}
-							href={rcmd.href}
-							tag={rcmd.tag}
-						/>
-					))}
-				</Flex>
-			) : (
-				<SetupChecklist />
-			)}
+
+			<Flex.Column gap={32}>
+				{profile?.onboardingChecklist?.hasBuiltResume && (
+					<Flex gap={18} flexWrap="wrap">
+						{recommendationSections.map((rcmd, i) => (
+							<StackCard
+								title={rcmd.title}
+								icon={
+									typeof rcmd.icon === 'string' ? (
+										<img src="/images/dashboard/match.png" alt="matches" />
+									) : (
+										<rcmd.icon />
+									)
+								}
+								key={i}
+								href={rcmd.href}
+								tag={rcmd.tag}
+							/>
+						))}
+					</Flex>
+				)}
+				{!Object.values(profile?.onboardingChecklist || {}).every(Boolean) && (
+					<SetupChecklist onboardingChecklist={profile?.onboardingChecklist!} />
+				)}
+			</Flex.Column>
+
 			<Flex.Column gap={24} className={styles.Section}>
 				<Heading.h5 weight={800}>Resume Makeover</Heading.h5>
 				<Flex fullWidth gap={32} flexWrap="wrap">
@@ -101,9 +112,14 @@ export const DashboardHome = ({
 						<Text size="sm" color="var(--text-gray)" weight={600}>
 							Craft specific resumes to highlight a perfect fit for each role.
 						</Text>
-						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
+						<CallToAction.a
+							href="/dashboard/resume/build"
+							variant="secondary"
+							size="sm"
+							className="mt-[20px]"
+						>
 							Add Resume
-						</CallToAction>
+						</CallToAction.a>
 					</div>
 					<div className={styles.ActionCard}>
 						<div className={styles.ActionCardIcon}>
@@ -166,22 +182,40 @@ export const DashboardHome = ({
 				</Flex>
 			</Flex.Column>
 			<Flex.Column gap={24} className={styles.Section}>
-				<Heading.h5 weight={800}>Past Resumes</Heading.h5>
-				<Flex fullWidth gap={32} flexWrap="wrap">
-					<div className={styles.PastResume}>
-						<div className={styles.PastResumeInfo}>
-							<Heading.h6 weight={800} fontSize="16px">
-								Adenekan_META_Resume
-							</Heading.h6>
-							<Flex gap={2} alignItems="center">
-								<FileIcon />
-								<Text size="sm" color="var(--text-gray-light)">
-									Built Feb 23, 2024
-								</Text>
-							</Flex>{' '}
-						</div>
-					</div>
-				</Flex>
+				{resumes?.data?.length > 0 && (
+					<>
+						<Heading.h5 weight={800}>Past Resumes</Heading.h5>
+						<Flex fullWidth gap={32} flexWrap="wrap">
+							{resumes?.data?.map((resume: any) => (
+								<Link
+									href={`/dashboard/resume/build/${resume.id}`}
+									key={resume.id}
+									className={styles.PastResume}
+								>
+									<img
+										src={resume?.thumbnail || '/images/dashboard/thumbnail.png'}
+										alt={resume.name}
+									/>
+									<div className={styles.PastResumeInfo}>
+										<Heading.h6 weight={800} fontSize="16px">
+											{truncateText(resume.name, 36)}
+										</Heading.h6>
+										<Flex gap={2} alignItems="center">
+											<FileIcon />
+											<Text size="sm" color="var(--text-gray-light)">
+												Opened{' '}
+												{formatDate(
+													new Date(resume.updatedAt),
+													'MMM dd, yyyy | p'
+												)}
+											</Text>
+										</Flex>
+									</div>
+								</Link>
+							))}
+						</Flex>
+					</>
+				)}
 			</Flex.Column>
 		</div>
 	);

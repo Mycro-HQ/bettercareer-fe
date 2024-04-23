@@ -10,7 +10,7 @@ export const useResumeStyles = (data?: any) => {
 					padding: 24,
 					gap: 14,
 					color: '#0F1F2E',
-					fontFamily: 'Lato Body',
+					fontFamily: 'Lato',
 				},
 				subheading: {
 					fontSize: 12,

@@ -10,15 +10,15 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { isEmpty } from '@labs/utils';
+import { isEmpty, parseValue } from '@labs/utils';
 
 import { Classic } from './classic';
-import { MARGIN_MAP } from './utils';
+import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Classic.Summary,
-	experience: Classic.Experience,
-	education: Classic.Education,
+	experiences: Classic.Experience,
+	educations: Classic.Education,
 	certifications: Classic.Certification,
 	skills: Classic.Skills,
 	projects: Classic.Projects,
@@ -45,6 +45,8 @@ const TokyoTemplate = ({
 	const primaryColor = template.colors.primary;
 	const padding =
 		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+	const scale =
+		SCALE_MAP[template.fontSize as keyof typeof SCALE_MAP] || SCALE_MAP.md;
 
 	const styles = useMemo(
 		() =>
@@ -75,27 +77,29 @@ const TokyoTemplate = ({
 						padding={padding}
 						color="#fff"
 					>
-						<DocText as="heading">
+						<DocText scale={scale} as="heading">
 							{heading?.name}
 							{heading?.title ? (
-								<DocText as="subheading">, {heading?.title}</DocText>
+								<DocText scale={scale} as="subheading">
+									, {heading?.title}
+								</DocText>
 							) : null}
 						</DocText>
-						<DocText size="xs">
+						<DocText scale={scale} size="xs">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any, index: number) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											{index > 0 && index < heading?.subheading?.length
 												? ' | '
 												: ''}
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={{
 													...styles.link,
 													color: '#fff',
 												}}
 											>
-												{extractNameFromLink(subheading.value)}
+												{extractNameFromLink(parseValue(subheading))}
 											</Link>
 										</Fragment>
 									))
@@ -112,8 +116,8 @@ const TokyoTemplate = ({
 					{generateDataByKey(
 						[
 							'summary',
-							'experience',
-							'education',
+							'experiences',
+							'educations',
 							'certifications',
 							'skills',
 							'projects',
@@ -136,6 +140,7 @@ const TokyoTemplate = ({
 										textTransform: 'uppercase',
 										border: 0,
 									},
+									scale,
 								}}
 							/>
 						);

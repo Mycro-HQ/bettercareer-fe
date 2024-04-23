@@ -5,7 +5,13 @@ import ExperienceFrame from './view/build-resume-pane/components/experience-fram
 export const COMPONENT_MAP = {
 	heading: HeadingModule,
 	...(
-		['experience', 'education', 'certifications', 'projects', 'skills'] as const
+		[
+			'experiences',
+			'educations',
+			'certifications',
+			'projects',
+			'skills',
+		] as const
 	).reduce(
 		(acc, key) => ({
 			...acc,

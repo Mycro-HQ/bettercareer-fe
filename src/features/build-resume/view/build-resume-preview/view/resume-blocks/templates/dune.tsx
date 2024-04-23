@@ -12,15 +12,15 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { fixText, isEmpty } from '@labs/utils';
+import { fixText, isEmpty, parseValue } from '@labs/utils';
 
 import { ModuleData } from './types';
-import { COLOR_MAPS, MARGIN_MAP } from './utils';
+import { COLOR_MAPS, MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Summary,
-	experience: Experience,
-	education: Education,
+	experiences: Experience,
+	educations: Education,
 	certifications: Certification,
 	skills: Skills,
 	projects: Projects,
@@ -48,6 +48,8 @@ const DuneTemplate = ({
 }) => {
 	const padding =
 		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+	const scale =
+		SCALE_MAP[template.fontSize as keyof typeof SCALE_MAP] || SCALE_MAP.md;
 
 	const styles = useMemo(
 		() =>
@@ -81,22 +83,26 @@ const DuneTemplate = ({
 						alignItems="center"
 						textAlign="center"
 					>
-						<DocText as="heading">{heading?.name}</DocText>
+						<DocText scale={scale} as="heading">
+							{heading?.name}
+						</DocText>
 						{heading?.title ? (
-							<DocText as="subheading">{heading?.title}</DocText>
+							<DocText scale={scale} as="subheading">
+								{heading?.title}
+							</DocText>
 						) : null}
-						<DocText size="xs">
+						<DocText scale={scale} size="xs">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any, index: number) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											{index > 0 && index < heading?.subheading?.length
 												? ' | '
 												: ''}
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={styles.link}
 											>
-												{extractNameFromLink(subheading.value)}
+												{extractNameFromLink(parseValue(subheading))}
 											</Link>
 										</Fragment>
 									))
@@ -108,8 +114,8 @@ const DuneTemplate = ({
 				{generateDataByKey(
 					[
 						'summary',
-						'experience',
-						'education',
+						'experiences',
+						'educations',
 						'certifications',
 						'skills',
 						'projects',
@@ -122,7 +128,11 @@ const DuneTemplate = ({
 						renderElements.custom;
 					if (isEmpty(module.data)) return null;
 					return (
-						<Component key={module.key} data={module.data} styles={styles} />
+						<Component
+							key={module.key}
+							data={module.data}
+							styles={{ ...styles, scale }}
+						/>
 					);
 				})}
 			</Page>
@@ -135,23 +145,23 @@ function Skills({ data, styles }: ModuleData) {
 		<DocFlex direction="column">
 			{data?.length ? (
 				<>
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Skills
 					</DocText>
 					<DocFlex direction="column" gap={8}>
 						{data.map(
 							(skill: { name: string; value: string[]; $id: string }) => (
-								<DocText key={skill?.$id}>
+								<DocText scale={styles?.scale} key={skill?.$id}>
 									•{' '}
 									{skill?.name ? (
-										<DocText size="xs" weight="heavy">
+										<DocText scale={styles?.scale} size="xs" weight="heavy">
 											{skill.name}:{' '}
 										</DocText>
 									) : null}
-									{skill?.value?.map((value: any, index: number) => (
-										<DocText size="xs" key={index}>
+									{parseValue(skill)?.map((value: any, index: number) => (
+										<DocText scale={styles?.scale} size="xs" key={index}>
 											{fixText(value, {
-												prefix: index > 0 && index < data.length ? ', ' : '',
+												prefix: index > 0 ? ', ' : '',
 											})}
 										</DocText>
 									))}
@@ -170,7 +180,7 @@ function Projects({ data, styles }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Projects
 					</DocText>
 					<DocFlex direction="column" gap={4}>
@@ -189,7 +199,7 @@ function Projects({ data, styles }: ModuleData) {
 										justifyContent="space-between"
 										width="100%"
 									>
-										<DocText size="xs" weight="heavy">
+										<DocText scale={styles?.scale} size="xs" weight="heavy">
 											<Link
 												style={styles.link}
 												href={url ?? `https://www.google.com/search?q=${name}`}
@@ -201,6 +211,7 @@ function Projects({ data, styles }: ModuleData) {
 											})}
 										</DocText>
 										<DocText
+											scale={styles?.scale}
 											size="xs"
 											weight="normal"
 											style={styles.rightAlign}
@@ -209,7 +220,10 @@ function Projects({ data, styles }: ModuleData) {
 										</DocText>
 									</DocFlex>
 
-									<RichOutput text={exp.description?.value} />
+									<RichOutput
+										scale={styles?.scale}
+										text={parseValue(exp.description)}
+									/>
 								</DocFlex>
 							);
 						})}
@@ -223,12 +237,12 @@ function Projects({ data, styles }: ModuleData) {
 function Summary({ data, styles }: ModuleData) {
 	return (
 		<DocFlex direction="column">
-			{data?.value ? (
+			{parseValue(data) ? (
 				<>
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Summary
 					</DocText>
-					<RichOutput text={data.value} />
+					<RichOutput scale={styles?.scale} text={parseValue(data)} />
 				</>
 			) : null}
 		</DocFlex>
@@ -240,10 +254,10 @@ function CustomSection({ data, styles }: ModuleData) {
 		<DocFlex direction="column">
 			{data?.title ? (
 				<>
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						{data.title}
 					</DocText>
-					<RichOutput text={data?.value} />
+					<RichOutput scale={styles?.scale} text={parseValue(data)} />
 				</>
 			) : null}
 		</DocFlex>
@@ -255,7 +269,7 @@ function Experience({ data, styles }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Work Experience
 					</DocText>
 					<DocFlex direction="column" gap={8}>
@@ -283,7 +297,7 @@ function Experience({ data, styles }: ModuleData) {
 										justifyContent="space-between"
 										width="100%"
 									>
-										<DocText size="xs" weight="heavy">
+										<DocText scale={styles?.scale} size="xs" weight="heavy">
 											<Link
 												style={styles.link}
 												href={
@@ -297,6 +311,7 @@ function Experience({ data, styles }: ModuleData) {
 											})}{' '}
 										</DocText>
 										<DocText
+											scale={styles?.scale}
 											size="xs"
 											weight="normal"
 											style={styles.rightAlign}
@@ -305,7 +320,10 @@ function Experience({ data, styles }: ModuleData) {
 										</DocText>
 									</DocFlex>
 
-									<RichOutput text={exp.description?.value} />
+									<RichOutput
+										scale={styles?.scale}
+										text={parseValue(exp.description)}
+									/>
 								</DocFlex>
 							);
 						})}
@@ -320,7 +338,7 @@ function Education({ data, styles }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Education
 					</DocText>
 					<DocFlex direction="column" gap={8}>
@@ -341,7 +359,7 @@ function Education({ data, styles }: ModuleData) {
 										justifyContent="space-between"
 										width="100%"
 									>
-										<DocText size="xs" weight="heavy">
+										<DocText scale={styles?.scale} size="xs" weight="heavy">
 											• {title},{' '}
 											{institution ? (
 												<Link
@@ -356,6 +374,7 @@ function Education({ data, styles }: ModuleData) {
 											})}{' '}
 										</DocText>
 										<DocText
+											scale={styles?.scale}
 											size="xs"
 											weight="normal"
 											style={styles.rightAlign}
@@ -378,7 +397,7 @@ function Certification({ data, styles }: ModuleData) {
 		<>
 			{data?.length ? (
 				<DocFlex direction="column">
-					<DocText as="title" {...styles?.title}>
+					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Certificates
 					</DocText>
 					<DocFlex direction="column" gap={8}>
@@ -403,7 +422,7 @@ function Certification({ data, styles }: ModuleData) {
 										justifyContent="space-between"
 										width="100%"
 									>
-										<DocText size="xs" weight="heavy">
+										<DocText scale={styles?.scale} size="xs" weight="heavy">
 											•{' '}
 											<Link
 												style={styles.link}
@@ -419,6 +438,7 @@ function Certification({ data, styles }: ModuleData) {
 											})}{' '}
 										</DocText>
 										<DocText
+											scale={styles?.scale}
 											size="xs"
 											weight="normal"
 											style={styles.rightAlign}

@@ -9,8 +9,8 @@ import { useBuildStore } from '@/store/z-store/builder';
 import styles from './build-resume-preview.module.scss';
 import { TemplateModal } from './view/template-modal/template-modal';
 
-const Resume = dynamic(
-	() => import('./view/resume-blocks').then((md) => md.ResumeApp),
+const ResumePreview = dynamic(
+	() => import('./view/resume-blocks').then((md) => md.ResumePreview),
 	{
 		ssr: false,
 	}
@@ -32,7 +32,7 @@ export const BuildResumePreview = ({ previewRef }: { previewRef: any }) => {
 		const standardA4Size = { width: 595, height: 842 };
 
 		const zoom = Math.min(
-			0.73,
+			0.75,
 			Math.min(height, standardA4Size.height) / standardA4Size.height / 1.2
 		);
 
@@ -61,7 +61,7 @@ export const BuildResumePreview = ({ previewRef }: { previewRef: any }) => {
 		<>
 			<div className={styles.Preview}>
 				<div className="relative w-full h-full">
-					<Resume
+					<ResumePreview
 						scale={zoomLevel}
 						setScale={(scale: number) => {
 							setZoomLevel(scale);

@@ -4,150 +4,236 @@ import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import { ScoreCounter } from '@/components/score-counter';
 import { Accordion } from '@labs/components/accordion';
 import { Progress } from '@/components/misc/progress';
-
-import { ResumeAnalysisInfo } from '.';
+import Logo from '@labs/icons/logo-mark.svg';
 
 import styles from './resume-analysis.module.scss';
+import classNames from 'classnames';
+import ResumePreview from '@/features/build-resume/view/build-resume-preview/view/resume-blocks';
+import { getDataIcons } from '@labs/utils';
 
-export const ResumeAnalysis = () => {
-	const [currentIndex, setCurrentIndex] = React.useState(0);
+const COLORS = ['#2b94f4', '#4ea27f', '#ff973c', '#dd4237'];
+
+export const ResumeAnalysis = ({ data }: { data?: any }) => {
+	const [tab, setTab] = React.useState('analysis');
 
 	// reduce the ResumeAnalysisInfo array to get the overall score percentage
-	const score =
-		ResumeAnalysisInfo.reduce((total, item) => total + item.score, 0) /
-		ResumeAnalysisInfo.length;
+
+	const getColorByScore = (score: number) => {
+		if (score >= 90) {
+			return COLORS[0];
+		} else if (score >= 80) {
+			return COLORS[1];
+		} else if (score >= 70) {
+			return COLORS[2];
+		} else {
+			return COLORS[3];
+		}
+	};
+
+	if (!data) {
+		return (
+			<Text.p weight={500} size="sm" align="center">
+				Something went wrong. Please try again later.
+			</Text.p>
+		);
+	}
 
 	return (
-		<div className={styles.ResumeAnalysis}>
+		<div className={classNames([styles.ResumeAnalysis, 'p-[18px]'])}>
 			<Flex.Column gap={6}>
-				<Flex alignItems="center" gap={12}>
-					<Heading.h3 weight={400} animate="slide">
-						Resume Analysis
-					</Heading.h3>
-				</Flex>
-				<Text color="var(--text-gray)" animate="fade" className="mb-[40px]">
-					A breakdown of how your resume can be better
-				</Text>
+				<Flex.Row
+					gap={8}
+					className="mb-4 -mt-[14px]"
+					justifyContent="space-between"
+				>
+					<CallToAction.button
+						variant="clear"
+						size="sm"
+						style={{ paddingLeft: 0 }}
+						leadingIcon={
+							<img
+								src={getDataIcons('arrow-thin-right', '#000')}
+								className="rotate-[180deg]"
+							/>
+						}
+					>
+						See All Analysis
+					</CallToAction.button>
+					<CallToAction.button variant="primary" size="sm">
+						Get an Expert Review
+					</CallToAction.button>
+				</Flex.Row>
+				<Flex.Column gap={4} className="mb-4 ">
+					<Heading.h4 fontSize="20px" weight={400} animate="slide">
+						<Logo width={18} className="inline" /> Resume Analysis
+					</Heading.h4>
+					<Flex.Row gap={8} alignItems="center">
+						<Text.p weight={500} size="sm">
+							Name: Untitle Resume
+						</Text.p>
+					</Flex.Row>
+				</Flex.Column>
 			</Flex.Column>
+			<Flex.Row
+				gap={8}
+				justifyContent="center"
+				alignItems="center"
+				className="mb-8"
+			>
+				<CallToAction
+					variant={tab === 'analysis' ? 'secondary' : 'clear'}
+					onClick={() => setTab('analysis')}
+					size="sm"
+				>
+					Analysis
+				</CallToAction>
+				<CallToAction
+					variant={tab === 'preview' ? 'secondary' : 'clear'}
+					onClick={() => setTab('preview')}
+					size="sm"
+				>
+					Preview
+				</CallToAction>
+			</Flex.Row>
 			<Flex.Row gap={32} className={styles.ResumeAnalysisSection}>
 				<aside className={styles.ResumeAnalysisAside}>
 					<Flex.Column
-						gap={19.03}
+						gap={18}
 						alignItems="center"
 						className={styles.ResumeAnalysisBox}
 					>
 						<Flex.Column
-							alignItems="center"
+							fullWidth
 							justifyContent="center"
-							className={styles.ResumeOverallScoreCounter}
+							alignItems="center"
+							className="basis-[230px] lg:basis-[100%] mx-auto"
 						>
-							<ScoreCounter className={styles.ResumeScoreSvg} score={score} />
-							<Heading.h5 fontSize="28px" weight={700}>
-								{score}
-							</Heading.h5>
-							<Text.p weight={500} size="sm">
-								Overall score
-							</Text.p>
+							<Flex.Column
+								alignItems="center"
+								justifyContent="center"
+								className={styles.ResumeOverallScoreCounter}
+							>
+								<ScoreCounter
+									className={styles.ResumeScoreSvg}
+									score={data?.overallScore}
+								/>
+								<Heading.h5 fontSize="28px" weight={700}>
+									{data?.overallScore}
+								</Heading.h5>
+								<Text.p weight={500} size="sm">
+									Overall score
+								</Text.p>
+							</Flex.Column>
+							<Text.p weight={700}>Score Breakdown</Text.p>
 						</Flex.Column>
-						<Text.p weight={700}>Score Breakdown</Text.p>
-						<Flex.Column gap={19.03} className={styles.ResumeScoreBreakDown}>
-							{ResumeAnalysisInfo.map((item) => (
-								<div key={item.label} className={styles.ResumeScoreItem}>
-									<Flex.Row
-										key={item.label}
-										className={styles.ResumeScoreTitle}
-									>
-										<Text.p size="sm" casing="capitalize">
-											{item.label}
-										</Text.p>
-										<Text.p size="sm" weight={600} color={item.color}>
-											{item.score}/100
-										</Text.p>
-									</Flex.Row>
-									{/*
-									 * Render progress bar to visualize score
-									 * Added 20 as alpha value to get the proper opacity for the background
-									 */}
+						<Flex.Column gap={18} className={styles.ResumeScoreBreakDown}>
+							{Object.keys(data.results).map((key, index) => {
+								const item = data.results[key as keyof typeof data.results];
+								const color = getColorByScore(item.score);
 
-									<Progress value={item.score} color={item.color} />
-								</div>
-							))}
+								return (
+									<div key={key} className={styles.ResumeScoreItem}>
+										<Flex.Row key={key} className={styles.ResumeScoreTitle}>
+											<Text.p size="sm" casing="capitalize">
+												{key}
+											</Text.p>
+											<Text.p size="sm" weight={600} color={color}>
+												{item.score}/100
+											</Text.p>
+										</Flex.Row>
+
+										<Progress value={item.score} color={color} />
+									</div>
+								);
+							})}
 						</Flex.Column>
 					</Flex.Column>
 				</aside>
-				<Flex.Column gap={24} className={styles.ResumeAnalysisMain}>
-					<Flex.Column gap={14} className={styles.ResumeAnalysisBox}>
-						<Heading.h4 weight={500} animate="slide">
-							Your resume could be improved!
-						</Heading.h4>
-						<Text color="var(--text-gray)" animate="fade">
-							A general summary note on how the resume can be improved. Could be
-							generated by AI to make it unique per different user.
-						</Text>
-						<CallToAction className="mt-[10px]">Build Resume</CallToAction>
+				{tab === 'preview' && (
+					<Flex.Column
+						gap={24}
+						className={classNames([styles.ResumeAnalysisMain, styles.Preview])}
+					>
+						<ResumePreview scale={1} useDefault />
 					</Flex.Column>
-					<Flex.Column gap={12}>
-						<Heading.h6 weight={600} animate="slide">
-							Analysis
-						</Heading.h6>
-						<Flex.Column gap={16} fullWidth>
-							<Accordion.Group allowMultiple>
-								{ResumeAnalysisInfo.map((item, index) => (
-									<Accordion
-										key={index}
-										dataKey={`${index}:accordion`}
-										className={styles.AccordionItem}
-										title={
-											<Flex.Row
-												alignItems="center"
-												justifyContent="space-between"
+				)}
+				{tab === 'analysis' && (
+					<Flex.Column gap={24} className={styles.ResumeAnalysisMain}>
+						<Flex.Column gap={12}>
+							<Flex.Column gap={16} fullWidth>
+								<Accordion.Group allowMultiple>
+									{Object.keys(data.results).map((key, index) => {
+										const item = data.results[key as keyof typeof data.results];
+										const color = getColorByScore(item.score);
+										return (
+											<Accordion
+												key={index}
+												dataKey={`${index}:accordion`}
+												className={styles.AccordionItem}
+												title={
+													<Flex.Row
+														alignItems="center"
+														justifyContent="space-between"
+													>
+														<Flex.Row
+															alignItems="center"
+															gap={12}
+															className={styles.AccordionHeader}
+														>
+															<Text.p weight={700} casing="capitalize">
+																{key}
+															</Text.p>
+															<div
+																style={{
+																	background: color + '20',
+																	borderColor: color,
+																}}
+																className={styles.ResumeScoreIndicator}
+															>
+																<Text.p weight={600} color={color} size="sm">
+																	{item.score}/100
+																</Text.p>
+															</div>
+														</Flex.Row>
+													</Flex.Row>
+												}
 											>
-												<Flex.Row
-													alignItems="center"
-													gap={12}
-													className={styles.AccordionHeader}
-												>
-													<Text.p
-														fontSize="20px"
-														weight={700}
-														casing="capitalize"
-													>
-														{item.label}
+												<div className={styles.AccordionContent}>
+													<Text.p weight={600}>
+														Problem: {item.problems.join(', ')}
 													</Text.p>
-													<div
-														style={{
-															background: item.color + '10',
-															borderColor: item.color + '20',
-														}}
-														className={styles.ResumeScoreIndicator}
-													>
-														<Text.p weight={600} color={item.color} size="sm">
-															{item.score}/100
-														</Text.p>
+													<div className={styles.AccordionContentItem}>
+														<Text.p weight={600}>Solution:</Text.p>
+														<ul className={styles.ResumeList}>
+															{item.solutions.map(
+																(solution: string, index: number) => (
+																	<li
+																		key={index}
+																		className={styles.ResumeListItem}
+																	>
+																		{solution}
+																	</li>
+																)
+															)}
+														</ul>
 													</div>
-												</Flex.Row>
-											</Flex.Row>
-										}
-									>
-										<div className={styles.AccordionContent}>
-											<Text.p weight={600}>Problem: {item.problem}</Text.p>
-											<div className={styles.AccordionContentItem}>
-												<Text.p weight={600}>Solution:</Text.p>
-												<ul className={styles.ResumeList}>
-													{item.solutions.map((solution, index) => (
-														<li key={index} className={styles.ResumeListItem}>
-															{solution}
-														</li>
-													))}
-												</ul>
-											</div>
-										</div>
-									</Accordion>
-								))}
-							</Accordion.Group>
+												</div>
+											</Accordion>
+										);
+									})}
+								</Accordion.Group>
+							</Flex.Column>
 						</Flex.Column>
+						<Text.p
+							weight={500}
+							className="opacity-60"
+							fontSize="12px"
+							size="sm"
+						>
+							NB: These analysis are AI generated and may not be 100% accurate
+						</Text.p>
 					</Flex.Column>
-				</Flex.Column>
+				)}
 			</Flex.Row>
 		</div>
 	);

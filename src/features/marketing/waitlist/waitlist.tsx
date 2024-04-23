@@ -431,6 +431,7 @@ const WaitListModal = ({
 	};
 	const { createToast } = useToast();
 	const posthog = usePostHog();
+	const [files, setFiles] = React.useState<any>([]);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const { mutateAsync: joinWaitlist, isPending } = useSendWaitlistMutation();
 	const [waitlistState, setWaitlistState] = React.useState<WaitlistState>({
@@ -566,6 +567,8 @@ const WaitListModal = ({
 									<DragAndDrop
 										size="md"
 										className="mt-5"
+										files={files}
+										setFiles={setFiles}
 										onDrop={(files) => {
 											return updateStateValue('files', files);
 										}}

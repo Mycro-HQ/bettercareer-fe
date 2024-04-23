@@ -5,7 +5,7 @@ import { Field } from '@labs/components/field';
 import { SkillsAutoComplete } from './components/skills-autocomplete';
 
 export const MODULE_OPTIONS = {
-	experience: {
+	experiences: {
 		name: 'Experience',
 		emptyMessage:
 			'Add your work experience: Include past and present positions to build your resume',
@@ -70,7 +70,7 @@ export const MODULE_OPTIONS = {
 			},
 		],
 	},
-	education: {
+	educations: {
 		name: 'Education',
 		emptyMessage:
 			'Add your education: Simply fill in the details to showcase your academic background.',

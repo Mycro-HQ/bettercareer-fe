@@ -17,51 +17,58 @@
 
 	@include media('md', 'max') {
 		.Modal {
-			margin: 0 !important;
-			height: 100% !important;
+			margin: 0 8px !important;
 		}
+		.Modal {
+			&.lg,
+			&.xlg,
+			&.xxlg {
+				margin: 0 !important;
+				height: 100% !important;
 
-		.ModalContent {
-			padding: 65px 14px 14px;
-			height: 100%;
-			margin: 0;
-			border-radius: 0;
+				.ModalContent {
+					padding: 65px 14px 14px;
+					height: 100%;
+					margin: 0;
+					border-radius: 0;
 
-			&.hug {
-				padding: 0;
-			}
-		}
+					&.hug {
+						padding: 0;
+					}
+				}
 
-		.ModalHeader {
-			padding: 14px;
-		}
+				.ModalHeader {
+					padding: 14px;
+				}
 
-		.ModalActionBar {
-			margin-bottom: 8px;
-			width: 100%;
-			position: fixed;
-			width: 100%;
-			left: env(safe-area-inset-left, 0px);
-			content: '';
-			display: flex;
-			align-items: center;
-			z-index: 100;
-			padding: 16px 16px !important;
-			top: 0px;
-			background: #fff;
-			height: 50px;
+				.ModalActionBar {
+					margin-bottom: 8px;
+					width: 100%;
+					position: fixed;
+					width: 100%;
+					left: env(safe-area-inset-left, 0px);
+					content: '';
+					display: flex;
+					align-items: center;
+					z-index: 100;
+					padding: 16px 16px !important;
+					top: 0px;
+					background: #fff;
+					height: 50px;
 
-			@include media('md', 'max') {
-				padding: 16px 14px !important;
-				top: 8px;
-			}
+					@include media('md', 'max') {
+						padding: 16px 14px !important;
+						top: 0px;
+					}
 
-			.Close {
-				right: 10px;
-				margin-top: 0px;
-				width: 14px;
-				height: 14px;
-				z-index: 100;
+					.Close {
+						right: 10px;
+						margin-top: 0px;
+						width: 14px;
+						height: 14px;
+						z-index: 100;
+					}
+				}
 			}
 		}
 	}
@@ -94,20 +101,15 @@
 	outline-offset: 2px;
 	color: inherit;
 	z-index: 1100;
+	transform: none !important;
 
 	&.maxHeight {
 		max-height: 720px;
 	}
 
 	&:not(.centered) {
-		margin: 2rem 0;
+		margin: 2rem 14px;
 		max-height: calc(100% - 4rem);
-	}
-
-	@include media('md', 'max') {
-		margin: 0 15px;
-		max-width: 100% !important;
-		max-height: 100% !important;
 	}
 
 	&.lg {
@@ -122,16 +124,16 @@
 		max-width: 300px;
 
 		.ModalActionBar {
-			padding: 14px 4px 0px;
+			padding: 18px 0px 0px;
 		}
 	}
 
 	&.xlg {
-		max-width: 900px;
+		max-width: 1300px;
 	}
 
 	&.xxlg {
-		max-width: 1200px;
+		max-width: 1400px;
 	}
 
 	&.centered {

@@ -124,6 +124,12 @@
 	min-height: 300px;
 	border: 1px solid #e7e9eb;
 
+	img {
+		max-height: 280px;
+		object-fit: cover;
+		object-position: top;
+	}
+
 	.PastResumeInfo {
 		padding: 18px;
 		display: flex;

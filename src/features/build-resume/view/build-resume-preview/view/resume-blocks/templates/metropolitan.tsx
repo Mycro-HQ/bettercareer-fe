@@ -10,16 +10,16 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { isEmpty } from '@labs/utils';
+import { isEmpty, parseValue } from '@labs/utils';
 
 import { Dune } from './dune';
 import { Classic } from './classic';
-import { MARGIN_MAP } from './utils';
+import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Dune.Summary,
-	experience: Dune.Experience,
-	education: Classic.Education,
+	experiences: Dune.Experience,
+	educations: Classic.Education,
 	certifications: Classic.Certification,
 	skills: Classic.Skills,
 	projects: Dune.Projects,
@@ -46,6 +46,9 @@ const MetropolitanTemplate = ({
 	const primaryColor = template.colors.primary;
 	const padding =
 		MARGIN_MAP[template.margin as keyof typeof MARGIN_MAP] || MARGIN_MAP.md;
+	const scale =
+		SCALE_MAP[template.fontSize as keyof typeof SCALE_MAP] || SCALE_MAP.md;
+
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
@@ -81,25 +84,27 @@ const MetropolitanTemplate = ({
 							alignItems="flex-start"
 							textAlign="left"
 						>
-							<DocText as="heading" marginBottom={0}>
+							<DocText scale={scale} as="heading" marginBottom={0}>
 								{heading?.name}
 							</DocText>
 							{heading?.title ? (
-								<DocText as="subheading">{heading?.title}</DocText>
+								<DocText scale={scale} as="subheading">
+									{heading?.title}
+								</DocText>
 							) : null}
 						</DocFlex>
-						<DocText size="xs" textAlign="right">
+						<DocText scale={scale} size="xs" textAlign="right">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={{
 													...styles.link,
 													color: '#fff',
 												}}
 											>
-												{extractNameFromLink(subheading.value)} {'\n'}
+												{extractNameFromLink(parseValue(subheading))} {'\n'}
 											</Link>
 										</Fragment>
 									))
@@ -116,7 +121,7 @@ const MetropolitanTemplate = ({
 				>
 					<DocFlex direction="column" gap={Math.max(padding - 14, 12)} flex={1}>
 						{generateDataByKey(
-							['summary', 'experience', 'projects'],
+							['summary', 'experiences', 'projects'],
 							modules
 						).map((module: any) => {
 							const Component =
@@ -133,9 +138,10 @@ const MetropolitanTemplate = ({
 										title: {
 											color: primaryColor,
 											textTransform: 'uppercase',
-											fontSize: 10,
+											fontSize: 10 / scale,
 											border: 0,
 										},
+										scale,
 									}}
 								/>
 							);
@@ -149,7 +155,7 @@ const MetropolitanTemplate = ({
 						height="100%"
 					>
 						{generateDataByKey(
-							['certifications', 'skills', 'education'],
+							['certifications', 'skills', 'educations'],
 							modules
 						).map((module: any) => {
 							const Component =
@@ -166,9 +172,10 @@ const MetropolitanTemplate = ({
 										title: {
 											color: primaryColor,
 											textTransform: 'uppercase',
-											fontSize: 10,
+											fontSize: 10 / scale,
 											border: 0,
 										},
+										scale,
 									}}
 								/>
 							);

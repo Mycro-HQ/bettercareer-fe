@@ -16,8 +16,6 @@ export function middleware(req: NextRequest) {
 		return response;
 	};
 
-	return NextResponse.next();
-
 	// Redirect users to the home page if the app is in testing mode and they are not on the home page
 	if (process.env.NEXT_PUBLIC_TESTING === 'true' && url.pathname !== '/') {
 		url.pathname = '/';

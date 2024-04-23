@@ -8,8 +8,10 @@ export const FontFamily = [
 	'Open Sans',
 	'Playfair',
 	'Inter',
-	'Lato Body',
+	'Lato',
 	'Times-Roman',
+	'Times-Bold',
+	'Helvetica-Bold',
 	'Helvetica',
 ];
 
@@ -17,4 +19,10 @@ export const MARGIN_MAP = {
 	sm: 14,
 	md: 24,
 	lg: 32,
+};
+
+export const SCALE_MAP = {
+	sm: 1.2,
+	md: 1,
+	lg: 0.8,
 };
