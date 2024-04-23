@@ -13,6 +13,8 @@ const nextConfig = {
 	},
 
 	webpack: (config, { isServer }) => {
+		config.resolve.alias.canvas = false;
+
 		config.module.rules.push({
 			test: /\.svg$/i,
 			issuer: /\.[jt]sx?$/,
