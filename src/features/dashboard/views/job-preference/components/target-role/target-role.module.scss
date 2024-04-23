@@ -1,0 +1,15 @@
+.TargetRole{
+    padding: 10px 20px;
+    border: 1px solid #E7E9EB;
+    background-color: var(--primary-white);
+    border-radius: 32px;
+    cursor: pointer;
+}
+
+.TargetRoleSelected{
+    padding: 10px 20px;
+    border: 1px solid var(--primary-blue);
+    background-color: #EBF5FF;
+    border-radius: 32px;
+    cursor: pointer;
+}
