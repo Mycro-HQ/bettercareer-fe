@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropdownMenu } from '@radix-ui/themes';
 import { Text, Flex, CallToAction } from '@labs/components';
-import DownIcon from '@public/images/dashboard/Down.svg';
+import DownIcon from '@labs/icons/dashboard/down.svg';
 import classNames from 'classnames';
 
 function JobFilterText({
