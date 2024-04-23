@@ -15,6 +15,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
 
 import {
+	cleanText,
 	createErrorWithCode,
 	forwardRefWrapper,
 	generateUUID,
@@ -227,11 +228,6 @@ export const fieldFactory = <T extends FieldElementTypes>(component: T) =>
 
 				return type === 'password' ? isPassword : type;
 			}, [type, passwordVisible]);
-
-			const cleanText = (val: string) => {
-				const _val = val.replace(/[^a-zA-Z ]/g, ' ');
-				return _val.charAt(0).toUpperCase() + _val.slice(1);
-			};
 
 			const validateValue = useCallback(
 				(e: React.ChangeEvent<NativeElementProps<T>>) => {

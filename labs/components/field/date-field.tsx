@@ -1,13 +1,14 @@
 import { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
-import { format, sub } from 'date-fns';
+import { addMonths, format, sub } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import { FieldInstance } from './field';
+
 import { generateUUID } from '../../utils';
 
 import Calendar from '@labs/icons/dashboard/calendar.svg';
 
+import { FieldInstance } from './field';
 import styles from './field.module.scss';
 
 export interface IFieldDate
@@ -104,6 +105,8 @@ export const FieldDate: React.FC<IFieldDate> = ({
 						required={required}
 						dateFormat="MM/yyyy"
 						onSelect={onSelect}
+						autoComplete="off"
+						spellCheck="false"
 						onChange={onChange!}
 						minDate={
 							new Date(
@@ -115,11 +118,9 @@ export const FieldDate: React.FC<IFieldDate> = ({
 						}
 						showPopperArrow={false}
 						showMonthYearPicker
-						showYearDropdown
+						showMonthYearDropdown
 						dropdownMode="select"
-						maxDate={
-							new Date(format(Date.now(), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
-						}
+						maxDate={addMonths(new Date(), 1)}
 						{...props}
 					/>
 				</motion.div>

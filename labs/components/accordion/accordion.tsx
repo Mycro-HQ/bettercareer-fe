@@ -78,12 +78,10 @@ const AccordionMain = memo<AccordionProps>(
 				classNames([
 					styles.Accordion,
 					className,
-					{
-						[styles.isOpen]: isOpen,
-						[styles[size]]: size,
-					},
+					size && styles[size],
+					isOpen && styles.isOpen,
 				]),
-			[, className, isOpen, size]
+			[className, isOpen, size]
 		);
 
 		return (
@@ -91,7 +89,7 @@ const AccordionMain = memo<AccordionProps>(
 				<button
 					className={classNames([
 						styles.AccordionHeader,
-						isOpen && styles.isOpen,
+						(isOpen && styles.isOpen) || '',
 					])}
 					onClick={onToggle}
 				>
@@ -116,7 +114,7 @@ const AccordionMain = memo<AccordionProps>(
 					{isOpen && (
 						<motion.div
 							initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
-							animate={{ opacity: 1, height: '100%', overflow: 'auto' }}
+							animate={{ opacity: 1, height: '100%', overflow: 'unset' }}
 							exit={{
 								opacity: 0,
 								height: 0,
