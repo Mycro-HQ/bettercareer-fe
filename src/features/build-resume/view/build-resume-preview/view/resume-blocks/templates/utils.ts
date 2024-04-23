@@ -8,8 +8,10 @@ export const FontFamily = [
 	'Open Sans',
 	'Playfair',
 	'Inter',
-	'Lato Body',
+	'Lato',
 	'Times-Roman',
+	'Times-Bold',
+	'Helvetica-Bold',
 	'Helvetica',
 ];
 

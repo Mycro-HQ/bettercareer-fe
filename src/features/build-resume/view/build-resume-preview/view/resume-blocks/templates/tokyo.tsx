@@ -10,15 +10,15 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { isEmpty } from '@labs/utils';
+import { isEmpty, parseValue } from '@labs/utils';
 
 import { Classic } from './classic';
 import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Classic.Summary,
-	experience: Classic.Experience,
-	education: Classic.Education,
+	experiences: Classic.Experience,
+	educations: Classic.Education,
 	certifications: Classic.Certification,
 	skills: Classic.Skills,
 	projects: Classic.Projects,
@@ -88,18 +88,18 @@ const TokyoTemplate = ({
 						<DocText scale={scale} size="xs">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any, index: number) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											{index > 0 && index < heading?.subheading?.length
 												? ' | '
 												: ''}
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={{
 													...styles.link,
 													color: '#fff',
 												}}
 											>
-												{extractNameFromLink(subheading.value)}
+												{extractNameFromLink(parseValue(subheading))}
 											</Link>
 										</Fragment>
 									))
@@ -116,8 +116,8 @@ const TokyoTemplate = ({
 					{generateDataByKey(
 						[
 							'summary',
-							'experience',
-							'education',
+							'experiences',
+							'educations',
 							'certifications',
 							'skills',
 							'projects',

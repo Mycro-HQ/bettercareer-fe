@@ -12,15 +12,15 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { fixText, isEmpty } from '@labs/utils';
+import { fixText, isEmpty, parseValue } from '@labs/utils';
 
 import { ModuleData } from './types';
 import { COLOR_MAPS, MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Summary,
-	experience: Experience,
-	education: Education,
+	experiences: Experience,
+	educations: Education,
 	certifications: Certification,
 	skills: Skills,
 	projects: Projects,
@@ -94,15 +94,15 @@ const DuneTemplate = ({
 						<DocText scale={scale} size="xs">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any, index: number) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											{index > 0 && index < heading?.subheading?.length
 												? ' | '
 												: ''}
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={styles.link}
 											>
-												{extractNameFromLink(subheading.value)}
+												{extractNameFromLink(parseValue(subheading))}
 											</Link>
 										</Fragment>
 									))
@@ -114,8 +114,8 @@ const DuneTemplate = ({
 				{generateDataByKey(
 					[
 						'summary',
-						'experience',
-						'education',
+						'experiences',
+						'educations',
 						'certifications',
 						'skills',
 						'projects',
@@ -158,10 +158,10 @@ function Skills({ data, styles }: ModuleData) {
 											{skill.name}:{' '}
 										</DocText>
 									) : null}
-									{skill?.value?.map((value: any, index: number) => (
+									{parseValue(skill)?.map((value: any, index: number) => (
 										<DocText scale={styles?.scale} size="xs" key={index}>
 											{fixText(value, {
-												prefix: index > 0 && index < data.length ? ', ' : '',
+												prefix: index > 0 ? ', ' : '',
 											})}
 										</DocText>
 									))}
@@ -222,7 +222,7 @@ function Projects({ data, styles }: ModuleData) {
 
 									<RichOutput
 										scale={styles?.scale}
-										text={exp.description?.value}
+										text={parseValue(exp.description)}
 									/>
 								</DocFlex>
 							);
@@ -237,12 +237,12 @@ function Projects({ data, styles }: ModuleData) {
 function Summary({ data, styles }: ModuleData) {
 	return (
 		<DocFlex direction="column">
-			{data?.value ? (
+			{parseValue(data) ? (
 				<>
 					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Summary
 					</DocText>
-					<RichOutput scale={styles?.scale} text={data.value} />
+					<RichOutput scale={styles?.scale} text={parseValue(data)} />
 				</>
 			) : null}
 		</DocFlex>
@@ -257,7 +257,7 @@ function CustomSection({ data, styles }: ModuleData) {
 					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						{data.title}
 					</DocText>
-					<RichOutput scale={styles?.scale} text={data?.value} />
+					<RichOutput scale={styles?.scale} text={parseValue(data)} />
 				</>
 			) : null}
 		</DocFlex>
@@ -322,7 +322,7 @@ function Experience({ data, styles }: ModuleData) {
 
 									<RichOutput
 										scale={styles?.scale}
-										text={exp.description?.value}
+										text={parseValue(exp.description)}
 									/>
 								</DocFlex>
 							);

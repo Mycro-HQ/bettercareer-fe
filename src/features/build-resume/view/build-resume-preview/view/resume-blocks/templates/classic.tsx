@@ -12,15 +12,15 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { fixText, isEmpty } from '@labs/utils';
+import { fixText, isEmpty, parseValue } from '@labs/utils';
 
 import { ModuleData } from './types';
 import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Summary,
-	experience: Experience,
-	education: Education,
+	experiences: Experience,
+	educations: Education,
 	certifications: Certification,
 	skills: Skills,
 	projects: Projects,
@@ -31,7 +31,7 @@ const config = {
 	title: 'Classic',
 	details: '1995 called, they want their resume back.',
 	thumbnail: '/images/dashboard/resumes/classic.png',
-	fontFamily: 'Lato Body',
+	fontFamily: 'Lato',
 	margin: 'md',
 	colors: {
 		primary: '#0F1F2E',
@@ -87,15 +87,15 @@ const ClassicTemplate = ({
 						<DocText scale={scale} size="xs">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any, index: number) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											{index > 0 && index < heading?.subheading?.length
 												? ' | '
 												: ''}
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={styles.link}
 											>
-												{extractNameFromLink(subheading.value)}
+												{extractNameFromLink(parseValue(subheading))}
 											</Link>
 										</Fragment>
 									))
@@ -107,8 +107,8 @@ const ClassicTemplate = ({
 				{generateDataByKey(
 					[
 						'summary',
-						'experience',
-						'education',
+						'experiences',
+						'educations',
 						'certifications',
 						'skills',
 						'projects',
@@ -155,10 +155,10 @@ function Skills({ data, styles, variant }: Partial<ModuleData>) {
 											{skill.name}:{' '}
 										</DocText>
 									) : null}
-									{skill?.value?.map((value: any, index: number) => (
+									{parseValue(skill)?.map((value: any, index: number) => (
 										<DocText scale={styles?.scale} size="xs" key={index}>
 											{fixText(value, {
-												prefix: index > 0 && index < data.length ? ', ' : '',
+												prefix: index > 0 ? ', ' : '',
 											})}
 										</DocText>
 									))}
@@ -175,12 +175,12 @@ function Skills({ data, styles, variant }: Partial<ModuleData>) {
 function Summary({ data, styles }: Partial<ModuleData>) {
 	return (
 		<DocFlex direction="column">
-			{data?.value ? (
+			{parseValue(data) ? (
 				<>
 					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Summary
 					</DocText>
-					<RichOutput scale={styles?.scale} text={data.value} />
+					<RichOutput scale={styles?.scale} text={parseValue(data)} />
 				</>
 			) : null}
 		</DocFlex>
@@ -195,7 +195,7 @@ function CustomSection({ data, styles }: Partial<ModuleData>) {
 					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						{data.title}
 					</DocText>
-					<RichOutput scale={styles?.scale} text={data?.value} />
+					<RichOutput scale={styles?.scale} text={parseValue(data)} />
 				</>
 			) : null}
 		</DocFlex>
@@ -238,7 +238,7 @@ function Projects({ data, styles }: ModuleData) {
 
 									<RichOutput
 										scale={styles?.scale}
-										text={exp.description?.value}
+										text={parseValue(exp.description)}
 									/>
 								</DocFlex>
 							);
@@ -292,7 +292,7 @@ function Experience({ data, styles }: ModuleData) {
 									<DocFlex direction="column">
 										<RichOutput
 											scale={styles?.scale}
-											text={exp.description?.value}
+											text={parseValue(exp.description)}
 										/>
 									</DocFlex>
 								</DocFlex>

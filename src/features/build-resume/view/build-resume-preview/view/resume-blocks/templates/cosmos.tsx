@@ -10,7 +10,7 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { isEmpty } from '@labs/utils';
+import { isEmpty, parseValue } from '@labs/utils';
 
 import { Dune } from './dune';
 import { Classic } from './classic';
@@ -18,8 +18,8 @@ import { COLOR_MAPS, MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Dune.Summary,
-	experience: Dune.Experience,
-	education: Classic.Education,
+	experiences: Dune.Experience,
+	educations: Classic.Education,
 	certifications: Classic.Certification,
 	skills: Classic.Skills,
 	projects: Dune.Projects,
@@ -95,14 +95,14 @@ const CosmosTemplate = ({
 						<DocText scale={scale} size="xs" textAlign="right">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={{
 													...styles.link,
 												}}
 											>
-												{extractNameFromLink(subheading.value)} {'\n'}
+												{extractNameFromLink(parseValue(subheading))} {'\n'}
 											</Link>
 										</Fragment>
 									))
@@ -124,7 +124,7 @@ const CosmosTemplate = ({
 						width="100%"
 					>
 						{generateDataByKey(
-							['certifications', 'skills', 'education'],
+							['certifications', 'skills', 'educations'],
 							modules
 						).map((module: any) => {
 							const Component =
@@ -152,7 +152,7 @@ const CosmosTemplate = ({
 					</DocFlex>
 					<DocFlex direction="column" gap={Math.max(margin - 14, 12)} flex={1}>
 						{generateDataByKey(
-							['summary', 'experience', 'projects'],
+							['summary', 'experiences', 'projects'],
 							modules
 						).map((module: any) => {
 							const Component =

@@ -10,15 +10,15 @@ import {
 } from '../utils';
 import { DocFlex } from '../components/doc-flex';
 
-import { isEmpty } from '@labs/utils';
+import { isEmpty, parseValue } from '@labs/utils';
 
 import { Dune } from './dune';
 import { MARGIN_MAP, SCALE_MAP } from './utils';
 
 const renderElements = {
 	summary: Dune.Summary,
-	experience: Dune.Experience,
-	education: Dune.Education,
+	experiences: Dune.Experience,
+	educations: Dune.Education,
 	certifications: Dune.Certification,
 	skills: Dune.Skills,
 	projects: Dune.Projects,
@@ -100,15 +100,15 @@ const DublinTemplate = ({
 						<DocText scale={scale} size="xs" textAlign="right">
 							{heading?.subheading?.length
 								? heading?.subheading?.map((subheading: any) => (
-										<Fragment key={subheading.value}>
+										<Fragment key={parseValue(subheading)}>
 											<Link
-												href={getHref(subheading.value)}
+												href={getHref(parseValue(subheading))}
 												style={{
 													...styles.link,
 													color: primaryColor,
 												}}
 											>
-												{extractNameFromLink(subheading.value)} {'\n'}
+												{extractNameFromLink(parseValue(subheading))} {'\n'}
 											</Link>
 										</Fragment>
 									))
@@ -125,8 +125,8 @@ const DublinTemplate = ({
 					{generateDataByKey(
 						[
 							'summary',
-							'experience',
-							'education',
+							'experiences',
+							'educations',
 							'certifications',
 							'skills',
 							'projects',
