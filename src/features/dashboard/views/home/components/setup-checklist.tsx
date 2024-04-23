@@ -36,10 +36,11 @@ export const SetupChecklist = ({
 	};
 	const checklist = [
 		{
-			title: 'Connect Your Account',
-			status: updateStatus('hasConnectedAccount'),
+			title: 'Create An Account',
+			// status:  updateStatus('hasConnectedAccount'),
+			status: true,
 			infographic: null,
-			description: 'Connect your LinkedIn or Google account to get started.',
+			description: 'Connect your LinkedIn profile to build a resume.',
 			action: '/build-profile',
 			actionText: 'Connect Account',
 		},
