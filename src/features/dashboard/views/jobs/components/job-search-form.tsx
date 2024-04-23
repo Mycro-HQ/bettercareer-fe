@@ -1,9 +1,8 @@
 import React from 'react';
 import { Flex, CallToAction } from '@labs/components';
-import SearchIcon from '@public/images/dashboard/Search.svg';
-import SearchWhiteIcon from '@public/images/dashboard/SearchWhite.svg';
-import JobTypeIcon from '@public/images/dashboard/job-search.svg';
-import LocationIcon from '@public/images/dashboard/location.svg';
+import SearchIcon from '@labs/icons/dashboard/search.svg';
+import JobTypeIcon from '@labs/icons/dashboard/job-search.svg';
+import LocationIcon from '@labs/icons/dashboard/location.svg';
 import styles from '../jobs.module.scss';
 
 export function JobSearchForm() {
@@ -54,7 +53,7 @@ export function JobSearchForm() {
 					title="Search"
 					className="hidden md:block rounded-xl p-3 bg-[#1388F2]"
 				>
-					<SearchWhiteIcon />
+					<SearchIcon className="[&>g>path]:stroke-white" />
 				</button>
 				<CallToAction
 					type="submit"
