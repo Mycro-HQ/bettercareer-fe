@@ -119,7 +119,7 @@ export default function CustomEditor({
 	const text = randomText?.[Math.floor(Math.random() * randomText?.length)];
 
 	const typeMap = {
-		description: 'experience',
+		description: 'experiences',
 		summary: 'summary',
 	};
 
@@ -215,7 +215,7 @@ export default function CustomEditor({
 
 									setAiAcceptText((prev) => ({
 										...prev,
-										text: res?.text || text,
+										text: res?.data?.text || text,
 									}));
 								}}
 							>
