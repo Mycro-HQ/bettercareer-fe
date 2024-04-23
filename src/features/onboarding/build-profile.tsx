@@ -1,37 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import * as Progress from '@radix-ui/react-progress';
+
 import Router from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { useInterval } from '@labs/utils/hooks/useInterval';
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
+import { CallToAction, Flex, Heading, Text, useToast } from '@labs/components';
 import LogoMark from '@labs/icons/logo-mark.svg';
 import DragAndDrop from '@/components/drag-and-drop';
 
 import { OnboardingLayout } from '.';
 
 import styles from './onboarding.module.scss';
+import { useUploadResumeMutation } from '@/queries/resume';
+import { formDataAppender } from '@labs/utils';
+import { ProgressLoader } from '@/components/misc/loader';
 
 export const BuildProfile = () => {
-	const [isLinkedin, setIsLinkedin] = useState(false);
-
-	useEffect(() => {
-		if (Router.query?.linkedin) {
-			setIsLinkedin(true);
-		}
-	}, []);
+	useEffect(() => {}, []);
 
 	return (
-		<OnboardingLayout
-			title="Upload Resume"
-			adjacentContent={isLinkedin ? null : <OnboardCards />}
-		>
-			{isLinkedin ? <LinkedinFlow /> : <UploadResumeFlow />}
+		<OnboardingLayout title="Upload Resume" adjacentContent={<OnboardCards />}>
+			<UploadResumeFlow />
 		</OnboardingLayout>
 	);
 };
 
-const LinkedinFlow = () => {
+const UploadingFlow = () => {
 	return (
 		<Flex.Column
 			gap={24}
@@ -40,47 +34,82 @@ const LinkedinFlow = () => {
 			justifyContent="center"
 		>
 			<img src="/images/misc/loading.gif" alt="placeholder" width={45} />
-			<Heading.h5 weight={700}>Connecting Linkedin</Heading.h5>
-			<ProgressDemo />
+			<Flex.Column gap={8} alignItems="center">
+				<Heading.h5 weight={700}>Building and analyzing your resume</Heading.h5>
+				<Text size="sm" color="var(--text-gray)">
+					Please do not close the window. This may take a few seconds...
+				</Text>
+			</Flex.Column>
+			<ProgressLoader />
 		</Flex.Column>
 	);
 };
 
 const UploadResumeFlow = () => {
-	const [file, setFile] = useState<File | null>(null);
+	const { createToast } = useToast();
+	const [isUploading, setIsUploading] = useState(false);
+
+	const { mutateAsync: uploadResume, isPending } = useUploadResumeMutation();
+	const [files, setFiles] = React.useState<any>([]);
+
+	const handleUpload = React.useCallback(async () => {
+		const file = files[0]?.file;
+		if (!file) return;
+
+		try {
+			await uploadResume(formDataAppender({ resume: file }));
+			Router.push('/dashboard');
+		} catch (error) {
+		} finally {
+			setIsUploading(false);
+			createToast({
+				variant: 'error',
+				message: 'An error occurred while uploading your resume',
+			});
+		}
+	}, [files[0]?.file, uploadResume]);
+
 	return (
 		<AnimatePresence>
-			<div className={styles.AuthLayout}>
-				<motion.div
-					initial={{ opacity: 0, y: 15 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 15 }}
-				>
-					<Flex.Column gap={14}>
-						<Heading.h3>Upload Your Resume</Heading.h3>
-						<Heading.h6>
-							Seamlessly integrate your professional journey by uploading your
-							resume.
-						</Heading.h6>
-						<DragAndDrop
-							className="mt-9 mb-4"
-							accept="application/pdf"
-							multiple={false}
-							onDrop={(files) => {
-								setFile(files[0]);
-							}}
-							onDragOver={() => {}}
-							maxSize={10}
-						/>
-						<Flex gap={8} className="mt-[24px]">
-							<CallToAction.a href="/dashboard">Continue</CallToAction.a>
-							<CallToAction.a href="/dashboard" outline>
-								Skip
-							</CallToAction.a>
-						</Flex>
-					</Flex.Column>
-				</motion.div>
-			</div>
+			{!(isUploading || isPending) ? (
+				<div className={styles.AuthLayout}>
+					<motion.div
+						initial={{ opacity: 0, y: 15 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: 15 }}
+					>
+						<Flex.Column gap={14}>
+							<Heading.h3>Upload Your Resume</Heading.h3>
+							<Heading.h6>
+								Seamlessly integrate your professional journey by uploading your
+								resume.
+							</Heading.h6>
+							<DragAndDrop
+								className="mt-9 mb-4"
+								accept="application/pdf"
+								multiple={false}
+								files={files}
+								setFiles={setFiles}
+								onDragOver={() => {}}
+								maxSize={10}
+							/>
+							<Flex gap={8} className="mt-[24px]">
+								<CallToAction.button
+									onClick={handleUpload}
+									disabled={!files.length || isPending}
+								>
+									Continue
+								</CallToAction.button>
+								<CallToAction.a href="/dashboard" outline>
+									Skip
+								</CallToAction.a>
+							</Flex>
+						</Flex.Column>
+					</motion.div>
+				</div>
+			) : (
+				<UploadingFlow />
+			)}
 		</AnimatePresence>
 	);
 };
@@ -156,38 +185,5 @@ const OnboardCards = () => {
 				</motion.div>
 			</motion.div>
 		</AnimatePresence>
-	);
-};
-
-const ProgressDemo = () => {
-	const router = Router;
-	const [progress, setProgress] = React.useState(0);
-
-	React.useEffect(() => {
-		const timer = setInterval(
-			() => setProgress((prev) => (prev + Math.random() * 10) % 100),
-			500
-		);
-
-		if (progress > 90) {
-			router.push('/dashboard');
-		}
-
-		return () => clearInterval(timer);
-	}, [progress, router]);
-
-	return (
-		<Progress.Root
-			className="relative overflow-hidden bg-[#F3F4F4] rounded-full w-[300px] h-[8px]"
-			style={{
-				transform: 'translateZ(0)',
-			}}
-			value={progress}
-		>
-			<Progress.Indicator
-				className="bg-[#1388F2] w-full h-full transition-transform duration-[660ms] ease-[cubic-bezier(0.65, 0, 0.35, 1)]"
-				style={{ transform: `translateX(-${100 - progress}%)` }}
-			/>
-		</Progress.Root>
 	);
 };
