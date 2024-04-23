@@ -29,19 +29,19 @@ const ApplicationsGridItem = React.forwardRef<
 
 	return (
 		<Flex
-			gap={10}
+			gap={8}
 			className={styles.applicationGridItem}
 			onClick={() => setIsModalOpen(true)}
 			ref={ref}
 			{...otherProps}
 		>
-			<div className="flex justify-center items-center" {...dragHandleProps}>
+			<div className="place-self-center" {...dragHandleProps}>
 				<DNDIcon />
 			</div>
 			<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
 				<ApplicationModal options={options} id={jobDetails.categoryID} />
 			</Modal>
-			<div>{jobDetails.icon}</div>
+			<div className={styles.aGIIcon}>{jobDetails.icon}</div>
 			<div className="mr-2">
 				<Text as="p">{jobDetails.title}</Text>
 				<Text
