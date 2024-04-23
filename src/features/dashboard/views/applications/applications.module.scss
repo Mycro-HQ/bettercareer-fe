@@ -22,7 +22,7 @@
 
 .applicationGridItem {
 	justify-content: space-between;
-	padding: rem(20px);
+	padding: rem(14px);
 	border-radius: rem(12px);
 	border: 1px solid #f9fafa;
 	background-color: #fcfcfc;
@@ -36,7 +36,7 @@
 
 @include media('lg', 'max') {
 	.applicationGridItem {
-		> div:first-of-type > svg {
+		.aGIIcon > svg {
 			width: 64px;
 			height: 64px;
 		}
