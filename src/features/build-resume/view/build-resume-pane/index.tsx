@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 import { ScrollArea } from '@radix-ui/themes';
 import classNames from 'classnames';
 import { HoverCard } from '@radix-ui/themes';
+import Router, { useRouter } from 'next/router';
 
 import { COMPONENT_MAP } from '../../lib';
 import { StrictModeDroppable } from '../../components/sm-droppable';
@@ -28,12 +29,21 @@ import SparklesIcon from '@labs/icons/misc/sparkels.svg';
 import DNDIcon from '@labs/icons/misc/dnd.svg';
 import { useBuildStore } from '@/store/z-store/builder';
 import { Progress } from '@/components/misc/progress';
-import { capitalize, isEmpty, pluralize } from '@labs/utils';
+import { capitalize, cleanText, pluralize } from '@labs/utils';
 import { Field } from '@labs/components/field';
+import { templatesConfig } from '../build-resume-preview/view/resume-blocks/utils';
 
 import styles from './build-resume-pane.module.scss';
 
-export const BuildResumePane = () => {
+export const BuildResumePane = ({
+	isLoading,
+	isError,
+	hasData,
+}: {
+	isLoading?: boolean;
+	isError?: boolean;
+	hasData?: boolean;
+}) => {
 	const {
 		modules: blocks,
 		moduleAdd,
@@ -43,11 +53,12 @@ export const BuildResumePane = () => {
 		setModuleData,
 		setResumeBlob,
 		removeModuleData,
-		showPreview,
 		editModuleData,
-		setShowPreview,
 		setModuleAdd: setAddNew,
 	} = useBuildStore();
+
+	const [percentage, setPercentage] = useState(0);
+	const [message, setMessage] = useState('');
 	const { createToast, createDisclosure } = useFeedback();
 	const [isDropDisabled, setIsDropDisabled] = useState(false);
 	const isMobile = useMediaQuery('md', 'greaterThan');
@@ -84,14 +95,14 @@ export const BuildResumePane = () => {
 		setModules(items);
 	}
 
-	const [defaultAccordionKey, setDefaultKey] = useState('0:block_item');
+	const [defaultAccordionKey, setDefaultKey] = useState('');
 
 	const calculateResumeCompleteness = useCallback(() => {
 		const sections = {
 			heading: 20,
 			summary: 10,
-			experience: 20,
-			education: 10,
+			experiences: 20,
+			educations: 10,
 			certifications: 10,
 			skills: 10,
 			projects: 10,
@@ -137,7 +148,8 @@ export const BuildResumePane = () => {
 				: 'Your resume is complete!';
 		setMessage(message);
 
-		const percentage = (totalScore / totalMaxScore) * 100;
+		let percentage = (totalScore / totalMaxScore) * 100;
+
 		setResumeBlob({
 			score: percentage,
 		});
@@ -160,18 +172,6 @@ export const BuildResumePane = () => {
 		calculateResumeCompleteness();
 	}, [calculateResumeCompleteness]);
 
-	const [percentage, setPercentage] = useState(0);
-	const [message, setMessage] = useState('');
-
-	const hasData = blocks.find(
-		(module: any) =>
-			!isEmpty(module.data) &&
-			Object.values(module.data || {}).reduce(
-				(a: any, b: any) => a?.toString() + b?.toString(),
-				''
-			)
-	);
-
 	const ScrollComp = isMobile ? 'div' : ScrollArea;
 
 	return (
@@ -190,14 +190,28 @@ export const BuildResumePane = () => {
 							<Flex gap={8}>
 								<SparklesIcon />
 								<Flex.Column gap={4}>
-									<Heading.h4 weight={400}>Build Resume</Heading.h4>
+									<Heading.h4 weight={400}>
+										Build Resume{' '}
+										<Text.span
+											fontSize="13px"
+											color={
+												isError ? 'var(--primary-red)' : 'var(--text-gray)'
+											}
+										>
+											{isLoading
+												? 'Auto saving resume…'
+												: isError
+													? 'Error auto saving resume'
+													: ''}
+										</Text.span>
+									</Heading.h4>
 									<Text size="sm" color="var(--text-gray)">
 										Edit Section below and see your result immediately{' '}
 									</Text>
 								</Flex.Column>
 							</Flex>
 							{hasData && (
-								<Flex.Column className="max-w-[90%] w-full xl:max-w-[300px] ml-auto">
+								<Flex.Column className="max-w-[calc(100%-28px)] w-full xxl:max-w-[300px] ml-auto">
 									<Progress
 										value={percentage}
 										label="Resume Completeness"
@@ -313,15 +327,15 @@ export const BuildResumePane = () => {
 											<Flex.Row gap={16}>
 												<Field.Select
 													label="Font Face"
-													value={template?.fontFamily}
+													value={template?.fontFamily || 'Lato'}
 													options={FontFamily.map((font) => ({
 														value: font,
-														label: font,
+														label: cleanText(font),
 													}))}
 													onChange={(e: any) => {
 														setTemplate({
 															...template,
-															fontFamily: e.target.value,
+															fontFamily: e.target.value || 'Lato',
 														});
 													}}
 												/>
@@ -359,6 +373,22 @@ export const BuildResumePane = () => {
 														}}
 													/>
 												</div>
+
+												<CallToAction.button
+													outline
+													size="sm"
+													onClick={() => {
+														setTemplate({
+															...(templatesConfig.find(
+																(t) => t.name === template.name
+															) || {}),
+															margin: 'md',
+															fontSize: 'md',
+														});
+													}}
+												>
+													Reset to default
+												</CallToAction.button>
 											</Flex.Row>
 										</Accordion>
 										{blocks.map((block, index) => {
