@@ -1,7 +1,7 @@
 @use '@/styles/base/utils' as *;
 
 .searchInputContainer::before {
-	content: url('/images/dashboard/Search.svg');
+	content: url('/images/dashboard/search.svg');
 	margin-right: rem(12px);
 }
 
