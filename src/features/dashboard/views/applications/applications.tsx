@@ -110,8 +110,6 @@ function ApplicationsGrid() {
 						const jobIndex = applications.findIndex(
 							(job_) => job_.key === job.key
 						);
-						// console.log('Job Index Before:', jobIndex);
-						// console.log('Job Index After:', newJobIndex);
 						const newJob = {
 							...job,
 							categoryID: destination.droppableId as ApplicationState,
@@ -120,12 +118,6 @@ function ApplicationsGrid() {
 						reorderJobApplications(newJob, jobIndex, newJobIndex);
 					}
 				}
-				// console.log(
-				// 	`Source:\n\tDroppableId: ${source.droppableId}\n\tIndex:${sourceIndex}`
-				// );
-				// console.log(
-				// 	`Destination:\n\tDroppableId: ${destination.droppableId}\n\tIndex:${destinationIndex}`
-				// );
 			}
 		},
 		[applications, reorderJobApplications]
