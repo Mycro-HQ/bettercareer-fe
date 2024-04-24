@@ -5,12 +5,12 @@
 	height: 100%;
 
 	.JobPreferenceAside {
-		width: 217px;
+		width: 20%;
 		height: 100%;
 	}
 
 	.JobPreferenceContent {
-		width: 759px;
+		width: 80%;
 		height: 100%;
 
 		.JobPreferenceContentMain {
@@ -27,18 +27,9 @@
 
 		.JobPreferenceContentBody {
 			width: 100%;
-			height: 481px;
+			height: 430px;
 			background: #fcfcfc;
-			border-top-right-radius: 24px;
-			padding: 83px 48px 0 56px;
-		}
-
-		.JobPreferenceContentFooter {
-			width: 100%;
-			height: 104px;
-			justify-content: end;
-			align-items: center;
-			padding: 0 48px;
+			padding: 2rem 3rem;
 		}
 	}
 }

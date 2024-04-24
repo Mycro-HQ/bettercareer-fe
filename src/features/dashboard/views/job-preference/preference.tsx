@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { CallToAction, Flex } from '@labs/components';
+import { CallToAction, Flex, Modal } from '@labs/components';
 
 import styles from './preference.module.scss';
 import { Sidebar } from './sidebar/sidebar';
@@ -34,7 +34,11 @@ const preferenceList = [
 	{ label: 'Compensation', component: [<div key={0}>Compensation</div>] },
 ];
 
-export const JobPreference = () => {
+export const JobPreference = ({
+	setIsModalOpen,
+}: {
+	setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
 	const [activeTab, setActiveTab] = React.useState(0);
 	const [activeComponentIndex, setActiveComponentIndex] = React.useState(0);
 
@@ -50,30 +54,41 @@ export const JobPreference = () => {
 	};
 
 	return (
-		<Flex className={styles.JobPreference}>
-			<aside className={styles.JobPreferenceAside}>
-				<Sidebar currentIndex={activeTab} preferenceList={preferenceList} />
-			</aside>
-			<Flex.Column className={styles.JobPreferenceContent}>
-				{preferenceList.map((pref, index) => (
-					<Flex.Column
-						key={index}
-						className={classNames([
-							styles.JobPreferenceContentMain,
-							styles[`JobPreferenceContentMain--${index === activeTab}`],
-						])}
-					>
-						<Flex.Column className={styles.JobPreferenceContentBody}>
-							{pref.component[activeComponentIndex]}
-						</Flex.Column>
-						<Flex className={styles.JobPreferenceContentFooter}>
-							<CallToAction onClick={() => handleTabChange(index)}>
-								Next
-							</CallToAction>
-						</Flex>
+		<Modal
+			centered={true}
+			in={true}
+			onClose={() => setIsModalOpen(false)}
+			size="lg"
+			maxHeight={true}
+		>
+			<Modal.Body noPadding={true}>
+				<Flex className={styles.JobPreference}>
+					<aside className={styles.JobPreferenceAside}>
+						<Sidebar currentIndex={activeTab} preferenceList={preferenceList} />
+					</aside>
+					<Flex.Column className={styles.JobPreferenceContent}>
+						{preferenceList.map((pref, index) => (
+							<Flex.Column
+								key={index}
+								className={classNames([
+									styles.JobPreferenceContentMain,
+									styles[`JobPreferenceContentMain--${index === activeTab}`],
+								])}
+							>
+								<Flex.Column className={styles.JobPreferenceContentBody}>
+									{pref.component[activeComponentIndex]}
+								</Flex.Column>
+							</Flex.Column>
+						))}
 					</Flex.Column>
-				))}
-			</Flex.Column>
-		</Flex>
+				</Flex>
+			</Modal.Body>
+
+			<Modal.Footer style={{ display: 'flex', justifyContent: 'flex-end' }}>
+				<CallToAction onClick={() => handleTabChange(activeTab)}>
+					Next
+				</CallToAction>
+			</Modal.Footer>
+		</Modal>
 	);
 };

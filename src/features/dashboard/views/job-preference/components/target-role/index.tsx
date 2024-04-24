@@ -27,7 +27,7 @@ const TargetRole = () => {
 
 			<Flex gap={8} flexWrap="wrap">
 				{TargetRolesData.map((item) => (
-					<div
+					<button
 						onClick={() => handleClickedRoles(item.title)}
 						className={
 							selectedRoles.includes(item.title)
@@ -47,7 +47,7 @@ const TargetRole = () => {
 						>
 							{item.title}
 						</Text.p>
-					</div>
+					</button>
 				))}
 			</Flex>
 		</Flex.Column>

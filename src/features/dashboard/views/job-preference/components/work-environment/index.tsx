@@ -29,7 +29,7 @@ const WorkEnvironment = () => {
 
 			<Flex gap={8} flexWrap="wrap">
 				{WorkEnvironmentData.map((item) => (
-					<div
+					<button
 						onClick={() => handleClickedEnvironment(item.title)}
 						className={
 							selectedEnvironment.includes(item.title)
@@ -49,7 +49,7 @@ const WorkEnvironment = () => {
 						>
 							{item.title}
 						</Text.p>
-					</div>
+					</button>
 				))}
 			</Flex>
 		</Flex.Column>

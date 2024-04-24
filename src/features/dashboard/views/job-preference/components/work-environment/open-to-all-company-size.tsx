@@ -18,7 +18,7 @@ const OpenToAllCompanySize = () => {
 			</Flex>
 
 			<Flex gap={8} flexWrap="wrap">
-				<div
+				<button
 					onClick={() => setSelectedOption('No')}
 					style={{ padding: '10px 32px' }}
 					className={
@@ -38,9 +38,9 @@ const OpenToAllCompanySize = () => {
 					>
 						No
 					</Text.p>
-				</div>
+				</button>
 
-				<div
+				<button
 					onClick={() => setSelectedOption('Yes')}
 					style={{ padding: '10px 32px' }}
 					className={
@@ -60,7 +60,7 @@ const OpenToAllCompanySize = () => {
 					>
 						Yes
 					</Text.p>
-				</div>
+				</button>
 			</Flex>
 		</Flex.Column>
 	);
