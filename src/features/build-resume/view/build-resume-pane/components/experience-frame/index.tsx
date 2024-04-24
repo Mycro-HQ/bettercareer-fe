@@ -3,7 +3,14 @@ import classNames from 'classnames';
 import { format, isDate } from 'date-fns';
 import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 
-import { CallToAction, Flex, Text, capitalize, useFeedback } from '@labs';
+import {
+	CallToAction,
+	Flex,
+	Text,
+	capitalize,
+	parseValue,
+	useFeedback,
+} from '@labs';
 import Add from '@labs/icons/misc/add.svg';
 import Edit from '@labs/icons/dashboard/edit.svg';
 import Delete from '@labs/icons/dashboard/delete.svg';
@@ -16,8 +23,8 @@ import { MODULE_COMPONENTS, MODULE_OPTIONS } from './utils';
 import styles from './experience-frame.module.scss';
 
 type ExperienceTypes =
-	| 'experience'
-	| 'education'
+	| 'experiences'
+	| 'educations'
 	| 'certifications'
 	| 'projects'
 	| 'skills';
@@ -39,6 +46,7 @@ const ExperienceFrame = ({
 	const { moduleAdd, setModuleAdd: setAddNew } = useBuildStore();
 	const [isEditing, setIsEditing] = React.useState(false);
 	const [fieldData, setFieldData] = React.useState<any>({});
+	const [localError, setLocalError] = React.useState<string | null>(null);
 	const addNew = moduleAdd[type];
 	const moduleOptions = MODULE_OPTIONS[type] || {};
 
@@ -110,6 +118,15 @@ const ExperienceFrame = ({
 							if (key === 'checkbox') {
 								return e.target.checked;
 							}
+
+							if (key === 'date') {
+								if (isDate(e)) {
+									return format(e, 'yyyy-MM-dd');
+								}
+
+								return e;
+							}
+
 							if (key === 'textarea') {
 								return {
 									value: e?.target?.value ?? e,
@@ -122,7 +139,9 @@ const ExperienceFrame = ({
 						const inputs = (key: string) => {
 							if (key === 'textarea') {
 								return (
-									fieldData[newField.key as keyof typeof fieldData]?.value ?? ''
+									parseValue(
+										fieldData[newField.key as keyof typeof fieldData]
+									) ?? ''
 								);
 							}
 							return fieldData[newField.key as keyof typeof fieldData] ?? '';
@@ -161,8 +180,41 @@ const ExperienceFrame = ({
 										if (newField.key === 'current' && e.target.checked) {
 											setFieldData((prev: any) => ({
 												...prev,
-												to: '',
+												to: null,
 											}));
+										}
+
+										// check and make sure that from date is not greater than to date
+										if (newField.type === 'date') {
+											const fromFields = ['from', 'issued'];
+											const toFields = ['to', 'expires'];
+
+											if (
+												toFields.includes(newField.key) ||
+												fromFields.includes(newField.key)
+											) {
+												// check if from date is greater than to date
+												if (
+													new Date(
+														fieldData[
+															fromFields[toFields.indexOf(newField.key)]
+														]
+													) > new Date(outputs(newField.type, e)) ||
+													new Date(outputs(newField.type, e)) <
+														new Date(
+															fieldData[
+																fromFields[toFields.indexOf(newField.key)]
+															]
+														)
+												) {
+													setLocalError(
+														'To date cannot be less than from date'
+													);
+													// return;
+												} else {
+													setLocalError(null);
+												}
+											}
 										}
 
 										setFieldData((prev: any) => ({
@@ -171,6 +223,15 @@ const ExperienceFrame = ({
 										}));
 									}}
 								/>
+								{localError && newField.type === 'date' && (
+									<Text
+										fontSize="13px"
+										className="mt-2"
+										color="var(--primary-red)"
+									>
+										{localError}
+									</Text>
+								)}
 							</Flex>
 						);
 					})}
@@ -201,8 +262,9 @@ const ExperienceFrame = ({
 						<CallToAction
 							variant="primary"
 							size="md"
-							disabled={verifyAllRequiredFields(fieldData)}
+							disabled={verifyAllRequiredFields(fieldData) || !!localError}
 							onClick={() => {
+								if (localError) return;
 								if (isEditing) {
 									editField(fieldData);
 								} else {
@@ -306,7 +368,8 @@ const FrameCards = ({
 			return (
 				<Text>
 					{index > 0 && !!data && '- '}
-					{isDate(data) ? (
+
+					{!!data && typeof data !== 'boolean' ? (
 						<>{format(new Date(data), 'MMM yyyy')}</>
 					) : (
 						<>{data && 'Present'}</>
@@ -319,7 +382,9 @@ const FrameCards = ({
 			return (
 				<>
 					<ReadMore
-						text={(data?.textContent ?? data)?.toString()}
+						text={(data?.textContent ?? data)
+							?.replace(/<[^>]*>?/gm, '')
+							?.toString()}
 						limit={200}
 						className="mt-3"
 					/>
@@ -403,6 +468,7 @@ const FrameCards = ({
 															}}
 															aria-label="Edit"
 															title="edit"
+															className="p-[4px] cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60"
 														>
 															<Edit />
 														</button>
@@ -410,6 +476,7 @@ const FrameCards = ({
 															onClick={() => deleteFrame(data)}
 															aria-label="Delete"
 															title="delete"
+															className="p-[4px] cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60"
 														>
 															<Delete />
 														</button>

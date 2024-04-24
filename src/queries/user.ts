@@ -10,12 +10,12 @@ export const authApiCreator = createSmartApi({
 		getProfile: builder.query<
 			undefined,
 			{
-				profile: UserData;
+				user: UserData;
 			}
 		>({
 			key: 'user',
 			queryFn: () => ({
-				url: `/profile`,
+				url: `/users/me`,
 			}),
 		}),
 
@@ -42,12 +42,7 @@ export const authApiCreator = createSmartApi({
 			}),
 		}),
 
-		logOut: builder.query<
-			undefined,
-			{
-				user: UserData;
-			}
-		>({
+		logOut: builder.query({
 			key: 'logout',
 			queryFn: () => ({
 				url: `/logout`,

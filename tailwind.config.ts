@@ -13,10 +13,11 @@ const config: Config = {
 		screens: {
 			sm: '576px',
 			md: '768px',
-			lg: '1024px',
-			xl: '1280px',
-			xxl: '1399.98px',
+			lg: '992px',
+			xl: '1200px',
+			xxl: '1400px',
 		},
+
 		extend: {
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

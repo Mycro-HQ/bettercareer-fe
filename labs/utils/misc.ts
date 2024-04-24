@@ -333,3 +333,34 @@ export function pluralize(string: string, count: number, stringOnly = false) {
 
 	return resultString;
 }
+
+export const wait = (ms: number) =>
+	new Promise((resolve) => setTimeout(resolve, ms));
+
+export const parseValue = (item: any) => {
+	if (typeof item === 'string') {
+		return item;
+	}
+
+	if (typeof item === 'object') {
+		return item?.value;
+	}
+
+	return null;
+};
+
+export const slugify = (text: string) => {
+	return text
+		.toString()
+		.toLowerCase()
+		.replace(/\s+/g, '-')
+		.replace(/[^\w-]+/g, '')
+		.replace(/--+/g, '-')
+		.replace(/^-+/, '')
+		.replace(/-+$/, '');
+};
+
+export const cleanText = (val: string) => {
+	const _val = val.replace(/[^a-zA-Z ]/g, ' ');
+	return _val.charAt(0).toUpperCase() + _val.slice(1);
+};

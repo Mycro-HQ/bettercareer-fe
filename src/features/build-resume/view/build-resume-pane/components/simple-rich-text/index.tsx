@@ -9,9 +9,10 @@ import {
 	createButton,
 } from 'react-simple-wysiwyg';
 import { Popover } from '@radix-ui/themes';
+import { useState } from 'react';
 
 import { generateUUID } from '@labs/utils';
-import { CallToAction, Flex } from '@labs/components';
+import { CallToAction, Flex, Text } from '@labs/components';
 import { Field } from '@labs/components/field';
 import Bold from '@labs/icons/dashboard/editor/bold.svg';
 import Italic from '@labs/icons/dashboard/editor/italics.svg';
@@ -22,6 +23,7 @@ import Undo from '@labs/icons/dashboard/editor/undo.svg';
 import Redo from '@labs/icons/dashboard/editor/redo.svg';
 import SparklesIcon from '@labs/icons/misc/sparkels.svg';
 import AddAlt from '@labs/icons/misc/add-alt.svg';
+import { useAiWriterMutation } from '@/queries/resume';
 
 export const BtnBold = createButton('Bold', <Bold />, 'bold');
 
@@ -88,6 +90,7 @@ export default function CustomEditor({
 }: {
 	value: string;
 	name: string;
+	key?: string;
 	onChange: (value: ContentEditableEvent) => void;
 	label?: string;
 	toolbar?: Array<
@@ -107,9 +110,20 @@ export default function CustomEditor({
 		summary: refinedSummary,
 		description: refinedExperienceDescriptions,
 	};
-
+	const [acceptText, setAcceptText] = useState('');
+	const [aiacceptText, setAiAcceptText] = useState({
+		text: '',
+		show: false,
+	});
 	const randomText = randomMap[name as 'summary' | 'description'] || null;
+	const text = randomText?.[Math.floor(Math.random() * randomText?.length)];
 
+	const typeMap = {
+		description: 'experiences',
+		summary: 'summary',
+	};
+
+	const { mutateAsync: aiWrite, isPending } = useAiWriterMutation();
 	return (
 		<Flex.Column fullWidth gap={8}>
 			{label && (
@@ -153,7 +167,15 @@ export default function CustomEditor({
 				</Editor>
 			</EditorProvider>
 			<Flex gap={8} alignItems="center" className="mt-[8px]">
-				<Popover.Root>
+				<Popover.Root
+					open={aiacceptText.show}
+					onOpenChange={() => {
+						setAiAcceptText((prev) => ({
+							...prev,
+							show: !prev.show,
+						}));
+					}}
+				>
 					<Popover.Trigger>
 						<CallToAction.button
 							size="sm"
@@ -168,43 +190,156 @@ export default function CustomEditor({
 							AI write
 						</CallToAction.button>
 					</Popover.Trigger>
-					<Popover.Content size="1">
+					<Popover.Content size="1" className="max-w-[500px]">
 						<Flex.Column gap={8}>
-							<Field.Textarea
-								placeholder={`e.g write a descriptive summary`}
-								style={{ height: 80 }}
-							/>
-							<CallToAction.button size="sm" variant="secondary">
-								Write
-							</CallToAction.button>
+							<Text size="sm">
+								<SparklesIcon width={16} className="inline" /> AI Write
+							</Text>
+							<Text fontSize="12px" color="var(--text-gray)">
+								Remember to be specific and unique in your ask e.g &quot;Write a{' '}
+								{typeMap[name as 'summary' | 'description'] || 'summary'} for a
+								software developer with 5 years experience&quot;
+							</Text>
+							<Field.Form
+								onSubmit={async (e) => {
+									e.preventDefault();
+									setAiAcceptText((prev) => ({
+										...prev,
+										text: '',
+									}));
+
+									const res = await aiWrite({
+										text: value,
+										writeType: typeMap[name as 'summary' | 'description'] || '',
+									});
+
+									setAiAcceptText((prev) => ({
+										...prev,
+										text: res?.data?.text || text,
+									}));
+								}}
+							>
+								<Field.Textarea
+									placeholder={`e.g write a descriptive summary`}
+									style={{ height: 80 }}
+								/>
+								{aiacceptText?.text && (
+									<>
+										<Text
+											size="sm"
+											className="p-3 bg-[#0000000d] rounded-lg text-[#333] overflow-auto max-h-[200px]"
+										>
+											{aiacceptText?.text?.replace(/<[^>]*>?/gm, '')}
+										</Text>
+									</>
+								)}
+								<Flex.Row gap={8} alignItems="center">
+									<CallToAction.button
+										size="sm"
+										variant="secondary"
+										isLoading={isPending}
+									>
+										{aiacceptText?.text ? 'Re-write' : 'Write'}
+									</CallToAction.button>
+									{aiacceptText?.text && (
+										<CallToAction.button
+											size="sm"
+											onClick={(e) => {
+												e.preventDefault();
+												const val = aiacceptText?.text?.replace(
+													/<[^>]*>?/gm,
+													''
+												);
+
+												onChange({
+													currentTarget: {
+														outerText: val,
+													},
+													target: {
+														value: val || '',
+													},
+												} as any);
+
+												setAiAcceptText({
+													text: '',
+													show: false,
+												});
+											}}
+										>
+											Accept
+										</CallToAction.button>
+									)}
+								</Flex.Row>
+							</Field.Form>
 						</Flex.Column>
 					</Popover.Content>
 				</Popover.Root>
 				{randomText?.length > 0 && (
-					<CallToAction.button
-						size="sm"
-						outline
-						onClick={(e) => {
-							const text =
-								randomText[Math.floor(Math.random() * randomText.length)];
-
-							e.preventDefault();
-							onChange({
-								currentTarget: {
-									outerText: text?.replace(/<[^>]*>?/gm, ''),
-								},
-								target: {
-									value:
-										randomText[Math.floor(Math.random() * randomText.length)],
-								},
-							} as any);
+					<Popover.Root
+						open={!!acceptText}
+						onOpenChange={() => {
+							if (acceptText) {
+								setAcceptText('');
+							}
 						}}
-						leadingIcon={
-							<AddAlt width={18} className="text-[var(--primary-blue)]" />
-						}
 					>
-						Suggest {name}
-					</CallToAction.button>
+						<Popover.Trigger>
+							<CallToAction.button
+								size="sm"
+								outline
+								onClick={(e) => {
+									setAcceptText(text);
+								}}
+								leadingIcon={
+									<AddAlt width={18} className="text-[var(--primary-blue)]" />
+								}
+							>
+								Suggest {name}
+							</CallToAction.button>
+						</Popover.Trigger>
+						<Popover.Content size="1" className="max-w-[400px]">
+							<Flex.Column gap={8}>
+								<Text
+									size="sm"
+									className="p-3 bg-[#0000000d] rounded-lg text-[#333]"
+								>
+									{acceptText?.replace(/<[^>]*>?/gm, '')}
+								</Text>
+
+								<Flex.Row gap={8}>
+									<CallToAction.button
+										size="sm"
+										variant="secondary"
+										onClick={() => {
+											setAcceptText(text);
+										}}
+									>
+										Suggest Another
+									</CallToAction.button>
+									<CallToAction.button
+										size="sm"
+										onClick={(e) => {
+											e.preventDefault();
+											const val = acceptText;
+
+											onChange({
+												currentTarget: {
+													outerText: val?.replace(/<[^>]*>?/gm, ''),
+												},
+												target: {
+													value: val,
+												},
+											} as any);
+
+											setAcceptText('');
+										}}
+									>
+										Accept
+									</CallToAction.button>
+								</Flex.Row>
+							</Flex.Column>
+						</Popover.Content>
+					</Popover.Root>
 				)}
 			</Flex>
 		</Flex.Column>

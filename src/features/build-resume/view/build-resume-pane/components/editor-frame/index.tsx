@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import CustomEditor from '../simple-rich-text';
 
 import { Field } from '@labs/components/field';
-import { getDataIcons, useDebounce } from '@labs/utils';
+import { getDataIcons, parseValue, useDebounce } from '@labs/utils';
 import { CallToAction, Flex } from '@labs/components';
 
 export const EditorModule = ({
@@ -32,7 +32,7 @@ export const EditorModule = ({
 			)}
 			<CustomEditor
 				name={type}
-				value={field.value}
+				value={parseValue(field)}
 				onChange={(e: any) => setField({ value: e.target.value })}
 			/>
 		</Field.Form>
@@ -68,12 +68,12 @@ export const SkillsAutoComplete = ({
 	const setNewField = (val: any) => {
 		if (
 			Array.isArray(field) &&
-			field?.find((item: any) => item.value === val.value)
+			field?.find((item: any) => parseValue(item) === parseValue(val))
 		) {
 			return;
 		}
 		setValue('');
-		setField({ value: val.value });
+		setField({ value: parseValue(val) });
 	};
 
 	return (
@@ -145,7 +145,7 @@ export const AutoCompletePill = ({
 								removeField(item);
 							}}
 						>
-							{item.value}
+							{parseValue(item)}
 						</CallToAction>
 					</motion.div>
 				))}

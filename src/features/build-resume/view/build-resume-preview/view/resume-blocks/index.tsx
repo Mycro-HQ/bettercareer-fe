@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+	useState,
+} from 'react';
 import { pdf } from '@react-pdf/renderer';
 import { Document, Page, pdfjs } from 'react-pdf';
 import { ScrollArea } from '@radix-ui/themes';
@@ -6,18 +12,20 @@ import { motion } from 'framer-motion';
 
 import File from '@labs/icons/dashboard/file_2.svg';
 import { useBuildStore } from '@/store/z-store/builder';
-import { isEmpty, useDebounce } from '@labs/utils';
+import { isEmpty, useDebounce, wait } from '@labs/utils';
 import { Spinner } from '@labs/components/spinner';
-import { Flex, Heading } from '@labs/components';
+import { Flex, Heading, Text, useToast } from '@labs/components';
 
 import styles from './resume-blocks.module.scss';
 
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
-import { registerFonts, templateMaps } from './utils';
+import { MOCK, registerFonts, templateMaps } from './utils';
+import classNames from 'classnames';
+import { APP_URL } from '@lib/config';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `/assets/js/pdf-worker.js`;
 
 registerFonts();
 
@@ -30,15 +38,29 @@ export const Resume = (props: any) => {
 	return <Comp {...props} />;
 };
 
-export const ResumeApp = ({
+export const ResumePreview = ({
 	scale = 1,
 	setScale,
+	template: _temp,
+	useDefault = false,
 }: {
 	scale: number;
-	setScale: (scale: number) => void;
+	setScale?: (scale: number) => void;
+	template?: any;
+	useDefault?: boolean;
 }) => {
-	const { modules: userData, template, setResumeBlob } = useBuildStore();
+	const {
+		modules: userData,
+		template: temp,
+		resumeBlob,
+		setResumeBlob,
+	} = useBuildStore();
+
 	const [numPages, setNumPages] = useState(1);
+	const template = useMemo(() => {
+		if (_temp) return _temp;
+		return temp;
+	}, [temp, _temp]);
 
 	const blobToBase64 = (blob: Blob) => {
 		return new Promise((resolve, _) => {
@@ -48,47 +70,93 @@ export const ResumeApp = ({
 		});
 	};
 
+	const inputRef = useRef(null);
 	const [pdfUrl, setPdfUrl] = useState(null);
-	const canvasRef = useRef(null);
-	const [canvasImage, setCanvasImage] = useState('');
+	const canvasRef = useRef([]);
+	const [canvasImage, setCanvasImage] = useState<Array<string>>([]);
 	const [generateImage, setGenerateImage] = useState(false);
-	const [currentPage, setCurrentPage] = useState(1);
+
 	const modules = useDebounce(userData, 200);
+
+	const hasData = modules.find(
+		(module: any) =>
+			!isEmpty(module.data) &&
+			Object.values(module.data || {}).reduce(
+				(a: any, b: any) => a?.toString() + b?.toString(),
+				''
+			)
+	);
 
 	useEffect(() => {
 		let isCancelled = false;
+		let RETRY = 0;
 
 		if (!isCancelled) {
 			const generatePdf = async () => {
-				const _blob = await pdf(
-					Resume({
-						modules,
-						template,
-					})
-				).toBlob();
+				// Please don't remove this line it fixes a funny SendWithPromise error
+				// await wait(100);
+				try {
+					// const _blob = await pdf(
+					// 	Resume({
+					// 		modules: useDefault && !hasData ? MOCK : modules,
+					// 		template,
+					// 	})
+					// ).toBlob();
 
-				const base64 = (await blobToBase64(_blob)) as string;
+					const _blob = await fetch(`${APP_URL}/api/generate`, {
+						method: 'POST',
+						body: JSON.stringify({
+							modules: useDefault && !hasData ? MOCK : modules,
+							template,
+							name: 'resume',
+						}),
+					}).then((res) => res.blob());
 
-				const binaryString = window.atob(base64.split(',')[1]);
-				const bytes = new Uint8Array(binaryString.length);
-				for (let i = 0; i < binaryString.length; i++) {
-					bytes[i] = binaryString.charCodeAt(i);
+					const base64 = (await blobToBase64(_blob)) as string;
+
+					const binaryString = window.atob(base64.split(',')[1]);
+					const bytes = new Uint8Array(binaryString.length);
+					for (let i = 0; i < binaryString.length; i++) {
+						bytes[i] = binaryString.charCodeAt(i);
+					}
+					const blob = new Blob([bytes], { type: 'application/pdf' });
+
+					setPdfUrl(blob as unknown as any);
+					setResumeBlob({
+						blob: blob as unknown as string,
+					});
+					setGenerateImage(true);
+				} catch (error) {
+					if (RETRY < 2) {
+						RETRY++;
+						generatePdf();
+					} else {
+						setPdfUrl(null);
+					}
 				}
-				const blob = new Blob([bytes], { type: 'application/pdf' });
-
-				setPdfUrl(blob as unknown as any);
-				setResumeBlob({
-					blob: blob as unknown as string,
-				});
-				setGenerateImage(true);
 			};
 
 			generatePdf();
 		}
+
 		return () => {
 			isCancelled = true;
 		};
-	}, [modules, template, setResumeBlob]);
+	}, [modules, template, setResumeBlob, hasData, useDefault]);
+
+	useEffect(() => {
+		return () => {
+			setNumPages(0);
+			setPdfUrl(null);
+			setCanvasImage([]);
+			setResumeBlob({
+				raw: '',
+				thumbnail: '',
+				blob: '',
+			});
+			canvasRef.current = [];
+		};
+	}, []);
 
 	const onDocumentLoadSuccess = useCallback(
 		({ numPages }: { numPages: number }) => {
@@ -108,115 +176,191 @@ export const ResumeApp = ({
 			raw: textFinal as unknown as string,
 		});
 	}
-	const hasData = modules.find(
-		(module: any) =>
-			!isEmpty(module.data) &&
-			Object.values(module.data || {}).reduce(
-				(a: any, b: any) => a?.toString() + b?.toString(),
-				''
-			)
+
+	const handleBuildCanvas = useCallback(
+		async (index: number) => {
+			if (!canvasRef.current.length) return;
+
+			let thumbnailImage = '';
+
+			await new Promise((resolve, reject) => {
+				for (let i = 0; i < canvasRef.current.length; i++) {
+					if (i !== index) {
+						resolve(true);
+						continue;
+					}
+					const canvas = canvasRef.current[i] as HTMLCanvasElement;
+
+					const ctx = (canvas as any).getContext('2d', {
+						alpha: false,
+					});
+
+					const img = new Image();
+					img.src = (canvas as any).toDataURL('image/png', 0.9);
+
+					img.onload = () => {
+						ctx.drawImage(img, 0, 0);
+						setCanvasImage((prev) => {
+							if (!prev) return Array.from({ length: numPages }, () => '');
+							const newCanvasImages = [...prev].slice(0, numPages);
+							newCanvasImages[index] = img.src;
+
+							return newCanvasImages;
+						});
+
+						resolve(true);
+					};
+
+					if (i === 0) {
+						thumbnailImage = canvas.toDataURL('image/jpeg', 0.15);
+					}
+
+					img.crossOrigin = 'anonymous';
+					img.onerror = (e) => {
+						setPdfUrl(null);
+						reject(e);
+					};
+				}
+			});
+
+			setResumeBlob({
+				thumbnail: thumbnailImage,
+			});
+		},
+		[canvasRef, setResumeBlob, numPages]
+	);
+
+	const canShowImage = useMemo(
+		() => (hasData && canvasImage.length > 0) || useDefault,
+		[canvasImage, hasData, useDefault]
 	);
 
 	return (
 		<Flex.Column
-			className="w-full h-full m-auto rounded-[12px] h-full overflow-hidden"
-			alignItems="center"
-			justifyContent="center"
+			className={classNames([
+				styles.Preview,
+				'w-full h-full m-auto rounded-[8px] h-full ',
+			])}
 		>
-			{pdfUrl ? (
-				<>
-					{hasData && canvasImage ? (
-						<ImgZoom src={canvasImage} scale={scale} setScale={setScale} />
-					) : (
-						<div className={styles.PreviewPage}>
-							<motion.div
-								key="preview"
-								initial={{ opacity: 0 }}
-								animate={{ opacity: 1 }}
-								transition={{ duration: 0.2 }}
-							>
-								<Flex.Column
-									gap={12}
-									alignItems="center"
-									justifyContent="center"
-									className="h-full max-w-[400px] m-auto text-center p-4"
-								>
-									<File className="w-[32px] h-[32px]" />
-									<Heading.h4 fontSize="18px" className="-mb-2" weight={400}>
-										Your Resume Preview will appear here
-									</Heading.h4>
-									<Heading.h6 fontSize="14px" color="var(--text-gray)">
-										Your resume is almost ready! Start building your resume to
-										see the preview
-									</Heading.h6>
-								</Flex.Column>
-							</motion.div>
-						</div>
-					)}
-
-					{generateImage ? (
-						<div className="hidden">
-							<Document
-								file={pdfUrl}
-								key={`pdf_${pdfUrl}`}
-								renderMode="canvas"
-								onLoadSuccess={onDocumentLoadSuccess}
-							>
-								{Array.from(new Array(numPages), (el, index) => (
-									<article
-										key={`page_${index + 1}`}
-										data-page-number={index + 1}
-									>
-										<Page
-											pageNumber={index + 1}
-											scale={3}
-											renderMode="canvas"
-											canvasRef={
-												index + 1 === currentPage ? canvasRef : undefined
-											}
-											onGetTextSuccess={(text: any) => {
-												formatText(text);
-											}}
-											onRenderSuccess={() => {
-												if (!canvasRef.current) return;
-												const canvas = canvasRef.current as HTMLCanvasElement;
-												const ctx = (canvas as any).getContext('2d', {
-													alpha: false,
-												});
-												const img = new Image();
-												img.src = (canvas as any).toDataURL('image/png');
-												img.onload = () => {
-													ctx.drawImage(img, 0, 0);
-													setCanvasImage(
-														(canvas as any).toDataURL('image/png')
-													);
-												};
-
-												img.crossOrigin = 'anonymous';
-												img.onerror = (e) => {
-													setPdfUrl(null);
-												};
-												setGenerateImage(false);
-											}}
-										/>
-									</article>
+			<Flex.Column
+				alignItems="center"
+				justifyContent="flex-start"
+				style={
+					(canShowImage && {
+						transform: `scale(${scale}) translate(0px, 0px)`,
+						transformOrigin: 'top center',
+					}) ||
+					{}
+				}
+				gap={18}
+			>
+				{pdfUrl ? (
+					<>
+						{canShowImage ? (
+							<>
+								{canvasImage.map((src, index) => (
+									<img
+										src={src}
+										key={index}
+										className="rounded-[12px]"
+										alt="resume"
+										onClick={() => {
+											setScale?.(1);
+										}}
+									/>
 								))}
-							</Document>
-						</div>
-					) : null}
-				</>
-			) : (
-				<div className={styles.PreviewPage}>
-					<Flex.Column
-						gap={4}
-						alignContent="center"
-						justifyContent="center"
-						className="h-full"
-					>
-						<Spinner center />
-					</Flex.Column>
-				</div>
-			)}
+							</>
+						) : (
+							<>
+								{hasData && !canvasImage.length && generateImage ? (
+									<div className={styles.PreviewPage}>
+										<Flex.Column
+											gap={4}
+											alignContent="center"
+											justifyContent="center"
+											className="h-full"
+										>
+											<Spinner center />
+										</Flex.Column>
+									</div>
+								) : (
+									<div className={styles.PreviewPage}>
+										<motion.div
+											key="preview"
+											initial={{ opacity: 0 }}
+											animate={{ opacity: 1 }}
+											transition={{ duration: 0.2 }}
+										>
+											<Flex.Column
+												gap={12}
+												alignItems="center"
+												justifyContent="center"
+												className="h-full max-w-[400px] m-auto text-center p-4"
+											>
+												<File className="w-[32px] h-[32px]" />
+												<Heading.h4
+													fontSize="18px"
+													className="-mb-2"
+													weight={400}
+												>
+													Your Resume Preview will appear here
+												</Heading.h4>
+												<Heading.h6 fontSize="14px" color="var(--text-gray)">
+													Your resume is almost ready! Start building your
+													resume to see the preview
+												</Heading.h6>
+											</Flex.Column>
+										</motion.div>
+									</div>
+								)}
+							</>
+						)}
+
+						{generateImage && (
+							<div className="hidden">
+								<Document
+									file={pdfUrl}
+									key={`pdf_${pdfUrl}`}
+									renderMode="canvas"
+									inputRef={inputRef}
+									onLoadSuccess={onDocumentLoadSuccess}
+								>
+									{!!numPages &&
+										Array.from(new Array(numPages), (el, index) => (
+											<Page
+												key={`page_${index + 1}`}
+												pageNumber={index + 1}
+												scale={1.5}
+												renderMode="canvas"
+												canvasRef={
+													(canvasRef as any)[index] ||
+													((el) => ((canvasRef.current as any)[index] = el))
+												}
+												onGetTextSuccess={(text: any) => {
+													formatText(text);
+												}}
+												onRenderSuccess={(e) => {
+													return handleBuildCanvas(index);
+												}}
+											/>
+										))}
+								</Document>
+							</div>
+						)}
+					</>
+				) : (
+					<div className={styles.PreviewPage}>
+						<Flex.Column
+							gap={4}
+							alignContent="center"
+							justifyContent="center"
+							className="h-full"
+						>
+							<Spinner center />
+						</Flex.Column>
+					</div>
+				)}
+			</Flex.Column>
 		</Flex.Column>
 	);
 };
@@ -303,4 +447,4 @@ const ImgZoom = ({
 		</ScrollArea>
 	);
 };
-export default ResumeApp;
+export default ResumePreview;

@@ -11,7 +11,7 @@
  */
 
 import classNames from 'classnames';
-import React, { ReactNode, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 
 import { ToastDefinition, FeedBackContext } from '../provider/feedback/context';
@@ -50,7 +50,10 @@ export function useToastSetup() {
 			if (!options.message)
 				throw createError('Toast', 'Toast message is required');
 			const id = generateUUID();
-			const lifespan = safeDuration(options.lifespan!, 5000);
+			const lifespan = safeDuration(
+				options.lifespan!,
+				typeof options.lifespan! === 'number' ? options.lifespan! : 5000
+			);
 
 			setToasts((current) => [...current, { ...options, id }]);
 

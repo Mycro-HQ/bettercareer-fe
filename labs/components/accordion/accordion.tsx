@@ -78,12 +78,10 @@ const AccordionMain = memo<AccordionProps>(
 				classNames([
 					styles.Accordion,
 					className,
-					{
-						[styles.isOpen]: isOpen,
-						[styles[size]]: size,
-					},
+					size && styles[size],
+					isOpen && styles.isOpen,
 				]),
-			[, className, isOpen, size]
+			[className, isOpen, size]
 		);
 
 		return (
@@ -91,26 +89,13 @@ const AccordionMain = memo<AccordionProps>(
 				<button
 					className={classNames([
 						styles.AccordionHeader,
-						isOpen && styles.isOpen,
+						(isOpen && styles.isOpen) || '',
 					])}
 					onClick={onToggle}
 				>
 					<Flex fullWidth gap={8} alignItems="center">
 						{leadingIcon && (
-							<span
-								className={styles.leadingIcon}
-								role="button"
-								tabIndex={0}
-								aria-label="accordion_icon"
-								onClick={(e) => {
-									e.stopPropagation();
-									if (!isOpen) {
-										onToggle();
-									}
-								}}
-							>
-								{leadingIcon}
-							</span>
+							<span className={styles.leadingIcon}>{leadingIcon}</span>
 						)}
 
 						{typeof title === 'string' ? (
@@ -120,21 +105,8 @@ const AccordionMain = memo<AccordionProps>(
 						)}
 					</Flex>
 
-					<Flex gap={14}>
-						<span
-							className={styles.trailingIcon}
-							role="button"
-							tabIndex={0}
-							aria-label="accordion"
-							onClick={(e) => {
-								e.stopPropagation();
-								if (!isOpen) {
-									onToggle();
-								}
-							}}
-						>
-							{trailingIcon}
-						</span>
+					<Flex gap={8} alignItems="center">
+						<span className={styles.trailingIcon}>{trailingIcon}</span>
 						<ArrowDown className={styles.arrow} />
 					</Flex>
 				</button>
@@ -142,7 +114,7 @@ const AccordionMain = memo<AccordionProps>(
 					{isOpen && (
 						<motion.div
 							initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
-							animate={{ opacity: 1, height: '100%', overflow: 'auto' }}
+							animate={{ opacity: 1, height: '100%', overflow: 'unset' }}
 							exit={{
 								opacity: 0,
 								height: 0,

@@ -7,42 +7,75 @@ import styles from '../home.module.scss';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import CheckIcon from '@labs/icons/dashboard/check.svg';
 
-export const SetupChecklist = () => {
+export const SetupChecklist = ({
+	onboardingChecklist,
+}: {
+	onboardingChecklist: {
+		hasBuiltResume: boolean;
+		hasConnectedAccount: boolean;
+		hasJobPreferences: boolean;
+		hasUploadedResume: boolean;
+	};
+}) => {
+	const updateStatus = (key: string) => {
+		// Update the status of the checklist item
+		if (!onboardingChecklist) return false;
+
+		switch (key) {
+			case 'hasConnectedAccount':
+				return onboardingChecklist?.hasConnectedAccount;
+			case 'hasUploadedResume':
+				return onboardingChecklist?.hasUploadedResume;
+			case 'hasBuiltResume':
+				return onboardingChecklist.hasBuiltResume;
+			case 'hasJobPreferences':
+				return onboardingChecklist.hasJobPreferences;
+			default:
+				return false;
+		}
+	};
 	const checklist = [
 		{
 			title: 'Connect Your Account',
-			status: 'done',
+			status: updateStatus('hasConnectedAccount'),
 			infographic: null,
 			description: 'Connect your LinkedIn or Google account to get started.',
-			action: 'Connect Account',
+			action: '/build-profile',
+			actionText: 'Connect Account',
 		},
 		{
 			title: 'Upload Your Resume',
-			status: 'pending',
+			status: updateStatus('hasUploadedResume'),
 			infographic: '/images/dashboard/1.png',
 			description:
 				'Fast track your profile: Add your resume for a faster and more complete profile.',
-			action: 'Upload Resume',
+			action: '/build-profile',
+			actionText: 'Upload Resume',
 		},
 		{
 			title: 'Build Your Resume',
-			status: 'pending',
+			status: updateStatus('hasBuiltResume'),
 			infographic: '/images/dashboard/2.png',
 			description:
 				'Use our builder to create a perfect resume for your job applications.',
-			action: 'Build Resume',
+			action: '/dashboard/resume/build',
+			actionText: 'Build Resume',
 		},
 		{
 			title: 'Fill Job Preferences',
-			status: 'pending',
+			status: updateStatus('hasJobPreferences'),
 			infographic: '/images/dashboard/3.png',
 			description:
 				'Specify your preferences to narrow down your search and find your dream job.',
-			action: 'Set Preferences',
+			action: '/dashboard/job-preferences',
+			actionText: 'Set Preferences',
 		},
 	];
 
-	const [active, setActive] = React.useState(1);
+	const [active, setActive] = React.useState(
+		checklist.findIndex((item) => !item.status)
+	);
+
 	const currentChecklist = checklist[active];
 
 	return (
@@ -57,15 +90,15 @@ export const SetupChecklist = () => {
 						className={classNames([
 							styles.ChecklistItem,
 							active === index && styles.active,
-							item.status === 'done' && styles.done,
+							item.status && styles.done,
 						])}
-						disabled={item.status === 'done'}
+						disabled={item.status}
 						onClick={() => setActive(index)}
 						aria-label={item.title}
 					>
 						<Flex alignItems="center" gap={12}>
 							<div className={styles.ChecklistItemStatus}>
-								{item.status === 'done' ? (
+								{item.status ? (
 									<CheckIcon width="16" height="16" />
 								) : (
 									<span className={styles.ChecklistItemStatusIndex}>
@@ -100,9 +133,12 @@ export const SetupChecklist = () => {
 				>
 					<Flex.Column gap={14} className="max-w-[400px]">
 						<Text weight={600}>{currentChecklist.description}</Text>
-						<CallToAction className={styles.ChecklistItemAction}>
-							{currentChecklist.action}
-						</CallToAction>
+						<CallToAction.a
+							className={styles.ChecklistItemAction}
+							href={currentChecklist.action}
+						>
+							{currentChecklist.actionText}
+						</CallToAction.a>
 					</Flex.Column>
 				</motion.div>
 			</motion.div>

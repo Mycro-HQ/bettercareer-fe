@@ -28,6 +28,7 @@ export const useDebounce = <T extends unknown>(value: T, delay: number) => {
 	const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
 	useEffect(() => {
+		if (typeof window === 'undefined') return;
 		const handler = setTimeout(() => {
 			setDebouncedValue(value);
 		}, delay);
