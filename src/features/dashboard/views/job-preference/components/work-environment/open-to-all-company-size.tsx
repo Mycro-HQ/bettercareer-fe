@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 import style from '../target-role/target-role.module.scss';
 
@@ -6,7 +7,7 @@ import { Flex, Heading, Text } from '@labs/components';
 import UserGroup from '@labs/icons/dashboard/user-group.svg';
 
 const OpenToAllCompanySize = () => {
-	const [selectedOption, setSelectedOption] = useState('');
+	const [selectedOption, setSelectedOption] = useState<boolean | null>(null);
 
 	return (
 		<Flex.Column gap={24}>
@@ -19,19 +20,18 @@ const OpenToAllCompanySize = () => {
 
 			<Flex gap={8} flexWrap="wrap">
 				<button
-					onClick={() => setSelectedOption('No')}
-					style={{ padding: '10px 32px' }}
-					className={
-						selectedOption === 'No'
-							? style.TargetRoleSelected
-							: style.TargetRole
-					}
+					onClick={() => setSelectedOption(false)}
+					className={classNames({
+						[style.TargetRoleSelected]: selectedOption === false,
+						[style.TargetRole]: selectedOption !== false,
+						[style.TabBtn]: true,
+					})}
 				>
 					<Text.p
 						fontSize="14px"
 						weight={500}
 						color={
-							selectedOption === 'No'
+							selectedOption === false
 								? 'var(--primary-blue)'
 								: 'var(--text-black)'
 						}
@@ -41,22 +41,16 @@ const OpenToAllCompanySize = () => {
 				</button>
 
 				<button
-					onClick={() => setSelectedOption('Yes')}
+					onClick={() => setSelectedOption(true)}
 					style={{ padding: '10px 32px' }}
 					className={
-						selectedOption === 'Yes'
-							? style.TargetRoleSelected
-							: style.TargetRole
+						selectedOption ? style.TargetRoleSelected : style.TargetRole
 					}
 				>
 					<Text.p
 						fontSize="14px"
 						weight={500}
-						color={
-							selectedOption === 'Yes'
-								? 'var(--primary-blue)'
-								: 'var(--text-black)'
-						}
+						color={selectedOption ? 'var(--primary-blue)' : 'var(--text-black)'}
 					>
 						Yes
 					</Text.p>

@@ -42,14 +42,24 @@ export const JobPreference = ({
 	const [activeTab, setActiveTab] = React.useState(0);
 	const [activeComponentIndex, setActiveComponentIndex] = React.useState(0);
 
-	const handleTabChange = (index: number) => {
+	const handleTabChange = () => {
 		if (activeComponentIndex < preferenceList[activeTab].component.length - 1) {
 			setActiveComponentIndex((prev) => prev + 1);
-		} else if (index < preferenceList.length - 1) {
+		} else if (activeTab < preferenceList.length - 1) {
 			setActiveTab((prev) => prev + 1);
 			setActiveComponentIndex(0);
 		} else {
 			console.log('done!');
+		}
+	};
+
+	const handleBackButtonClick = () => {
+		if (activeComponentIndex > 0) {
+			setActiveComponentIndex((prev) => prev - 1);
+		} else if (activeTab > 0) {
+			setActiveTab((prev) => prev - 1);
+			const previousTabComponents = preferenceList[activeTab - 1].component;
+			setActiveComponentIndex(previousTabComponents.length - 1);
 		}
 	};
 
@@ -84,10 +94,17 @@ export const JobPreference = ({
 				</Flex>
 			</Modal.Body>
 
-			<Modal.Footer style={{ display: 'flex', justifyContent: 'flex-end' }}>
-				<CallToAction onClick={() => handleTabChange(activeTab)}>
-					Next
-				</CallToAction>
+			<Modal.Footer
+				style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}
+			>
+				{activeTab > 0 || (activeTab === 0 && activeComponentIndex > 0) ? (
+					<CallToAction outline onClick={handleBackButtonClick}>
+						Back
+					</CallToAction>
+				) : (
+					<></>
+				)}
+				<CallToAction onClick={handleTabChange}>Next</CallToAction>
 			</Modal.Footer>
 		</Modal>
 	);

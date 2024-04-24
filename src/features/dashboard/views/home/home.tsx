@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { JobPreference } from '../job-preference';
 
-import { CallToAction, Flex, Heading, Modal, Text } from '@labs/components';
+import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
 import FileIcon from '@labs/icons/dashboard/file.svg';
@@ -14,7 +14,6 @@ import JobIcon from '@labs/icons/dashboard/calendar.svg';
 import SponsorIcon from '@labs/icons/dashboard/tag.svg';
 import NewResume from '@labs/icons/dashboard/upload.svg';
 import { type UserData } from '@/queries/types/user';
-import CloseIcon from '@labs/icons/misc/close.svg';
 import { useGetResumesQuery } from '@/queries/resume';
 import { truncateText } from '@labs/utils';
 
@@ -162,35 +161,7 @@ export const DashboardHome = ({
 						 * Here is the hacky fix for the modal
 						 * // TODO: Refactor modal to use proper modal component
 						 */}
-						{isModalOpen && (
-							<JobPreference setIsModalOpen={setIsModalOpen} />
-							// <Modal in={true} onClose={() => setIsModalOpen(false)} size="lg">
-							// 	<Modal.Body>
-							// 		<JobPreference />
-							// 	</Modal.Body>
-							// 	{/* <Modal.Footer>
-							// 		<CallToAction>Next</CallToAction>
-							// 	</Modal.Footer> */}
-							// 	{/* <JobPreference /> */}
-							// </Modal>
-							// <div
-							// 	onClick={() => setIsModalOpen(!isModalOpen)}
-							// 	className={`w-full min-h-screen !z-50 fixed top-0 left-0 grid place-items-center bg-[#32323273]`}
-							// >
-							// 	<div
-							// 		onClick={(e) => e.stopPropagation()}
-							// 		className="w-[978px] h-[585px] rounded-3xl bg-white relative"
-							// 	>
-							// 		<button
-							// 			onClick={() => setIsModalOpen(!isModalOpen)}
-							// 			className="absolute top-8 right-8"
-							// 		>
-							// 			<CloseIcon />
-							// 		</button>
-							// 		<JobPreference />
-							// 	</div>
-							// </div>
-						)}
+						{isModalOpen && <JobPreference setIsModalOpen={setIsModalOpen} />}
 					</div>
 				</Flex>
 			</Flex.Column>
