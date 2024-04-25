@@ -40,6 +40,14 @@ export const resumeApiCreator = createSmartApi({
 				method: 'POST',
 				body: data,
 			}),
+			invalidatesQueries: ['analyze-resume-history'],
+		}),
+		getResumeAnalysisHistory: builder.query({
+			key: 'analyze-resume-history',
+			queryFn: ({ id }) => ({
+				url: `/resume/analysis/${id}`,
+				method: 'GET',
+			}),
 		}),
 		duplicateResume: builder.mutation({
 			key: 'duplicate-resume',
@@ -90,4 +98,5 @@ export const {
 	useAiWriterMutation,
 	useUploadResumeMutation,
 	useDuplicateResumeMutation,
+	useGetResumeAnalysisHistoryQuery,
 } = resumeApiCreator;
