@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
+import usePreferenceStore from '../../store/preference-store';
 import style from '../target-role/target-role.module.scss';
 
 import Building from '@labs/icons/dashboard/blue-building.svg';
 import { Flex, Heading, Text } from '@labs/components';
 
-import { WorkEnvironmentData } from './work-environment-data';
+import { WorkIndustryData } from './work-environment-data';
 const WorkEnvironment = () => {
-	const [selectedEnvironment, setSelectedEnvironment] = useState<string[]>([]);
+	const {
+		selectedWorkIndustry,
+		handleClickedWorkIndustry,
+		setIsButtonDisabled,
+	} = usePreferenceStore();
 
-	const handleClickedEnvironment = (environment: string) => {
-		if (selectedEnvironment.includes(environment)) {
-			setSelectedEnvironment(
-				selectedEnvironment.filter((item) => item !== environment)
-			);
+	useEffect(() => {
+		if (selectedWorkIndustry.length > 0) {
+			setIsButtonDisabled(false);
 		} else {
-			setSelectedEnvironment([...selectedEnvironment, environment]);
+			setIsButtonDisabled(true);
 		}
-	};
+	}, [selectedWorkIndustry.length, setIsButtonDisabled]);
+
 	return (
 		<Flex.Column gap={24}>
 			<Flex alignItems="center" gap={8}>
@@ -28,11 +32,11 @@ const WorkEnvironment = () => {
 			</Flex>
 
 			<Flex gap={8} flexWrap="wrap">
-				{WorkEnvironmentData.map((item) => (
+				{WorkIndustryData.map((item) => (
 					<button
-						onClick={() => handleClickedEnvironment(item.title)}
+						onClick={() => handleClickedWorkIndustry(item.title)}
 						className={
-							selectedEnvironment.includes(item.title)
+							selectedWorkIndustry.includes(item.title)
 								? style.TargetRoleSelected
 								: style.TargetRole
 						}
@@ -42,7 +46,7 @@ const WorkEnvironment = () => {
 							fontSize="14px"
 							weight={500}
 							color={
-								selectedEnvironment.includes(item.title)
+								selectedWorkIndustry.includes(item.title)
 									? 'var(--primary-blue)'
 									: 'var(--text-black)'
 							}

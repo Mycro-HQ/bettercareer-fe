@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
 import style from '../target-role/target-role.module.scss';
+import usePreferenceStore from '../../store/preference-store';
 
 import { Flex, Heading, Text } from '@labs/components';
 import UserGroup from '@labs/icons/dashboard/user-group.svg';
@@ -10,17 +11,16 @@ import Tick from '@labs/icons/dashboard/blue-tick.svg';
 import { CompanySizeData } from './work-environment-data';
 
 const CompanySize = () => {
-	const [selectedCompanySize, setSelectedCompanySize] = useState<string[]>([]);
+	const { selectedCompanySize, handleClickedCompanySize, setIsButtonDisabled } =
+		usePreferenceStore();
 
-	const handleClickedRoleLevel = (companySize: string) => {
-		if (selectedCompanySize.includes(companySize)) {
-			setSelectedCompanySize(
-				selectedCompanySize.filter((item) => item !== companySize)
-			);
+	useEffect(() => {
+		if (selectedCompanySize.length > 0) {
+			setIsButtonDisabled(false);
 		} else {
-			setSelectedCompanySize([...selectedCompanySize, companySize]);
+			setIsButtonDisabled(true);
 		}
-	};
+	}, [selectedCompanySize.length, setIsButtonDisabled]);
 
 	return (
 		<Flex.Column gap={24}>
@@ -33,10 +33,8 @@ const CompanySize = () => {
 
 			<Flex gap={8} flexWrap="wrap">
 				{CompanySizeData.map((item) => (
-					<Flex
-						gap={8}
-						alignItems="center"
-						onClick={() => handleClickedRoleLevel(item.title)}
+					<button
+						onClick={() => handleClickedCompanySize(item.title)}
 						className={
 							selectedCompanySize.includes(item.title)
 								? style.TargetRoleSelected
@@ -44,20 +42,26 @@ const CompanySize = () => {
 						}
 						key={item.id}
 					>
-						{selectedCompanySize.includes(item.title) ? <Tick /> : <Checkbox />}
+						<Flex gap={8} alignItems="center">
+							{selectedCompanySize.includes(item.title) ? (
+								<Tick />
+							) : (
+								<Checkbox />
+							)}
 
-						<Text.p
-							fontSize="14px"
-							weight={500}
-							color={
-								selectedCompanySize.includes(item.title)
-									? 'var(--primary-blue)'
-									: 'var(--text-black)'
-							}
-						>
-							{item.title}
-						</Text.p>
-					</Flex>
+							<Text.p
+								fontSize="14px"
+								weight={500}
+								color={
+									selectedCompanySize.includes(item.title)
+										? 'var(--primary-blue)'
+										: 'var(--text-black)'
+								}
+							>
+								{item.title}
+							</Text.p>
+						</Flex>
+					</button>
 				))}
 			</Flex>
 		</Flex.Column>

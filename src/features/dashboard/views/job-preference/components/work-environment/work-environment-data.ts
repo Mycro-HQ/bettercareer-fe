@@ -1,4 +1,4 @@
-export const WorkEnvironmentData = [
+export const WorkIndustryData = [
 	{
 		id: 1,
 		title: 'Information Technology (IT)',

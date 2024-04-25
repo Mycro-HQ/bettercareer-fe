@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+
+import usePreferenceStore from '../../store/preference-store';
 
 import Briefcase from '@labs/icons/dashboard/briefcase-blue.svg';
 import Checkbox from '@labs/icons/dashboard/square-checkbox.svg';
@@ -9,17 +11,17 @@ import style from './target-role.module.scss';
 import { RoleLevelData } from './target-role-data';
 
 const RoleLevel = () => {
-	const [selectedRoleLevel, setSelectedRoleLevel] = useState<string[]>([]);
+	const { selectedRoleLevel, handleClickedRoleLevel, setIsButtonDisabled } =
+		usePreferenceStore();
 
-	const handleClickedRoleLevel = (roleLevel: string) => {
-		if (selectedRoleLevel.includes(roleLevel)) {
-			setSelectedRoleLevel(
-				selectedRoleLevel.filter((item) => item !== roleLevel)
-			);
+	useEffect(() => {
+		if (selectedRoleLevel.length > 0) {
+			setIsButtonDisabled(false);
 		} else {
-			setSelectedRoleLevel([...selectedRoleLevel, roleLevel]);
+			setIsButtonDisabled(true);
 		}
-	};
+	}, [selectedRoleLevel.length, setIsButtonDisabled]);
+
 	return (
 		<Flex.Column gap={24}>
 			<Flex alignItems="center" gap={8}>
@@ -31,9 +33,7 @@ const RoleLevel = () => {
 
 			<Flex gap={8} flexWrap="wrap">
 				{RoleLevelData.map((item) => (
-					<Flex
-						gap={8}
-						alignItems="center"
+					<button
 						onClick={() => handleClickedRoleLevel(item.title)}
 						className={
 							selectedRoleLevel.includes(item.title)
@@ -42,20 +42,22 @@ const RoleLevel = () => {
 						}
 						key={item.id}
 					>
-						{selectedRoleLevel.includes(item.title) ? <Tick /> : <Checkbox />}
+						<Flex gap={8} alignItems="center">
+							{selectedRoleLevel.includes(item.title) ? <Tick /> : <Checkbox />}
 
-						<Text.p
-							fontSize="14px"
-							weight={500}
-							color={
-								selectedRoleLevel.includes(item.title)
-									? 'var(--primary-blue)'
-									: 'var(--text-black)'
-							}
-						>
-							{item.title}
-						</Text.p>
-					</Flex>
+							<Text.p
+								fontSize="14px"
+								weight={500}
+								color={
+									selectedRoleLevel.includes(item.title)
+										? 'var(--primary-blue)'
+										: 'var(--text-black)'
+								}
+							>
+								{item.title}
+							</Text.p>
+						</Flex>
+					</button>
 				))}
 			</Flex>
 		</Flex.Column>

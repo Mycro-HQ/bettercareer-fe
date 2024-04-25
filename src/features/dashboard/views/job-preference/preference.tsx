@@ -11,6 +11,7 @@ import RoleLevel from './components/target-role/role-level';
 import WorkEnvironment from './components/work-environment';
 import OpenToAllCompanySize from './components/work-environment/open-to-all-company-size';
 import CompanySize from './components/work-environment/company-size';
+import usePreferenceStore from './store/preference-store';
 
 const preferenceList = [
 	{
@@ -41,6 +42,7 @@ export const JobPreference = ({
 }) => {
 	const [activeTab, setActiveTab] = React.useState(0);
 	const [activeComponentIndex, setActiveComponentIndex] = React.useState(0);
+	const { isButtonDisabled } = usePreferenceStore();
 
 	const handleTabChange = () => {
 		if (activeComponentIndex < preferenceList[activeTab].component.length - 1) {
@@ -104,7 +106,9 @@ export const JobPreference = ({
 				) : (
 					<></>
 				)}
-				<CallToAction onClick={handleTabChange}>Next</CallToAction>
+				<CallToAction disabled={isButtonDisabled} onClick={handleTabChange}>
+					Next
+				</CallToAction>
 			</Modal.Footer>
 		</Modal>
 	);

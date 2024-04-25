@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
+import usePreferenceStore from '../../store/preference-store';
 import style from '../target-role/target-role.module.scss';
 
 import { Flex, Heading, Text } from '@labs/components';
 import UserGroup from '@labs/icons/dashboard/user-group.svg';
 
 const OpenToAllCompanySize = () => {
-	const [selectedOption, setSelectedOption] = useState<boolean | null>(null);
+	const {
+		isUserOpenToAllCompanySize,
+		handleIsUserOpenToAllCompanySize,
+		setIsButtonDisabled,
+	} = usePreferenceStore();
+
+	useEffect(() => {
+		if (isUserOpenToAllCompanySize !== null) {
+			setIsButtonDisabled(false);
+		} else {
+			setIsButtonDisabled(true);
+		}
+	}, [isUserOpenToAllCompanySize, setIsButtonDisabled]);
 
 	return (
 		<Flex.Column gap={24}>
@@ -20,10 +33,10 @@ const OpenToAllCompanySize = () => {
 
 			<Flex gap={8} flexWrap="wrap">
 				<button
-					onClick={() => setSelectedOption(false)}
+					onClick={() => handleIsUserOpenToAllCompanySize(false)}
 					className={classNames({
-						[style.TargetRoleSelected]: selectedOption === false,
-						[style.TargetRole]: selectedOption !== false,
+						[style.TargetRoleSelected]: isUserOpenToAllCompanySize === false,
+						[style.TargetRole]: isUserOpenToAllCompanySize !== false,
 						[style.TabBtn]: true,
 					})}
 				>
@@ -31,7 +44,7 @@ const OpenToAllCompanySize = () => {
 						fontSize="14px"
 						weight={500}
 						color={
-							selectedOption === false
+							isUserOpenToAllCompanySize === false
 								? 'var(--primary-blue)'
 								: 'var(--text-black)'
 						}
@@ -41,16 +54,22 @@ const OpenToAllCompanySize = () => {
 				</button>
 
 				<button
-					onClick={() => setSelectedOption(true)}
+					onClick={() => handleIsUserOpenToAllCompanySize(true)}
 					style={{ padding: '10px 32px' }}
 					className={
-						selectedOption ? style.TargetRoleSelected : style.TargetRole
+						isUserOpenToAllCompanySize
+							? style.TargetRoleSelected
+							: style.TargetRole
 					}
 				>
 					<Text.p
 						fontSize="14px"
 						weight={500}
-						color={selectedOption ? 'var(--primary-blue)' : 'var(--text-black)'}
+						color={
+							isUserOpenToAllCompanySize
+								? 'var(--primary-blue)'
+								: 'var(--text-black)'
+						}
 					>
 						Yes
 					</Text.p>

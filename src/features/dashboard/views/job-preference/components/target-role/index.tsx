@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+
+import usePreferenceStore from '../../store/preference-store';
 
 import Briefcase from '@labs/icons/dashboard/briefcase-blue.svg';
 import { Flex, Heading, Text } from '@labs/components';
@@ -7,15 +9,17 @@ import style from './target-role.module.scss';
 import { TargetRolesData } from './target-role-data';
 
 const TargetRole = () => {
-	const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+	const { handleClickedRoles, selectedTargetRoles, setIsButtonDisabled } =
+		usePreferenceStore();
 
-	const handleClickedRoles = (role: string) => {
-		if (selectedRoles.includes(role)) {
-			setSelectedRoles(selectedRoles.filter((item) => item !== role));
+	useEffect(() => {
+		if (selectedTargetRoles.length > 0) {
+			setIsButtonDisabled(false);
 		} else {
-			setSelectedRoles([...selectedRoles, role]);
+			setIsButtonDisabled(true);
 		}
-	};
+	}, [selectedTargetRoles.length, setIsButtonDisabled]);
+
 	return (
 		<Flex.Column gap={24}>
 			<Flex alignItems="center" gap={8}>
@@ -30,7 +34,7 @@ const TargetRole = () => {
 					<button
 						onClick={() => handleClickedRoles(item.title)}
 						className={
-							selectedRoles.includes(item.title)
+							selectedTargetRoles.includes(item.title)
 								? style.TargetRoleSelected
 								: style.TargetRole
 						}
@@ -40,7 +44,7 @@ const TargetRole = () => {
 							fontSize="14px"
 							weight={500}
 							color={
-								selectedRoles.includes(item.title)
+								selectedTargetRoles.includes(item.title)
 									? 'var(--primary-blue)'
 									: 'var(--text-black)'
 							}
