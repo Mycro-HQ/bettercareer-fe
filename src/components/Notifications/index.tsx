@@ -12,6 +12,7 @@ export function NotificationListItem({
 	title,
 	description,
 	time,
+	bare = false,
 	type = 'job',
 }: NotificationListItemProps) {
 	return (
@@ -23,29 +24,31 @@ export function NotificationListItem({
 				<Text color="var(--text-black)" weight={600}>
 					{title}
 				</Text>
-				<Text color="#3F4C58" size="xs" weight={500}>
+				<Text color="#3F4C58" size="sm" weight={500}>
 					{description}
 				</Text>
-				<Text color="#3F4C58" size="caption" weight={600} className="mt-4">
+				<Text color="#3F4C58" size="sm" weight={600} className="mt-4">
 					{time} ago
 				</Text>
 			</Flex.Column>
-			<div className="justify-end">
-				<Flex.Row gap={8} className="justify-self-end justify-end">
-					{type === 'job' ? (
-						<>
-							<CallToAction outline size="sm">
-								Save
+			{!bare && (
+				<div className="justify-end">
+					<Flex.Row gap={8} className="justify-self-end justify-end">
+						{type === 'job' ? (
+							<>
+								<CallToAction outline size="sm">
+									Save
+								</CallToAction>
+								<CallToAction size="sm">Apply</CallToAction>
+							</>
+						) : (
+							<CallToAction variant="clear" size="sm">
+								<CloseIcon />
 							</CallToAction>
-							<CallToAction size="sm">Apply</CallToAction>
-						</>
-					) : (
-						<CallToAction variant="clear" size="sm">
-							<CloseIcon />
-						</CallToAction>
-					)}
-				</Flex.Row>
-			</div>
+						)}
+					</Flex.Row>
+				</div>
+			)}
 		</div>
 	);
 }

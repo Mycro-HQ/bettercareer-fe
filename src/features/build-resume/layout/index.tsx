@@ -35,7 +35,6 @@ import {
 	useCreateOrEditResumeMutation,
 	useDeleteResumeMutation,
 	useDuplicateResumeMutation,
-	useGetResumeAnalysisMutation,
 } from '@/queries/resume';
 import { ProgressLoader } from '@/components/misc/loader';
 import { ResumeAnalysis } from '@/features/dashboard';
@@ -67,6 +66,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 	const [showSidebar, setShowSidebar] = React.useState(false);
 	const [isSettingInitialData, setIsSettingInitialData] = React.useState(false);
 	const [showRename, setShowRename] = React.useState(false);
+	const [isGettingAnalysis, setIsGettingAnalysis] = React.useState(false);
 
 	const handleDelete = async () => {
 		await createDisclosure({
@@ -83,6 +83,10 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 			});
 		}
 	};
+
+	const handleShowAnalysisHistory = useCallback(() => {
+		setShowAnalysis(true);
+	}, []);
 
 	const handleDuplicate = async () => {
 		await createDisclosure({
@@ -348,6 +352,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 									handleDuplicate={handleDuplicate}
 									handleSave={handleSave}
 									handleDelete={handleDelete}
+									handleShowAnalysisHistory={handleShowAnalysisHistory}
 									handleDefault={handleDefault}
 									setShowRename={setShowRename}
 									resume={resume}
@@ -373,7 +378,10 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 								</CallToAction>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content>
-								<ResumeAnalysisAction setShowAnalysis={setShowAnalysis} />
+								<ResumeAnalysisAction
+									setShowAnalysis={setShowAnalysis}
+									setIsGettingAnalysis={setIsGettingAnalysis}
+								/>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 
@@ -440,6 +448,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 										handleDuplicate={handleDuplicate}
 										handleSave={handleSave}
 										handleDelete={handleDelete}
+										handleShowAnalysisHistory={handleShowAnalysisHistory}
 										setShowRename={setShowRename}
 										handleDefault={handleDefault}
 										resume={resume}
@@ -461,6 +470,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 									</Text>
 									<ResumeAnalysisAction
 										setShowAnalysis={setShowAnalysis}
+										setIsGettingAnalysis={setIsGettingAnalysis}
 										bare={true}
 									/>
 								</Flex.Column>
@@ -511,7 +521,15 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 				onClose={() => setShowRename(false)}
 				handleDoc={handleDoc}
 			/>
-			<GetResumeAnalysis show={showAnalysis} setShow={setShowAnalysis} />
+
+			<ResumeAnalysis
+				show={showAnalysis}
+				onClose={() => {
+					setShowAnalysis(false);
+					setIsGettingAnalysis(false);
+				}}
+				isAnalysis={isGettingAnalysis}
+			/>
 		</div>
 	);
 };
@@ -522,11 +540,13 @@ const ResumeDetailsAction = ({
 	handleDefault,
 	handleDelete,
 	setShowRename,
+	handleShowAnalysisHistory,
 	bare,
 }: {
 	handleDuplicate: () => void;
 	handleSave: () => void;
 	handleDelete: () => void;
+	handleShowAnalysisHistory: () => void;
 	handleDefault: () => void;
 	setShowRename: (data: any) => void;
 	resume: any;
@@ -547,7 +567,12 @@ const ResumeDetailsAction = ({
 
 			<Component onClick={handleSave}>Save Resume</Component>
 			<Component onClick={handleDefault}>Set as Default</Component>
-			<Component color="blue" onClick={handleDelete}>
+			<Component
+				color="blue"
+				onClick={() => {
+					handleShowAnalysisHistory();
+				}}
+			>
 				Analysis History
 			</Component>
 
@@ -661,15 +686,21 @@ const ResumeDownloadAction = ({
 const ResumeAnalysisAction = ({
 	bare,
 	setShowAnalysis,
+	setIsGettingAnalysis,
 }: {
 	bare?: boolean;
-
+	setIsGettingAnalysis: (data: any) => void;
 	setShowAnalysis: (data: any) => void;
 }) => {
 	const Component = bare ? 'button' : DropdownMenu.Item;
 	return (
 		<>
-			<Component onClick={() => setShowAnalysis(true)}>
+			<Component
+				onClick={() => {
+					setIsGettingAnalysis(true);
+					setShowAnalysis(true);
+				}}
+			>
 				Get New Analysis
 			</Component>
 			<Component onClick={() => setShowAnalysis(true)}>
@@ -679,54 +710,54 @@ const ResumeAnalysisAction = ({
 	);
 };
 
-const GetResumeAnalysis = ({
-	show,
-	setShow = () => {},
-}: {
-	show: boolean;
-	setShow?: (data: any) => void;
-}) => {
-	const {
-		mutateAsync: getResumeAnalysis,
-		isPending,
-		data: resume,
-	} = useGetResumeAnalysisMutation();
-	const { resumeBlob } = useBuildStore();
+// const GetResumeAnalysis = ({
+// 	show,
+// 	setShow = () => {},
+// }: {
+// 	show: boolean;
+// 	setShow?: (data: any) => void;
+// }) => {
+// 	const {
+// 		mutateAsync: getResumeAnalysis,
+// 		isPending,
+// 		data: resume,
+// 	} = useGetResumeAnalysisMutation();
+// 	const { resumeBlob } = useBuildStore();
 
-	useEffect(() => {
-		if (show && resumeBlob?.raw) {
-			getResumeAnalysis({
-				id: Router.query.slug as string,
-				resume: resumeBlob?.raw,
-			});
-		}
-	}, [show]);
+// 	useEffect(() => {
+// 		if (show && resumeBlob?.raw) {
+// 			getResumeAnalysis({
+// 				id: Router.query.slug as string,
+// 				resume: resumeBlob?.raw,
+// 			});
+// 		}
+// 	}, [show]);
 
-	return (
-		<Modal
-			onClose={() => setShow(false)}
-			in={show}
-			size={resume?.data?.analysis ? 'xlg' : 'md'}
-		>
-			{!resume?.data?.analysis || isPending ? (
-				<Flex.Column
-					gap={24}
-					alignItems="center"
-					className="min-h-[35vh]"
-					justifyContent="center"
-				>
-					<img src="/images/misc/loading.gif" alt="placeholder" width={45} />
-					<Flex.Column gap={8} alignItems="center">
-						<Heading.h5 weight={700}>Analyzing your resume</Heading.h5>
-						<Text size="sm" color="var(--text-gray)">
-							Please wait while we analyze your resume
-						</Text>
-					</Flex.Column>
-					<ProgressLoader />
-				</Flex.Column>
-			) : (
-				<ResumeAnalysis data={resume?.data?.analysis} />
-			)}
-		</Modal>
-	);
-};
+// 	return (
+// 		<Modal
+// 			onClose={() => setShow(false)}
+// 			in={show}
+// 			size={resume?.data?.analysis ? 'xlg' : 'md'}
+// 		>
+// 			{!resume?.data?.analysis || isPending ? (
+// 				<Flex.Column
+// 					gap={24}
+// 					alignItems="center"
+// 					className="min-h-[35vh]"
+// 					justifyContent="center"
+// 				>
+// 					<img src="/images/misc/loading.gif" alt="placeholder" width={45} />
+// 					<Flex.Column gap={8} alignItems="center">
+// 						<Heading.h5 weight={700}>Analyzing your resume</Heading.h5>
+// 						<Text size="sm" color="var(--text-gray)">
+// 							Please wait while we analyze your resume
+// 						</Text>
+// 					</Flex.Column>
+// 					<ProgressLoader />
+// 				</Flex.Column>
+// 			) : (
+// 				<ResumeAnalysis data={resume?.data?.analysis} />
+// 			)}
+// 		</Modal>
+// 	);
+// };
