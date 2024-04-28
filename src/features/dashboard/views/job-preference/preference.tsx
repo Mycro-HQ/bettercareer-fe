@@ -11,6 +11,10 @@ import RoleLevel from './components/target-role/role-level';
 import WorkEnvironment from './components/work-environment';
 import OpenToAllCompanySize from './components/work-environment/open-to-all-company-size';
 import CompanySize from './components/work-environment/company-size';
+import Qualifications from './components/qualifications/qualifications';
+import Availability from './components/availability/availability';
+import SearchPriority from './components/availability/search-priority';
+import Compensation from './components/compensation/compensation';
 import usePreferenceStore from './store/preference-store';
 
 const preferenceList = [
@@ -30,9 +34,12 @@ const preferenceList = [
 			<CompanySize key={2} />,
 		],
 	},
-	{ label: 'Qualifications', component: [<div key={0}>Qualifications</div>] },
-	{ label: 'Availability', component: [<div key={0}>Availability</div>] },
-	{ label: 'Compensation', component: [<div key={0}>Compensation</div>] },
+	{ label: 'Qualifications', component: [<Qualifications key={0} />] },
+	{
+		label: 'Availability',
+		component: [<Availability key={0} />, <SearchPriority key={1} />],
+	},
+	{ label: 'Compensation', component: [<Compensation key={0} />] },
 ];
 
 export const JobPreference = ({

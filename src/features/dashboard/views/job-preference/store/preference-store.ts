@@ -19,6 +19,18 @@ type State = {
 	selectedCompanySize: string[];
 	handleClickedCompanySize: (companySize: string) => void;
 
+	selectedQualifications: string[];
+	handleSelectedQualification: (qualification: string) => void;
+
+	selectedLocation: string;
+	handleSelectedLocation: (location: string) => void;
+
+	selectedPriority: string;
+	handleSelectedPriority: (priority: string) => void;
+
+	selectedCompensation: string;
+	handleSelectedCompensation: (compensation: string) => void;
+
 	isButtonDisabled: boolean;
 	setIsButtonDisabled: (value: boolean) => void;
 };
@@ -100,6 +112,41 @@ const usePreferenceStore = create<State>((set) => ({
 				};
 			}
 		});
+	},
+
+	selectedQualifications: [],
+	handleSelectedQualification: (qualification) => {
+		set((state) => {
+			if (state.selectedQualifications.includes(qualification)) {
+				return {
+					selectedQualifications: state.selectedQualifications.filter(
+						(item) => item !== qualification
+					),
+				};
+			} else {
+				return {
+					selectedQualifications: [
+						...state.selectedQualifications,
+						qualification,
+					],
+				};
+			}
+		});
+	},
+
+	selectedLocation: '',
+	handleSelectedLocation: (location) => {
+		set(() => ({ selectedLocation: location }));
+	},
+
+	selectedPriority: '',
+	handleSelectedPriority: (priority) => {
+		set(() => ({ selectedPriority: priority }));
+	},
+
+	selectedCompensation: '',
+	handleSelectedCompensation: (compensation) => {
+		set(() => ({ selectedCompensation: compensation }));
 	},
 
 	isButtonDisabled: true,

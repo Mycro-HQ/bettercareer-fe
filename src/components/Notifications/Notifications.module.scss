@@ -1,0 +1,16 @@
+@use '@/styles/base/utils' as *;
+
+.NotificationsContainer {
+	padding-top: rem(58px);
+	padding-bottom: rem(58px);
+
+	.NotificationListContainer {
+		padding-top: rem(52px);
+
+		.NotificationListItem {
+			width: 100%;
+			display: grid;
+			grid-template-columns: 72px 6fr 2fr;
+		}
+	}
+}

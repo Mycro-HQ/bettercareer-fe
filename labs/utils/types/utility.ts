@@ -37,3 +37,10 @@ export interface FileWithKey {
 	key: string;
 	status: string[];
 }
+
+export interface NotificationListItemProps {
+	type?: 'projectSetup' | 'job';
+	title: string;
+	description: string;
+	time: string;
+}

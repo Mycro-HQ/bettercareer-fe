@@ -1,0 +1,18 @@
+export const Skillsets = [
+	'Python',
+	'Git',
+	'Excel',
+	'Photoshop',
+	'Figma',
+	'WordPress',
+	'Machine Learning',
+	'Google Ads',
+	'Quickbooks',
+	'Asana',
+	'Technical Writing',
+	'Communication',
+	'Problem Solving',
+	'Teamwork & Collaboration',
+	'Leadership',
+	'Adaptation & Flexibility',
+];
