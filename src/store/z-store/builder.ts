@@ -35,6 +35,7 @@ interface BuildStore {
 		raw?: string | null;
 		score?: number;
 		thumbnail?: string | null;
+		snapshots?: string[];
 	};
 	showPreview: boolean;
 	setResumeBlob: (options?: {
@@ -42,6 +43,7 @@ interface BuildStore {
 		raw?: string | null;
 		score?: number;
 		thumbnail?: string | null;
+		snapshots?: string[];
 	}) => void;
 	setTemplate: (template: any) => void;
 	setShowPreview?: (showPreview: boolean) => void;

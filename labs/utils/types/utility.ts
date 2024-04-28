@@ -40,7 +40,9 @@ export interface FileWithKey {
 
 export interface NotificationListItemProps {
 	type?: 'projectSetup' | 'job';
+	id?: string;
 	title: string;
 	description: string;
 	time: string;
+	bare?: boolean;
 }

@@ -31,7 +31,7 @@ export const DashboardLayout = ({
 	children: React.ReactNode;
 	title?: string;
 	backdropThreshold?: 'sm' | 'md' | 'lg';
-	profile: UserData | null | undefined;
+	profile?: UserData | null | undefined;
 	bare?: boolean;
 }) => {
 	const { setUser } = useUserStore();

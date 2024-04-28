@@ -153,6 +153,7 @@ export const ResumePreview = ({
 				raw: '',
 				thumbnail: '',
 				blob: '',
+				snapshots: [],
 			});
 			canvasRef.current = [];
 		};
@@ -182,6 +183,7 @@ export const ResumePreview = ({
 			if (!canvasRef.current.length) return;
 
 			let thumbnailImage = '';
+			let snapshots = [] as string[];
 
 			await new Promise((resolve, reject) => {
 				for (let i = 0; i < canvasRef.current.length; i++) {
@@ -215,6 +217,8 @@ export const ResumePreview = ({
 						thumbnailImage = canvas.toDataURL('image/jpeg', 0.15);
 					}
 
+					snapshots[i] = canvas.toDataURL('image/jpeg', 0.2);
+
 					img.crossOrigin = 'anonymous';
 					img.onerror = (e) => {
 						setPdfUrl(null);
@@ -225,6 +229,7 @@ export const ResumePreview = ({
 
 			setResumeBlob({
 				thumbnail: thumbnailImage,
+				snapshots,
 			});
 		},
 		[canvasRef, setResumeBlob, numPages]

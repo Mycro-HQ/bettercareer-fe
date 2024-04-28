@@ -1,11 +1,10 @@
 @use '@/styles/base/utils' as *;
 
 .NotificationsContainer {
-	padding-top: rem(58px);
 	padding-bottom: rem(58px);
 
 	.NotificationListContainer {
-		padding-top: rem(52px);
+		padding-top: rem(64px);
 
 		.NotificationListItem {
 			width: 100%;

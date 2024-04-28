@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import BellIcon from '@labs/icons/dashboard/bell.svg';
 import { Flex, Heading, Text } from '@labs/components';
-
+import { DashboardLayout } from '@/features/dashboard/layout';
 import Notifications, {
 	NotificationListItem,
 } from '@/components/Notifications';
-import { DashboardLayout } from '@/features/dashboard/layout';
 
 import { NotificationListItemProps } from '@labs/utils/types/utility';
 
@@ -27,13 +26,9 @@ function NotificationHeader() {
 	);
 }
 
-interface NotificationListItemWithKey extends NotificationListItemProps {
-	key: string;
-}
-
-const notificationArray: NotificationListItemWithKey[] = [
+const notificationArray: NotificationListItemProps[] = [
 	{
-		key: '0',
+		id: '0',
 		type: 'job',
 		title: 'Top Job Match: Product Designer at Dribbble',
 		description:
@@ -41,7 +36,7 @@ const notificationArray: NotificationListItemWithKey[] = [
 		time: '30 mins',
 	},
 	{
-		key: '1',
+		id: '1',
 		type: 'job',
 		title: 'Top Job Match: Product Designer at Dribbble',
 		description:
@@ -49,7 +44,7 @@ const notificationArray: NotificationListItemWithKey[] = [
 		time: '30 mins',
 	},
 	{
-		key: '2',
+		id: '2',
 		type: 'job',
 		title: 'Top Job Match: Product Designer at Dribbble',
 		description:
@@ -57,7 +52,7 @@ const notificationArray: NotificationListItemWithKey[] = [
 		time: '30 mins',
 	},
 	{
-		key: '3',
+		id: '3',
 		type: 'projectSetup',
 		title: 'Your profile is 75% complete',
 		description:
@@ -68,11 +63,13 @@ const notificationArray: NotificationListItemWithKey[] = [
 
 export default function Notification() {
 	return (
-		<DashboardLayout backdropThreshold="md" title="Notifications">
+		<DashboardLayout backdropThreshold="sm" title="Notifications">
 			<NotificationHeader />
 			<Notifications>
-				{notificationArray.map((notification) => (
-					<NotificationListItem {...notification} />
+				{notificationArray.map((notification, index) => (
+					<Fragment key={index}>
+						<NotificationListItem {...notification} />
+					</Fragment>
 				))}
 			</Notifications>
 		</DashboardLayout>
