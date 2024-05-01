@@ -7,20 +7,17 @@ import Briefcase from '@labs/icons/dashboard/briefcase-blue.svg';
 import { Flex, Heading, Text } from '@labs/components';
 
 import style from './target-role.module.scss';
-const OpenToAllRoleLevel = () => {
-	const {
-		isUserOpenToAllRoleLevel,
-		handleIsUserOpenToAllRoleLevel,
-		setIsButtonDisabled,
-	} = usePreferenceStore();
+const OpenToAllRoleLevel = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { isUserOpenToAllRoleLevel, handleIsUserOpenToAllRoleLevel } =
+		usePreferenceStore();
 
 	useEffect(() => {
-		if (isUserOpenToAllRoleLevel !== null) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [isUserOpenToAllRoleLevel, setIsButtonDisabled]);
+		handleSelectionChange(isUserOpenToAllRoleLevel !== null);
+	}, [handleSelectionChange, isUserOpenToAllRoleLevel]);
 
 	return (
 		<Flex.Column gap={24}>

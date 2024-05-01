@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type State = {
+interface PreferenceStore {
 	selectedTargetRoles: string[];
 	handleClickedRoles: (role: string) => void;
 
@@ -30,13 +30,33 @@ type State = {
 
 	selectedCompensation: string;
 	handleSelectedCompensation: (compensation: string) => void;
+}
 
-	isButtonDisabled: boolean;
-	setIsButtonDisabled: (value: boolean) => void;
+const initialState: PreferenceStore = {
+	selectedTargetRoles: [],
+	handleClickedRoles: () => {},
+	isUserOpenToAllRoleLevel: null,
+	handleIsUserOpenToAllRoleLevel: () => {},
+	selectedRoleLevel: [],
+	handleClickedRoleLevel: () => {},
+	selectedWorkIndustry: [],
+	handleClickedWorkIndustry: () => {},
+	isUserOpenToAllCompanySize: null,
+	handleIsUserOpenToAllCompanySize: () => {},
+	selectedCompanySize: [],
+	handleClickedCompanySize: () => {},
+	selectedQualifications: [],
+	handleSelectedQualification: () => {},
+	selectedLocation: '',
+	handleSelectedLocation: () => {},
+	selectedPriority: '',
+	handleSelectedPriority: () => {},
+	selectedCompensation: '',
+	handleSelectedCompensation: () => {},
 };
 
-const usePreferenceStore = create<State>((set) => ({
-	selectedTargetRoles: [],
+const usePreferenceStore = create<PreferenceStore>((set) => ({
+	...initialState,
 	handleClickedRoles: (role) => {
 		set((state) => {
 			if (state.selectedTargetRoles.includes(role)) {
@@ -53,12 +73,10 @@ const usePreferenceStore = create<State>((set) => ({
 		});
 	},
 
-	isUserOpenToAllRoleLevel: null,
 	handleIsUserOpenToAllRoleLevel: (option) => {
 		set({ isUserOpenToAllRoleLevel: option });
 	},
 
-	selectedRoleLevel: [],
 	handleClickedRoleLevel: (roleLevel) => {
 		set((state) => {
 			if (state.selectedRoleLevel.includes(roleLevel)) {
@@ -75,7 +93,6 @@ const usePreferenceStore = create<State>((set) => ({
 		});
 	},
 
-	selectedWorkIndustry: [],
 	handleClickedWorkIndustry: (industry) => {
 		set((state) => {
 			if (state.selectedWorkIndustry.includes(industry)) {
@@ -92,7 +109,6 @@ const usePreferenceStore = create<State>((set) => ({
 		});
 	},
 
-	isUserOpenToAllCompanySize: null,
 	handleIsUserOpenToAllCompanySize: (option) => {
 		set({ isUserOpenToAllCompanySize: option });
 	},
@@ -114,7 +130,6 @@ const usePreferenceStore = create<State>((set) => ({
 		});
 	},
 
-	selectedQualifications: [],
 	handleSelectedQualification: (qualification) => {
 		set((state) => {
 			if (state.selectedQualifications.includes(qualification)) {
@@ -134,23 +149,17 @@ const usePreferenceStore = create<State>((set) => ({
 		});
 	},
 
-	selectedLocation: '',
 	handleSelectedLocation: (location) => {
 		set(() => ({ selectedLocation: location }));
 	},
 
-	selectedPriority: '',
 	handleSelectedPriority: (priority) => {
 		set(() => ({ selectedPriority: priority }));
 	},
 
-	selectedCompensation: '',
 	handleSelectedCompensation: (compensation) => {
 		set(() => ({ selectedCompensation: compensation }));
 	},
-
-	isButtonDisabled: true,
-	setIsButtonDisabled: (value) => set({ isButtonDisabled: value }),
 }));
 
 export default usePreferenceStore;

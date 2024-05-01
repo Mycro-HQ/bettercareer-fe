@@ -24,12 +24,13 @@ const formatCurrencyValue = (value: number) => {
 	} else return value;
 };
 
-const Compensation = () => {
-	const {
-		selectedCompensation,
-		handleSelectedCompensation,
-		setIsButtonDisabled,
-	} = usePreferenceStore();
+const Compensation = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { selectedCompensation, handleSelectedCompensation } =
+		usePreferenceStore();
 	const [currency, setcurrency] = React.useState<Currency>('USD');
 	const [minimumSalary, setMinimumSalary] = React.useState(0);
 
@@ -38,12 +39,8 @@ const Compensation = () => {
 	}, [currency, handleSelectedCompensation, minimumSalary]);
 
 	React.useEffect(() => {
-		if (selectedCompensation && minimumSalary > 0) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [minimumSalary, selectedCompensation, setIsButtonDisabled]);
+		handleSelectionChange(selectedCompensation !== '' && minimumSalary > 0);
+	}, [handleSelectionChange, minimumSalary, selectedCompensation]);
 
 	return (
 		<Flex.Column gap={32} className={styles.Compensation}>

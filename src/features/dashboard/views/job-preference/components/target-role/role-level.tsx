@@ -10,17 +10,16 @@ import { Flex, Heading, Text } from '@labs/components';
 import style from './target-role.module.scss';
 import { RoleLevelData } from './target-role-data';
 
-const RoleLevel = () => {
-	const { selectedRoleLevel, handleClickedRoleLevel, setIsButtonDisabled } =
-		usePreferenceStore();
+const RoleLevel = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { selectedRoleLevel, handleClickedRoleLevel } = usePreferenceStore();
 
 	useEffect(() => {
-		if (selectedRoleLevel.length > 0) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [selectedRoleLevel.length, setIsButtonDisabled]);
+		handleSelectionChange(selectedRoleLevel.length > 0);
+	}, [handleSelectionChange, selectedRoleLevel.length]);
 
 	return (
 		<Flex.Column gap={24}>

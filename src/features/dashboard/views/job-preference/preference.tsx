@@ -1,46 +1,10 @@
 import React from 'react';
-import classNames from 'classnames';
 
 import { CallToAction, Flex, Modal } from '@labs/components';
 
 import styles from './preference.module.scss';
 import { Sidebar } from './sidebar/sidebar';
-import TargetRole from './components/target-role';
-import OpenToAllRoleLevel from './components/target-role/open-to-all-role-level';
-import RoleLevel from './components/target-role/role-level';
-import WorkEnvironment from './components/work-environment';
-import OpenToAllCompanySize from './components/work-environment/open-to-all-company-size';
-import CompanySize from './components/work-environment/company-size';
-import Qualifications from './components/qualifications/qualifications';
-import Availability from './components/availability/availability';
-import SearchPriority from './components/availability/search-priority';
-import Compensation from './components/compensation/compensation';
-import usePreferenceStore from './store/preference-store';
-
-const preferenceList = [
-	{
-		label: 'Target Role',
-		component: [
-			<TargetRole key={0} />,
-			<OpenToAllRoleLevel key={1} />,
-			<RoleLevel key={2} />,
-		],
-	},
-	{
-		label: 'Work Environment',
-		component: [
-			<WorkEnvironment key={0} />,
-			<OpenToAllCompanySize key={1} />,
-			<CompanySize key={2} />,
-		],
-	},
-	{ label: 'Qualifications', component: [<Qualifications key={0} />] },
-	{
-		label: 'Availability',
-		component: [<Availability key={0} />, <SearchPriority key={1} />],
-	},
-	{ label: 'Compensation', component: [<Compensation key={0} />] },
-];
+import { preferenceList } from './utils';
 
 export const JobPreference = ({
 	setIsModalOpen,
@@ -49,7 +13,11 @@ export const JobPreference = ({
 }) => {
 	const [activeTab, setActiveTab] = React.useState(0);
 	const [activeComponentIndex, setActiveComponentIndex] = React.useState(0);
-	const { isButtonDisabled } = usePreferenceStore();
+	const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
+
+	const handleSelectionChange = (isSelectionMade: boolean) => {
+		setIsButtonDisabled(!isSelectionMade);
+	};
 
 	const handleTabChange = () => {
 		if (activeComponentIndex < preferenceList[activeTab].component.length - 1) {
@@ -58,7 +26,7 @@ export const JobPreference = ({
 			setActiveTab((prev) => prev + 1);
 			setActiveComponentIndex(0);
 		} else {
-			console.log('done!');
+			setIsModalOpen(false);
 		}
 	};
 
@@ -71,6 +39,9 @@ export const JobPreference = ({
 			setActiveComponentIndex(previousTabComponents.length - 1);
 		}
 	};
+
+	const activeTabObject = preferenceList[activeTab];
+	const ActiveComponent = activeTabObject.component[activeComponentIndex];
 
 	return (
 		<Modal
@@ -85,36 +56,31 @@ export const JobPreference = ({
 					<aside className={styles.JobPreferenceAside}>
 						<Sidebar currentIndex={activeTab} preferenceList={preferenceList} />
 					</aside>
+
 					<Flex.Column className={styles.JobPreferenceContent}>
-						{preferenceList.map((pref, index) => (
-							<Flex.Column
-								key={index}
-								className={classNames([
-									styles.JobPreferenceContentMain,
-									styles[`JobPreferenceContentMain--${index === activeTab}`],
-								])}
-							>
-								<Flex.Column className={styles.JobPreferenceContentBody}>
-									{pref.component[activeComponentIndex]}
-								</Flex.Column>
+						<Flex.Column className={styles.JobPreferenceContentMain}>
+							<Flex.Column className={styles.JobPreferenceContentBody}>
+								<ActiveComponent
+									handleSelectionChange={handleSelectionChange}
+								/>
 							</Flex.Column>
-						))}
+						</Flex.Column>
 					</Flex.Column>
 				</Flex>
 			</Modal.Body>
 
-			<Modal.Footer
-				style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}
-			>
+			<Modal.Footer className={styles.ModalFooter}>
 				{activeTab > 0 || (activeTab === 0 && activeComponentIndex > 0) ? (
 					<CallToAction outline onClick={handleBackButtonClick}>
 						Back
 					</CallToAction>
-				) : (
-					<></>
-				)}
+				) : null}
 				<CallToAction disabled={isButtonDisabled} onClick={handleTabChange}>
-					Next
+					{activeTab === preferenceList.length - 1 &&
+					activeComponentIndex ===
+						preferenceList[activeTab].component.length - 1
+						? 'Finish'
+						: 'Next'}
 				</CallToAction>
 			</Modal.Footer>
 		</Modal>

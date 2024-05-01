@@ -7,20 +7,17 @@ import style from '../target-role/target-role.module.scss';
 import { Flex, Heading, Text } from '@labs/components';
 import UserGroup from '@labs/icons/dashboard/user-group.svg';
 
-const OpenToAllCompanySize = () => {
-	const {
-		isUserOpenToAllCompanySize,
-		handleIsUserOpenToAllCompanySize,
-		setIsButtonDisabled,
-	} = usePreferenceStore();
+const OpenToAllCompanySize = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { isUserOpenToAllCompanySize, handleIsUserOpenToAllCompanySize } =
+		usePreferenceStore();
 
 	useEffect(() => {
-		if (isUserOpenToAllCompanySize !== null) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [isUserOpenToAllCompanySize, setIsButtonDisabled]);
+		handleSelectionChange(isUserOpenToAllCompanySize !== null);
+	}, [handleSelectionChange, isUserOpenToAllCompanySize]);
 
 	return (
 		<Flex.Column gap={24}>

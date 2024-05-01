@@ -14,17 +14,16 @@ const PriorityList = [
 	'Not Looking',
 ];
 
-const SearchPriority = () => {
-	const { selectedPriority, handleSelectedPriority, setIsButtonDisabled } =
-		usePreferenceStore();
+const SearchPriority = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { selectedPriority, handleSelectedPriority } = usePreferenceStore();
 
 	React.useEffect(() => {
-		if (selectedPriority) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [selectedPriority, setIsButtonDisabled]);
+		handleSelectionChange(selectedPriority !== '');
+	}, [handleSelectionChange, selectedPriority]);
 
 	return (
 		<Flex.Column gap={24} className={styles.Availability}>

@@ -8,8 +8,10 @@ import styles from './sidebar.module.scss';
 interface Props {
 	currentIndex: number;
 	preferenceList: {
-		component: React.JSX.Element[];
 		label: string;
+		component: (({}: {
+			handleSelectionChange: () => void;
+		}) => React.JSX.Element)[];
 	}[];
 }
 

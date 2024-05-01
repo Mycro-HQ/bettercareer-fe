@@ -2,6 +2,8 @@ import React from 'react';
 import { formatDate } from 'date-fns';
 import Link from 'next/link';
 
+import { JobPreference } from '../job-preference';
+
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
@@ -18,7 +20,6 @@ import { truncateText } from '@labs/utils';
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
-import { JobPreference } from '../job-preference';
 
 export const DashboardHome = ({
 	profile,

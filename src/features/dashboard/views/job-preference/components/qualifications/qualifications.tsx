@@ -14,12 +14,13 @@ import TickIcon from '@labs/icons/misc/tick.svg';
 import styles from './qualifications.module.scss';
 import { Skillsets } from './qualification-data';
 
-const Qualifications = () => {
-	const {
-		selectedQualifications,
-		handleSelectedQualification,
-		setIsButtonDisabled,
-	} = usePreferenceStore();
+const Qualifications = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { selectedQualifications, handleSelectedQualification } =
+		usePreferenceStore();
 	const [value, setValue] = React.useState('');
 	const _search = useDebounce(value, 500);
 
@@ -37,12 +38,8 @@ const Qualifications = () => {
 	const hasSkill = (skill: string) => selectedQualifications.includes(skill);
 
 	React.useEffect(() => {
-		if (selectedQualifications.length > 0) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [selectedQualifications.length, setIsButtonDisabled]);
+		handleSelectionChange(selectedQualifications.length > 0);
+	}, [handleSelectionChange, selectedQualifications.length]);
 
 	return (
 		<Flex.Column gap={24} className={styles.Qualifications}>

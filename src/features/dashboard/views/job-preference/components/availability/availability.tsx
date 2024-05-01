@@ -32,17 +32,16 @@ const locationList = [
 	'Australia',
 ];
 
-const Availability = () => {
-	const { selectedLocation, handleSelectedLocation, setIsButtonDisabled } =
-		usePreferenceStore();
+const Availability = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { selectedLocation, handleSelectedLocation } = usePreferenceStore();
 
 	React.useEffect(() => {
-		if (selectedLocation) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [selectedLocation, setIsButtonDisabled]);
+		handleSelectionChange(selectedLocation !== '');
+	}, [handleSelectionChange, selectedLocation]);
 
 	return (
 		<Flex.Column gap={32} className={styles.Availability}>

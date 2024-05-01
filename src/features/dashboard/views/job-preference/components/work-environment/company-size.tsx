@@ -10,17 +10,17 @@ import Tick from '@labs/icons/dashboard/blue-tick.svg';
 
 import { CompanySizeData } from './work-environment-data';
 
-const CompanySize = () => {
-	const { selectedCompanySize, handleClickedCompanySize, setIsButtonDisabled } =
+const CompanySize = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { selectedCompanySize, handleClickedCompanySize } =
 		usePreferenceStore();
 
 	useEffect(() => {
-		if (selectedCompanySize.length > 0) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [selectedCompanySize.length, setIsButtonDisabled]);
+		handleSelectionChange(selectedCompanySize.length > 0);
+	}, [handleSelectionChange, selectedCompanySize.length]);
 
 	return (
 		<Flex.Column gap={24}>

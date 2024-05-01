@@ -8,17 +8,16 @@ import { Flex, Heading, Text } from '@labs/components';
 import style from './target-role.module.scss';
 import { TargetRolesData } from './target-role-data';
 
-const TargetRole = () => {
-	const { handleClickedRoles, selectedTargetRoles, setIsButtonDisabled } =
-		usePreferenceStore();
+const TargetRole = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { handleClickedRoles, selectedTargetRoles } = usePreferenceStore();
 
 	useEffect(() => {
-		if (selectedTargetRoles.length > 0) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [selectedTargetRoles.length, setIsButtonDisabled]);
+		handleSelectionChange(selectedTargetRoles.length > 0);
+	});
 
 	return (
 		<Flex.Column gap={24}>

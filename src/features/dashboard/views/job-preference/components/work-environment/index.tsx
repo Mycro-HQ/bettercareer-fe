@@ -7,20 +7,17 @@ import Building from '@labs/icons/dashboard/blue-building.svg';
 import { Flex, Heading, Text } from '@labs/components';
 
 import { WorkIndustryData } from './work-environment-data';
-const WorkEnvironment = () => {
-	const {
-		selectedWorkIndustry,
-		handleClickedWorkIndustry,
-		setIsButtonDisabled,
-	} = usePreferenceStore();
+const WorkEnvironment = ({
+	handleSelectionChange,
+}: {
+	handleSelectionChange: (isSelectionMade: boolean) => void;
+}) => {
+	const { selectedWorkIndustry, handleClickedWorkIndustry } =
+		usePreferenceStore();
 
 	useEffect(() => {
-		if (selectedWorkIndustry.length > 0) {
-			setIsButtonDisabled(false);
-		} else {
-			setIsButtonDisabled(true);
-		}
-	}, [selectedWorkIndustry.length, setIsButtonDisabled]);
+		handleSelectionChange(selectedWorkIndustry.length > 0);
+	}, [handleSelectionChange, selectedWorkIndustry.length]);
 
 	return (
 		<Flex.Column gap={24}>

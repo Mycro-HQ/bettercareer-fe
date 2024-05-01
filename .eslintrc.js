@@ -16,7 +16,7 @@ module.exports = {
 		sourceType: 'module',
 	},
 	rules: {
-		'prettier/prettier': 'error',
+		'prettier/prettier': ['error', {endOfLine: 'auto'}],
 		'react/jsx-uses-react': 'off',
 		'no-unused-vars': 'off',
 		'react/prop-types': ['off'],
