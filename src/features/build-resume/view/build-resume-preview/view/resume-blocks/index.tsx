@@ -76,7 +76,7 @@ export const ResumePreview = ({
 	const [canvasImage, setCanvasImage] = useState<Array<string>>([]);
 	const [generateImage, setGenerateImage] = useState(false);
 
-	const modules = useDebounce(userData, 200);
+	const modules = useDebounce(userData, 300);
 
 	const hasData = modules.find(
 		(module: any) =>
