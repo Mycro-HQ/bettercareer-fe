@@ -13,7 +13,6 @@ export const queryClient = new QueryClient({
 			retry: 3,
 			retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
 			throwOnError(error: any, query) {
-				console.error(error);
 				if (error.statusCode === 403) {
 					Cookies.set('bc_token', '', { expires: 0 });
 					window.location.replace('/login');

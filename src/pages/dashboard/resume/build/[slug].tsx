@@ -35,7 +35,7 @@ export async function getServerSideProps(context: any) {
 			url: `/resume/${slug}`,
 			method: 'get',
 			token: context.req.cookies?.['bc_token'],
-			headers: context.req.headers,
+			// headers: context.req.headers,
 		} as any);
 
 		return {
