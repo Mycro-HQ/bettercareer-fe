@@ -36,7 +36,7 @@ export const resumeApiCreator = createSmartApi({
 		getResumeAnalysis: builder.mutation({
 			key: 'get-resume-analysis',
 			mutationFn: (data) => ({
-				url: `/resume/analyze`,
+				url: `/resume/analyse`,
 				method: 'POST',
 				body: data,
 			}),
