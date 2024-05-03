@@ -15,7 +15,7 @@ const DocText = ({
 	children: string | number | React.ReactNode;
 	color?: string;
 	size?: 'xs' | 'sm' | 'md' | 'lg';
-	as?: 'heading' | 'subheading' | 'title';
+	as?: 'heading' | 'subHeading' | 'title';
 	style?: any;
 	theme?: any;
 	scale?: number;
@@ -29,7 +29,7 @@ const DocText = ({
 	} as const;
 
 	const asMap = {
-		subheading: {
+		subHeading: {
 			fontSize: 12 / (scale || 1),
 			fontWeight: 'normal',
 		},

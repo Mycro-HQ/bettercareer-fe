@@ -79,23 +79,23 @@ const ClassicTemplate = ({
 						<DocText scale={scale} as="heading">
 							{heading?.name}
 							{heading?.title ? (
-								<DocText scale={scale} as="subheading">
+								<DocText scale={scale} as="subHeading">
 									, {heading?.title}
 								</DocText>
 							) : null}
 						</DocText>
 						<DocText scale={scale} size="xs">
-							{heading?.subheading?.length
-								? heading?.subheading?.map((subheading: any, index: number) => (
-										<Fragment key={parseValue(subheading)}>
-											{index > 0 && index < heading?.subheading?.length
+							{heading?.subHeading?.length
+								? heading?.subHeading?.map((subHeading: any, index: number) => (
+										<Fragment key={parseValue(subHeading)}>
+											{index > 0 && index < heading?.subHeading?.length
 												? ' | '
 												: ''}
 											<Link
-												href={getHref(parseValue(subheading))}
+												href={getHref(parseValue(subHeading))}
 												style={styles.link}
 											>
-												{extractNameFromLink(parseValue(subheading))}
+												{extractNameFromLink(parseValue(subHeading))}
 											</Link>
 										</Fragment>
 									))

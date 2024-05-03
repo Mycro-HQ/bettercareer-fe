@@ -87,22 +87,22 @@ const CosmosTemplate = ({
 								{heading?.name}
 							</DocText>
 							{heading?.title ? (
-								<DocText scale={scale} as="subheading">
+								<DocText scale={scale} as="subHeading">
 									{heading?.title}
 								</DocText>
 							) : null}
 						</DocFlex>
 						<DocText scale={scale} size="xs" textAlign="right">
-							{heading?.subheading?.length
-								? heading?.subheading?.map((subheading: any) => (
-										<Fragment key={parseValue(subheading)}>
+							{heading?.subHeading?.length
+								? heading?.subHeading?.map((subHeading: any) => (
+										<Fragment key={parseValue(subHeading)}>
 											<Link
-												href={getHref(parseValue(subheading))}
+												href={getHref(parseValue(subHeading))}
 												style={{
 													...styles.link,
 												}}
 											>
-												{extractNameFromLink(parseValue(subheading))} {'\n'}
+												{extractNameFromLink(parseValue(subHeading))} {'\n'}
 											</Link>
 										</Fragment>
 									))

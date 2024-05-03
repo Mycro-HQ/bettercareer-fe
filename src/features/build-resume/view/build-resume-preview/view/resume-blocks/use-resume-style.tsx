@@ -12,7 +12,7 @@ export const useResumeStyles = (data?: any) => {
 					color: '#0F1F2E',
 					fontFamily: 'Lato',
 				},
-				subheading: {
+				subHeading: {
 					fontSize: 12,
 					fontWeight: 'normal',
 				},

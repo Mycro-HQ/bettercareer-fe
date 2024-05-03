@@ -16,7 +16,7 @@ export const HeadingModule = React.memo(
 		setField: (field: any) => void;
 		field: {
 			name: string;
-			subheading: string[];
+			subHeading: string[];
 			title: string;
 		};
 		removeField: (field: any) => void;
@@ -25,18 +25,18 @@ export const HeadingModule = React.memo(
 		const setSubField = (data: string) => {
 			if (
 				Array.isArray(field) &&
-				field.subheading?.find((item: any) => parseValue(item) === data)
+				field.subHeading?.find((item: any) => parseValue(item) === data)
 			) {
 				return;
 			}
 			setValue('');
-			setField({ subheading: [...(field.subheading || []), { value: data }] });
+			setField({ subHeading: [...(field.subHeading || []), { value: data }] });
 		};
 
 		const removeField = (item: any) => {
 			return setField({
-				subheading:
-					field?.subheading?.filter(
+				subHeading:
+					field?.subHeading?.filter(
 						(sub: any) => parseValue(sub) !== parseValue(item)
 					) || [],
 			});
@@ -58,9 +58,9 @@ export const HeadingModule = React.memo(
 				<Flex.Column gap={8}>
 					<label className={styles.TagLabel}>Contact Details</label>
 					<div className={styles.TagInput}>
-						{Array.isArray(field.subheading) &&
-							field.subheading?.length > 0 &&
-							field.subheading.map((item: any, index: number) => (
+						{Array.isArray(field.subHeading) &&
+							field.subHeading?.length > 0 &&
+							field.subHeading.map((item: any, index: number) => (
 								<motion.div
 									key={index}
 									initial={{ opacity: 0, scale: 0.9 }}
@@ -104,7 +104,7 @@ export const HeadingModule = React.memo(
 								}
 
 								if (e.key === 'Backspace' && value.length === 0) {
-									removeField(field.subheading[field.subheading.length - 1]);
+									removeField(field.subHeading[field.subHeading.length - 1]);
 								}
 							}}
 						/>

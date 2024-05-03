@@ -37,7 +37,7 @@ export const MOCK = [
 		data: {
 			name: 'Your Name',
 			title: 'Senior Software Engineer',
-			subheading: [
+			subHeading: [
 				{
 					value: 'https://jack.dev',
 				},
