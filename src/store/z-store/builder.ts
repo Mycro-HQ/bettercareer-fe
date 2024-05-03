@@ -105,7 +105,15 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 		set({
 			template: {
 				...get().template,
-				...template,
+				...Object.keys(template).reduce((acc: any, key) => {
+					acc[key] = template[key];
+
+					if (template[key] === 'Lato Body') {
+						acc[key] = 'Lato';
+					}
+
+					return acc;
+				}, {}),
 			},
 		});
 	},

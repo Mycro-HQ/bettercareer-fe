@@ -82,8 +82,10 @@ export const DashboardHeader = ({
 						alignItems="center"
 						gap={40}
 					>
-						<Logo className="hidden lg:block" />
-						<LogoMark className="lg:hidden block h-[40px]" />
+						<Link href="/dashboard">
+							<Logo className="hidden lg:block" />
+							<LogoMark className="lg:hidden block h-[40px]" />
+						</Link>
 						{!bare && (
 							<Flex
 								gap={24}
