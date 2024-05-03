@@ -96,21 +96,22 @@ export const ResumePreview = ({
 				// Please don't remove this line it fixes a funny SendWithPromise error
 				// await wait(100);
 				try {
-					// const _blob = await pdf(
-					// 	Resume({
-					// 		modules: useDefault && !hasData ? MOCK : modules,
-					// 		template,
-					// 	})
-					// ).toBlob();
-
-					const _blob = await fetch(`${APP_URL}/api/generate`, {
-						method: 'POST',
-						body: JSON.stringify({
+					const _blob = await pdf(
+						Resume({
 							modules: useDefault && !hasData ? MOCK : modules,
 							template,
-							name: 'resume',
-						}),
-					}).then((res) => res.blob());
+						})
+					).toBlob();
+
+					// Vercel is behaving stupidly
+					// const _blob = await fetch(`${APP_URL}/api/generate`, {
+					// 	method: 'POST',
+					// 	body: JSON.stringify({
+					// 		modules: useDefault && !hasData ? MOCK : modules,
+					// 		template,
+					// 		name: 'resume',
+					// 	}),
+					// }).then((res) => res.blob());
 
 					const base64 = (await blobToBase64(_blob)) as string;
 
