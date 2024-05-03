@@ -47,12 +47,13 @@ const DocText = ({
 	} as const;
 
 	const fontSize = sizeMap[size as keyof typeof sizeMap] || sizeMap.sm;
+	const fontFamily = theme?.font?.body || undefined;
 
 	const styles = useMemo(
 		() =>
 			StyleSheet.create({
 				text: {
-					fontFamily: theme?.font?.body || undefined,
+					fontFamily: fontFamily,
 					fontSize: fontSize / (scale || 1),
 					lineHeight: 1.5,
 					letterSpacing: -0.12,
@@ -60,7 +61,7 @@ const DocText = ({
 					...(color && { color }),
 				},
 			}),
-		[fontSize, color, weight, theme, scale]
+		[fontSize, color, weight, theme, scale, fontFamily]
 	);
 
 	return (

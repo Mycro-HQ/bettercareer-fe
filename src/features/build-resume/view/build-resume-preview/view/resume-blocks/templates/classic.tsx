@@ -1,6 +1,6 @@
 import React, { Fragment, useMemo } from 'react';
 import { Document, Link, Page, StyleSheet } from '@react-pdf/renderer';
-import { format } from 'date-fns';
+import { format, isDate } from 'date-fns';
 
 import { RichOutput } from '../components/rich-output';
 import DocText from '../components/doc-text';
@@ -15,7 +15,7 @@ import { DocFlex } from '../components/doc-flex';
 import { fixText, isEmpty, parseValue } from '@labs/utils';
 
 import { ModuleData } from './types';
-import { MARGIN_MAP, SCALE_MAP } from './utils';
+import { MARGIN_MAP, SCALE_MAP, toDate } from './utils';
 
 const renderElements = {
 	summary: Summary,
@@ -218,7 +218,7 @@ function Projects({ data, styles }: ModuleData) {
 							})}`;
 
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (
@@ -272,7 +272,7 @@ function Experience({ data, styles }: ModuleData) {
 								prefix: ', ',
 							})}`;
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (
@@ -321,7 +321,7 @@ function Education({ data, styles, variant }: ModuleData) {
 								prefix: ' in ',
 							})}`;
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (
@@ -381,7 +381,7 @@ function Certification({ data, styles, variant = 'full' }: ModuleData) {
 							} = exp || {};
 
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (

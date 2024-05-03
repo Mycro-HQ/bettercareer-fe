@@ -15,7 +15,7 @@ import { DocFlex } from '../components/doc-flex';
 import { fixText, isEmpty, parseValue } from '@labs/utils';
 
 import { ModuleData } from './types';
-import { COLOR_MAPS, MARGIN_MAP, SCALE_MAP } from './utils';
+import { COLOR_MAPS, MARGIN_MAP, SCALE_MAP, toDate } from './utils';
 
 const renderElements = {
 	summary: Summary,
@@ -188,7 +188,7 @@ function Projects({ data, styles }: ModuleData) {
 							const { title: _title, name, from, to, url } = exp || {};
 
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (
@@ -286,7 +286,7 @@ function Experience({ data, styles }: ModuleData) {
 								prefix: ', ',
 							})}`;
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (
@@ -348,7 +348,7 @@ function Education({ data, styles }: ModuleData) {
 								prefix: ' in ',
 							})}`;
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (
@@ -411,7 +411,7 @@ function Certification({ data, styles }: ModuleData) {
 							} = exp || {};
 
 							const _date = from
-								? `${format(new Date(from), 'MMM yyyy')} - ${to ? format(new Date(to), 'MMM yyyy') : 'Present'}`
+								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
 								: '';
 
 							return (
