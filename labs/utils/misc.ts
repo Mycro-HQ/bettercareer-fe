@@ -338,11 +338,17 @@ export const wait = (ms: number) =>
 	new Promise((resolve) => setTimeout(resolve, ms));
 
 export const parseValue = (item: any) => {
+	if (!item) return null;
+
 	if (typeof item === 'string') {
 		return item;
 	}
 
 	if (typeof item === 'object') {
+		if (typeof item?.value === 'string') {
+			return [item?.value];
+		}
+
 		return item?.value;
 	}
 
