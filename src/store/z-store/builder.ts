@@ -26,6 +26,7 @@ interface BuildStore {
 	setModuleAdd: (key: string, status: boolean) => void;
 	moduleAdd: { [key: string]: boolean };
 	setTheme: (theme: any) => void;
+	analysisData: any;
 	template: {
 		name: string;
 		[key: string]: any;
@@ -47,6 +48,7 @@ interface BuildStore {
 	}) => void;
 	setTemplate: (template: any) => void;
 	setShowPreview?: (showPreview: boolean) => void;
+	setAnalysisData: (analysisData: any) => void;
 }
 
 export const MODULES = [
@@ -66,6 +68,7 @@ const initialState: BuildStore = {
 		experiences: false,
 		educations: false,
 	},
+	analysisData: null,
 	template: {
 		...templatesConfig[0],
 	},
@@ -83,6 +86,7 @@ const initialState: BuildStore = {
 	setResumeBlob: () => {},
 	setTheme: () => {},
 	setTemplate: () => {},
+	setAnalysisData: () => {},
 };
 
 const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
@@ -98,6 +102,12 @@ const useBuildStore = createReportableStore<BuildStore>((set, get) => ({
 
 		set({
 			modules: newModules,
+		});
+	},
+
+	setAnalysisData: (analysisData: any) => {
+		set({
+			analysisData,
 		});
 	},
 
