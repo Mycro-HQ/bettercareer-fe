@@ -147,8 +147,11 @@ function Skills({ data, styles, variant }: Partial<ModuleData>) {
 					</DocText>
 					<DocFlex direction="column" gap={8}>
 						{data.map(
-							(skill: { name: string; value: string[]; $id: string }) => (
-								<DocText scale={styles?.scale} key={skill?.$id}>
+							(
+								skill: { name: string; value: string[]; $id: string },
+								index: number
+							) => (
+								<DocText scale={styles?.scale} key={`${skill?.$id}:${index}`}>
 									{isSide ? null : <>• </>}
 									{skill?.name ? (
 										<DocText scale={styles?.scale} size="xs" weight="heavy">
@@ -211,7 +214,7 @@ function Projects({ data, styles }: ModuleData) {
 						Projects
 					</DocText>
 					<DocFlex direction="column" gap={8}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const { title: _title, name, from, to, url } = exp || {};
 							const title = `${name}${fixText(_title, {
 								prefix: ', ',
@@ -222,7 +225,11 @@ function Projects({ data, styles }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex gap={4} direction="column" key={exp?.$id}>
+								<DocFlex
+									gap={4}
+									direction="column"
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocText scale={styles?.scale} size="xs" weight="heavy">
 										<Link
 											style={styles.link}
@@ -259,7 +266,7 @@ function Experience({ data, styles }: ModuleData) {
 						Work Experience
 					</DocText>
 					<DocFlex direction="column" gap={8}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const {
 								title: _title,
 								company,
@@ -276,7 +283,11 @@ function Experience({ data, styles }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex gap={4} direction="column" key={exp?.$id}>
+								<DocFlex
+									gap={4}
+									direction="column"
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocText scale={styles?.scale} size="xs" weight="heavy">
 										<Link
 											style={styles.link}
@@ -315,7 +326,7 @@ function Education({ data, styles, variant }: ModuleData) {
 						Education
 					</DocText>
 					<DocFlex direction="column" gap={8}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const { degree, study, institution, grade, from, to } = exp || {};
 							const title = `${degree}${fixText(study, {
 								prefix: ' in ',
@@ -325,7 +336,11 @@ function Education({ data, styles, variant }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex gap={4} direction="column" key={exp?.$id}>
+								<DocFlex
+									gap={4}
+									direction="column"
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocText
 										scale={styles?.scale}
 										size="xs"
@@ -371,7 +386,7 @@ function Certification({ data, styles, variant = 'full' }: ModuleData) {
 						Certificates
 					</DocText>
 					<DocFlex direction="column" gap={8}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const {
 								name,
 								organization,
@@ -385,7 +400,11 @@ function Certification({ data, styles, variant = 'full' }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex gap={8} direction="column" key={exp?.$id}>
+								<DocFlex
+									gap={8}
+									direction="column"
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocText
 										scale={styles?.scale}
 										size="xs"

@@ -44,6 +44,10 @@ import styles from './layout.module.scss';
 export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 	const router = useRouter();
 	const previewRef = React.useRef(null);
+	const slug = useMemo(
+		() => (router.query.slug as string[])?.[1],
+		[router.query.slug]
+	);
 
 	const { createDisclosure, createToast } = useFeedback();
 	const {
@@ -77,7 +81,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 			title: 'Delete Resume',
 		});
 		try {
-			await deleteResume(router.query.slug as string);
+			await deleteResume(slug);
 			router.push('/dashboard');
 		} catch (error) {
 			createToast({
@@ -98,7 +102,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 			confirmText: 'Duplicate',
 		});
 		try {
-			const res = await duplicateResume(router.query.slug as string);
+			const res = await duplicateResume(slug);
 
 			window.location.replace(`/dashboard/resume/b/${res.data.id}`);
 			createToast({
@@ -112,6 +116,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 			});
 		}
 	};
+
 	const handleDefault = async () => {
 		await createDisclosure({
 			message: 'This resume will be the default for all applications',
@@ -165,6 +170,12 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 		}
 		setIsSettingInitialData(false);
 	}, [resume, setModules, setTemplate]);
+
+	React.useEffect(() => {
+		if (router.query.analysis === 'true') {
+			setShowAnalysis(true);
+		}
+	}, [router.query.analysis]);
 
 	React.useEffect(() => {
 		if (resume?.id) {
@@ -267,24 +278,25 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 				}, {});
 
 				const res = await createOrUpdateResume({
-					...((Router.query.slug !== 'new' && { id: Router.query.slug }) || {}),
+					...((slug !== 'new' && { id: slug }) || {}),
 					...convertBackToData,
 					...innerData,
-					thumbnail: resumeBlob?.thumbnail,
+					...(resumeBlob?.thumbnail && { thumbnail: resumeBlob?.thumbnail }),
 					template,
 				});
 
-				if (res?.data && Router.query.slug === 'new') {
+				if (res?.data && slug === 'new') {
 					Router.replace(`/dashboard/resume/b/${res?.data?.id}`);
 				}
 			}
 		},
 		[
-			createOrUpdateResume,
 			blocks,
+			createOrUpdateResume,
 			hasData,
+			resumeBlob,
+			slug,
 			template,
-			resumeBlob?.thumbnail,
 			isSettingInitialData,
 		]
 	);
@@ -315,7 +327,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 
 	const isLoading = useDebounce(isPending, 500);
 
-	useDebounce(handleDoc, router.query.slug === 'new' ? 500 : 1000);
+	useDebounce(handleDoc, slug === 'new' ? 500 : 1000);
 
 	return (
 		<div className={styles.BuildResumeLayout}>
@@ -346,7 +358,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 										<FileIcon />
 
 										<Text className="cursor-pointer" noOfLines={1}>
-											{truncateText(resume?.name || 'Untitled Resume', 50)}
+											{truncateText(resumeName || 'Untitled Resume', 50)}
 										</Text>
 
 										<ArrowDown />
@@ -398,7 +410,10 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 								</CallToAction>
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content>
-								<ResumeDownloadAction resumeBlob={resumeBlob} resume={resume} />
+								<ResumeDownloadAction
+									resumeName={resumeName}
+									resumeBlob={resumeBlob}
+								/>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 					</Flex>
@@ -494,8 +509,8 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 										RESUME Download
 									</Text>
 									<ResumeDownloadAction
+										resumeName={resumeName}
 										resumeBlob={resumeBlob}
-										resume={resume}
 										bare={true}
 									/>
 								</Flex.Column>
@@ -638,11 +653,11 @@ const RenameResume = ({
 
 const ResumeDownloadAction = ({
 	resumeBlob,
-	resume,
+	resumeName,
 	bare,
 }: {
 	resumeBlob: any;
-	resume: any;
+	resumeName: string;
 	bare?: boolean;
 }) => {
 	const Component = bare ? 'button' : DropdownMenu.Item;
@@ -653,7 +668,7 @@ const ResumeDownloadAction = ({
 				onClick={() =>
 					downloadResume(
 						resumeBlob?.blob!,
-						slugify(resume?.name || 'Untitled Resume'),
+						slugify(resumeName || 'Untitled Resume'),
 						'pdf'
 					)
 				}
@@ -666,7 +681,7 @@ const ResumeDownloadAction = ({
 				onClick={() =>
 					downloadResume(
 						resumeBlob?.raw!,
-						slugify(resume?.name || 'Untitled Resume'),
+						slugify(resumeName || 'Untitled Resume'),
 						'docx'
 					)
 				}
@@ -677,7 +692,7 @@ const ResumeDownloadAction = ({
 				onClick={() =>
 					downloadResume(
 						resumeBlob?.raw!,
-						slugify(resume?.name || 'Untitled Resume'),
+						slugify(resumeName || 'Untitled Resume'),
 						'txt'
 					)
 				}
@@ -715,55 +730,3 @@ const ResumeAnalysisAction = ({
 		</>
 	);
 };
-
-// const GetResumeAnalysis = ({
-// 	show,
-// 	setShow = () => {},
-// }: {
-// 	show: boolean;
-// 	setShow?: (data: any) => void;
-// }) => {
-// 	const {
-// 		mutateAsync: getResumeAnalysis,
-// 		isPending,
-// 		data: resume,
-// 	} = useGetResumeAnalysisMutation();
-// 	const { resumeBlob } = useBuildStore();
-
-// 	useEffect(() => {
-// 		if (show && resumeBlob?.raw) {
-// 			getResumeAnalysis({
-// 				id: Router.query.slug as string,
-// 				resume: resumeBlob?.raw,
-// 			});
-// 		}
-// 	}, [show]);
-
-// 	return (
-// 		<Modal
-// 			onClose={() => setShow(false)}
-// 			in={show}
-// 			size={resume?.data?.analysis ? 'xlg' : 'md'}
-// 		>
-// 			{!resume?.data?.analysis || isPending ? (
-// 				<Flex.Column
-// 					gap={24}
-// 					alignItems="center"
-// 					className="min-h-[35vh]"
-// 					justifyContent="center"
-// 				>
-// 					<img src="/images/misc/loading.gif" alt="placeholder" width={45} />
-// 					<Flex.Column gap={8} alignItems="center">
-// 						<Heading.h5 weight={700}>Analyzing your resume</Heading.h5>
-// 						<Text size="sm" color="var(--text-gray)">
-// 							Please wait while we analyze your resume
-// 						</Text>
-// 					</Flex.Column>
-// 					<ProgressLoader />
-// 				</Flex.Column>
-// 			) : (
-// 				<ResumeAnalysis data={resume?.data?.analysis} />
-// 			)}
-// 		</Modal>
-// 	);
-// };

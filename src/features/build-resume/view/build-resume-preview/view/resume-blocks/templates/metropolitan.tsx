@@ -123,7 +123,7 @@ const MetropolitanTemplate = ({
 						{generateDataByKey(
 							['summary', 'experiences', 'projects'],
 							modules
-						).map((module: any) => {
+						).map((module: any, index: number) => {
 							const Component =
 								renderElements[module.key as keyof typeof renderElements] ||
 								renderElements.custom;
@@ -131,7 +131,7 @@ const MetropolitanTemplate = ({
 							if (isEmpty(module.data)) return null;
 							return (
 								<Component
-									key={module.key}
+									key={`${module.key}-${index}`}
 									data={module.data}
 									styles={{
 										...styles,
