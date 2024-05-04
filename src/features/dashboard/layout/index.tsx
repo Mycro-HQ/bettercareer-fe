@@ -26,13 +26,14 @@ export const DashboardLayout = ({
 	children,
 	title = 'Dashboard',
 	backdropThreshold = 'md',
+	bg,
 	bare,
 	plainBackdrop,
 }: {
 	children: React.ReactNode;
 	title?: string;
 	backdropThreshold?: 'sm' | 'md' | 'lg';
-	profile?: UserData | null | undefined;
+	bg?: string;
 	bare?: boolean;
 	plainBackdrop?: boolean;
 }) => {
@@ -46,6 +47,7 @@ export const DashboardLayout = ({
 			setUser(data?.user);
 		}
 	}, [data]);
+
 	return (
 		<div
 			className={classNames([
@@ -55,7 +57,18 @@ export const DashboardLayout = ({
 		>
 			<Seo title={title} />
 			<nav className={styles.DashboardLayoutHeader}>
-				<div className={styles.DashboardLayoutBanner} />
+				<div
+					className={classNames([
+						styles.DashboardLayoutBanner,
+						bg && styles.fadeOff,
+					])}
+					style={
+						{
+							'--base-bg': bg,
+							borderColor: bg || undefined,
+						} as React.CSSProperties
+					}
+				/>
 
 				<DashboardHeader bare={bare} plainBackdrop={plainBackdrop} />
 			</nav>

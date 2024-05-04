@@ -128,15 +128,19 @@ export const DashboardHome = ({
 							<Resumes />
 						</div>
 						<Heading.h6 weight={800} fontSize="16px">
-							Tailor Resume to Job
+							Upload my Resume
 						</Heading.h6>
 						<Text size="sm" color="var(--text-gray)" weight={600}>
-							Tailor your resume to each opportunity and boost your job
-							applications
+							Upload your current resume and get a detailed analysis of them.
 						</Text>
-						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
-							Tailor Resume
-						</CallToAction>
+						<CallToAction.a
+							href="/dashboard/resume/upload"
+							variant="secondary"
+							size="sm"
+							className="mt-[20px]"
+						>
+							Upload Resume
+						</CallToAction.a>
 					</div>
 					<div className={styles.ActionCard}>
 						<div className={styles.ActionCardIcon}>

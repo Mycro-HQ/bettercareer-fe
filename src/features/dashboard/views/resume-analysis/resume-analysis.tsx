@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Flex, Heading, Text } from '@labs/components';
 
@@ -7,7 +7,7 @@ import { useBuildStore } from '@/store/z-store/builder';
 import { Modal } from '@labs/components/modal';
 import { ProgressLoader } from '@/components/misc/loader';
 import { AnalysisHistory } from './view/analysis-history';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { Analysis } from './view/analysis';
 
 export const ResumeAnalysis = ({
@@ -19,11 +19,17 @@ export const ResumeAnalysis = ({
 	onClose: () => void;
 	isAnalysis?: boolean;
 }) => {
+	const router = useRouter();
 	const [screen, setScreen] = React.useState(
 		isAnalysis ? 'analysis' : 'all-analysis'
 	);
-	const [analysisData, setAnalysisData] = React.useState<any>(null);
-	const { resumeBlob } = useBuildStore();
+
+	const slug = useMemo(
+		() => (router.query.slug as string[])?.[1],
+		[router.query.slug]
+	);
+
+	const { resumeBlob, setAnalysisData, analysisData } = useBuildStore();
 
 	const handleClose = () => {
 		setScreen('all-analysis');
@@ -41,28 +47,25 @@ export const ResumeAnalysis = ({
 	});
 
 	React.useEffect(() => {
-		if (isAnalysis) {
+		if (isAnalysis || router.query.analysis === 'true') {
 			setScreen('analysis');
 		}
-	}, [isAnalysis]);
+	}, [isAnalysis, router.query.analysis]);
 
 	React.useEffect(() => {
 		if (show && isAnalysis && resumeBlob?.raw) {
 			getResumeAnalysis({
-				id: Router.query.slug as string,
+				id: slug,
 				resume: resumeBlob.raw || '',
 				snapshots: resumeBlob.snapshots || [],
 			});
 		}
-	}, [show, isAnalysis]);
+	}, [show, isAnalysis, slug]);
 
 	if (screen === 'all-analysis') {
 		return (
 			<Modal onClose={handleClose} in={show} size={'lg'}>
-				<AnalysisHistory
-					setAnalysisData={setAnalysisData}
-					setScreen={setScreen}
-				/>
+				<AnalysisHistory setScreen={setScreen} />
 			</Modal>
 		);
 	}
