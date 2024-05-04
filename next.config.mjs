@@ -16,6 +16,16 @@ const nextConfig = {
 		];
 	},
 
+	redirects: async () => {
+		return [
+			{
+				source: '/dashboard/resume',
+				destination: '/dashboard/resume/b/new',
+				permanent: false,
+			},
+		];
+	},
+
 	webpack: (config, { isServer }) => {
 		config.resolve.alias.canvas = false;
 

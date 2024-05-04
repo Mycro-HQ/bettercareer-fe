@@ -150,8 +150,11 @@ function Skills({ data, styles }: ModuleData) {
 					</DocText>
 					<DocFlex direction="column" gap={8}>
 						{data.map(
-							(skill: { name: string; value: string[]; $id: string }) => (
-								<DocText scale={styles?.scale} key={skill?.$id}>
+							(
+								skill: { name: string; value: string[]; $id: string },
+								index: number
+							) => (
+								<DocText scale={styles?.scale} key={`${skill?.$id}:${index}`}>
 									•{' '}
 									{skill?.name ? (
 										<DocText scale={styles?.scale} size="xs" weight="heavy">
@@ -184,7 +187,7 @@ function Projects({ data, styles }: ModuleData) {
 						Projects
 					</DocText>
 					<DocFlex direction="column" gap={4}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const { title: _title, name, from, to, url } = exp || {};
 
 							const _date = from
@@ -192,7 +195,11 @@ function Projects({ data, styles }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex direction="column" gap={4} key={exp?.$id}>
+								<DocFlex
+									direction="column"
+									gap={4}
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocFlex
 										direction="row"
 										alignItems="center"
@@ -273,7 +280,7 @@ function Experience({ data, styles }: ModuleData) {
 						Work Experience
 					</DocText>
 					<DocFlex direction="column" gap={8}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const {
 								title: _title,
 								company,
@@ -290,7 +297,11 @@ function Experience({ data, styles }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex direction="column" gap={4} key={exp?.$id}>
+								<DocFlex
+									direction="column"
+									gap={4}
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocFlex
 										direction="row"
 										alignItems="center"
@@ -342,7 +353,7 @@ function Education({ data, styles }: ModuleData) {
 						Education
 					</DocText>
 					<DocFlex direction="column" gap={8}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const { degree, study, institution, grade, from, to } = exp || {};
 							const title = `${degree}${fixText(study, {
 								prefix: ' in ',
@@ -352,7 +363,11 @@ function Education({ data, styles }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex direction="column" gap={4} key={exp?.$id}>
+								<DocFlex
+									direction="column"
+									gap={4}
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocFlex
 										direction="row"
 										alignItems="center"
@@ -401,7 +416,7 @@ function Certification({ data, styles }: ModuleData) {
 						Certificates
 					</DocText>
 					<DocFlex direction="column" gap={8}>
-						{data.map((exp: any) => {
+						{data.map((exp: any, index: number) => {
 							const {
 								name,
 								organization,
@@ -415,7 +430,11 @@ function Certification({ data, styles }: ModuleData) {
 								: '';
 
 							return (
-								<DocFlex direction="column" gap={4} key={exp?.$id}>
+								<DocFlex
+									direction="column"
+									gap={4}
+									key={`${exp?.$id}:${index}`}
+								>
 									<DocFlex
 										direction="row"
 										alignItems="center"
