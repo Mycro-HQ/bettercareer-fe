@@ -206,7 +206,8 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 
 					// run a recursive check to see if the block has any nested data.value and convert it to [key]: value
 					const recursiveCheck = (
-						data: any
+						data: any,
+						key: string
 					):
 						| string
 						| number
@@ -220,22 +221,24 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 
 						if (Array.isArray(data)) {
 							return data.map((item) => {
-								if (Array.isArray(item.value)) {
+								if (Array.isArray(item.value) || key === 'skills') {
 									return {
 										...item,
-										value: item.value.map(
-											(i: { value: string | number | boolean | null }) => {
-												if (i?.value) {
-													return i.value.toString();
-												}
+										value: Array.isArray(item.value)
+											? item.value.map(
+													(i: { value: string | number | boolean | null }) => {
+														if (i?.value) {
+															return i.value.toString();
+														}
 
-												return i;
-											}
-										),
+														return i;
+													}
+												)
+											: [item.value],
 									};
 								}
 
-								return recursiveCheck(item);
+								return recursiveCheck(item, key);
 							});
 						}
 
@@ -245,7 +248,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 							if (isEmpty(data)) return null;
 
 							return Object.keys(data).reduce((a: any, b) => {
-								a[b as keyof typeof a] = recursiveCheck(data[b]);
+								a[b as keyof typeof a] = recursiveCheck(data[b], key);
 								return a;
 							}, {});
 						}
@@ -256,7 +259,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 					return {
 						...acc,
 						extras,
-						[block.key]: recursiveCheck(block.data),
+						[block.key]: recursiveCheck(block.data, block.key),
 					};
 				}, {});
 
