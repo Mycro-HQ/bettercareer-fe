@@ -67,6 +67,9 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 	const [isSettingInitialData, setIsSettingInitialData] = React.useState(false);
 	const [showRename, setShowRename] = React.useState(false);
 	const [isGettingAnalysis, setIsGettingAnalysis] = React.useState(false);
+	const [resumeName, setResumeName] = React.useState(
+		resume?.name || 'Untitled Resume'
+	);
 
 	const handleDelete = async () => {
 		await createDisclosure({
@@ -97,7 +100,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 		try {
 			const res = await duplicateResume(router.query.slug as string);
 
-			window.location.replace(`/dashboard/resume/build/${res.data.id}`);
+			window.location.replace(`/dashboard/resume/b/${res.data.id}`);
 			createToast({
 				message: 'Resume duplicated successfully',
 				variant: 'primary',
@@ -272,7 +275,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 				});
 
 				if (res?.data && Router.query.slug === 'new') {
-					Router.replace(`/dashboard/resume/build/${res?.data?.id}`);
+					Router.replace(`/dashboard/resume/b/${res?.data?.id}`);
 				}
 			}
 		},
@@ -444,7 +447,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 										<FileIcon />
 
 										<Text className="cursor-pointer" noOfLines={1}>
-											{truncateText(resume?.name, 50)}
+											{truncateText(resumeName, 50)}
 										</Text>
 									</Flex>
 									<ResumeDetailsAction
@@ -519,7 +522,8 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 				</main>
 			</div>
 			<RenameResume
-				resume={resume}
+				resumeName={resumeName}
+				setResumeName={setResumeName}
 				show={showRename}
 				onClose={() => setShowRename(false)}
 				handleDoc={handleDoc}
@@ -595,19 +599,18 @@ const ResumeDetailsAction = ({
 };
 
 const RenameResume = ({
-	resume,
+	resumeName,
+	setResumeName,
 	show,
 	onClose,
 	handleDoc = () => {},
 }: {
-	resume: any;
+	resumeName: string;
+	setResumeName: (data: any) => void;
 	show: boolean;
 	onClose: () => void;
 	handleDoc?: (data: any) => void;
 }) => {
-	const [resumeName, setResumeName] = React.useState(
-		resume?.name || 'Untitled Resume'
-	);
 	const { createToast } = useFeedback();
 
 	return (

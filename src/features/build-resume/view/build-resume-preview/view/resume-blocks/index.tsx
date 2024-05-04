@@ -14,7 +14,7 @@ import File from '@labs/icons/dashboard/file_2.svg';
 import { useBuildStore } from '@/store/z-store/builder';
 import { isEmpty, useDebounce, wait } from '@labs/utils';
 import { Spinner } from '@labs/components/spinner';
-import { Flex, Heading, Text, useToast } from '@labs/components';
+import { Flex, Heading } from '@labs/components';
 
 import styles from './resume-blocks.module.scss';
 
@@ -23,7 +23,6 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 import { MOCK, registerFonts, templateMaps } from './utils';
 import classNames from 'classnames';
-import { APP_URL } from '@lib/config';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/assets/js/pdf-worker.js`;
 

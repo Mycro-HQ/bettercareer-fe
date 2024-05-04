@@ -172,7 +172,7 @@ export const DashboardHome = ({
 						<Flex fullWidth gap={32} flexWrap="wrap">
 							{resumes?.data?.map((resume: any) => (
 								<Link
-									href={`/dashboard/resume/build/${resume.id}`}
+									href={`/dashboard/resume/b/${resume.id}`}
 									key={resume.id}
 									className={styles.PastResume}
 								>
