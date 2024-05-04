@@ -38,9 +38,20 @@ export const Analysis = ({
 
 	if (!data) {
 		return (
-			<Text.p weight={500} size="sm" align="center">
-				Something went wrong. Please try again later.
-			</Text.p>
+			<Flex.Column gap={18} alignItems="center">
+				<Logo />
+				<Text.p weight={500} size="sm" align="center">
+					Something went wrong. Please try again later. If the problem persists,
+					contact support.
+				</Text.p>
+				<CallToAction.button
+					variant="primary"
+					size="sm"
+					onClick={seeAllAnalysis}
+				>
+					See All Analysis
+				</CallToAction.button>
+			</Flex.Column>
 		);
 	}
 

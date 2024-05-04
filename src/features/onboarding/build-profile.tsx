@@ -14,6 +14,7 @@ import styles from './onboarding.module.scss';
 import { useUploadResumeMutation } from '@/queries/resume';
 import { formDataAppender } from '@labs/utils';
 import { ProgressLoader } from '@/components/misc/loader';
+import { useBuildStore } from '@/store/z-store/builder';
 
 export const BuildProfile = () => {
 	useEffect(() => {}, []);
@@ -45,10 +46,10 @@ const UploadingFlow = () => {
 	);
 };
 
-const UploadResumeFlow = () => {
+export const UploadResumeFlow = ({ isOwnPage }: { isOwnPage?: boolean }) => {
 	const { createToast } = useToast();
 	const [isUploading, setIsUploading] = useState(false);
-
+	const { setAnalysisData } = useBuildStore();
 	const { mutateAsync: uploadResume, isPending } = useUploadResumeMutation();
 	const [files, setFiles] = React.useState<any>([]);
 
@@ -57,35 +58,59 @@ const UploadResumeFlow = () => {
 		if (!file) return;
 
 		try {
-			await uploadResume(formDataAppender({ resume: file }));
-			Router.push('/dashboard');
+			const res = await uploadResume(formDataAppender({ resume: file }));
+
+			setAnalysisData(res.data.analysis);
+			Router.push(`/dashboard/resume/b/${res.data.resume.id}?analysis=true`);
 		} catch (error) {
-		} finally {
-			setIsUploading(false);
 			createToast({
 				variant: 'error',
 				message: 'An error occurred while uploading your resume',
 			});
+		} finally {
+			setIsUploading(false);
 		}
 	}, [files[0]?.file, uploadResume]);
 
 	return (
 		<AnimatePresence>
 			{!(isUploading || isPending) ? (
-				<div className={styles.AuthLayout}>
+				<div
+					className={styles.AuthLayout}
+					{...(isOwnPage
+						? {
+								style: {
+									margin: 'auto',
+									maxWidth: '580px',
+									padding: '48px',
+									backgroundColor: 'white',
+									borderRadius: '16px',
+									boxShadow: '0 12px 15px -10px hsla(0, 0%, 75%, .22)',
+								},
+							}
+						: {})}
+				>
 					<motion.div
 						initial={{ opacity: 0, y: 15 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 15 }}
 					>
-						<Flex.Column gap={14}>
+						<Flex.Column
+							gap={14}
+							{...(isOwnPage
+								? {
+										justifyContent: 'center',
+									}
+								: {})}
+						>
 							<Heading.h3>Upload Your Resume</Heading.h3>
 							<Heading.h6>
 								Seamlessly integrate your professional journey by uploading your
-								resume.
+								current resume.
 							</Heading.h6>
+
 							<DragAndDrop
-								className="mt-9 mb-4"
+								className="mt-9 mb-4 w-full"
 								accept="application/pdf"
 								multiple={false}
 								files={files}
@@ -98,11 +123,13 @@ const UploadResumeFlow = () => {
 									onClick={handleUpload}
 									disabled={!files.length || isPending}
 								>
-									Continue
+									{isOwnPage ? 'Upload Resume' : 'Continue'}
 								</CallToAction.button>
-								<CallToAction.a href="/dashboard" outline>
-									Skip
-								</CallToAction.a>
+								{!isOwnPage && (
+									<CallToAction.a href="/dashboard" outline>
+										Skip
+									</CallToAction.a>
+								)}
 							</Flex>
 						</Flex.Column>
 					</motion.div>

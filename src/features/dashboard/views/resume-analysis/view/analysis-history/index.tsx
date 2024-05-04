@@ -1,6 +1,6 @@
 import { useGetResumeAnalysisHistoryQuery } from '@/queries/resume';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import FileIcon from '@labs/icons/dashboard/file.svg';
 
 import classNames from 'classnames';
@@ -11,21 +11,22 @@ import { formatDate } from 'date-fns';
 
 import styles from './analysis-history.module.scss';
 import { Spinner } from '@labs/components/spinner';
+import { useBuildStore } from '@/store/z-store/builder';
 
-export const AnalysisHistory = ({
-	setAnalysisData,
-	setScreen,
-}: {
-	setAnalysisData: any;
-	setScreen: any;
-}) => {
+export const AnalysisHistory = ({ setScreen }: { setScreen: any }) => {
 	const router = useRouter();
+	const slug = useMemo(
+		() => (router.query.slug as string[])?.[1],
+		[router.query.slug]
+	);
+
+	const { setAnalysisData } = useBuildStore();
 	const { data, isLoading, isError } = useGetResumeAnalysisHistoryQuery(
 		{
-			id: router.query.slug as string,
+			id: slug as string,
 		},
 		{
-			enabled: !!router.query.slug && router.query.slug !== 'new',
+			enabled: !!slug && slug !== 'new',
 		}
 	);
 
@@ -48,7 +49,7 @@ export const AnalysisHistory = ({
 					<button
 						className={styles.AnalysisHistoryItem}
 						onClick={() => {
-							setAnalysisData(analysis);
+							setAnalysisData?.(analysis);
 							setScreen('analysis');
 						}}
 						key={analysis?.id}
