@@ -20,7 +20,21 @@ const BuildResumePage = ({ resume }: { resume: any }) => {
 };
 
 export async function getServerSideProps(context: any) {
-	const { slug } = context.params;
+	// allowed slug values: 'new' or a valid resume slug
+	const ALLOWED_SLUGS = ['build', 'b'];
+
+	if (
+		!context.params?.slug[0] ||
+		!ALLOWED_SLUGS.includes(context.params.slug[0])
+	) {
+		return {
+			notFound: true,
+		};
+	}
+
+	const { slug: slugs } = context.params;
+
+	const slug = slugs[1];
 
 	if (slug === 'new') {
 		return {
