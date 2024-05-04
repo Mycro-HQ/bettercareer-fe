@@ -9,6 +9,10 @@ const nextConfig = {
 				source: '/dashboard/resume/build',
 				destination: '/dashboard/resume/build/new',
 			},
+			{
+				source: '/dashboard/resume/build/:id',
+				destination: '/dashboard/resume/b/:id',
+			},
 		];
 	},
 
