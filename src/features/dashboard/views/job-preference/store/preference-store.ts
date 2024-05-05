@@ -28,8 +28,13 @@ interface PreferenceStore {
 	selectedPriority: string;
 	handleSelectedPriority: (priority: string) => void;
 
-	selectedCompensation: string;
-	handleSelectedCompensation: (compensation: string) => void;
+	minimumSalary: number;
+	setMinimumSalary: (salary: number) => void;
+
+	preferredCurrency: string;
+	setPreferredCurrency: (currency: string) => void;
+
+	isAllTabsCompleted: () => boolean;
 }
 
 const initialState: PreferenceStore = {
@@ -51,8 +56,11 @@ const initialState: PreferenceStore = {
 	handleSelectedLocation: () => {},
 	selectedPriority: '',
 	handleSelectedPriority: () => {},
-	selectedCompensation: '',
-	handleSelectedCompensation: () => {},
+	minimumSalary: 0,
+	setMinimumSalary: () => {},
+	preferredCurrency: 'USD',
+	setPreferredCurrency: () => {},
+	isAllTabsCompleted: () => false,
 };
 
 const usePreferenceStore = create<PreferenceStore>((set) => ({
@@ -157,8 +165,12 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 		set(() => ({ selectedPriority: priority }));
 	},
 
-	handleSelectedCompensation: (compensation) => {
-		set(() => ({ selectedCompensation: compensation }));
+	setMinimumSalary: (salary) => {
+		set(() => ({ minimumSalary: salary }));
+	},
+
+	setPreferredCurrency: (currency) => {
+		set(() => ({ preferredCurrency: currency }));
 	},
 }));
 

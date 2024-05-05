@@ -1,5 +1,4 @@
 import React from 'react';
-import { TextField } from '@radix-ui/themes';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 
@@ -7,9 +6,10 @@ import usePreferenceStore from '../../store/preference-store';
 
 import { Flex, Heading } from '@labs/components';
 import IdeaIcon from '@labs/icons/dashboard/idea.svg';
-import { useDebounce } from '@labs/utils';
+import { parseValue, useDebounce } from '@labs/utils';
 import AddIcon from '@labs/icons/misc/add-alt-2.svg';
 import TickIcon from '@labs/icons/misc/tick.svg';
+import { Field } from '@labs/components/field';
 
 import styles from './qualifications.module.scss';
 import { Skillsets } from './qualification-data';
@@ -35,6 +35,19 @@ const Qualifications = ({
 		enabled: _search.length > 0,
 	});
 
+	const setNewField = (val: any) => {
+		if (
+			Skillsets.find((item: string) => parseValue(item) === parseValue(val))
+		) {
+			handleSelectedQualification(parseValue(val));
+			setValue('');
+		} else {
+			handleSelectedQualification(parseValue(val));
+			setValue('');
+			Skillsets.unshift(val);
+		}
+	};
+
 	const hasSkill = (skill: string) => selectedQualifications.includes(skill);
 
 	React.useEffect(() => {
@@ -49,15 +62,30 @@ const Qualifications = ({
 					What are your relevant skills for your target jobs ?
 				</Heading.h4>
 			</Flex>
-			<Flex>
-				<TextField.Root className={styles.Search}>
-					<TextField.Input
-						value={value}
-						onChange={(e) => setValue(e.target.value)}
-						placeholder="Search skills"
-					/>
-					<TextField.Slot></TextField.Slot>
-				</TextField.Root>
+			<Flex className={styles.SkillSearch}>
+				<Field.AutoComplete
+					label={null}
+					style={{ background: 'transparent' }}
+					value={value}
+					placeholder="Search skills"
+					onChange={(e) => setValue(e.target.value)}
+					suggestions={suggestions}
+					isLoading={isPending}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') {
+							e.preventDefault();
+							setValue('');
+
+							if (value.length > 0) {
+								setNewField(value);
+							}
+						}
+					}}
+					onSelect={(value) => {
+						setNewField(value);
+						setValue('');
+					}}
+				/>
 			</Flex>
 			<Flex
 				alignItems="center"

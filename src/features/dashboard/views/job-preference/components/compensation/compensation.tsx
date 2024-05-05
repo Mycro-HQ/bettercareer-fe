@@ -11,7 +11,11 @@ import styles from './compensation.module.scss';
 
 type Currency = 'USD' | 'GBP' | 'EUR' | 'CAD';
 
-const currencyList: Record<Currency, string> = {
+interface CurrencyRecord {
+	[key: string]: string;
+}
+
+const currencyList: CurrencyRecord = {
 	USD: '$',
 	GBP: '£',
 	EUR: '€',
@@ -29,18 +33,53 @@ const Compensation = ({
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
 }) => {
-	const { selectedCompensation, handleSelectedCompensation } =
-		usePreferenceStore();
-	const [currency, setcurrency] = React.useState<Currency>('USD');
-	const [minimumSalary, setMinimumSalary] = React.useState(0);
+	const {
+		minimumSalary,
+		setMinimumSalary,
+		preferredCurrency,
+		setPreferredCurrency,
+		selectedTargetRoles,
+		isUserOpenToAllCompanySize,
+		isUserOpenToAllRoleLevel,
+		selectedRoleLevel,
+		selectedWorkIndustry,
+		selectedCompanySize,
+		selectedQualifications,
+		selectedLocation,
+		selectedPriority,
+	} = usePreferenceStore();
+
+	const componentsState = [
+		selectedTargetRoles,
+		isUserOpenToAllRoleLevel,
+		selectedRoleLevel,
+		selectedWorkIndustry,
+		isUserOpenToAllCompanySize,
+		selectedCompanySize,
+		selectedQualifications,
+		selectedLocation,
+		selectedPriority,
+		minimumSalary,
+	];
+
+	function isAllTabCompleted() {
+		for (const item of componentsState) {
+			if (
+				item === null ||
+				item === undefined ||
+				item === 0 ||
+				(typeof item === 'string' && item.trim() === '') ||
+				(Array.isArray(item) && item.length === 0)
+			) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 	React.useEffect(() => {
-		handleSelectedCompensation(`${currency} ${minimumSalary}`);
-	}, [currency, handleSelectedCompensation, minimumSalary]);
-
-	React.useEffect(() => {
-		handleSelectionChange(selectedCompensation !== '' && minimumSalary > 0);
-	}, [handleSelectionChange, minimumSalary, selectedCompensation]);
+		handleSelectionChange(isAllTabCompleted());
+	}, [componentsState, handleSelectionChange]);
 
 	return (
 		<Flex.Column gap={32} className={styles.Compensation}>
@@ -57,7 +96,7 @@ const Compensation = ({
 							Minimum
 						</Text.p>
 						<Heading.h5 fontSize="24px" weight={600}>
-							{currencyList[currency]}
+							{currencyList[preferredCurrency]}
 							{formatCurrencyValue(minimumSalary)}
 						</Heading.h5>
 					</div>
@@ -85,10 +124,10 @@ const Compensation = ({
 						className={classNames([
 							styles.CompensationCurrencyListItem,
 							styles[
-								`CompensationCurrencyListItem--${currency === (key as Currency) ? 'selected' : ''}`
+								`CompensationCurrencyListItem--${preferredCurrency === (key as Currency) ? 'selected' : ''}`
 							],
 						])}
-						onClick={() => setcurrency(key as Currency)}
+						onClick={() => setPreferredCurrency(key as Currency)}
 					>
 						{currencyList[key as Currency]} {key}
 					</button>

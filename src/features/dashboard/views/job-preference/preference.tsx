@@ -19,6 +19,11 @@ export const JobPreference = ({
 		setIsButtonDisabled(!isSelectionMade);
 	};
 
+	const JumpToTab = (tab: number) => {
+		setActiveTab(tab);
+		setActiveComponentIndex(0);
+	};
+
 	const handleTabChange = () => {
 		if (activeComponentIndex < preferenceList[activeTab].component.length - 1) {
 			setActiveComponentIndex((prev) => prev + 1);
@@ -54,16 +59,16 @@ export const JobPreference = ({
 			<Modal.Body noPadding={true}>
 				<Flex className={styles.JobPreference}>
 					<aside className={styles.JobPreferenceAside}>
-						<Sidebar currentIndex={activeTab} preferenceList={preferenceList} />
+						<Sidebar
+							currentIndex={activeTab}
+							preferenceList={preferenceList}
+							jumpToTab={JumpToTab}
+						/>
 					</aside>
 
 					<Flex.Column className={styles.JobPreferenceContent}>
-						<Flex.Column className={styles.JobPreferenceContentMain}>
-							<Flex.Column className={styles.JobPreferenceContentBody}>
-								<ActiveComponent
-									handleSelectionChange={handleSelectionChange}
-								/>
-							</Flex.Column>
+						<Flex.Column className={styles.JobPreferenceContentBody}>
+							<ActiveComponent handleSelectionChange={handleSelectionChange} />
 						</Flex.Column>
 					</Flex.Column>
 				</Flex>

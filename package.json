@@ -33,7 +33,8 @@
     "react-dom": "^18",
     "react-pdf": "^7.7.1",
     "react-simple-wysiwyg": "^3.0.2",
-    "zustand": "^4.5.1"
+    "zustand": "^4.5.1",
+    "zustand-computed": "^1.4.1"
   },
   "husky": {
     "hooks": {

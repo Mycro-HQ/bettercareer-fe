@@ -1,18 +1,11 @@
 @use '@/styles/base/utils' as *;
 
 .Qualifications {
-	.Search {
-		input {
-			font-size: var(--font-accent);
-			padding: 12px 4px;
-			height: 42px;
-			width: 431px;
-			border-radius: 12px;
+	.SkillSearch {
+		
+		font-size: var(--font-accent);
+		max-width: 431px;
 
-			&::placeholder {
-				color: var(--text-gray-light);
-			}
-		}
 	}
 
 	.SkillList {
