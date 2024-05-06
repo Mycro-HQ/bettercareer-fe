@@ -12,6 +12,7 @@ import {
 import { useOAuthMutation } from '@/queries/user';
 
 import { useAuthSuccess } from './use-auth';
+import Router from 'next/router';
 
 type LoginWithLinkedinProps = {
 	intent: 'login' | 'signup';
@@ -23,7 +24,14 @@ const LoginWithLinkedin = (props: LoginWithLinkedinProps) => {
 
 	const { mutate: authWithLinkedin, isPending } = useOAuthMutation({
 		onSuccess: (data) => {
-			handleAuthSuccess(data);
+			handleAuthSuccess(
+				data,
+				props.intent === 'signup'
+					? {
+							goTo: `/build-profile?redirectTo=${Router.query.redirectTo || '/dashboard'}`,
+						}
+					: undefined
+			);
 		},
 		onError: (error: any) => {
 			createToast({
