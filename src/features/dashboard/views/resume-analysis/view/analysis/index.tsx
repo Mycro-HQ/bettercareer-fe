@@ -107,13 +107,15 @@ export const Analysis = ({
 				>
 					Analysis
 				</CallToAction>
-				<CallToAction
-					variant={tab === 'preview' ? 'secondary' : 'clear'}
-					onClick={() => setTab('preview')}
-					size="sm"
-				>
-					Preview
-				</CallToAction>
+				{data.snapshots && data.snapshots.length > 0 && (
+					<CallToAction
+						variant={tab === 'preview' ? 'secondary' : 'clear'}
+						onClick={() => setTab('preview')}
+						size="sm"
+					>
+						Preview
+					</CallToAction>
+				)}
 			</Flex.Row>
 			<Flex.Row gap={32} className={styles.ResumeAnalysisSection}>
 				<aside className={styles.ResumeAnalysisAside}>

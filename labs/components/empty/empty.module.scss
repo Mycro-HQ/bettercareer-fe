@@ -1,0 +1,69 @@
+@use '@/styles/base/utils' as *;
+/** empty CSS File */
+
+.isEmpty {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 18px;
+
+	svg {
+		width: 100px;
+		height: auto;
+
+		@include media('md', 'max') {
+			width: 60px !important;
+		}
+	}
+
+	&--default {
+		svg {
+			path {
+				fill: var(--text-gray);
+			}
+		}
+	}
+
+	&--pop {
+		svg {
+			opacity: 0.8;
+		}
+	}
+
+	&--sm {
+		margin: 16px 0;
+
+		svg {
+			width: 50px;
+		}
+
+		p {
+			font-size: 14px !important;
+		}
+	}
+
+	&--md {
+		margin: 24px 0;
+
+		svg {
+			width: 70px;
+		}
+	}
+
+	&--stack {
+		flex-direction: column;
+	}
+
+	&:not(&--stack) {
+		flex-direction: row;
+	}
+
+	&--lg {
+		margin: 42px 0;
+
+		svg {
+			width: 105px;
+		}
+	}
+}
