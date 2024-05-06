@@ -8,7 +8,7 @@ export const Dashboard = () => {
 	const { profile } = useUserStore();
 
 	return (
-		<DashboardLayout backdropThreshold="md" profile={profile}>
+		<DashboardLayout backdropThreshold="md">
 			<DashboardHome profile={profile} />
 		</DashboardLayout>
 	);
