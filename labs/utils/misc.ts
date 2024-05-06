@@ -232,6 +232,7 @@ export const fixText = (
 		suffix?: string;
 	}
 ) => {
+	if (!text || !text?.trim()) return '';
 	return text ? `${options?.prefix || ''}${text}${options?.suffix || ''}` : '';
 };
 

@@ -356,7 +356,7 @@ function Education({ data, styles }: ModuleData) {
 						{data.map((exp: any, index: number) => {
 							const { degree, study, institution, grade, from, to } = exp || {};
 							const title = `${degree}${fixText(study, {
-								prefix: ' in ',
+								prefix: (degree && ' in ') || '',
 							})}`;
 							const _date = from
 								? `${toDate(from)} - ${to ? toDate(to) : 'Present'}`
