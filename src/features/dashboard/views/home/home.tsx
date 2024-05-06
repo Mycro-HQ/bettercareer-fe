@@ -20,6 +20,7 @@ import { truncateText } from '@labs/utils';
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
+import FetchContainer from '@/components/misc/fetch-container';
 
 export const DashboardHome = ({
 	profile,
@@ -32,7 +33,7 @@ export const DashboardHome = ({
 		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
 		profile?.onboardingChecklist?.hasBuiltResume;
 
-	const { data: resumes } = useGetResumesQuery({});
+	const { data: resumes, isPending } = useGetResumesQuery({});
 
 	const recommendationSections = [
 		{
@@ -170,40 +171,53 @@ export const DashboardHome = ({
 				</Flex>
 			</Flex.Column>
 			<Flex.Column gap={24} className={styles.Section}>
-				{resumes?.data?.length > 0 && (
-					<>
-						<Heading.h5 weight={800}>Past Resumes</Heading.h5>
-						<Flex fullWidth gap={32} flexWrap="wrap">
-							{resumes?.data?.map((resume: any) => (
-								<Link
-									href={`/dashboard/resume/b/${resume.id}`}
-									key={resume.id}
-									className={styles.PastResume}
-								>
-									<img
-										src={resume?.thumbnail || '/images/dashboard/thumbnail.png'}
-										alt={resume.name}
-									/>
-									<div className={styles.PastResumeInfo}>
-										<Heading.h6 weight={800} fontSize="16px">
-											{truncateText(resume.name, 36)}
-										</Heading.h6>
-										<Flex gap={2} alignItems="center">
-											<FileIcon />
-											<Text size="sm" color="var(--text-gray-light)">
-												Opened{' '}
-												{formatDate(
-													new Date(resume.updatedAt),
-													'MMM dd, yyyy | p'
-												)}
-											</Text>
-										</Flex>
-									</div>
-								</Link>
-							))}
-						</Flex>
-					</>
-				)}
+				<Heading.h5 weight={800}>Past Resumes</Heading.h5>
+				<FetchContainer
+					isLoading={isPending}
+					shouldBeEmpty={resumes?.data?.length === 0}
+					emptyMessage="You have any resumes yet."
+					emptyActions={
+						<CallToAction.a size="sm" href="/dashboard/resume/build">
+							Create a new resume
+						</CallToAction.a>
+					}
+				>
+					{resumes?.data?.length > 0 && (
+						<>
+							<Flex fullWidth gap={32} flexWrap="wrap">
+								{resumes?.data?.map((resume: any) => (
+									<Link
+										href={`/dashboard/resume/b/${resume.id}`}
+										key={resume.id}
+										className={styles.PastResume}
+									>
+										<img
+											src={
+												resume?.thumbnail || '/images/dashboard/thumbnail.png'
+											}
+											alt={resume.name}
+										/>
+										<div className={styles.PastResumeInfo}>
+											<Heading.h6 weight={800} fontSize="16px">
+												{truncateText(resume.name, 36)}
+											</Heading.h6>
+											<Flex gap={2} alignItems="center">
+												<FileIcon />
+												<Text size="sm" color="var(--text-gray-light)">
+													Opened{' '}
+													{formatDate(
+														new Date(resume.updatedAt),
+														'MMM dd, yyyy | p'
+													)}
+												</Text>
+											</Flex>
+										</div>
+									</Link>
+								))}
+							</Flex>
+						</>
+					)}
+				</FetchContainer>
 			</Flex.Column>
 		</div>
 	);
