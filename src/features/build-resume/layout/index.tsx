@@ -132,7 +132,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 			});
 		} catch (error) {
 			createToast({
-				message: 'An error occurred while duplicating the resume',
+				message: 'An error occurred while setting the default resume',
 				variant: 'error',
 			});
 		}

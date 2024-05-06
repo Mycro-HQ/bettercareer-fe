@@ -6,6 +6,7 @@ import { GOOGLE_AUTH_ID } from '@lib/config';
 import GoogleIcon from '@labs/icons/socials/google.svg';
 import { CallToAction, useToast } from '@labs/index';
 import { useOAuthMutation } from '@/queries/user';
+import Router from 'next/router';
 
 import { useAuthSuccess } from './use-auth';
 
@@ -25,7 +26,14 @@ const LoginWithGoogle = (props: LoginWithGoogleProps) => {
 
 	const { mutate: authWithGoogle, isPending } = useOAuthMutation({
 		onSuccess: (data) => {
-			handleAuthSuccess(data);
+			handleAuthSuccess(
+				data,
+				props.intent === 'signup'
+					? {
+							goTo: `/build-profile?redirectTo=${Router.query.redirectTo || '/dashboard'}`,
+						}
+					: undefined
+			);
 		},
 		onError: (error: any) => {
 			createToast({
