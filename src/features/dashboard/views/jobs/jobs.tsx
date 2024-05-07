@@ -10,7 +10,18 @@ import {
 import useWindowDimensions from './hooks/useWindowDimensions';
 import { Modal } from '@labs/components/modal';
 import DribbbleLogo from '@labs/icons/dashboard/dribbble-logo.svg';
+import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 
+const ResponsiveLayoutRenderer = dynamic(
+	() =>
+		import('./components/res-render').then(
+			(mod) => mod.ResponsiveLayoutRenderer
+		),
+	{
+		ssr: false,
+	}
+);
 const JobData = [
 	{
 		key: 1,
@@ -212,7 +223,7 @@ const JobData = [
 export const Jobs = () => {
 	const [activeJobCardIndex, setActiveJobCardIndex] = React.useState<
 		number | null
-	>(null);
+	>(1);
 	const { width } = useWindowDimensions();
 
 	return (
@@ -220,7 +231,13 @@ export const Jobs = () => {
 			<JobSearchForm />
 			<JobFilter />
 			<Flex.Row gap={32} className="mb-10">
-				<Flex.Column gap={24} flex="6">
+				<Flex.Column
+					gap={24}
+					css={{
+						maxWidth: '480px',
+					}}
+					flex="5"
+				>
 					{JobData.map((job) => (
 						<JobCard
 							key={job.key}
@@ -242,26 +259,43 @@ export const Jobs = () => {
 				</Flex.Column>
 
 				{activeJobCardIndex !== null ? (
-					<ResponsiveLayoutRenderer
-						width={width!}
-						mobileLayout={
-							<Modal
-								in={!!activeJobCardIndex}
-								onClose={() => setActiveJobCardIndex(null)}
-							>
-								<JobDetails activeJobCardIndex={activeJobCardIndex} />
-							</Modal>
-						}
-						desktopLayout={
-							<Flex.Column
-								flex="8"
-								gap={40}
-								className="py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
-							>
-								<JobDetails activeJobCardIndex={activeJobCardIndex} />
-							</Flex.Column>
-						}
-					/>
+					<AnimatePresence mode="wait">
+						<motion.div
+							initial={{ opacity: 0, y: 15 }}
+							key={`job-details-${activeJobCardIndex}`}
+							className="flex-[8] flex flex-col"
+							animate={{
+								opacity: 1,
+								y: 0,
+								scale: 1,
+							}}
+							exit={{ opacity: 0, y: 15 }}
+							transition={{
+								duration: 0.2,
+							}}
+						>
+							<ResponsiveLayoutRenderer
+								width={width!}
+								mobileLayout={
+									<Modal
+										in={!!activeJobCardIndex}
+										onClose={() => setActiveJobCardIndex(null)}
+									>
+										<JobDetails activeJobCardIndex={activeJobCardIndex} />
+									</Modal>
+								}
+								desktopLayout={
+									<Flex.Column
+										flex="8"
+										gap={40}
+										className="py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
+									>
+										<JobDetails activeJobCardIndex={activeJobCardIndex} />
+									</Flex.Column>
+								}
+							/>
+						</motion.div>
+					</AnimatePresence>
 				) : (
 					<Flex.Column
 						flex="8"
@@ -276,18 +310,6 @@ export const Jobs = () => {
 	);
 };
 
-function ResponsiveLayoutRenderer({
-	width,
-	mobileLayout,
-	desktopLayout,
-}: {
-	width: number;
-	mobileLayout: React.ReactNode;
-	desktopLayout: React.ReactNode;
-}) {
-	return width < 768 ? mobileLayout : desktopLayout;
-}
-
 function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
 	const index = activeJobCardIndex - 1;
 
@@ -296,8 +318,8 @@ function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
 			<Flex.Row justifyContent="space-between">
 				<Flex.Row gap={18}>
 					{JobData[index].companyLogo}
-					<Flex.Column gap={4} className="font-[Figtree]">
-						<Text as="span" weight={600} fontSize="18px" inheritFont>
+					<Flex.Column gap={4}>
+						<Text weight={600} fontSize="18px" inheritFont>
 							{JobData[index].jobTitle}
 						</Text>
 						<Text

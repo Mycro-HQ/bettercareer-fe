@@ -22,14 +22,13 @@
 
 .applicationGridItem {
 	justify-content: space-between;
-	padding: rem(14px);
+	padding: rem(18px);
 	border-radius: rem(12px);
 	border: 1px solid #f9fafa;
 	background-color: #fcfcfc;
 	cursor: pointer;
 
 	p {
-		font-size: rem(14px);
 		font-weight: 600;
 	}
 }
@@ -55,7 +54,6 @@
 	box-shadow: 0px 12px 32px 0px rgba(15, 31, 46, 0.08);
 	border-radius: rem(12px);
 	background-color: white;
-	padding: rem(20px) rem(16px);
 }
 
 .optionsDropdownItem {

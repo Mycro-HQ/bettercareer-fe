@@ -35,16 +35,11 @@ export default function JobCard({
 			<Flex gap={12} justifyContent="space-between">
 				<Flex.Row gap={18}>
 					{companyLogo}
-					<Flex.Column gap={4} className="font-[Figtree]">
-						<Text as="span" weight={600} fontSize="18px" inheritFont>
+					<Flex.Column gap={4}>
+						<Text weight={700} fontSize="17px">
 							{jobTitle}
 						</Text>
-						<Text
-							color="var(--text-gray)"
-							weight={500}
-							lineHeight="24px"
-							inheritFont
-						>
+						<Text color="var(--text-gray)" weight={500} lineHeight="24px">
 							{companyName}
 							<Separator />
 							{location}

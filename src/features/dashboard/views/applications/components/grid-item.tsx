@@ -28,34 +28,35 @@ const ApplicationsGridItem = React.forwardRef<
 	);
 
 	return (
-		<Flex
-			gap={8}
-			className={styles.applicationGridItem}
-			onClick={() => setIsModalOpen(true)}
-			ref={ref}
-			{...otherProps}
-		>
-			<div className="place-self-center" {...dragHandleProps}>
-				<DNDIcon />
-			</div>
+		<>
+			<Flex
+				gap={8}
+				className={styles.applicationGridItem}
+				onClick={() => setIsModalOpen(true)}
+				ref={ref}
+				{...dragHandleProps}
+				{...otherProps}
+			>
+				<div className={styles.aGIIcon}>{jobDetails.icon}</div>
+				<Flex.Column gap={2} className="mr-2">
+					<Text fontSize="15px" noOfLines={1}>
+						{jobDetails.title}
+					</Text>
+					<Text
+						className={styles.aGIsubTitle}
+						color="var(--text-gray)"
+						size="sm"
+						weight={500}
+					>
+						{jobDetails.company} . {jobDetails.location} . {jobDetails.workMode}
+					</Text>
+				</Flex.Column>
+				<OptionsDropDown options={options} id={jobDetails.categoryID} />
+			</Flex>
 			<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
 				<ApplicationModal options={options} id={jobDetails.categoryID} />
 			</Modal>
-			<div className={styles.aGIIcon}>{jobDetails.icon}</div>
-			<div className="mr-2">
-				<Text as="p">{jobDetails.title}</Text>
-				<Text
-					as="span"
-					className={styles.aGIsubTitle}
-					color="var(--text-gray)"
-					size="xs"
-					weight={500}
-				>
-					{jobDetails.company} . {jobDetails.location} . {jobDetails.workMode}
-				</Text>
-			</div>
-			<OptionsDropDown options={options} id={jobDetails.categoryID} />
-		</Flex>
+		</>
 	);
 });
 

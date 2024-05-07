@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, CallToAction } from '@labs/components';
+import { Flex, CallToAction, Text } from '@labs/components';
 import SearchIcon from '@labs/icons/dashboard/search.svg';
 import JobTypeIcon from '@labs/icons/dashboard/job-search.svg';
 import LocationIcon from '@labs/icons/dashboard/location.svg';
@@ -18,7 +18,24 @@ export function JobSearchForm() {
 	}
 
 	return (
-		<Flex className="w-full md:mb-[25%] lg:mb-[15%]" justifyContent="center">
+		<Flex.Column
+			className="w-full md:mb-[25%] lg:mb-[8%]"
+			alignItems="center"
+			gap={14}
+		>
+			<Flex.Row gap={8} alignItems="center" className="-mt-[2rem]">
+				<Text size="sm">Popular Searches:</Text>
+				{['Frontend', 'Backend', 'Data science', 'UI/UX'].map((jobType) => (
+					<CallToAction.button
+						outline
+						key={jobType}
+						size="xs"
+						onClick={() => setFormData((prev) => ({ ...prev, jobType }))}
+					>
+						{jobType}
+					</CallToAction.button>
+				))}
+			</Flex.Row>
 			<form action="" className={styles.JobSearchForm}>
 				<Flex
 					alignItems="center"
@@ -63,7 +80,7 @@ export function JobSearchForm() {
 					Search
 				</CallToAction>
 			</form>
-		</Flex>
+		</Flex.Column>
 	);
 }
 
@@ -101,6 +118,6 @@ function JobSearchFormItem({
 
 function JobSearchSeparator() {
 	return (
-		<div className="hidden md:block text-[#CFD2D5] mr-3 scale-y-150">|</div>
+		<div className="hidden md:block text-[#CFD2D5] mr-4 scale-y-150">|</div>
 	);
 }

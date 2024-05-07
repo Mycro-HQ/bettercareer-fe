@@ -29,10 +29,12 @@ export const DashboardLayout = ({
 	bg,
 	bare,
 	plainBackdrop,
+	containerSize,
 }: {
 	children: React.ReactNode;
 	title?: string;
 	backdropThreshold?: 'sm' | 'md' | 'lg';
+	containerSize?: 'lg' | 'xlg';
 	bg?: string;
 	bare?: boolean;
 	plainBackdrop?: boolean;
@@ -73,7 +75,7 @@ export const DashboardLayout = ({
 				<DashboardHeader bare={bare} plainBackdrop={plainBackdrop} />
 			</nav>
 			<main className={styles.DashboardLayoutMain}>
-				<Container maxWidth="lg">{children}</Container>
+				<Container maxWidth={containerSize || 'lg'}>{children}</Container>
 			</main>
 		</div>
 	);

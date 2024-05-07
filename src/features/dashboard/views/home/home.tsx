@@ -35,25 +35,25 @@ export const DashboardHome = ({
 		{
 			title: 'All your matches',
 			icon: '/images/dashboard/match.png',
-			href: '/',
+			href: '/dashboard/jobs',
 			tag: '5+ jobs',
 		},
 		{
 			title: 'Based on your Resume',
 			icon: ResumeIcon,
-			href: '/',
+			href: '/dashboard/jobs',
 			tag: '5+ jobs',
 		},
 		{
 			title: 'Jobs added this week',
 			icon: JobIcon,
-			href: '/',
+			href: '/dashboard/jobs',
 			tag: '5+ jobs',
 		},
 		{
 			title: 'Sponsored jobs',
 			icon: SponsorIcon,
-			href: '/',
+			href: '/dashboard/jobs',
 			tag: '5+ jobs',
 		},
 	];

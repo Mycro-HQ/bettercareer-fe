@@ -63,7 +63,7 @@ const notificationArray: NotificationListItemProps[] = [
 
 export default function Notification() {
 	return (
-		<DashboardLayout backdropThreshold="sm" title="Notifications">
+		<DashboardLayout backdropThreshold="sm" bg="#fcfcfc" title="Notifications">
 			<NotificationHeader />
 			<Notifications>
 				{notificationArray.map((notification, index) => (
