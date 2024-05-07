@@ -33,7 +33,16 @@ export type NativeElementProps<T extends keyof ReactHTML> =
 	ReactHTML[T] extends DetailedHTMLFactory<infer Props, any> ? Props : {};
 
 export interface FileWithKey {
-	blob: File;
+	file: File;
 	key: string;
 	status: string[];
+}
+
+export interface NotificationListItemProps {
+	type?: 'projectSetup' | 'job';
+	id?: string;
+	title: string;
+	description: string;
+	time: string;
+	bare?: boolean;
 }

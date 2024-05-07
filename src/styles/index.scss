@@ -3,6 +3,8 @@
 @import './base/utils';
 @import './base/font';
 @import './base/theme';
+@import './vendors/date-picker';
+@import './vendors/rsw';
 
 @tailwind base;
 @tailwind components;

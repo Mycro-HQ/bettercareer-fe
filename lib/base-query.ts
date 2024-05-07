@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
+
 import { API_URL } from './config';
 
 export type BaseQueryFnType = <
@@ -44,7 +45,7 @@ export const axiosBaseQuery = <ResultType, ErrorType>(
 				headers,
 				token: __,
 			} = queryFn as AxiosRequestConfig & { body?: any; token?: string };
-			const token = __ ?? Cookies?.get('token');
+			const token = __ ?? Cookies?.get('bc_token');
 
 			const result = await axios({
 				url: baseUrl + url,

@@ -1,24 +1,23 @@
 import React from 'react';
 import { Avatar, DropdownMenu, TextField } from '@radix-ui/themes';
 import Link from 'next/link';
-import { Flex, Text, Container, CallToAction } from '@labs/components';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 
+import { CallToAction, Container, Flex, Text } from '@labs/components';
 import MagnifyingGlassIcon from '@labs/icons/dashboard/search.svg';
 import BellIcon from '@labs/icons/dashboard/notification.svg';
 import Profile from '@labs/icons/dashboard/profile.svg';
 import SettingsIcon from '@labs/icons/dashboard/settings.svg';
 import LogoutIcon from '@labs/icons/dashboard/logout.svg';
 import PreferencesIcon from '@labs/icons/dashboard/preference.svg';
-
 import Logo from '@labs/icons/logo.svg';
 import Help from '@labs/icons/dashboard/help.svg';
 import ArrowDown from '@labs/icons/dashboard/down.svg';
 import LogoMark from '@labs/icons/logo-mark.svg';
+import { useUserStore } from '@/store/z-store/user';
 
 import styles from './header.module.scss';
-import { useUserStore } from '@/store/z-store/user';
 
 const NAVIGATION = [
 	{
@@ -42,7 +41,7 @@ const NAVIGATION = [
 export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
 	const router = useRouter();
 	const [isScrolled, setIsScrolled] = React.useState(false);
-	const { profile } = useUserStore();
+	const { profile, logOut } = useUserStore();
 
 	const getFallback = () => {
 		if (!profile?.name) return '';
@@ -180,15 +179,13 @@ export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
 									</Link>
 								</DropdownMenu.Item>
 
-								<DropdownMenu.Item color="red">
-									<Link href="/dashboard/profile">
-										<Flex.Row gap={8} alignItems="center">
-											<LogoutIcon />
-											<Text size="sm" color="red">
-												Logout
-											</Text>
-										</Flex.Row>
-									</Link>
+								<DropdownMenu.Item color="red" onClick={() => logOut()}>
+									<Flex.Row gap={8} alignItems="center">
+										<LogoutIcon />
+										<Text size="sm" color="red">
+											Logout
+										</Text>
+									</Flex.Row>
 								</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>

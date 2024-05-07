@@ -3,7 +3,18 @@ const nextConfig = {
 	reactStrictMode: false,
 	swcMinify: true,
 
+	rewrites: async () => {
+		return [
+			{
+				source: '/dashboard/resume/build',
+				destination: '/dashboard/resume/build/new',
+			},
+		];
+	},
+
 	webpack: (config, { isServer }) => {
+		config.resolve.alias.canvas = false;
+
 		config.module.rules.push({
 			test: /\.svg$/i,
 			issuer: /\.[jt]sx?$/,

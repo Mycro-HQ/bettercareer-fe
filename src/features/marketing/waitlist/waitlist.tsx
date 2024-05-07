@@ -1,25 +1,28 @@
 import React, { useCallback, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/router';
+import { usePostHog } from 'posthog-js/react';
+
 import {
 	CallToAction,
 	Container,
 	Flex,
 	Heading,
 	Text,
+	useFeedback,
 	useToast,
 } from '@labs/components';
-import { AnimatePresence, motion } from 'framer-motion';
-
 import Logo from '@labs/icons/logo.svg';
 import Arrow from '@labs/icons/misc/arrow-right.svg';
-
-import { WaitlistInfo } from '.';
 import { Modal } from '@labs/components/modal';
-
-import styles from './waitlist.module.scss';
 import DragAndDrop from '@/components/drag-and-drop';
 import { useSendWaitlistMutation } from '@/queries/marketing';
 import { formDataAppender } from '@labs/utils';
 import analytics from '@lib/analytics';
+
+import { WaitlistInfo } from '.';
+
+import styles from './waitlist.module.scss';
 
 const boxVariant = {
 	hidden: {
@@ -56,8 +59,43 @@ const listVariant = {
 
 export const Waitlist = () => {
 	const [isOpen, setIsOpen] = React.useState(false);
+	const router = useRouter();
+	const posthog = usePostHog();
+	const { createDisclosure } = useFeedback();
 	const [email, setEmail] = React.useState('');
 	const [currentIndex, setCurrentIndex] = React.useState(0);
+
+	const handleShare = useCallback(async () => {
+		createDisclosure({
+			title: 'Share',
+			message: 'Share this with your friends to join the waitlist.',
+			confirmText: 'Share',
+			onConfirm: async () => {
+				if (navigator.share) {
+					try {
+						await navigator.share({
+							title: 'BetterCareer.me',
+							text: 'Join the waitlist for BetterCareer.me',
+							url: window.location.href,
+						});
+						posthog.capture('shared_waitlist_native');
+						alert('Thanks for sharing!');
+					} catch (error) {
+						console.error('Error sharing content', error);
+					}
+				} else {
+					posthog.capture('shared_waitlist_twitter');
+					window.location.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`I am on the waitlist for BetterCareer, Join me on the waitlist for Bettercareer.me&url=${window.location.href}`)}`;
+				}
+			},
+		});
+	}, [createDisclosure, posthog]);
+
+	useEffect(() => {
+		if (!!router.query.share) {
+			handleShare();
+		}
+	}, [router.query.share, handleShare]);
 
 	return (
 		<div className={styles.Waitlist}>
@@ -392,6 +430,8 @@ const WaitListModal = ({
 		files: File[];
 	};
 	const { createToast } = useToast();
+	const posthog = usePostHog();
+	const [files, setFiles] = React.useState<any>([]);
 	const [isSuccess, setIsSuccess] = React.useState(false);
 	const { mutateAsync: joinWaitlist, isPending } = useSendWaitlistMutation();
 	const [waitlistState, setWaitlistState] = React.useState<WaitlistState>({
@@ -439,6 +479,7 @@ const WaitListModal = ({
 				})
 			);
 
+			posthog.capture('waitlist_joined', { email });
 			setIsSuccess(true);
 
 			setTimeout(() => {
@@ -517,7 +558,7 @@ const WaitListModal = ({
 							{waitlistState.wantFirst100 && (
 								<>
 									<label className="mt-[22px] block ">
-										<Text weight={700}>Let's get your CV</Text>
+										<Text weight={700}>Let&#39;s get your CV</Text>
 										<Text color="#57636D" size="sm">
 											Be among the first to get a free resume analysis before we
 											launch
@@ -526,6 +567,8 @@ const WaitListModal = ({
 									<DragAndDrop
 										size="md"
 										className="mt-5"
+										files={files}
+										setFiles={setFiles}
 										onDrop={(files) => {
 											return updateStateValue('files', files);
 										}}

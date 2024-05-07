@@ -183,11 +183,12 @@ $typography: (
 
 @mixin custom-scrollbar {
 	scrollbar-width: 0;
+	scrollbar-color: #c2c2c2 transparent;
 	-ms-overflow-style: none;
-	transition: all 0.2s ease;
+	transition: all 0.2s ease-in-out;
 
 	&::-webkit-scrollbar {
-		width: 8px;
+		width: 6px;
 		height: 6px;
 	}
 
@@ -200,7 +201,7 @@ $typography: (
 
 	&:hover {
 		&::-webkit-scrollbar-thumb {
-			background-color: rgb(255 255 255 / 15%);
+			background-color: #c2c2c2;
 		}
 	}
 
@@ -215,11 +216,11 @@ $typography: (
 	}
 
 	&::-webkit-scrollbar-thumb:hover {
-		background-color: var(--gray-lighter);
+		background-color: #b3b3b3;
 	}
 
 	&::-webkit-scrollbar-thumb:active {
-		background-color: var(--gray-lightest);
+		background-color: #9a9a9a;
 	}
 
 	&::-webkit-scrollbar-corner,

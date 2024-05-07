@@ -1,19 +1,20 @@
 import { AxiosRequestConfig } from 'axios';
 import {
-	useQuery,
-	UseQueryOptions,
-	useMutation,
-	UseMutationOptions,
-	QueryClient,
-	useInfiniteQuery,
-	UseInfiniteQueryOptions,
 	InvalidateQueryFilters,
+	QueryClient,
+	UseInfiniteQueryOptions,
+	UseMutationOptions,
+	UseQueryOptions,
+	useInfiniteQuery,
+	useMutation,
+	useQuery,
 } from '@tanstack/react-query';
-import { baseQueryFn } from './base-query';
-import { queryClient } from './query-client';
 import { GetServerSidePropsContext } from 'next';
 import queryString from 'query-string';
 import { useEffect } from 'react';
+
+import { queryClient } from './query-client';
+import { baseQueryFn } from './base-query';
 
 type ListenerConfig<TData = unknown, TError = unknown> = {
 	matches: (action: { type: 'query' | 'mutation'; key: string }) => boolean;
@@ -79,7 +80,7 @@ type SmartApiDefinition<
 		? Z extends true
 			? ((
 					args: Args,
-					options?: UseQueryOptions<ResultType>
+					options?: Omit<UseQueryOptions<ResultType>, 'queryKey'>
 				) => ReturnType<typeof useQuery<ResultType>> &
 					Omit<
 						ReturnType<typeof useInfiniteQuery<ResultType>>,
@@ -177,10 +178,18 @@ export const createSmartApi = <Definitions extends Endpoints>(options: {
 				}
 			) => {
 				const { extra, ...rest } = options || {};
+
 				/**
 				 * We want to use the queryClient directly here instead of the useQuery hook
 				 * for use cases where we want to use the queryClient outside of a React component.
 				 */
+
+				const parseExtra = {
+					token:
+						extra?.req?.cookies?.['bc_token'] || extra?.cookies?.['bc_token'],
+					headers: extra?.req?.headers || extra?.headers,
+				};
+
 				return queryClient.fetchQuery({
 					queryKey: [definition.key, key, args],
 					queryFn: () => {
@@ -188,16 +197,14 @@ export const createSmartApi = <Definitions extends Endpoints>(options: {
 							return definition.transformResponse(
 								baseQueryFn({
 									...(definition.queryFn(args) as any),
-									token: extra?.req?.cookies?.token || extra?.cookies?.token,
-									headers: extra?.req?.headers || extra?.headers,
+									...parseExtra,
 								})
 							);
 						}
 
 						return baseQueryFn({
 							...(definition.queryFn(args) as any),
-							token: extra?.req?.cookies?.token || extra?.cookies?.token,
-							headers: extra?.req?.headers || extra?.headers,
+							...parseExtra,
 						});
 					},
 					...rest,
@@ -223,8 +230,12 @@ export const createSmartApi = <Definitions extends Endpoints>(options: {
 					},
 				} as UseQueryOptionsType;
 
+				const useQueryOrMutation: any = definition.isInfinite
+					? useInfiniteQuery
+					: useQuery;
+
 				// eslint-disable-next-line react-hooks/rules-of-hooks
-				return useCustomQuery(
+				return useQueryOrMutation(
 					{
 						queryFn: (context: any) => {
 							const queryOptions = definition.queryFn(args);
@@ -275,8 +286,8 @@ export const createSmartApi = <Definitions extends Endpoints>(options: {
 						..._options,
 						queryKey: [definition.key, key, args].filter(Boolean),
 						...buildListeners('query', _options!, definition),
-					},
-					{ type: isInfinite ? 'infiniteQuery' : 'query' }
+					}
+					// { type: isInfinite ? 'infiniteQuery' : 'query' }
 				);
 			};
 		} else if ('mutationFn' in definition) {
@@ -495,13 +506,20 @@ function useCustomQuery(
 
 	// Effect hooks to handle onSuccess and onError logic
 	useEffect(() => {
+		console.log(result);
 		if (result.isSuccess && queryOptions.onSuccess) {
 			queryOptions.onSuccess(result.data);
 		}
 		if (result.isError && queryOptions.onError) {
 			queryOptions.onError(result.error);
 		}
-	}, [result.isSuccess, result.isError, result.data, result.error]);
+	}, [
+		result.isSuccess,
+		result.isError,
+		result.data,
+		result.error,
+		queryOptions,
+	]);
 
 	return result;
 }

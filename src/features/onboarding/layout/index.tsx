@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Container } from '@labs/components';
 
+import { Container } from '@labs/components';
 import { Seo } from '@/components/seo';
 import Logo from '@labs/icons/logo.svg';
 

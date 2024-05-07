@@ -1,0 +1,132 @@
+@use '@/styles/base/utils' as *;
+
+.BuildResumeLayout {
+	overflow: hidden;
+	height: var(--bc-labs-vh);
+	--sidebar-width: 47%;
+	--nav-height: 74px;
+
+	@include media('xl', 'max') {
+		--sidebar-width: 100%;
+	}
+
+	&__nav {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+		padding: 14px 24px;
+		background: #ffffff;
+		height: var(--nav-height);
+		border-bottom: 1px solid #f3f4f4;
+		.BuildResumeLayout__nav__logo {
+			max-width: 120px;
+
+			@include media('lg', 'max') {
+				max-width: 100px;
+			}
+
+			path {
+				fill: var(--text-black);
+			}
+		}
+	}
+
+	.BuildResumeLayout__sidebar {
+		width: 100%;
+		height: calc(100vh - var(--nav-height));
+		overflow: auto;
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		z-index: 100;
+		background: #fff;
+		padding: 24px;
+		transition: transform 0.2s ease-in-out;
+		display: flex;
+		flex-direction: column;
+		gap: 32px;
+
+		p {
+			font-weight: 600;
+			color: #000;
+		}
+		hr {
+			height: 1px;
+			border: none;
+			background: #e3e3e3;
+			margin-bottom: 11px;
+			margin-top: 6px;
+		}
+	}
+
+	.ContentWrap {
+		display: flex;
+		justify-content: space-between;
+		align-items: stretch;
+		flex-wrap: wrap;
+		min-height: calc(var(--bc-labs-vh) - 78.09px);
+	}
+
+	&__main {
+		display: flex;
+		flex-direction: column;
+		padding: 8px 18px 106px;
+		background: #fff;
+		width: 100%;
+		height: auto;
+		flex: 1;
+		overflow-y: auto;
+		max-height: var(--bc-labs-vh);
+		position: relative;
+		@include custom-scrollbar;
+
+		@include media('xl', 'max') {
+			padding: 8px;
+			padding-bottom: 106px;
+		}
+	}
+
+	&__aside {
+		width: var(--sidebar-width);
+		flex: 0 0 var(--sidebar-width);
+		padding: 24px;
+		height: calc(100vh - var(--nav-height));
+
+		// background: linear-gradient(
+		// 	345.12deg,
+		// 	rgba(145, 202, 255, 0.15) -19.06%,
+		// 	rgba(153, 102, 255, 0.15) 124.44%,
+		// 	rgba(251, 65, 255, 0.15) 124.44%
+		// );
+		background-color: rgb(239 238 255);
+		background-image: radial-gradient(#00000012 1.5px, transparent 1.5px),
+			radial-gradient(#00000012 1.5px, transparent 1.5px);
+		background-size: calc(20 * 1.5px) calc(20 * 1.5px);
+		background-position:
+			0 0,
+			calc(10 * 1.5px) calc(10 * 1.5px);
+
+		@include media('xl', 'max') {
+			transform: translateY(150%);
+			position: fixed;
+			top: var(--nav-height);
+			left: 0;
+			z-index: 100;
+			transition: transform 0.2s ease-in-out;
+
+			&.open {
+				transform: translateY(0);
+				background: linear-gradient(
+					345.12deg,
+					rgb(239 238 255) -19.06%,
+					rgb(240 234 255) 124.44%,
+					rgb(240 236 255) 124.44%
+				);
+			}
+		}
+
+		// background: #f9fafa;
+		border-right: 1px solid #f2f8f6;
+	}
+}

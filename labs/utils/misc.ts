@@ -1,4 +1,8 @@
+import { Document, Packer } from 'docx';
+
 import { APP_URL } from '@lib/config';
+
+import { createResumeDocument } from './text-docx';
 
 function getRandomBytes(byteCount: number): Uint8Array {
 	let randomBytes = new Uint8Array(byteCount);
@@ -208,4 +212,155 @@ export const formDataAppender = (
 	}
 
 	return formData;
+};
+
+export function isDate(dateStr: string) {
+	return !isNaN(new Date(dateStr).getDate());
+}
+
+export function isEmpty(value: any) {
+	if (value === null || value === undefined) return true;
+	if (Array.isArray(value)) return value.length === 0;
+	if (typeof value === 'object') return Object.keys(value).length === 0;
+	return false;
+}
+
+export const fixText = (
+	text: string,
+	options?: {
+		prefix?: string;
+		suffix?: string;
+	}
+) => {
+	return text ? `${options?.prefix || ''}${text}${options?.suffix || ''}` : '';
+};
+
+export const downloadResume = async (
+	raw: string,
+	name = 'resume',
+	type: 'pdf' | 'txt' | 'docx' = 'pdf'
+) => {
+	const applicationTypes = {
+		pdf: 'application/pdf',
+		txt: 'text/plain',
+		docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+	};
+	let url = '';
+	if (type === 'docx') {
+		//get the text from the raw data
+
+		// Create a new document
+
+		const doc = createResumeDocument(raw);
+
+		const _doc = new Document({
+			sections: doc as any,
+			styles: { default: { heading1: { run: { size: 28, bold: true } } } },
+		});
+		// Write the document to a file
+		const buffer = await Packer.toBlob(_doc);
+
+		url = window.URL.createObjectURL(
+			new Blob([buffer], { type: applicationTypes[type] })
+		);
+	} else {
+		url = window.URL.createObjectURL(
+			new Blob([raw], { type: applicationTypes[type] })
+		);
+	}
+
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = `${name}.${type}`;
+	document.body.appendChild(a);
+	a.click();
+	window.URL.revokeObjectURL(url);
+	document.body.removeChild(a);
+};
+
+/**
+ * Truncate a given text to a specified length and append an ellipsis if the text is longer
+ * than the specified length.
+ *
+ * @param {string} text - The text to be truncated.
+ * @param {number} length - The maximum length of the text.
+ *
+ * @returns {string} - The truncated text.
+ */
+export const truncateText = (
+	text: string,
+	length: number,
+	ellipsis = true
+): string => {
+	// Check if the text length is greater than the specified length.
+	// If not, simply return the original text.
+	if (text?.length <= length) {
+		return text;
+	}
+
+	// If the text is longer than the specified length, truncate it and append an ellipsis.
+	return `${text?.slice(0, length - 1)}${ellipsis ? '…' : ''}`;
+};
+
+export function capitalize(text: string): string {
+	return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+function formatCount(count: number) {
+	const formattedCount = Number(count).toLocaleString('en-US', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 2,
+	});
+
+	return formattedCount;
+}
+
+export function pluralize(string: string, count: number, stringOnly = false) {
+	let pluralSuffix = 's';
+
+	if (count <= 1 || string.endsWith(pluralSuffix)) {
+		pluralSuffix = '';
+	}
+
+	const newString = `${string}${pluralSuffix}`;
+
+	if (stringOnly) {
+		return newString;
+	}
+
+	const countString = formatCount(count);
+	const resultString = `${countString} ${newString}`;
+
+	return resultString;
+}
+
+export const wait = (ms: number) =>
+	new Promise((resolve) => setTimeout(resolve, ms));
+
+export const parseValue = (item: any) => {
+	if (typeof item === 'string') {
+		return item;
+	}
+
+	if (typeof item === 'object') {
+		return item?.value;
+	}
+
+	return null;
+};
+
+export const slugify = (text: string) => {
+	return text
+		.toString()
+		.toLowerCase()
+		.replace(/\s+/g, '-')
+		.replace(/[^\w-]+/g, '')
+		.replace(/--+/g, '-')
+		.replace(/^-+/, '')
+		.replace(/-+$/, '');
+};
+
+export const cleanText = (val: string) => {
+	const _val = val.replace(/[^a-zA-Z ]/g, ' ');
+	return _val.charAt(0).toUpperCase() + _val.slice(1);
 };

@@ -1,5 +1,7 @@
-import { createSmartApi } from '@lib/usable-query';
 import Cookies from 'js-cookie';
+
+import { createSmartApi } from '@lib/usable-query';
+
 import { UserData } from './types/user';
 
 export const authApiCreator = createSmartApi({
@@ -8,25 +10,26 @@ export const authApiCreator = createSmartApi({
 		getProfile: builder.query<
 			undefined,
 			{
-				profile: UserData;
+				user: UserData;
 			}
 		>({
 			key: 'user',
 			queryFn: () => ({
-				url: `/profile`,
+				url: `/users/me`,
 			}),
 		}),
 
 		oAuth: builder.mutation<
-			{ email?: string; password?: string; provider?: string; token?: string },
+			{ uri?: string; password?: string; provider?: string; token?: string },
 			{ token: string; user: UserData; isNewUser?: boolean }
 		>({
 			key: 'oauth',
-			mutationFn: ({ provider, token }) => ({
+			mutationFn: ({ provider, token, uri }) => ({
 				url: `/oauth/${provider}`,
 				method: 'POST',
 				body: {
 					token,
+					redirectUri: uri,
 				},
 			}),
 		}),
@@ -39,12 +42,7 @@ export const authApiCreator = createSmartApi({
 			}),
 		}),
 
-		logOut: builder.query<
-			undefined,
-			{
-				user: UserData;
-			}
-		>({
+		logOut: builder.query({
 			key: 'logout',
 			queryFn: () => ({
 				url: `/logout`,

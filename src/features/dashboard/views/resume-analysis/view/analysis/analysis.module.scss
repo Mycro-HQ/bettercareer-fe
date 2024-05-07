@@ -1,0 +1,139 @@
+@use '@/styles/base/utils' as *;
+
+.ResumeAnalysis {
+	.ResumeAnalysisSection {
+		aside {
+			max-width: 320px;
+			flex: 0 0 320px;
+			width: 100%;
+			height: 100%;
+
+			top: 10px;
+
+			@include media('lg', 'max') {
+				flex-direction: row;
+				max-width: 100%;
+				position: relative;
+				top: 0;
+				flex: 100%;
+
+				> div {
+					flex-direction: row;
+					justify-content: space-between;
+					align-items: flex-start;
+					flex-wrap: wrap;
+				}
+			}
+		}
+
+		.ResumeAnalysisMain {
+			flex: 1 1 60%;
+		}
+	}
+
+	.ResumeAnalysisBox {
+		background: #ffffff;
+		border: 1px solid #f3f4f4;
+		border-radius: 12px;
+		padding: 24px;
+		display: flex;
+		flex-direction: column;
+
+		.ResumeOverallScoreCounter {
+			width: 100%;
+			height: 130px;
+			position: relative;
+			padding: 40px 0 0;
+
+			.ResumeScoreSvg {
+				position: absolute;
+				top: 0;
+				left: 50%;
+				transform: translateX(-50%);
+			}
+		}
+
+		.ResumeScoreBreakDown {
+			width: 100%;
+			flex: 1 1 40%;
+
+			.ResumeScoreItem {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+
+				.ResumeScoreTitle {
+					width: 100%;
+					align-items: center;
+					justify-content: space-between;
+				}
+
+				.ResumeScoreCounter {
+					width: 100%;
+					height: 6px;
+					border-radius: 6px;
+
+					.ResumeScoreCounterValue {
+						height: 100%;
+						border-radius: 6px;
+					}
+				}
+			}
+		}
+	}
+
+	.AccordionItem {
+		gap: 18px;
+
+		.AccordionHeader {
+			.ResumeScoreIndicator {
+				width: 66px;
+				height: 28px;
+				border: 1px solid #f8e1cd;
+				border-radius: 8px;
+				display: grid;
+				place-items: center;
+			}
+		}
+
+		.AccordionContent {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			text-align: left;
+
+			.AccordionContentItem {
+				width: 100%;
+				padding: 16px;
+				background: #fcfcfc;
+				border-radius: 16px;
+
+				.ResumeList {
+					list-style-type: disc;
+					padding: 0 0 0 24px;
+
+					// .ResumeListItem {}
+				}
+			}
+		}
+	}
+}
+
+.Preview {
+	background-color: rgb(239, 238, 255);
+	background-image: radial-gradient(
+			rgba(0, 0, 0, 0.0705882353) 1.5px,
+			transparent 1.5px
+		),
+		radial-gradient(rgba(0, 0, 0, 0.0705882353) 1.5px, transparent 1.5px);
+	background-size: 30px 30px;
+	background-position:
+		0 0,
+		15px 15px;
+	padding: 48px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 12px;
+}

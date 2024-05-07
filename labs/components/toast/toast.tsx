@@ -11,10 +11,10 @@
  */
 
 import classNames from 'classnames';
-import React, { ReactNode, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { motion } from 'framer-motion';
 
-import { ToastDefinition, FeedbackContext } from './use-toast';
+import { ToastDefinition, FeedBackContext } from '../provider/feedback/context';
 import { EphemeralPortal } from '../layout/ephemeral-portal';
 import { createError, generateUUID } from '../../utils';
 
@@ -22,14 +22,7 @@ import Info from '@labs/icons/misc/notif.svg';
 
 import styles from './toast.module.scss';
 
-interface FeedbackProviderProps {
-	children: ReactNode;
-}
-
-export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({
-	children,
-}) => {
-	const isServer = typeof window === 'undefined';
+export function useToastSetup() {
 	const [toasts, setToasts] = useState<ToastDefinition[]>([]);
 
 	const removeToast = useCallback((id: string) => {
@@ -57,7 +50,10 @@ export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({
 			if (!options.message)
 				throw createError('Toast', 'Toast message is required');
 			const id = generateUUID();
-			const lifespan = safeDuration(options.lifespan!, 5000);
+			const lifespan = safeDuration(
+				options.lifespan!,
+				typeof options.lifespan! === 'number' ? options.lifespan! : 5000
+			);
 
 			setToasts((current) => [...current, { ...options, id }]);
 
@@ -67,9 +63,18 @@ export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({
 		[removeToast]
 	);
 
+	return { toasts, createToast, removeToast };
+}
+
+export const ToastProvider: React.FC<
+	Partial<FeedBackContext> & {
+		toasts: ToastDefinition[];
+	}
+> = ({ removeToast, toasts }) => {
+	const isServer = typeof window === 'undefined';
+
 	return (
-		<FeedbackContext.Provider value={{ createToast, removeToast }}>
-			{children}
+		<>
 			{!isServer && (
 				<EphemeralPortal>
 					<div role="region" aria-live="polite" className={styles.ToastRegion}>
@@ -77,17 +82,17 @@ export const FeedbackProvider: React.FC<FeedbackProviderProps> = ({
 							<Toast
 								key={toast.id}
 								{...toast}
-								onClose={() => removeToast(toast.id!)}
+								onClose={() => removeToast?.(toast.id!)}
 							/>
 						))}
 					</div>
 				</EphemeralPortal>
 			)}
-		</FeedbackContext.Provider>
+		</>
 	);
 };
 
-const Toast: React.FC<ToastDefinition & { onClose: () => void }> = ({
+export const Toast: React.FC<ToastDefinition & { onClose: () => void }> = ({
 	id,
 	message,
 	variant = 'secondary',

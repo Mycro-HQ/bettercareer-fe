@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { forwardRefWrapper, useDynamicStyle } from '../../../utils';
-import { NativeElementProps } from '@labs/utils/types/utility';
+import type { NativeElementProps } from '../../../utils/types/utility';
 
 import styles from './heading.module.scss';
 

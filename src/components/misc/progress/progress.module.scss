@@ -1,0 +1,39 @@
+@use '@/styles/base/utils' as *;
+
+.Progress {
+	display: block;
+	position: relative;
+	appearance: none;
+	width: 100%;
+	height: 6px;
+	transition: all 0.2s ease;
+	border: 0;
+
+	&::-webkit-progress-bar {
+		background-color: var(--progressBackground, #f3f4f4);
+		border-radius: 10px;
+		overflow: hidden;
+		transition: all 0.2s ease;
+	}
+
+	&::-webkit-progress-value {
+		width: var(--progressPercent, 10%) !important;
+		background-color: var(--progressColor, var(--primary-blue));
+		transition: all 0.2s ease;
+		border-radius: 10px;
+	}
+
+	&::-moz-progress-bar {
+		width: var(--progressPercent, 10%) !important;
+		background-color: var(--progressColor, var(--primary-blue));
+		transition: all 0.2s ease;
+		border-radius: 10px;
+	}
+}
+
+.ProgressLabel {
+	@include typography('accent');
+	> span {
+		color: var(--progressColor, var(--primary-blue));
+	}
+}

@@ -1,0 +1,83 @@
+@use '@/styles/base/utils' as *;
+
+/** autocomplete CSS File */
+.Autocomplete {
+	max-width: 100%;
+	position: relative;
+	height: auto;
+	width: 100%;
+
+	fieldset {
+		> div {
+			margin-bottom: 0;
+		}
+
+		:global(.leading-icon) {
+			margin: 14px 0px 14px 16px;
+			width: 18px;
+			height: 16px;
+		}
+
+		:global(.trailing-icon) {
+			width: auto;
+			margin: 0px 16px;
+			height: 18px;
+		}
+	}
+
+	&__suggestions {
+		z-index: 1;
+		padding: 6px 0;
+		background: #ffffff;
+		border: 1px solid #f3f4f4;
+
+		box-shadow: 0px 12px 32px rgba(15, 31, 46, 0.08);
+		border-radius: 12px;
+		margin: 8px 0px 0;
+		max-height: 400px;
+		width: calc(100% - 10px);
+		overflow-x: auto;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%) !important;
+
+		&_item {
+			@include typography('p');
+			padding: 10px 18px;
+			color: var(--text-gray-light);
+			width: 100%;
+			text-align: left;
+			cursor: pointer;
+			transition: all 0.2s ease-in-out;
+
+			&.active {
+				color: var(--primary-blue);
+				background-color: #00000007;
+			}
+
+			strong {
+				color: var(--text-gray);
+			}
+
+			&:hover,
+			&:focus {
+				color: var(--primary-blue);
+
+				strong {
+					color: var(--primary-blue) !important;
+				}
+			}
+
+			&--active {
+				background: #2c2c2c;
+			}
+		}
+	}
+
+	&--lg {
+		input {
+			font-size: var(--font-p);
+			font-weight: 700 !important;
+		}
+	}
+}

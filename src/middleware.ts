@@ -30,7 +30,9 @@ export function middleware(req: NextRequest) {
 
 	// Redirect users without a token trying to access any dashboard/* path
 	if (!hasToken && url.pathname.startsWith('/dashboard')) {
-		url.pathname = '/login';
+		const oldPath = url.pathname;
+		url.pathname = `/login`;
+		url.search = `?redirectTo=${encodeURIComponent(oldPath)}`;
 		return redirectResponse(url);
 	}
 

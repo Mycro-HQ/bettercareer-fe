@@ -6,8 +6,8 @@ import type { CSSProperties } from 'react';
 
 import classNames from 'classnames';
 
-import { forwardRefWrapper, useDynamicStyle } from '@labs/utils';
-import { useMediaQuery } from '@labs/components';
+import { forwardRefWrapper, useDynamicStyle } from '../../../utils';
+import { useMediaQuery } from '../../media/';
 
 import styles from './flex.module.scss';
 

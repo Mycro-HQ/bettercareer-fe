@@ -1,10 +1,11 @@
 import Document, {
-	Html,
+	DocumentContext,
 	Head,
+	Html,
 	Main,
 	NextScript,
-	DocumentContext,
 } from 'next/document';
+
 import { getSSRCssRules } from '@labs/utils';
 import { GA_TRACKING_ID } from '@lib/config';
 
@@ -23,6 +24,12 @@ class MyDocument extends Document {
 		return (
 			<Html lang="en">
 				<Head>
+					<style
+						id="s2c:ssr-css-rules"
+						dangerouslySetInnerHTML={{
+							__html: Array.from(ssrCssRules || []).join(''),
+						}}
+					/>
 					<GoogleAnalytics />
 				</Head>
 				<body>

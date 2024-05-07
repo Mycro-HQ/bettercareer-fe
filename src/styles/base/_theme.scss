@@ -37,8 +37,9 @@
 	--primary-white: #ffffff;
 	--primary-purple: #9967ff;
 	--primary-success: #027a48;
-	--primary-error: #d92d20;
+	--primary-red: #e56c63;
 	--primary-warning: #dc6803;
+	--gray-lightest: #f9f9f9;
 
 	--soft-yellow: #e7f731;
 	--soft-black: #16013c;
@@ -60,9 +61,22 @@
 		--heading-font-family: var(--font-base);
 	}
 
+	.rt-CheckboxButton:where(.rt-variant-surface):where([data-state='checked']) {
+		background-color: var(--primary-blue) !important;
+	}
+
 	.rt-BaseMenuViewport {
 		padding: 12px 8px;
 		gap: 8px;
+	}
+
+	.rt-BaseMenuItem[data-highlighted] {
+		background-color: #0000000d !important;
+		color: unset;
+	}
+
+	.rt-BaseMenuItem {
+		cursor: pointer;
 	}
 }
 

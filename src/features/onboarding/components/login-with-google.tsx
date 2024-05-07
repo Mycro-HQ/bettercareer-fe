@@ -1,13 +1,13 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
+
+import styles from '../onboarding.module.scss';
 
 import { GOOGLE_AUTH_ID } from '@lib/config';
 import GoogleIcon from '@labs/icons/socials/google.svg';
-
 import { CallToAction, useToast } from '@labs/index';
 import { useOAuthMutation } from '@/queries/user';
-import { useAuthSuccess } from './use-auth';
 
-import styles from '../onboarding.module.scss';
+import { useAuthSuccess } from './use-auth';
 
 declare global {
 	interface Window {

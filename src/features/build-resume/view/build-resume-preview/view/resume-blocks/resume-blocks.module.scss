@@ -1,0 +1,43 @@
+@use '@/styles/base/utils' as *;
+
+.PreviewPage {
+	max-height: 842px;
+	max-width: 595px;
+	width: 100%;
+	background: #fff;
+	display: flex;
+	height: 100vh;
+	border-radius: 12px;
+	align-items: center;
+	justify-content: center;
+
+	&Image {
+		-webkit-user-drag: none;
+		-khtml-user-drag: none;
+		-moz-user-drag: none;
+		-o-user-drag: none;
+		user-drag: none;
+		user-select: none;
+		cursor: grab;
+
+		background: #ffffff;
+		border: 1.6px solid #f3f4f4;
+		border-radius: 12px;
+	}
+
+	img {
+		width: 100%;
+		height: auto;
+		object-fit: contain;
+	}
+}
+
+.Preview {
+	overflow-y: auto;
+	max-height: 88vh;
+	will-change: transform;
+	@include custom-scrollbar;
+	@include media('lg', 'max') {
+		transform: scale(1) !important;
+	}
+}

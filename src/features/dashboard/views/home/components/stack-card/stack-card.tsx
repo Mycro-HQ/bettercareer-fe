@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 
 import ExternalLinkIcon from '@labs/icons/dashboard/external.svg';
+import { Flex, Heading } from '@labs/components';
 
 import styles from './stack-card.module.scss';
-import { Flex, Heading } from '@labs/components';
 
 interface StackCardProps {
 	title: string;
