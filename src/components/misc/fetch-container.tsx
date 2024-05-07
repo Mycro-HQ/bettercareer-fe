@@ -69,7 +69,7 @@ export const FetchContainer: React.FC<FetchContainerProps> = ({
 	return (
 		<>
 			{(!isVisible || !fetchNextPage) && isLoading ? (
-				<Spinner center size={30} spinner="logo" />
+				<Spinner center size={30} spinner="logo" text="Loading…" />
 			) : null}
 
 			{closeChildOnLoading ? (
