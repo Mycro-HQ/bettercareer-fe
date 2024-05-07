@@ -145,7 +145,7 @@ function Skills({ data, styles, variant }: Partial<ModuleData>) {
 					<DocText scale={styles?.scale} as="title" {...styles?.title}>
 						Skills
 					</DocText>
-					<DocFlex direction="column" gap={8}>
+					<DocFlex direction="row" gap={8} flexWrap="wrap">
 						{data.map(
 							(
 								skill: { name: string; value: string[]; $id: string },
@@ -155,11 +155,20 @@ function Skills({ data, styles, variant }: Partial<ModuleData>) {
 									{isSide ? null : <>• </>}
 									{skill?.name ? (
 										<DocText scale={styles?.scale} size="xs" weight="heavy">
-											{skill.name}:{' '}
+											{fixText(skill.name, {
+												suffix: parseValue(skill, true)?.length > 0 ? ': ' : '',
+											})}
 										</DocText>
 									) : null}
-									{parseValue(skill)?.map((value: any, index: number) => (
-										<DocText scale={styles?.scale} size="xs" key={index}>
+									{parseValue(skill, true)?.map((value: any, index: number) => (
+										<DocText
+											scale={styles?.scale}
+											size="xs"
+											key={index}
+											flex={
+												parseValue(skill, true)?.length > 0 ? '1' : undefined
+											}
+										>
 											{fixText(value, {
 												prefix: index > 0 ? ', ' : '',
 											})}
