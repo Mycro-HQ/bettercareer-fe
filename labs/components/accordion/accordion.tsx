@@ -95,7 +95,19 @@ const AccordionMain = memo<AccordionProps>(
 				>
 					<Flex fullWidth gap={8} alignItems="center">
 						{leadingIcon && (
-							<span className={styles.leadingIcon}>{leadingIcon}</span>
+							<span
+								className={styles.leadingIcon}
+								onClick={
+									isOpen
+										? (e) => {
+												e.stopPropagation();
+												e.preventDefault();
+											}
+										: undefined
+								}
+							>
+								{leadingIcon}
+							</span>
 						)}
 
 						{typeof title === 'string' ? (
@@ -106,7 +118,19 @@ const AccordionMain = memo<AccordionProps>(
 					</Flex>
 
 					<Flex gap={8} alignItems="center">
-						<span className={styles.trailingIcon}>{trailingIcon}</span>
+						<span
+							className={styles.trailingIcon}
+							onClick={
+								isOpen
+									? (e) => {
+											e.stopPropagation();
+											e.preventDefault();
+										}
+									: undefined
+							}
+						>
+							{trailingIcon}
+						</span>
 						<ArrowDown className={styles.arrow} />
 					</Flex>
 				</button>

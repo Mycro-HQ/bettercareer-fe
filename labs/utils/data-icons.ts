@@ -5,7 +5,8 @@ type DataIconTypes =
 	| 'external-link'
 	| 'help'
 	| 'add'
-	| 'bin';
+	| 'bin'
+	| 'more';
 
 /**
  * This is a map of data icons that are used in the app.
@@ -46,6 +47,11 @@ DataIcons.set(
 DataIcons.set(
 	'bin',
 	`data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.525 3.495c.26 0 .475.216.475.49v.253c0 .267-.216.49-.475.49H2.475A.486.486 0 0 1 2 4.237v-.253c0-.274.216-.49.476-.49H4.42c.395 0 .738-.28.827-.676l.102-.455c.158-.62.679-1.03 1.275-1.03h2.752c.59 0 1.116.41 1.269.997l.109.487a.854.854 0 0 0 .827.677h1.944Zm-.987 9.261c.203-1.891.558-6.384.558-6.43a.497.497 0 0 0-.12-.372.484.484 0 0 0-.35-.156H3.38a.47.47 0 0 0-.349.156.527.527 0 0 0-.127.372l.035.431c.095 1.176.359 4.45.529 6 .12 1.14.87 1.858 1.954 1.884.837.02 1.7.026 2.581.026.83 0 1.674-.007 2.537-.026 1.123-.02 1.871-.724 1.998-1.885Z' fill='white' fill-opacity='0.37'%3E%3C/path%3E%3C/svg%3E`
+);
+
+DataIcons.set(
+	'more',
+	`data:image/svg+xml,%0A%3Csvg width='17' height='16' viewBox='0 0 17 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8.49609 8H8.50509' stroke='%23999999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M12.5 8H12.509' stroke='%23999999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M4.5 8H4.50898' stroke='%23999999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A`
 );
 
 export const getDataIcons = (icon: DataIconTypes, color?: string) => {
