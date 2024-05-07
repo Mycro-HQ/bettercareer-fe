@@ -159,6 +159,25 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 					acc.push(...resume[curr]);
 				}
 
+				if (curr === 'heading') {
+					if (
+						typeof resume[curr]?.subHeading === 'object' &&
+						!Array.isArray(resume[curr]?.subHeading)
+					) {
+						acc.push({
+							key: 'heading',
+							data: {
+								...resume[curr],
+								subHeading: Object.values(resume[curr]?.subHeading || []).map(
+									(i) => ({
+										value: i,
+									})
+								),
+							},
+						});
+					}
+				}
+
 				return acc;
 			},
 			defaultData
@@ -230,12 +249,15 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 						| Record<string, any>
 						| Array<any> => {
 						if (typeof data?.value !== 'undefined') {
+							if (data.value === null) {
+								return null;
+							}
 							return data.value.toString();
 						}
 
 						if (Array.isArray(data)) {
 							return data.map((item) => {
-								if (Array.isArray(item.value) || key === 'skills') {
+								if (Array.isArray(item?.value) || key === 'skills') {
 									return {
 										...item,
 										value: Array.isArray(item.value)
