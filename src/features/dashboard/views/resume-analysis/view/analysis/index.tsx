@@ -10,6 +10,7 @@ import styles from './analysis.module.scss';
 import classNames from 'classnames';
 
 import { getDataIcons } from '@labs/utils';
+import Router from 'next/router';
 
 const COLORS = ['#2b94f4', '#4ea27f', '#ff973c', '#dd4237'];
 
@@ -28,9 +29,11 @@ export const getColorByScore = (score: number) => {
 export const Analysis = ({
 	data,
 	seeAllAnalysis,
+	closeModal,
 }: {
 	data?: any;
 	seeAllAnalysis: () => void;
+	closeModal: () => void;
 }) => {
 	const [tab, setTab] = React.useState('analysis');
 
@@ -77,9 +80,23 @@ export const Analysis = ({
 					>
 						See All Analysis
 					</CallToAction.button>
-					<CallToAction.button variant="primary" size="sm">
+					<CallToAction.button
+						variant={
+							Router.query?.analysis === 'true' ? 'secondary' : 'primary'
+						}
+						size="sm"
+					>
 						Get an Expert Review
 					</CallToAction.button>
+					{Router.query?.analysis === 'true' && (
+						<CallToAction.button
+							onClick={closeModal}
+							variant="primary"
+							size="sm"
+						>
+							Edit Resume
+						</CallToAction.button>
+					)}
 				</Flex.Row>
 				<Flex.Column gap={4} className="mb-4 ">
 					<Heading.h4 fontSize="20px" weight={400} animate="slide">

@@ -29,10 +29,10 @@ const renderElements = {
 const config = {
 	title: 'Nairobi',
 	details: 'The calm and wild side of resumes.',
-	thumbnail: '/images/dashboard/resumes/yaba.png',
+	thumbnail: '/images/dashboard/resumes/nairobi.png',
 	fontFamily: 'Playfair',
 	colors: {
-		primary: '#E1574D',
+		primary: '#4D19B8',
 	},
 	complimentaryColors: COLOR_MAPS.primary,
 };
@@ -79,7 +79,7 @@ const NairobiTemplate = ({
 						margin={margin}
 						style={{
 							borderBottom: '2px dotted #d8d8d8',
-							paddingBottom: margin,
+							paddingBottom: 10,
 						}}
 						marginBottom={margin / 4}
 					>
@@ -91,7 +91,7 @@ const NairobiTemplate = ({
 								{heading?.title}
 							</DocText>
 						) : null}
-						<DocText scale={scale} size="xs">
+						<DocText scale={scale} size="xs" marginTop={margin / 3.5}>
 							{heading?.subHeading?.length
 								? heading?.subHeading?.map((subHeading: any, index: number) => (
 										<Fragment key={parseValue(subHeading)}>
