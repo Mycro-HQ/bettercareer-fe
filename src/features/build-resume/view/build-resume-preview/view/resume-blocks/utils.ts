@@ -8,7 +8,9 @@ import {
 	Tokyo,
 	Dublin,
 	Cosmos,
+	Yaba,
 	Metropolitan,
+	Nairobi,
 } from './templates';
 import { COLOR_MAPS } from './templates/utils';
 
@@ -19,6 +21,8 @@ export const templateMaps = {
 	dublin: Dublin,
 	cosmos: Cosmos,
 	metropolitan: Metropolitan,
+	yaba: Yaba,
+	nairobi: Nairobi,
 };
 
 export const templatesConfig = Object.keys(templateMaps).map((key) => {
@@ -291,6 +295,8 @@ export const extractNameFromLink = (link: string) => {
 	if (!link) return '';
 	const brands = ['facebook', 'twitter', 'linkedin', 'github', 'instagram'];
 	const brand = brands.find((b) => link.includes(b));
+	const isEmail = link.includes('@');
+	if (isEmail) return 'Email';
 	if (brand) return capitalize(brand);
 	return link;
 };
