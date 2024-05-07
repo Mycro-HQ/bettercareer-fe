@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDate } from 'date-fns';
+import {} from 'date-fns';
 import Link from 'next/link';
 
 import { JobPreference } from '../job-preference';
@@ -7,20 +7,18 @@ import { JobPreference } from '../job-preference';
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
-import FileIcon from '@labs/icons/dashboard/file.svg';
+
 import ResumeIcon from '@labs/icons/dashboard/file_1.svg';
 import Selection from '@labs/icons/dashboard/selection.svg';
 import JobIcon from '@labs/icons/dashboard/calendar.svg';
 import SponsorIcon from '@labs/icons/dashboard/tag.svg';
 import NewResume from '@labs/icons/dashboard/upload.svg';
 import { type UserData } from '@/queries/types/user';
-import { useGetResumesQuery } from '@/queries/resume';
-import { truncateText } from '@labs/utils';
 
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
-import FetchContainer from '@/components/misc/fetch-container';
+import { AllResumes } from './components/all-resumes';
 
 export const DashboardHome = ({
 	profile,
@@ -32,8 +30,6 @@ export const DashboardHome = ({
 	const hasSetup =
 		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
 		profile?.onboardingChecklist?.hasBuiltResume;
-
-	const { data: resumes, isPending } = useGetResumesQuery({});
 
 	const recommendationSections = [
 		{
@@ -171,53 +167,16 @@ export const DashboardHome = ({
 				</Flex>
 			</Flex.Column>
 			<Flex.Column gap={24} className={styles.Section}>
-				<Heading.h5 weight={800}>Past Resumes</Heading.h5>
-				<FetchContainer
-					isLoading={isPending}
-					shouldBeEmpty={resumes?.data?.length === 0}
-					emptyMessage="You have any resumes yet."
-					emptyActions={
-						<CallToAction.a size="sm" href="/dashboard/resume/build">
-							Create a new resume
-						</CallToAction.a>
-					}
-				>
-					{resumes?.data?.length > 0 && (
-						<>
-							<Flex fullWidth gap={32} flexWrap="wrap">
-								{resumes?.data?.map((resume: any) => (
-									<Link
-										href={`/dashboard/resume/b/${resume.id}`}
-										key={resume.id}
-										className={styles.PastResume}
-									>
-										<img
-											src={
-												resume?.thumbnail || '/images/dashboard/thumbnail.png'
-											}
-											alt={resume.name}
-										/>
-										<div className={styles.PastResumeInfo}>
-											<Heading.h6 weight={800} fontSize="16px">
-												{truncateText(resume.name, 36)}
-											</Heading.h6>
-											<Flex gap={2} alignItems="center">
-												<FileIcon />
-												<Text size="sm" color="var(--text-gray-light)">
-													Opened{' '}
-													{formatDate(
-														new Date(resume.updatedAt),
-														'MMM dd, yyyy | p'
-													)}
-												</Text>
-											</Flex>
-										</div>
-									</Link>
-								))}
-							</Flex>
-						</>
+				<Flex.Row gap={12} justifyContent="space-between">
+					<Heading.h5 weight={800}>Past Resumes </Heading.h5>
+					{profile?.default_resume_id && (
+						<Link href="/dashboard/resumes">
+							<Text color="var(--primary-blue)">See all</Text>
+						</Link>
 					)}
-				</FetchContainer>
+				</Flex.Row>
+
+				<AllResumes limit={6} />
 			</Flex.Column>
 		</div>
 	);
