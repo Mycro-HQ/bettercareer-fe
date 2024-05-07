@@ -92,6 +92,7 @@ export const ResumeAnalysis = ({
 				<Analysis
 					seeAllAnalysis={() => setScreen('all-analysis')}
 					data={analysisData}
+					closeModal={handleClose}
 				/>
 			)}
 		</Modal>

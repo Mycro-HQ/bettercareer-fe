@@ -18,10 +18,11 @@ export const templateMaps = {
 	classic: Classic,
 	dune: Dune,
 	tokyo: Tokyo,
-	dublin: Dublin,
+	yaba: Yaba,
 	cosmos: Cosmos,
 	metropolitan: Metropolitan,
-	yaba: Yaba,
+
+	dublin: Dublin,
 	nairobi: Nairobi,
 };
 

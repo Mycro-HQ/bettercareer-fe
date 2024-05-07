@@ -24,7 +24,9 @@ export function JobSearchForm() {
 			gap={14}
 		>
 			<Flex.Row gap={8} alignItems="center" className="-mt-[2rem]">
-				<Text size="sm">Popular Searches:</Text>
+				<Text size="sm" className="opacity-80">
+					Popular Searches:
+				</Text>
 				{['Frontend', 'Backend', 'Data science', 'UI/UX'].map((jobType) => (
 					<CallToAction.button
 						outline
