@@ -65,6 +65,13 @@
 
 	.DashboardHeaderMenuItem {
 		color: var(--text-gray);
+
+		&.active {
+			color: var(--text-black);
+			p {
+				font-weight: 800;
+			}
+		}
 	}
 
 	.DashboardHeaderSearch {

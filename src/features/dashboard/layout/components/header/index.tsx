@@ -125,13 +125,13 @@ export const DashboardHeader = ({
 								)}
 
 								<Link
-									href="/dashboard/notification"
+									href="/dashboard/notifications"
 									className={styles.DashboardHeaderNotification}
 								>
 									<Help height="18" width="18" />
 								</Link>
 								<Link
-									href="/dashboard/notification"
+									href="/dashboard/notifications"
 									className={styles.DashboardHeaderNotification}
 								>
 									<BellIcon height="18" width="18" />

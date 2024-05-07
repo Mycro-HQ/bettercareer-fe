@@ -88,7 +88,7 @@
 	padding: 24px;
 	align-items: flex-start;
 	width: 100%;
-	max-width: 31%;
+	max-width: 31.38%;
 	background: #ffffff;
 	border: 1px solid #e7e9eb;
 	border-radius: 12px;
@@ -113,29 +113,90 @@
 
 .PastResume {
 	width: 100%;
-	max-width: 31%;
+	max-width: 31.38%;
 	background: #ffffff;
 	overflow: hidden;
 	border-radius: 8px;
 	height: 100%;
 	display: flex;
+	position: relative;
 	flex-direction: column;
 	justify-content: flex-end;
 	min-height: 300px;
 	border: 1px solid #e7e9eb;
 
-	img {
+	&Add {
+		background: #ebf5ff;
+		border: 1px solid #1388f2;
+		max-width: 31.38%;
+		min-height: 300px;
+		border-radius: 8px;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 18px;
+		@include typography('accent');
+		color: var(--text-gray);
+
+		&:hover {
+			@keyframes spin {
+				0% {
+					transform: rotate(0deg) scale(0.9);
+				}
+				100% {
+					transform: rotate(180deg) scale(1);
+				}
+			}
+			img {
+				transition: all 0.3s ease;
+				animation: spin 1s 1 both;
+			}
+		}
+		img {
+			width: 40px;
+			height: 40px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 12px;
+			background: linear-gradient(196.99deg, #339dff 7.09%, #2783d8 86.59%);
+			border-radius: 50%;
+		}
+	}
+
+	.PastResumeWrapper {
+		justify-content: space-between;
+		align-items: self-start;
+		padding: 18px;
+		border-top: 1px solid #e7e9eb;
+	}
+
+	.PastResumeThumbnail {
 		max-height: 280px;
 		object-fit: cover;
 		object-position: top;
 	}
 
+	.PastResumeMore {
+		width: 28px;
+		background: #ffffffe6;
+		height: 28px;
+		position: absolute;
+		top: 12px;
+		right: 12px;
+		padding: 3px;
+		border-radius: 50px;
+		border: 1px solid #e7e9eb;
+		box-shadow: 0 2px 15px #0000000f;
+		backdrop-filter: blur(4px);
+	}
+
 	.PastResumeInfo {
-		padding: 18px;
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
-		border-top: 1px solid #e7e9eb;
 	}
 }
 
