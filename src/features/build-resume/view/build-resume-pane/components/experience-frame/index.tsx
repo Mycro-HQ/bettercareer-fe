@@ -8,6 +8,7 @@ import {
 	Flex,
 	Text,
 	capitalize,
+	getDataIcons,
 	parseValue,
 	useFeedback,
 } from '@labs';
@@ -236,28 +237,17 @@ const ExperienceFrame = ({
 						);
 					})}
 					<Flex justifyContent="flex-end" fullWidth gap={8}>
-						{isEditing ? (
-							<CallToAction
-								outline
-								variant="error"
-								size="md"
-								onClick={() => deleteFrame(fieldData)}
-							>
-								Delete
-							</CallToAction>
-						) : (
-							<CallToAction
-								outline
-								variant="primary"
-								size="md"
-								onClick={() => {
-									setAddNew(type, false);
-									setIsEditing(false);
-								}}
-							>
-								Close
-							</CallToAction>
-						)}
+						<CallToAction
+							outline
+							variant="primary"
+							size="md"
+							onClick={() => {
+								setAddNew(type, false);
+								setIsEditing(false);
+							}}
+						>
+							Close
+						</CallToAction>
 
 						<CallToAction
 							variant="primary"

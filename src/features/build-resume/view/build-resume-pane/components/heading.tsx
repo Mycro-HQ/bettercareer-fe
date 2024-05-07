@@ -30,6 +30,7 @@ export const HeadingModule = React.memo(
 				return;
 			}
 			setValue('');
+
 			setField({ subHeading: [...(field.subHeading || []), { value: data }] });
 		};
 

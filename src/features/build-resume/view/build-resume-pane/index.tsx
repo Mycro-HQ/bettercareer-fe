@@ -467,7 +467,9 @@ export const BuildResumePane = ({
 																				styles.AddIcon,
 																				'cursor-pointer block transition-all  duration-200 ease-in-out hover:opacity-60 p-[4px]',
 																			])}
-																			onClick={() => setAddNew(block.key, true)}
+																			onClick={(e) => {
+																				setAddNew(block.key, true);
+																			}}
 																		>
 																			<Add />
 																		</span>
@@ -480,7 +482,6 @@ export const BuildResumePane = ({
 																				'cursor-pointer block transition-all duration-200 ease-in-out hover:opacity-60 p-[4px]',
 																			])}
 																			onClick={async (e) => {
-																				e.stopPropagation();
 																				await createDisclosure({
 																					title: 'Remove Section',
 																					message:
