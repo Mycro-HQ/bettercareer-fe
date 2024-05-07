@@ -33,7 +33,11 @@ export const EditorModule = ({
 			<CustomEditor
 				name={type}
 				value={parseValue(field)}
-				onChange={(e: any) => setField({ value: e.target.value })}
+				onChange={(e: any) => {
+					if (e.target.value) {
+						setField({ value: e.target.value });
+					}
+				}}
 			/>
 		</Field.Form>
 	);
