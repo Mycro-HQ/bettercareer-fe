@@ -20,6 +20,7 @@ import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
 import { AllResumes } from './components/all-resumes';
+import Router, { useRouter } from 'next/router';
 
 export const DashboardHome = ({
 	profile,
