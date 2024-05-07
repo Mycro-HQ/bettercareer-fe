@@ -32,16 +32,8 @@ export default function OptionsDropDown({
 						onClick={() => updateApplicationCategory(id, data.id)}
 						className={classNames('group', styles.optionsDropdownItem)}
 					>
-						<div className="group-hover:[&>svg>path]:stroke-white">
-							{data.icon}
-						</div>
-						<Text
-							as="span"
-							color="#273643"
-							size="sm"
-							weight={500}
-							className="group-hover:text-white"
-						>
+						<div>{data.icon}</div>
+						<Text as="span" color="#273643" size="sm" weight={500}>
 							Move to {data.id}
 						</Text>
 					</DropdownMenu.Item>

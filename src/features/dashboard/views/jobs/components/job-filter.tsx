@@ -23,7 +23,7 @@ function JobFilterText({
 				weight={500}
 				as="span"
 				className={classNames(
-					'rounded-[450px] py-2 px-4 cursor-pointer transition-colors duration-200',
+					'rounded-[450px] py-[10px] px-[18px] cursor-pointer transition-colors duration-200',
 					isSelected
 						? 'bg-[#e7f3fe] text-[#1286f3] hover:bg-[#d9eafe]'
 						: 'text-[#878f97] hover:text-[#1388F2]'

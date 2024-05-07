@@ -63,13 +63,16 @@ export const AllResumes = ({
 			{resumes?.data?.length > 0 && (
 				<>
 					<Flex fullWidth gap={32} flexWrap="wrap">
-						<Link
-							href="/dashboard/resume/build"
-							className={styles.PastResumeAdd}
-						>
-							<img src={getDataIcons('add')} />
-							Add New Resume
-						</Link>
+						{hasAdd && (
+							<Link
+								href="/dashboard/resume/build"
+								className={styles.PastResumeAdd}
+							>
+								<img src={getDataIcons('add')} />
+								Add New Resume
+							</Link>
+						)}
+
 						{resumes?.data?.map((resume: any) => (
 							<Link
 								href={`/dashboard/resume/b/${resume.id}`}
