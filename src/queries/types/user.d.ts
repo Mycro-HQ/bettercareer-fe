@@ -7,6 +7,7 @@ export interface UserData {
 	deleted: boolean;
 	verified: boolean;
 	session: Record<string, unknown>;
+	default_resume_id: string;
 	onboardingChecklist: {
 		hasBuiltResume: boolean;
 		hasJobPreferences: boolean;
