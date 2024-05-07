@@ -338,7 +338,7 @@ export function pluralize(string: string, count: number, stringOnly = false) {
 export const wait = (ms: number) =>
 	new Promise((resolve) => setTimeout(resolve, ms));
 
-export const parseValue = (item: any) => {
+export const parseValue = (item: any, convertToArray?: boolean) => {
 	if (!item) return null;
 
 	if (typeof item === 'string') {
@@ -346,7 +346,7 @@ export const parseValue = (item: any) => {
 	}
 
 	if (typeof item === 'object') {
-		if (typeof item?.value === 'string') {
+		if (typeof item?.value === 'string' && convertToArray) {
 			return [item?.value];
 		}
 

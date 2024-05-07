@@ -53,7 +53,7 @@
 					z-index: 100;
 					padding: 16px 16px !important;
 					top: 0px;
-					background: #fff;
+					background: transparent;
 					height: 50px;
 
 					@include media('md', 'max') {
