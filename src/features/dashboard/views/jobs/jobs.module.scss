@@ -1,0 +1,49 @@
+@use '@/styles/base/utils' as *;
+
+.JobCard {
+	padding: rem(24px);
+	border-radius: rem(16px);
+	border: 1.5px solid #e7e9eb;
+	background: #fff;
+
+	@include media('md', 'min') {
+		padding: rem(32px);
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.JobTag {
+	color: #3f4c58;
+	font-family: 'Figtree';
+	border-radius: rem(20px);
+	background: #f9fafa;
+	border: 1px solid #f3f4f4;
+	padding: rem(6px) rem(16px);
+}
+
+.JobSearchForm {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	background-color: transparent;
+	border-radius: rem(16px);
+	padding-top: rem(10px);
+	padding-bottom: rem(10px);
+
+	@include media('md', 'min') {
+		flex-direction: row;
+		align-items: center;
+		width: min-content;
+		background-color: white;
+		padding-inline: rem(24px);
+		max-width: rem(calc(768px - 24px));
+		column-gap: rem(4px);
+	}
+
+	@include media('xl', 'min') {
+		column-gap: rem(16px);
+	}
+}
