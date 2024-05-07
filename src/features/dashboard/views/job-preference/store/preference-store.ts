@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { createReportableStore } from '@/store/middleware/report';
 
 interface PreferenceStore {
 	selectedTargetRoles: string[];
@@ -63,7 +63,7 @@ const initialState: PreferenceStore = {
 	isAllTabsCompleted: () => false,
 };
 
-const usePreferenceStore = create<PreferenceStore>((set) => ({
+const usePreferenceStore = createReportableStore<PreferenceStore>((set) => ({
 	...initialState,
 	handleClickedRoles: (role) => {
 		set((state) => {

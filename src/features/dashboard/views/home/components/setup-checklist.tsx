@@ -68,7 +68,7 @@ export const SetupChecklist = ({
 			infographic: '/images/dashboard/3.png',
 			description:
 				'Specify your preferences to narrow down your search and find your dream job.',
-			action: '/dashboard/job-preferences',
+			action: '/dashboard?setPreferences=true',
 			actionText: 'Set Preferences',
 		},
 	];
