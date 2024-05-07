@@ -1,0 +1,27 @@
+import Availability from './components/availability/availability';
+import SearchPriority from './components/availability/search-priority';
+import Compensation from './components/compensation/compensation';
+import Qualifications from './components/qualifications/qualifications';
+import TargetRole from './components/target-role';
+import OpenToAllRoleLevel from './components/target-role/open-to-all-role-level';
+import RoleLevel from './components/target-role/role-level';
+import WorkEnvironment from './components/work-environment';
+import CompanySize from './components/work-environment/company-size';
+import OpenToAllCompanySize from './components/work-environment/open-to-all-company-size';
+
+export const preferenceList = [
+	{
+		label: 'Target Role',
+		component: [TargetRole, OpenToAllRoleLevel, RoleLevel],
+	},
+	{
+		label: 'Work Environment',
+		component: [WorkEnvironment, OpenToAllCompanySize, CompanySize],
+	},
+	{ label: 'Qualifications', component: [Qualifications] },
+	{
+		label: 'Availability',
+		component: [Availability, SearchPriority],
+	},
+	{ label: 'Compensation', component: [Compensation] },
+];

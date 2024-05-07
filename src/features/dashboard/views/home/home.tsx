@@ -2,6 +2,8 @@ import React from 'react';
 import { formatDate } from 'date-fns';
 import Link from 'next/link';
 
+import { JobPreference } from '../job-preference';
+
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
@@ -13,17 +15,19 @@ import SponsorIcon from '@labs/icons/dashboard/tag.svg';
 import NewResume from '@labs/icons/dashboard/upload.svg';
 import { type UserData } from '@/queries/types/user';
 import { useGetResumesQuery } from '@/queries/resume';
+import { truncateText } from '@labs/utils';
 
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
-import { truncateText } from '@labs/utils';
 
 export const DashboardHome = ({
 	profile,
 }: {
 	profile: UserData | null | undefined;
 }) => {
+	const [isModalOpen, setIsModalOpen] = React.useState(false);
+
 	const hasSetup =
 		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
 		profile?.onboardingChecklist?.hasBuiltResume;
@@ -145,9 +149,19 @@ export const DashboardHome = ({
 							Adjust your criteria to find jobs that align with your career
 							aspirations
 						</Text>
-						<CallToAction variant="secondary" size="sm" className="mt-[20px]">
+						<CallToAction
+							onClick={() => setIsModalOpen(true)}
+							variant="secondary"
+							size="sm"
+							className="mt-[20px]"
+						>
 							Update Preferences
 						</CallToAction>
+						{/*
+						 * Here is the hacky fix for the modal
+						 * // TODO: Refactor modal to use proper modal component
+						 */}
+						{isModalOpen && <JobPreference setIsModalOpen={setIsModalOpen} />}
 					</div>
 				</Flex>
 			</Flex.Column>

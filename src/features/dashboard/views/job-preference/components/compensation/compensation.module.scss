@@ -1,0 +1,89 @@
+@use '@/styles/base/utils' as *;
+
+.Compensation {
+	.CompensationCounter {
+		width: 180px;
+		height: 180px;
+		border-radius: 50%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		background: #f3f4f4;
+
+		p {
+			color: #57636d;
+		}
+	}
+
+	.CompensationSliderRoot {
+		width: 292px;
+		height: 8px;
+		position: relative;
+		display: flex;
+		align-items: center;
+		user-select: none;
+		touch-action: none;
+
+		.CompensationSliderTrack {
+			background: #e7e9eb;
+			border-radius: 8px;
+			width: 292px;
+			height: 8px;
+			position: relative;
+			flex-grow: 1;
+		}
+
+		.CompensationSliderRange {
+			position: absolute;
+			background: var(--primary-blue);
+			border-radius: 8px;
+			height: 100%;
+		}
+
+		.CompensationSliderThumb {
+			display: block;
+			width: 24px;
+			height: 24px;
+			background: var(--primary-white);
+			border-radius: 50%;
+			border: 1px solid var(--primary-blue);
+			cursor: pointer;
+		}
+	}
+
+	.CompensationCurrencyList {
+		.CompensationCurrencyListItem {
+			height: 36px;
+			padding: 8px 18px;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			color: #e7e9eb;
+			border: 1px solid #e7e9eb;
+			font-size: 14px;
+			font-weight: 600;
+
+			&--selected {
+				color: var(--primary-blue);
+			}
+
+			&:first-child {
+				border-top-left-radius: 16px;
+				border-bottom-left-radius: 16px;
+				border-right: 0px;
+			}
+
+			&:nth-child(2),
+			&:nth-child(3) {
+				border-right: 0px;
+			}
+
+			&:last-child {
+				border-top-right-radius: 16px;
+				border-bottom-right-radius: 16px;
+			}
+		}
+	}
+}

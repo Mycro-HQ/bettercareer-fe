@@ -1,0 +1,26 @@
+@use '@/styles/base/utils' as *;
+
+.Availability {
+	.List {
+		.Chip {
+			height: 40px;
+			padding: 10px 20px;
+			border-radius: 32px;
+			border: 1px solid #e7e9eb;
+			background: transparent;
+			color: #000;
+			font-weight: 400;
+			font-size: 14px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
+
+			&--active {
+				background: #1388f220;
+				border-color: var(--primary-blue);
+				color: var(--primary-blue);
+			}
+		}
+	}
+}
