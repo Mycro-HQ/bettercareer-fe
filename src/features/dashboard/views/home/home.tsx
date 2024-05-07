@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {} from 'date-fns';
 import Link from 'next/link';
 
@@ -19,13 +19,25 @@ import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
 import { AllResumes } from './components/all-resumes';
+import Router, { useRouter } from 'next/router';
 
 export const DashboardHome = ({
 	profile,
 }: {
 	profile: UserData | null | undefined;
 }) => {
+	const router = useRouter();
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
+
+	useEffect(() => {
+		if (router.query?.setPreferences) {
+			setIsModalOpen(true);
+		}
+
+		if (!isModalOpen) {
+			router.replace('/dashboard', undefined, { shallow: true });
+		}
+	}, [router.query?.setPreferences, isModalOpen]);
 
 	const hasSetup =
 		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
@@ -158,10 +170,7 @@ export const DashboardHome = ({
 						>
 							Update Preferences
 						</CallToAction>
-						{/*
-						 * Here is the hacky fix for the modal
-						 * // TODO: Refactor modal to use proper modal component
-						 */}
+
 						{isModalOpen && <JobPreference setIsModalOpen={setIsModalOpen} />}
 					</div>
 				</Flex>
