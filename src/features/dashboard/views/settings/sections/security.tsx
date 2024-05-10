@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { PasswordValidationBlock, Label, Input, Wrapper } from '../components';
+import { fillPasswordPill } from '../utils';
 
 import { CallToAction, Flex } from '@labs/components';
 
@@ -21,11 +22,13 @@ function PasswordBlock() {
 	const passwordPattern =
 		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};:"'\\|,.<>\/?~`])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};:"'\\|,.<>\/?~`]{8,}$/;
 
+	// The number 5 is the number of requirements needed for a valid password
 	const isButtonDisabled = !(
 		oldPassword &&
 		newPassword &&
 		confirmNewPassword &&
-		newPassword === confirmNewPassword
+		newPassword === confirmNewPassword &&
+		fillPasswordPill(newPassword) === 5
 	);
 
 	function handleSubmit() {
