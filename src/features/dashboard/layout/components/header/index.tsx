@@ -38,7 +38,13 @@ const NAVIGATION = [
 	},
 ];
 
-export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
+export const DashboardHeader = ({
+	bare,
+	plainBackdrop,
+}: {
+	bare?: boolean;
+	plainBackdrop?: boolean;
+}) => {
 	const router = useRouter();
 	const [isScrolled, setIsScrolled] = React.useState(false);
 	const { profile, logOut } = useUserStore();
@@ -107,12 +113,14 @@ export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
 					>
 						{!bare ? (
 							<>
-								<TextField.Root className={styles.DashboardHeaderSearch}>
-									<TextField.Slot>
-										<MagnifyingGlassIcon height="16" width="16" />
-									</TextField.Slot>
-									<TextField.Input placeholder="Search in 400k jobs..." />
-								</TextField.Root>
+								{!plainBackdrop && (
+									<TextField.Root className={styles.DashboardHeaderSearch}>
+										<TextField.Slot>
+											<MagnifyingGlassIcon height="16" width="16" />
+										</TextField.Slot>
+										<TextField.Input placeholder="Search in 400k jobs..." />
+									</TextField.Root>
+								)}
 
 								<Link
 									href="/dashboard/notification"

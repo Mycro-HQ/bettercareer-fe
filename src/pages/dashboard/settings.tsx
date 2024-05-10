@@ -8,7 +8,7 @@ export default function ApplicationsPage() {
 	const { profile } = useUserStore();
 
 	return (
-		<DashboardLayout title="Settings" profile={profile}>
+		<DashboardLayout title="Settings" profile={profile} plainBackdrop>
 			<Settings />
 		</DashboardLayout>
 	);

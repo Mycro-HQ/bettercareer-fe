@@ -1,15 +1,15 @@
 import React, { use, useEffect } from 'react';
 import classNames from 'classnames';
+import Cookies from 'js-cookie';
 
 import { Container } from '@labs/components';
 import { Seo } from '@/components/seo';
 import { type UserData } from '@/queries/types/user';
+import { useGetProfileQuery } from '@/queries/user';
+import { useUserStore } from '@/store/z-store/user';
 
 import { DashboardHeader } from './components/header';
 import styles from './layout.module.scss';
-import { useGetProfileQuery } from '@/queries/user';
-import Cookies from 'js-cookie';
-import { useUserStore } from '@/store/z-store/user';
 
 /**
  * DashboardLayout
@@ -27,12 +27,14 @@ export const DashboardLayout = ({
 	title = 'Dashboard',
 	backdropThreshold = 'md',
 	bare,
+	plainBackdrop,
 }: {
 	children: React.ReactNode;
 	title?: string;
 	backdropThreshold?: 'sm' | 'md' | 'lg';
 	profile?: UserData | null | undefined;
 	bare?: boolean;
+	plainBackdrop?: boolean;
 }) => {
 	const { setUser } = useUserStore();
 	const { data } = useGetProfileQuery(undefined, {
@@ -48,14 +50,14 @@ export const DashboardLayout = ({
 		<div
 			className={classNames([
 				styles.DashboardLayout,
-				styles[`DashboardLayout--${backdropThreshold}`],
+				plainBackdrop ? '' : styles[`DashboardLayout--${backdropThreshold}`],
 			])}
 		>
 			<Seo title={title} />
 			<nav className={styles.DashboardLayoutHeader}>
 				<div className={styles.DashboardLayoutBanner} />
 
-				<DashboardHeader bare={bare} />
+				<DashboardHeader bare={bare} plainBackdrop={plainBackdrop} />
 			</nav>
 			<main className={styles.DashboardLayoutMain}>
 				<Container maxWidth="lg">{children}</Container>
