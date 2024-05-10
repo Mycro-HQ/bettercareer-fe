@@ -1,5 +1,5 @@
 import React from 'react';
-import { TabsContent, Root } from '@radix-ui/react-tabs';
+import { Tabs } from '@radix-ui/themes';
 
 import { SettingsHeader } from './components';
 import { SecurityTab, NotificationPreferencesTab } from './sections';
@@ -11,20 +11,20 @@ export const Settings = () => {
 
 	return (
 		<>
-			<Root defaultValue="Billing">
+			<Tabs.Root defaultValue="Billing">
 				<SettingsHeader tab={selectedTab} setTab={setSelectedTab} />
 				<div className="pt-3">
-					<TabsContent value="Billing">
+					<Tabs.Content value="Billing">
 						<p>TBD</p>
-					</TabsContent>
-					<TabsContent value="Security">
+					</Tabs.Content>
+					<Tabs.Content value="Security">
 						<SecurityTab />
-					</TabsContent>
-					<TabsContent value="Notification Preferences">
+					</Tabs.Content>
+					<Tabs.Content value="Notification Preferences">
 						<NotificationPreferencesTab />
-					</TabsContent>
+					</Tabs.Content>
 				</div>
-			</Root>
+			</Tabs.Root>
 		</>
 	);
 };
