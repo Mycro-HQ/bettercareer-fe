@@ -13,14 +13,14 @@ export default function Input({ wrapperProps, inputProps }: InputProps) {
 			{...wrapperProps}
 			className={classNames(
 				wrapperProps?.className,
-				'mt-3 rounded-2xl relative'
+				'mt-3 rounded-xl relative border-[#e7e9eb] border border-solid py-5 pe-10 shadow-sm sm:text-sm'
 			)}
 		>
 			<input
 				type={inputProps.type}
 				id={inputProps.id}
 				placeholder={inputProps.placeholder}
-				className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+				className="w-full outline-none border-none px-4"
 				minLength={8}
 				required
 				{...inputProps}
