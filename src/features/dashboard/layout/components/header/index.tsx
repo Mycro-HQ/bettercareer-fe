@@ -171,10 +171,10 @@ export const DashboardHeader = ({ bare }: { bare?: boolean }) => {
 								</DropdownMenu.Item>
 
 								<DropdownMenu.Item>
-									<Link href="/dashboard/profile">
+									<Link href="/dashboard/settings">
 										<Flex.Row gap={8} alignItems="center">
 											<SettingsIcon />
-											<Text size="sm">Setting</Text>
+											<Text size="sm">Settings</Text>
 										</Flex.Row>
 									</Link>
 								</DropdownMenu.Item>
