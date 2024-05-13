@@ -145,6 +145,7 @@ const ExperienceFrame = ({
 									) ?? ''
 								);
 							}
+
 							return fieldData[newField.key as keyof typeof fieldData] ?? '';
 						};
 

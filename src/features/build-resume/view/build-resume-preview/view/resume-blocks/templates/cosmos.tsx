@@ -56,13 +56,14 @@ const CosmosTemplate = ({
 					flexDirection: 'column',
 					color: '#0F1F2E',
 					fontFamily: template.fontFamily,
+					paddingBottom: margin,
 				},
 				link: {
 					color: '#0F1F2E',
 					textDecoration: 'underline',
 				},
 			}),
-		[template.fontFamily]
+		[template.fontFamily, margin]
 	);
 
 	const heading = getData('heading', modules);
@@ -70,6 +71,13 @@ const CosmosTemplate = ({
 	return (
 		<Document>
 			<Page size="A4" style={styles.container}>
+				<DocText
+					fixed
+					render={({ pageNumber }) => pageNumber > 1 && ` `}
+					style={{
+						fontSize: margin,
+					}}
+				/>
 				{heading?.name ? (
 					<DocFlex
 						direction="row"

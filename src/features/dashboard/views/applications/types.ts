@@ -21,5 +21,4 @@ export type ApplicationOptions = {
 
 export type ApplicationContext = {
 	applicationState: ApplicationJob[];
-	setApplicationState: React.Dispatch<React.SetStateAction<ApplicationJob[]>>;
 };

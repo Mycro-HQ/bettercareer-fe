@@ -5,7 +5,7 @@ import React, {
 	useRef,
 	useState,
 } from 'react';
-import { pdf } from '@react-pdf/renderer';
+
 import { Document, Page, pdfjs } from 'react-pdf';
 import { ScrollArea } from '@radix-ui/themes';
 import { motion } from 'framer-motion';
@@ -23,6 +23,7 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 import { MOCK, registerFonts, templateMaps } from './utils';
 import classNames from 'classnames';
+import { pdf } from '@react-pdf/renderer';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/assets/js/pdf-worker.js`;
 
@@ -103,7 +104,7 @@ export const ResumePreview = ({
 					).toBlob();
 
 					// Vercel id behaving funny
-					// const _blob = await fetch(`${APP_URL}/api/generate`, {
+					// const _blob = await fetch(`/api/generate`, {
 					// 	method: 'POST',
 					// 	body: JSON.stringify({
 					// 		modules: useDefault && !hasData ? MOCK : modules,

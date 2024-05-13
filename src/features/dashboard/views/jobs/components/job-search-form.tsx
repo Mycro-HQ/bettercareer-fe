@@ -19,7 +19,7 @@ export function JobSearchForm() {
 
 	return (
 		<Flex.Column
-			className="w-full md:mb-[25%] lg:mb-[8%]"
+			className="w-full md:mb-[25%] lg:mb-[6%]"
 			alignItems="center"
 			gap={14}
 		>

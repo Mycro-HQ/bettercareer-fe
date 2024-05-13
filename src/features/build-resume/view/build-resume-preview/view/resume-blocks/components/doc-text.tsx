@@ -12,7 +12,7 @@ const DocText = ({
 	scale,
 	...rest
 }: {
-	children: string | number | React.ReactNode;
+	children?: string | number | React.ReactNode;
 	color?: string;
 	size?: 'xs' | 'sm' | 'md' | 'lg';
 	as?: 'heading' | 'subHeading' | 'title';
@@ -20,7 +20,10 @@ const DocText = ({
 	theme?: any;
 	scale?: number;
 	weight?: number | string;
-} & React.CSSProperties) => {
+} & React.CSSProperties & {
+		fixed?: boolean;
+		render?: (props: { pageNumber: number }) => any;
+	}) => {
 	const sizeMap = {
 		xs: 10,
 		sm: 12,
@@ -72,6 +75,8 @@ const DocText = ({
 				...rest,
 				...style,
 			}}
+			fixed={(rest as any).fixed}
+			render={(rest as any).render}
 		>
 			{children}
 		</Text>
