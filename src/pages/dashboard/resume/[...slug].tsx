@@ -52,9 +52,16 @@ export async function getServerSideProps(context: any) {
 			// headers: context.req.headers,
 		} as any);
 
+		const removeThumbnail = (resume: any) => {
+			if (resume?.thumbnail) {
+				delete resume.thumbnail;
+			}
+			return resume;
+		};
+
 		return {
 			props: {
-				resume: res?.data,
+				resume: removeThumbnail(res.data),
 			},
 		};
 	} catch (error) {

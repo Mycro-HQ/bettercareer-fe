@@ -55,13 +55,14 @@ const TokyoTemplate = ({
 					flexDirection: 'column',
 					color: '#0F1F2E',
 					fontFamily: template.fontFamily,
+					paddingBottom: padding,
 				},
 				link: {
 					color: 'inherit',
 					textDecoration: 'underline',
 				},
 			}),
-		[template?.fontFamily]
+		[template?.fontFamily, padding]
 	);
 
 	const heading = getData('heading', modules);
@@ -69,6 +70,13 @@ const TokyoTemplate = ({
 	return (
 		<Document>
 			<Page size="A4" style={styles.container}>
+				<DocText
+					fixed
+					render={({ pageNumber }) => pageNumber > 1 && ` `}
+					style={{
+						fontSize: padding,
+					}}
+				/>
 				{heading?.name ? (
 					<DocFlex
 						direction="column"

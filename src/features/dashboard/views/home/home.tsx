@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { JobPreference } from '../job-preference';
 
-import { CallToAction, Flex, Heading, Text } from '@labs/components';
+import { CallToAction, Flex, Heading, Spinner, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
 
@@ -69,6 +69,9 @@ export const DashboardHome = ({
 			tag: '5+ jobs',
 		},
 	];
+
+	if (!profile)
+		return <Spinner fullPage spinner="logo" text="Preparing your dashboard" />;
 
 	return (
 		<div className={styles.DashboardHome}>

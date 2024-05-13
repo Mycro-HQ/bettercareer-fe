@@ -1,5 +1,5 @@
 import React, { Fragment, useMemo } from 'react';
-import { Document, Link, Page, StyleSheet } from '@react-pdf/renderer';
+import { Document, Link, Page, StyleSheet, Text } from '@react-pdf/renderer';
 import { format, isDate } from 'date-fns';
 
 import { RichOutput } from '../components/rich-output';
