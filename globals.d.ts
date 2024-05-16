@@ -7,6 +7,8 @@ declare module '@radix-ui/themes' {
 		TextField,
 		HoverCard,
 		Slot,
+		Tabs,
+		Switch,
 		Popover,
 		ScrollArea,
 	}: typeof RadixThemes = require('@radix-ui/themes/dist/cjs/components/avatar');
