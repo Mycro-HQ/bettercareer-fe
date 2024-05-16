@@ -164,23 +164,6 @@ export const DashboardHeader = ({
 							</DropdownMenu.Trigger>
 							<DropdownMenu.Content>
 								<DropdownMenu.Item>
-									<Link href="/dashboard/profile">
-										<Flex.Row gap={8} alignItems="center">
-											<Profile />
-											<Text size="sm">Account Profile</Text>
-										</Flex.Row>
-									</Link>
-								</DropdownMenu.Item>
-								<DropdownMenu.Item>
-									<Link href="/dashboard/profile">
-										<Flex.Row gap={8} alignItems="center">
-											<PreferencesIcon />
-											<Text size="sm">Job Preference</Text>
-										</Flex.Row>
-									</Link>
-								</DropdownMenu.Item>
-
-								<DropdownMenu.Item>
 									<Link href="/dashboard/settings">
 										<Flex.Row gap={8} alignItems="center">
 											<SettingsIcon />
