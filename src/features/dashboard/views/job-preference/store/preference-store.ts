@@ -16,13 +16,13 @@ interface PreferenceStore {
 	isUserOpenToAllCompanySize: boolean | null;
 	handleIsUserOpenToAllCompanySize: (option: boolean) => void;
 
-	selectedCompanySize: string[];
+	selectedCompanySize: string;
 	handleClickedCompanySize: (companySize: string) => void;
 
 	selectedQualifications: string[];
 	handleSelectedQualification: (qualification: string) => void;
 
-	selectedLocation: string;
+	selectedLocation: string[];
 	handleSelectedLocation: (location: string) => void;
 
 	selectedPriority: string;
@@ -34,33 +34,21 @@ interface PreferenceStore {
 	preferredCurrency: string;
 	setPreferredCurrency: (currency: string) => void;
 
-	isAllTabsCompleted: () => boolean;
+	resetAllState: () => void;
 }
 
-const initialState: PreferenceStore = {
+const initialState = {
 	selectedTargetRoles: [],
-	handleClickedRoles: () => {},
 	isUserOpenToAllRoleLevel: null,
-	handleIsUserOpenToAllRoleLevel: () => {},
 	selectedRoleLevel: [],
-	handleClickedRoleLevel: () => {},
 	selectedWorkIndustry: [],
-	handleClickedWorkIndustry: () => {},
 	isUserOpenToAllCompanySize: null,
-	handleIsUserOpenToAllCompanySize: () => {},
-	selectedCompanySize: [],
-	handleClickedCompanySize: () => {},
+	selectedCompanySize: '',
 	selectedQualifications: [],
-	handleSelectedQualification: () => {},
-	selectedLocation: '',
-	handleSelectedLocation: () => {},
+	selectedLocation: [],
 	selectedPriority: '',
-	handleSelectedPriority: () => {},
 	minimumSalary: 0,
-	setMinimumSalary: () => {},
 	preferredCurrency: 'USD',
-	setPreferredCurrency: () => {},
-	isAllTabsCompleted: () => false,
 };
 
 const usePreferenceStore = create<PreferenceStore>((set) => ({
@@ -121,21 +109,8 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 		set({ isUserOpenToAllCompanySize: option });
 	},
 
-	selectedCompanySize: [],
 	handleClickedCompanySize: (companySize) => {
-		set((state) => {
-			if (state.selectedCompanySize.includes(companySize)) {
-				return {
-					selectedCompanySize: state.selectedCompanySize.filter(
-						(item) => item !== companySize
-					),
-				};
-			} else {
-				return {
-					selectedCompanySize: [...state.selectedCompanySize, companySize],
-				};
-			}
-		});
+		set(() => ({ selectedCompanySize: companySize }));
 	},
 
 	handleSelectedQualification: (qualification) => {
@@ -158,7 +133,19 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 	},
 
 	handleSelectedLocation: (location) => {
-		set(() => ({ selectedLocation: location }));
+		set((state) => {
+			if (state.selectedLocation.includes(location)) {
+				return {
+					selectedLocation: state.selectedLocation.filter(
+						(item) => item !== location
+					),
+				};
+			} else {
+				return {
+					selectedLocation: [...state.selectedLocation, location],
+				};
+			}
+		});
 	},
 
 	handleSelectedPriority: (priority) => {
@@ -171,6 +158,12 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 
 	setPreferredCurrency: (currency) => {
 		set(() => ({ preferredCurrency: currency }));
+	},
+
+	resetAllState: () => {
+		set(() => ({
+			...initialState,
+		}));
 	},
 }));
 

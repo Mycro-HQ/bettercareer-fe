@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { CallToAction, Flex, Modal } from '@labs/components';
+import { CallToAction, Flex, Modal, useToast } from '@labs/components';
+import { useSetUserPreferenceMutation } from '@/queries/user';
 
 import styles from './preference.module.scss';
 import { Sidebar } from './sidebar/sidebar';
-import { preferenceList } from './utils';
+import { endpoints, preferenceList } from './utils';
+import usePreferenceStore from './store/preference-store';
 
 export const JobPreference = ({
 	setIsModalOpen,
@@ -14,6 +16,10 @@ export const JobPreference = ({
 	const [activeTab, setActiveTab] = React.useState(0);
 	const [activeComponentIndex, setActiveComponentIndex] = React.useState(0);
 	const [isButtonDisabled, setIsButtonDisabled] = React.useState(false);
+	const store = usePreferenceStore((state) => state);
+	const { createToast } = useToast();
+	const { mutateAsync: setUserPreference, isPending } =
+		useSetUserPreferenceMutation();
 
 	const handleSelectionChange = (isSelectionMade: boolean) => {
 		setIsButtonDisabled(!isSelectionMade);
@@ -27,11 +33,8 @@ export const JobPreference = ({
 	const handleTabChange = () => {
 		if (activeComponentIndex < preferenceList[activeTab].component.length - 1) {
 			setActiveComponentIndex((prev) => prev + 1);
-		} else if (activeTab < preferenceList.length - 1) {
-			setActiveTab((prev) => prev + 1);
-			setActiveComponentIndex(0);
 		} else {
-			setIsModalOpen(false);
+			handleAllTabsComplete();
 		}
 	};
 
@@ -45,17 +48,57 @@ export const JobPreference = ({
 		}
 	};
 
+	const handleAllTabsComplete = async () => {
+		const data = [
+			{
+				roles: store.selectedTargetRoles,
+				roleLevels: store.selectedRoleLevel,
+				openToAllRoles: store.isUserOpenToAllRoleLevel === true ? 'yes' : 'no',
+			},
+			{
+				preferredIndustry: store.selectedWorkIndustry,
+				openToAllCompanySizes:
+					store.isUserOpenToAllCompanySize === true ? 'yes' : 'no',
+				companySize: store.selectedCompanySize,
+			},
+			{
+				skills: store.selectedQualifications,
+			},
+			{
+				workLocations: store.selectedLocation,
+				jobStatus: store.selectedPriority,
+			},
+			{
+				preferredCurrency: store.preferredCurrency,
+				minimumSalary: store.minimumSalary.toString(),
+			},
+		];
+		try {
+			await setUserPreference({
+				type: endpoints[activeTab],
+				data: data[activeTab],
+			});
+			if (activeTab === preferenceList.length - 1) {
+				store.resetAllState();
+				setIsModalOpen(false);
+			} else {
+				setActiveTab((prev) => prev + 1);
+				setActiveComponentIndex(0);
+			}
+		} catch (error: any) {
+			console.error('Error:', error);
+			return createToast({
+				message: error?.message ?? 'An error occurred, please try again',
+				variant: 'error',
+			});
+		}
+	};
+
 	const activeTabObject = preferenceList[activeTab];
 	const ActiveComponent = activeTabObject.component[activeComponentIndex];
 
 	return (
-		<Modal
-			centered={true}
-			in={true}
-			onClose={() => setIsModalOpen(false)}
-			size="lg"
-			maxHeight={true}
-		>
+		<Modal in={true} onClose={() => setIsModalOpen(false)} size="lg">
 			<Modal.Body noPadding={true}>
 				<Flex className={styles.JobPreference}>
 					<aside className={styles.JobPreferenceAside}>
@@ -80,7 +123,11 @@ export const JobPreference = ({
 						Back
 					</CallToAction>
 				) : null}
-				<CallToAction disabled={isButtonDisabled} onClick={handleTabChange}>
+				<CallToAction
+					isLoading={isPending}
+					disabled={isButtonDisabled}
+					onClick={handleTabChange}
+				>
 					{activeTab === preferenceList.length - 1 &&
 					activeComponentIndex ===
 						preferenceList[activeTab].component.length - 1

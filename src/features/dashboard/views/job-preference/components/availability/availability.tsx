@@ -40,7 +40,7 @@ const Availability = ({
 	const { selectedLocation, handleSelectedLocation } = usePreferenceStore();
 
 	React.useEffect(() => {
-		handleSelectionChange(selectedLocation !== '');
+		handleSelectionChange(selectedLocation.length > 0);
 	}, [handleSelectionChange, selectedLocation]);
 
 	return (
@@ -58,10 +58,16 @@ const Availability = ({
 						onClick={() => handleSelectedLocation(location)}
 						className={classNames([
 							styles.Chip,
-							styles[`Chip--${location === selectedLocation && 'active'}`],
+							styles[
+								`Chip--${selectedLocation.includes(location) && 'active'}`
+							],
 						])}
 					>
-						{location === selectedLocation ? <TickIcon /> : <SquareIcon />}
+						{selectedLocation.includes(location) ? (
+							<TickIcon />
+						) : (
+							<SquareIcon />
+						)}
 						{location}
 					</button>
 				))}

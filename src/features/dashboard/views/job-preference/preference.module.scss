@@ -1,41 +1,74 @@
 @use '@/styles/base/utils' as *;
 
-.ModalFooter{
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	gap: 14px;
-	position: relative;
+.ModalFooter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  padding: 1rem;
 }
 
 .JobPreference {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
 
-	.JobPreferenceAside {
-		width: 20%;
-		height: 100%;
-	}
+  .JobPreferenceAside {
+	display: none;
+  }
 
-	.JobPreferenceContent {
-		width: 80%;
-		height: 100%;
-		position: relative;	
-		&::before{
-			position: absolute;
-			content: '';
-			background: #fcfcfc;
-			top: -55px;
-			right: -30px;
-			min-width: calc(100% + 30px);
-			min-height: calc(100% + 130px);
-		}
-		
-		.JobPreferenceContentBody {
-			width: 100%;
-			padding: 2rem 3rem;
-			min-height: 430px;
-			position: relative;
-		}
-	}
+  .JobPreferenceContent {
+    width: 100%;
+    height: auto;
+    position: relative;
+    order: 1;
+
+    &::before {
+      position: absolute;
+      content: '';
+      background: #fcfcfc;
+      top: -55px;
+      right: -30px;
+      min-width: calc(100% + 30px);
+      min-height: calc(100% + 130px);
+    }
+
+    .JobPreferenceContentBody {
+      width: 100%;
+      padding: 1rem;
+      min-height: 430px;
+      position: relative;
+    }
+  }
+}
+
+@include media('md', 'min') {
+  .JobPreference {
+    .JobPreferenceAside {
+      width: 25%;
+      height: 100%;
+	  display: block;
+    }
+
+    .JobPreferenceContent {
+      width: 75%;
+      height: 100%;
+    }
+  }
+}
+
+@include media('lg', 'min') {
+  .JobPreference {
+    .JobPreferenceAside {
+      width: 20%;
+    }
+
+    .JobPreferenceContent {
+      width: 80%;
+
+      .JobPreferenceContentBody {
+        padding: 2rem 3rem;
+      }
+    }
+  }
 }

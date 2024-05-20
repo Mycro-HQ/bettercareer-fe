@@ -91,7 +91,7 @@ export const CompanySizeData = [
 		title: '1,001 - 10,000 employees',
 	},
 	{
-		id: 4,
+		id: 5,
 		title: '10,000+ employees',
 	},
 ];

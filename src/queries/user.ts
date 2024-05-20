@@ -48,6 +48,15 @@ export const authApiCreator = createSmartApi({
 				url: `/logout`,
 			}),
 		}),
+
+		setUserPreference: builder.mutation({
+			key: 'user-preference',
+			mutationFn: ({ type, data }) => ({
+				url: `/jobs/preference/${type}`,
+				method: 'POST',
+				body: data,
+			}),
+		}),
 	}),
 });
 
@@ -85,4 +94,5 @@ export const {
 	useGetProfileQuery,
 	useDeleteAccountMutation,
 	useOAuthMutation,
+	useSetUserPreferenceMutation,
 } = authApiCreator;
