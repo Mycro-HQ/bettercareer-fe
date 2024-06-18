@@ -25,3 +25,11 @@ export const preferenceList = [
 	},
 	{ label: 'Compensation', component: [Compensation] },
 ];
+
+export const endpoints = [
+	'role',
+	'work-environment',
+	'qualification',
+	'availability',
+	'compensation',
+];
