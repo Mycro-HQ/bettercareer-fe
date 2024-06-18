@@ -1,5 +1,9 @@
 import { formatDate } from 'date-fns';
 import Link from 'next/link';
+import { DropdownMenu } from '@radix-ui/themes';
+import { useRouter } from 'next/router';
+
+import styles from '../home.module.scss';
 
 import {
 	CallToAction,
@@ -11,12 +15,7 @@ import {
 import FileIcon from '@labs/icons/dashboard/file.svg';
 import { useDeleteResumeMutation, useGetResumesQuery } from '@/queries/resume';
 import { getDataIcons, truncateText } from '@labs/utils';
-
 import FetchContainer from '@/components/misc/fetch-container';
-import { DropdownMenu } from '@radix-ui/themes';
-import { useRouter } from 'next/router';
-
-import styles from '../home.module.scss';
 
 export const AllResumes = ({
 	limit,
