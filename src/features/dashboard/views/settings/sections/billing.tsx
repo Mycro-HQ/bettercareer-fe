@@ -4,14 +4,16 @@ import {
 	useCheckoutSessionMutation,
 	useGetPlansQuery,
 } from '@/queries/billing';
-import { useFeedback } from '@labs/components';
+import { CallToAction, Spinner, useFeedback } from '@labs/components';
+import { Wrapper } from '../components';
 
 export default function BillingTab() {
 	const { createToast } = useFeedback();
 
 	const { data: plans, isPending } = useGetPlansQuery({});
 
-	const { mutateAsync: checkoutSession } = useCheckoutSessionMutation();
+	const { mutateAsync: checkoutSession, isPending: isPendingPlan } =
+		useCheckoutSessionMutation();
 
 	const handleChoice = async (id: string) => {
 		try {
@@ -25,19 +27,43 @@ export default function BillingTab() {
 			});
 		}
 	};
+
+	if (true) {
+		return (
+			<div className="mt-6">
+				<Wrapper
+					title="Manage Plan"
+					subTitle="End session on this connected device"
+				>
+					<div className="w-full mt-4 xl:mt-0 flex justify-start xl:justify-end ">
+						<CallToAction
+							type="button"
+							size="sm"
+							outline
+							className="!border-[var(--primary-blue)] !text-[var(--primary-blue)]"
+						>
+							Manage plan
+						</CallToAction>
+					</div>
+				</Wrapper>
+			</div>
+		);
+	}
+
 	return (
 		<div className="my-6 flex flex-col gap-y-6">
-			<div className="relative bg-gray-300 font-sans lg:bg-transparent flex flex-col lg:flex-row justify-center px-5 xl:px-0 py-8 lg:py-0 w-full gap-6 items-center lg:items-stretch">
+			{isPendingPlan && <Spinner fullPage text="Loading…" />}
+			<div className="relative bg-gray-300  lg:bg-transparent flex flex-col lg:flex-row justify-center px-5 xl:px-0 py-8 lg:py-0 w-full gap-6 items-center lg:items-stretch">
 				{/* first portion */}
 				<div className="flex flex-col flex-wrap max-w-[360px] md:w-[384px] min-h-[572px] p-6 bg-[#365CCE] group rounded-2xl relative overflow-hidden">
 					<div className="text-start text-white">
-						<span className="font-light text-3xl ">Save More</span>
+						<span className="font-light text-3xl ">Our Plans</span>
 						<br />
-						<span className="font-bold text-3xl">With Goodplans</span>
+
 						<br />
 						<div className="text-lg leading-7">
-							Choose a plan and get onboard in minutes. Then get $100 credits
-							for your next payment.
+							Choose a plan and get onboard in minutes. Then get access to all
+							the tools you need.
 						</div>
 						<RightArrow />
 					</div>
@@ -64,11 +90,11 @@ export default function BillingTab() {
 								className="flex flex-col max-w-[360px] md:w-[384px] min-h-[518px] md:min-h-[572px] p-6 bg-white group rounded-2xl border xl:border-none border-[#0B0641] relative"
 							>
 								<div className="flex flex-row gap-5 items-center">
-									<span className="text-3xl font-bold">
+									<span className="text-3xl  font-['Recoleta']">
 										{data.product.name}
 									</span>
 								</div>
-								<span className="flex mt-4 text-[#A9A9AA] text-[22px]">
+								<span className="flex mt-4 text-[#A9A9AA] text-[18px]">
 									What You&apos;ll Get
 								</span>
 								{data.product.description?.split(',').map((myData, index) => (
@@ -86,7 +112,7 @@ export default function BillingTab() {
 								<div className="h-28 ">
 									<div className="flex flex-col gap-4 justify-between absolute left-6 right-6 bottom-6">
 										<div className="flex items-baseline">
-											<span className="text-4xl font-bold ">
+											<span className="text-4xl font-[900] ">
 												${data.amount.toFixed(2)}
 											</span>
 											<span>/Monthly</span>
@@ -166,27 +192,3 @@ const RightIcon = () => (
 		/>
 	</svg>
 );
-const staticValue = [
-	{
-		passType: 'Day Pass',
-		price: '$10',
-		duration: '/day',
-		static: [
-			' Edit up to 1,000 hours of podcast audio files.',
-			'Set your own landing page',
-			'24/7 support',
-			'Advanced analytics',
-		],
-	},
-	{
-		passType: 'Month Pass',
-		price: '$20',
-		duration: '/day',
-		static: [
-			' Edit up to 1,000 hours of podcast audio files.',
-			'Set your own landing page',
-			'24/7 support',
-			'Advanced analytics',
-		],
-	},
-];
