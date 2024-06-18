@@ -10,7 +10,7 @@ export const authApiCreator = createSmartApi({
 		getProfile: builder.query<
 			undefined,
 			{
-				user: UserData;
+				data: UserData;
 			}
 		>({
 			key: 'user',

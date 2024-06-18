@@ -46,7 +46,7 @@ export const DashboardLayout = ({
 
 	useEffect(() => {
 		if (data) {
-			setUser(data?.user);
+			setUser(data.data);
 		}
 	}, [data]);
 
