@@ -2,7 +2,11 @@ import React from 'react';
 import { Tabs } from '@radix-ui/themes';
 
 import { SettingsHeader } from './components';
-import { SecurityTab, NotificationPreferencesTab } from './sections';
+import {
+	SecurityTab,
+	NotificationPreferencesTab,
+	BillingTab,
+} from './sections';
 
 export type tabType = 'Billing' | 'Security' | 'Notification Preferences';
 
@@ -15,7 +19,7 @@ export const Settings = () => {
 				<SettingsHeader tab={selectedTab} setTab={setSelectedTab} />
 				<div className="pt-3">
 					<Tabs.Content value="Billing">
-						<p>TBD</p>
+						<BillingTab />
 					</Tabs.Content>
 					<Tabs.Content value="Security">
 						<SecurityTab />
