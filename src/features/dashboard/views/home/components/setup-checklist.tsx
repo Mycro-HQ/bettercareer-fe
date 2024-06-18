@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import classNames from 'classnames';
 
@@ -6,6 +6,7 @@ import styles from '../home.module.scss';
 
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import CheckIcon from '@labs/icons/dashboard/check.svg';
+import { useLocalStorage } from '@labs/utils/hooks/useLocalStorage';
 
 export const SetupChecklist = ({
 	onboardingChecklist,
@@ -17,6 +18,11 @@ export const SetupChecklist = ({
 		hasUploadedResume: boolean;
 	};
 }) => {
+	const [isChecklistOpen, setIsChecklistOpen] = useLocalStorage<boolean>(
+		'[bc]:isChecklistOpen',
+		false
+	);
+
 	const updateStatus = (key: string) => {
 		// Update the status of the checklist item
 		if (!onboardingChecklist) return false;
@@ -34,6 +40,7 @@ export const SetupChecklist = ({
 				return false;
 		}
 	};
+
 	const checklist = [
 		{
 			title: 'Create An Account',
@@ -77,14 +84,36 @@ export const SetupChecklist = ({
 		checklist.findIndex((item) => !item.status)
 	);
 
+	const hasTwoItems =
+		Object.values(onboardingChecklist).filter(Boolean).length >= 2;
 	const currentChecklist = checklist[active];
+
+	useEffect(() => {
+		if (!hasTwoItems && isChecklistOpen) {
+			setIsChecklistOpen(false);
+		}
+	}, [isChecklistOpen, hasTwoItems, setIsChecklistOpen]);
+
+	if (isChecklistOpen) return null;
 
 	return (
 		<div className={styles.SetupChecklist}>
 			<Flex.Column gap={16} className={styles.Checklist}>
-				<Heading.h6 className="mb-[8px]" weight={700}>
-					Setup Checklist
-				</Heading.h6>
+				<Flex.Row
+					gap={12}
+					className="mb-[8px]"
+					alignContent="center"
+					justifyContent="space-between"
+				>
+					<Heading.h6 weight={700}>Setup Checklist</Heading.h6>
+					{hasTwoItems && (
+						<button onClick={() => setIsChecklistOpen(true)}>
+							<Text weight={600} color="var(--text-gray)">
+								Close
+							</Text>
+						</button>
+					)}
+				</Flex.Row>
 				{checklist.map((item, index) => (
 					<button
 						key={index}

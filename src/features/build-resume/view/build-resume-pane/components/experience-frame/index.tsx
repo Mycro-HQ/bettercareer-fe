@@ -361,7 +361,7 @@ const FrameCards = ({
 					{index > 0 && !!data && '- '}
 
 					{!!data && typeof data !== 'boolean' ? (
-						<>{format(new Date(data), 'MMM yyyy')}</>
+						<>{isDate(data) ? format(new Date(data), 'MMM yyyy') : data}</>
 					) : (
 						<>{data && 'Present'}</>
 					)}

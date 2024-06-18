@@ -17,7 +17,10 @@ export default function SettingsHeader({
 			<Heading.h1 fontSize="28px" weight={600} lineHeight="32px">
 				Settings
 			</Heading.h1>
-			<Tabs.List color="#1388f2" className="w-full flex gap-x-6 xl:gap-x-14">
+			<Tabs.List
+				color="#1388f2"
+				className="w-full flex gap-x-6 xl:gap-x-[24px]"
+			>
 				<Tabs.Trigger value="Billing">
 					<SettingsHeaderTab title="Billing" tab={tab} setTab={setTab} />
 				</Tabs.Trigger>

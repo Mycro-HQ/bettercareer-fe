@@ -645,17 +645,21 @@ const RenameResume = ({
 	resumeName: string;
 	setResumeName: (data: any) => void;
 	show: boolean;
+
 	onClose: () => void;
 	handleDoc?: (data: any) => void;
 }) => {
 	const { createToast } = useFeedback();
+	const [isLoading, setIsLoading] = React.useState(false);
 
 	return (
 		<Modal in={show} onClose={onClose}>
 			<Field.Form
 				onSubmit={async (e) => {
 					e.preventDefault();
+					setIsLoading(true);
 					await handleDoc({ name: resumeName });
+					setIsLoading(false);
 					onClose();
 					createToast({
 						message: 'Resume renamed successfully',
@@ -667,7 +671,7 @@ const RenameResume = ({
 					value={resumeName}
 					onChange={(e) => setResumeName(e.target.value)}
 				/>
-				<CallToAction.button>Save</CallToAction.button>
+				<CallToAction.button isLoading={isLoading}>Save</CallToAction.button>
 			</Field.Form>
 		</Modal>
 	);

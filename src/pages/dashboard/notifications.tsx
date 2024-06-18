@@ -8,6 +8,7 @@ import Notifications, {
 } from '@/components/Notifications';
 
 import { NotificationListItemProps } from '@labs/utils/types/utility';
+import { useNotificationsQuery } from '@/queries/user';
 
 function NotificationHeader() {
 	return (
@@ -62,6 +63,14 @@ const notificationArray: NotificationListItemProps[] = [
 ];
 
 export default function Notification() {
+	const { data } = useNotificationsQuery(
+		{},
+		{
+			refetchOnMount: 'always',
+		}
+	);
+
+	console.log(data);
 	return (
 		<DashboardLayout backdropThreshold="sm" bg="#fcfcfc" title="Notifications">
 			<NotificationHeader />

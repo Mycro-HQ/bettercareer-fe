@@ -3,12 +3,15 @@ import React, { useState } from 'react';
 import { PasswordValidationBlock, Label, Input, Wrapper } from '../components';
 import { fillPasswordPill } from '../utils';
 
-import { CallToAction, Flex } from '@labs/components';
+import { CallToAction, Flex, useFeedback } from '@labs/components';
+import { useDeleteAccountMutation } from '@/queries/user';
+import { useGlobalStore } from '@/store/z-store/global';
+import { useUserStore } from '@/store/z-store/user';
 
 export default function SecurityTab() {
 	return (
 		<div className="my-6 flex flex-col gap-y-6">
-			<PasswordBlock />
+			{/* <PasswordBlock /> */}
 			<SignOutBlock />
 			<DeleteBlock />
 		</div>
@@ -128,13 +131,46 @@ function SignOutBlock() {
 }
 
 function DeleteBlock() {
+	const { mutateAsync: deleteAccount, isPending } = useDeleteAccountMutation();
+	const { createDisclosure, createToast } = useFeedback();
+	const { logOut } = useUserStore();
 	return (
 		<Wrapper
 			title="Delete Account"
 			subTitle="This action will erase all your information"
 		>
 			<div className="w-full mt-4 xl:mt-0 flex justify-start xl:justify-end ">
-				<CallToAction type="button" size="sm" outline variant="error">
+				<CallToAction
+					onClick={async () => {
+						await createDisclosure({
+							title: 'Delete Account',
+							message: 'Are you sure you want to delete your account?',
+						});
+
+						try {
+							await deleteAccount(null);
+							createToast({
+								title: 'Account Deleted',
+								message:
+									'Your account has been deleted, you will be logged out. We are sorry to see you go.',
+								variant: 'primary',
+							});
+
+							logOut();
+						} catch (error) {
+							createToast({
+								title: 'Error',
+								message: 'An error occurred while deleting your account',
+								variant: 'error',
+							});
+						}
+					}}
+					type="button"
+					size="sm"
+					outline
+					isLoading={isPending}
+					variant="error"
+				>
 					Delete Account
 				</CallToAction>
 			</div>
