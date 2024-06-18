@@ -34,10 +34,17 @@ export const authApiCreator = createSmartApi({
 			}),
 		}),
 
+		notifications: builder.query({
+			key: 'notifications',
+			queryFn: () => ({
+				url: `/notifications`,
+			}),
+		}),
+
 		deleteAccount: builder.mutation({
 			invalidatesQueries: ['user'],
-			mutationFn: ({}) => ({
-				url: `/profile`,
+			mutationFn: () => ({
+				url: `/users/account`,
 				method: 'DELETE',
 			}),
 		}),
@@ -83,6 +90,7 @@ authApiCreator.startListening({
 export const {
 	useLogOutQuery,
 	useGetProfileQuery,
+	useNotificationsQuery,
 	useDeleteAccountMutation,
 	useOAuthMutation,
 } = authApiCreator;

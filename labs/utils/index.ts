@@ -9,3 +9,4 @@ export * from './misc';
 export * from './exceptions';
 export * from './data-icons';
 export * from './memoWrapper';
+export * from './hooks/useLocalStorage';

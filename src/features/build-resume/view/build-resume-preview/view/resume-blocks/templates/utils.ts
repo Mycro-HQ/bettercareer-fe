@@ -30,7 +30,7 @@ export const SCALE_MAP = {
 };
 
 export const toDate = (date: string) => {
-	if (isDate(new Date(date))) {
+	if (isDate(date)) {
 		return formatDate(new Date(date), 'MMM yyyy');
 	}
 

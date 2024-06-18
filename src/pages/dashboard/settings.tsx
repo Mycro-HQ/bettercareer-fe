@@ -5,7 +5,7 @@ import { DashboardLayout } from '@/features/dashboard/layout';
 
 export default function ApplicationsPage() {
 	return (
-		<DashboardLayout title="Settings" plainBackdrop>
+		<DashboardLayout title="Settings" backdropThreshold="sm" bg="#fcfcfc">
 			<Settings />
 		</DashboardLayout>
 	);
