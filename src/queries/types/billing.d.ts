@@ -10,7 +10,7 @@ export interface PlansData {
 	};
 }
 
-export interface CheckoutSessionResponse {
+export interface BillingSessionResponse {
 	message: string;
 	data: {
 		url: string;

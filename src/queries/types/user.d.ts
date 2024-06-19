@@ -16,6 +16,7 @@ export interface UserData {
 	};
 	languages: string[];
 	links: Record<string, string>;
+	subscription: Record<string, string>;
 	createdAt: string;
 	updatedAt: string;
 }
