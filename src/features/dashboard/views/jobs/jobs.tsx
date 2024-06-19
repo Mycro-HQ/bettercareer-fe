@@ -1,5 +1,11 @@
 import React from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+
 import { Text, Flex, CallToAction } from '@labs/components';
+import { Modal } from '@labs/components/modal';
+import DribbbleLogo from '@labs/icons/dashboard/dribbble-logo.svg';
+
 import JobCard, { Separator } from './components/job-card';
 import { JobFilter } from './components/job-filter';
 import { JobSearchForm } from './components/job-search-form';
@@ -8,10 +14,6 @@ import {
 	JobDescriptionBody,
 } from './components/job-description';
 import useWindowDimensions from './hooks/useWindowDimensions';
-import { Modal } from '@labs/components/modal';
-import DribbbleLogo from '@labs/icons/dashboard/dribbble-logo.svg';
-import { AnimatePresence, motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
 
 const ResponsiveLayoutRenderer = dynamic(
 	() =>
