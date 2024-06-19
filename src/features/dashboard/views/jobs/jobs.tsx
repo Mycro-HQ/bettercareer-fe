@@ -15,6 +15,8 @@ import {
 } from './components/job-description';
 import useWindowDimensions from './hooks/useWindowDimensions';
 
+import { useGetJobsQuery } from '@/queries/job';
+
 const ResponsiveLayoutRenderer = dynamic(
 	() =>
 		import('./components/res-render').then(
@@ -227,6 +229,8 @@ export const Jobs = () => {
 		number | null
 	>(1);
 	const { width } = useWindowDimensions();
+
+	const { data: jobs, isLoading } = useGetJobsQuery({});
 
 	return (
 		<div>
