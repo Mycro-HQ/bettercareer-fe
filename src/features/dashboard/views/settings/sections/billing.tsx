@@ -28,7 +28,7 @@ export default function BillingTab() {
 		} catch (error) {
 			const err = error as any;
 			createToast({
-				message: err?.message || 'An error occurred while deleting the resume',
+				message: err?.message || 'An error occurred, please try again!',
 				variant: 'error',
 			});
 		}
