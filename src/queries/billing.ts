@@ -1,11 +1,11 @@
 import { createSmartApi } from '@lib/usable-query';
 
-import { PlansData, CheckoutSessionResponse } from './types/billing';
+import { PlansData, BillingSessionResponse } from './types/billing';
 
 export const billingApiCreator = createSmartApi({
 	key: 'billing',
 	endpoints: (builder) => ({
-		checkoutSession: builder.mutation<string, CheckoutSessionResponse>({
+		checkoutSession: builder.mutation<string, BillingSessionResponse>({
 			key: 'checkout-session',
 			mutationFn: (lookupKey) => ({
 				url: `/subscription/checkout-session`,
@@ -24,8 +24,17 @@ export const billingApiCreator = createSmartApi({
 				url: `/subscription/plans`,
 			}),
 		}),
+		portalSession: builder.mutation<{}, BillingSessionResponse>({
+			key: 'get-portal-session-url',
+			mutationFn: () => ({
+				url: `/subscription/portal-session`,
+			}),
+		}),
 	}),
 });
 
-export const { useGetPlansQuery, useCheckoutSessionMutation } =
-	billingApiCreator;
+export const {
+	useGetPlansQuery,
+	useCheckoutSessionMutation,
+	usePortalSessionMutation,
+} = billingApiCreator;

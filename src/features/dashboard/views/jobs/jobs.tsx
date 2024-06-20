@@ -1,5 +1,19 @@
-import React from 'react';
-import { Text, Flex, CallToAction } from '@labs/components';
+import React, { useMemo } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+
+import {
+	Text,
+	Flex,
+	CallToAction,
+	Spinner,
+	useFeedback,
+} from '@labs/components';
+import { Modal } from '@labs/components/modal';
+import DribbbleLogo from '@labs/icons/dashboard/dribbble-logo.svg';
+import { JobResponseData } from '@/queries/types/job';
+import { useGetJobsQuery } from '@/queries/job';
+
 import JobCard, { Separator } from './components/job-card';
 import { JobFilter } from './components/job-filter';
 import { JobSearchForm } from './components/job-search-form';
@@ -8,10 +22,7 @@ import {
 	JobDescriptionBody,
 } from './components/job-description';
 import useWindowDimensions from './hooks/useWindowDimensions';
-import { Modal } from '@labs/components/modal';
-import DribbbleLogo from '@labs/icons/dashboard/dribbble-logo.svg';
-import { AnimatePresence, motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
+import JobAppliedModal from './components/modal';
 
 const ResponsiveLayoutRenderer = dynamic(
 	() =>
@@ -224,46 +235,58 @@ export const Jobs = () => {
 	const [activeJobCardIndex, setActiveJobCardIndex] = React.useState<
 		number | null
 	>(1);
+
+	const [selectedJobId, setSelectedJobId] = React.useState<string | null>(null);
 	const { width } = useWindowDimensions();
+
+	const { data: jobs, isLoading } = useGetJobsQuery({});
+
+	const selectedJob = useMemo(() => {
+		return jobs?.data.find((job) => job.id === selectedJobId);
+	}, [selectedJobId, jobs]);
 
 	return (
 		<div>
+			{isLoading && <Spinner fullPage text="Loading…" />}
 			<JobSearchForm />
 			<JobFilter />
-			<Flex.Row gap={32} className="mb-10">
+			<Flex.Row gap={32} className="mb-10 relative">
 				<Flex.Column
 					gap={24}
 					css={{
 						maxWidth: '480px',
+						position: 'relative',
 					}}
 					flex="5"
 				>
-					{JobData.map((job) => (
-						<JobCard
-							key={job.key}
-							companyLogo={job.companyLogo}
-							jobTitle={job.jobTitle}
-							companyName={job.companyName}
-							location={job.location}
-							salaryRange={job.salaryRange}
-							tags={job.tags}
-							time={job.time}
-							onClick={() => {
-								setActiveJobCardIndex(job.key);
-							}}
-							className={
-								activeJobCardIndex === job.key ? '!border-[#1388f2]' : ''
-							}
-						/>
-					))}
+					{jobs &&
+						jobs.data.map((job) => (
+							<JobCard
+								key={job.id}
+								companyLogo={job.logo}
+								jobTitle={job.title}
+								companyName={job.company}
+								location={job.location}
+								salaryRange={job.compensation}
+								tags={job.tags}
+								time={job.createdAt}
+								onClick={() => {
+									setActiveJobCardIndex(1);
+									setSelectedJobId(job.id);
+								}}
+								className={
+									selectedJob?.id === job.id ? '!border-[#1388f2]' : ''
+								}
+							/>
+						))}
 				</Flex.Column>
 
-				{activeJobCardIndex !== null ? (
+				{activeJobCardIndex !== null && selectedJob ? (
 					<AnimatePresence mode="wait">
 						<motion.div
 							initial={{ opacity: 0, y: 15 }}
 							key={`job-details-${activeJobCardIndex}`}
-							className="flex-[8] flex flex-col"
+							className="flex-[8] flex flex-col sticky top-0"
 							animate={{
 								opacity: 1,
 								y: 0,
@@ -281,7 +304,10 @@ export const Jobs = () => {
 										in={!!activeJobCardIndex}
 										onClose={() => setActiveJobCardIndex(null)}
 									>
-										<JobDetails activeJobCardIndex={activeJobCardIndex} />
+										<JobDetails
+											activeJobCardIndex={activeJobCardIndex}
+											selectedJob={selectedJob}
+										/>
 									</Modal>
 								}
 								desktopLayout={
@@ -290,7 +316,10 @@ export const Jobs = () => {
 										gap={40}
 										className="py-8 px-[30px] rounded-2xl bg-white border border-[#f3f4f4] border-solid"
 									>
-										<JobDetails activeJobCardIndex={activeJobCardIndex} />
+										<JobDetails
+											activeJobCardIndex={activeJobCardIndex}
+											selectedJob={selectedJob}
+										/>
 									</Flex.Column>
 								}
 							/>
@@ -310,57 +339,85 @@ export const Jobs = () => {
 	);
 };
 
-function JobDetails({ activeJobCardIndex }: { activeJobCardIndex: number }) {
+function JobDetails({
+	activeJobCardIndex,
+	selectedJob,
+}: {
+	activeJobCardIndex: number;
+	selectedJob: JobResponseData;
+}) {
 	const index = activeJobCardIndex - 1;
+	const [isModalOpen, setIsModalOpen] = React.useState(false);
+	const { createToast } = useFeedback();
 
 	return (
-		<Flex.Column gap={40}>
-			<Flex.Row justifyContent="space-between">
-				<Flex.Row gap={18}>
-					{JobData[index].companyLogo}
-					<Flex.Column gap={4}>
-						<Text weight={600} fontSize="18px" inheritFont>
-							{JobData[index].jobTitle}
-						</Text>
-						<Text
-							color="var(--text-gray)"
-							weight={500}
-							lineHeight="24px"
-							inheritFont
+		<>
+			<Flex.Column gap={40}>
+				<Flex.Row justifyContent="space-between">
+					<Flex.Row gap={18}>
+						{selectedJob.logo}
+						<Flex.Column gap={4}>
+							<Text weight={600} fontSize="18px" inheritFont>
+								{selectedJob.title}
+							</Text>
+							<Text
+								color="var(--text-gray)"
+								weight={500}
+								lineHeight="24px"
+								inheritFont
+							>
+								{selectedJob.company}
+								{selectedJob.location && <Separator />}
+								{selectedJob.location}
+								{selectedJob.compensation && <Separator />}
+								{selectedJob.compensation}
+							</Text>
+						</Flex.Column>
+					</Flex.Row>
+					<Flex.Row gap={8} className="my-2">
+						<CallToAction
+							size="sm"
+							onClick={() => {
+								if (!selectedJob.url) {
+									createToast({ message: 'Job has expired' });
+									return;
+								}
+								window.open(selectedJob.url);
+								setTimeout(() => setIsModalOpen(true), 1000);
+							}}
 						>
-							{JobData[index].companyName}
-							<Separator />
-							{JobData[index].location}
-							<Separator />
-							{JobData[index].salaryRange}
-						</Text>
-					</Flex.Column>
+							Apply
+						</CallToAction>
+						<CallToAction outline size="sm">
+							Save
+						</CallToAction>
+					</Flex.Row>
 				</Flex.Row>
-				<Flex.Row gap={8} className="my-2">
-					<CallToAction size="sm">Apply</CallToAction>
-					<CallToAction outline size="sm">
-						Save
-					</CallToAction>
-				</Flex.Row>
-			</Flex.Row>
-			<Flex.Column gap={32}>
-				<div>
-					<JobDescriptionTitle title="Summary" />
-					<JobDescriptionBody>{JobData[index].summary}</JobDescriptionBody>
-				</div>
-				<div>
-					<JobDescriptionTitle title="Requirements" />
-					<JobDescriptionBody isChildText={JobData[index].isRequirementsText}>
-						<ul className="list-disc list-inside">
-							{JobData[index].requirementsArray.map((req) => (
-								<li key={req.key} className="mb-4">
-									{req.requirement}
-								</li>
-							))}
-						</ul>
-					</JobDescriptionBody>
-				</div>
+				<Flex.Column gap={32}>
+					<div>
+						<JobDescriptionTitle title="Summary" />
+						<JobDescriptionBody>{selectedJob.description}</JobDescriptionBody>
+					</div>
+					<div>
+						<JobDescriptionTitle title="Requirements" />
+						<JobDescriptionBody isChildText={JobData[index].isRequirementsText}>
+							<ul className="list-disc list-inside">
+								{JobData[index].requirementsArray.map((req) => (
+									<li key={req.key} className="mb-4">
+										{req.requirement}
+									</li>
+								))}
+							</ul>
+						</JobDescriptionBody>
+					</div>
+				</Flex.Column>
 			</Flex.Column>
-		</Flex.Column>
+			<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)} size="sm">
+				<JobAppliedModal
+					setModalVisibility={setIsModalOpen}
+					jobId={selectedJob.id}
+				/>
+			</Modal>
+		</>
 	);
 }

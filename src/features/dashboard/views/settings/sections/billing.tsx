@@ -1,16 +1,22 @@
 import React from 'react';
 
+import { Wrapper } from '../components';
+
 import {
 	useCheckoutSessionMutation,
 	useGetPlansQuery,
+	usePortalSessionMutation,
 } from '@/queries/billing';
 import { CallToAction, Spinner, useFeedback } from '@labs/components';
-import { Wrapper } from '../components';
+import { useUserStore } from '@/store/z-store/user';
 
 export default function BillingTab() {
 	const { createToast } = useFeedback();
 
+	const { profile } = useUserStore();
 	const { data: plans, isPending } = useGetPlansQuery({});
+	const { mutateAsync: portalSession, isPending: isLoading } =
+		usePortalSessionMutation({});
 
 	const { mutateAsync: checkoutSession, isPending: isPendingPlan } =
 		useCheckoutSessionMutation();
@@ -22,21 +28,35 @@ export default function BillingTab() {
 		} catch (error) {
 			const err = error as any;
 			createToast({
+				message: err?.message || 'An error occurred, please try again!',
+				variant: 'error',
+			});
+		}
+	};
+
+	const managePlans = async () => {
+		try {
+			const { data } = await portalSession({});
+			window.open(data.url);
+		} catch (error) {
+			const err = error as any;
+			createToast({
 				message: err?.message || 'An error occurred while deleting the resume',
 				variant: 'error',
 			});
 		}
 	};
 
-	if (true) {
+	if (profile?.subscription) {
 		return (
 			<div className="mt-6">
 				<Wrapper
 					title="Manage Plan"
-					subTitle="End session on this connected device"
+					subTitle="Control your subscription and payment information"
 				>
 					<div className="w-full mt-4 xl:mt-0 flex justify-start xl:justify-end ">
 						<CallToAction
+							onClick={managePlans}
 							type="button"
 							size="sm"
 							outline
@@ -52,7 +72,7 @@ export default function BillingTab() {
 
 	return (
 		<div className="my-6 flex flex-col gap-y-6">
-			{isPendingPlan && <Spinner fullPage text="Loading…" />}
+			{(isPendingPlan || isLoading) && <Spinner fullPage text="Loading…" />}
 			<div className="relative bg-gray-300  lg:bg-transparent flex flex-col lg:flex-row justify-center px-5 xl:px-0 py-8 lg:py-0 w-full gap-6 items-center lg:items-stretch">
 				{/* first portion */}
 				<div className="flex flex-col flex-wrap max-w-[360px] md:w-[384px] min-h-[572px] p-6 bg-[#365CCE] group rounded-2xl relative overflow-hidden">

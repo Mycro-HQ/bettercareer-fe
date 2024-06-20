@@ -1,16 +1,19 @@
 import React from 'react';
-import styles from '../jobs.module.scss';
-import { Text, Flex } from '@labs/components';
 import classNames from 'classnames';
+import { formatDistanceToNow } from 'date-fns';
+
+import styles from '../jobs.module.scss';
+
+import { Text, Flex } from '@labs/components';
 import LikeIcon from '@labs/icons/dashboard/match.svg';
 
 interface JobCardProps extends React.HTMLAttributes<HTMLDivElement> {
-	companyLogo: React.ReactNode;
+	companyLogo: React.ReactNode | string;
 	jobTitle: string;
 	companyName: string;
-	location: string;
-	salaryRange: string;
-	tags: string[];
+	location: string | null;
+	salaryRange: string | null;
+	tags: string | string[] | null;
 	time: string;
 }
 
@@ -41,9 +44,9 @@ export default function JobCard({
 						</Text>
 						<Text color="var(--text-gray)" weight={500} lineHeight="24px">
 							{companyName}
-							<Separator />
+							{location && <Separator />}
 							{location}
-							<Separator />
+							{salaryRange && <Separator />}
 							{salaryRange}
 						</Text>
 					</Flex.Column>
@@ -65,7 +68,7 @@ export default function JobCard({
 					weight={500}
 					className="mr-4 md:p-0"
 				>
-					{time}
+					{formatDistanceToNow(new Date(time), { addSuffix: true })}
 				</Text>
 			</Flex.Row>
 		</Flex.Column>
@@ -81,13 +84,16 @@ export function Separator() {
 	);
 }
 
-function JobTagsContainer({ tags }: { tags: string[] }) {
+function JobTagsContainer({ tags }: { tags: string[] | string | null }) {
+	tags = typeof tags === 'string' ? tags.split(',') : tags;
 	return (
-		<Flex.Row gap={8}>
-			{tags.map((tag) => (
-				<JobTag key={tag} tag={tag} />
-			))}
-		</Flex.Row>
+		tags && (
+			<Flex.Row gap={8}>
+				{tags.map((tag) => (
+					<JobTag key={tag} tag={tag} />
+				))}
+			</Flex.Row>
+		)
 	);
 }
 
