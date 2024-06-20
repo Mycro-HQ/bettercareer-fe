@@ -1,12 +1,14 @@
 import { createSmartApi } from '@lib/usable-query';
 
+import { JobResponseData } from './types/job';
+
 export const billingApiCreator = createSmartApi({
 	key: 'job',
 	endpoints: (builder) => ({
 		getJobs: builder.query<
 			{},
 			{
-				data: any;
+				data: JobResponseData[];
 			}
 		>({
 			key: 'get-jobs',
@@ -14,7 +16,37 @@ export const billingApiCreator = createSmartApi({
 				url: `/jobs`,
 			}),
 		}),
+		createJobApplication: builder.mutation({
+			key: 'create-job-application',
+			mutationFn: (data) => ({
+				url: `/jobs/apply`,
+				method: 'POST',
+				body: data,
+			}),
+			invalidatesQueries: ['user-jobs'],
+		}),
+		getUserJobs: builder.query<
+			{},
+			{
+				data: JobResponseData[];
+			}
+		>({
+			key: 'user-jobs',
+			queryFn: () => ({
+				url: `/jobs/me`,
+			}),
+		}),
+		updateJobStatus: builder.mutation({
+			key: 'user-job-status',
+			mutationFn: (data) => ({
+				url: `/jobs/status`,
+				method: 'POST',
+				body: data,
+			}),
+			invalidatesQueries: ['user-jobs'],
+		}),
 	}),
 });
 
-export const { useGetJobsQuery } = billingApiCreator;
+export const { useGetJobsQuery, useCreateJobApplicationMutation } =
+	billingApiCreator;
