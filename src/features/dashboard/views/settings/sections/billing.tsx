@@ -140,10 +140,14 @@ export default function BillingTab() {
 										</div>
 										<div className="flex align-bottom">
 											<button
+												disabled={data.lookup_key === 'free_monthly'}
 												onClick={() => handleChoice(data.lookup_key)}
-												className="w-full rounded-xl font-semibold text-xl px-4 py-3 bg-[#365CCE] text-white"
+												className={`w-full rounded-xl font-semibold text-xl px-4 py-3 ${data.lookup_key === 'free_monthly' ? 'bg-[#667ec9]' : 'bg-[#365CCE]'} text-white`}
+												// className="w-full rounded-xl font-semibold text-xl px-4 py-3 bg-[#365CCE] text-white"
 											>
-												Choose
+												{data.lookup_key === 'free_monthly'
+													? 'Current plan'
+													: 'Choose'}
 											</button>
 										</div>
 									</div>
