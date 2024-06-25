@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
@@ -245,6 +245,13 @@ export const Jobs = () => {
 		return jobs?.data.find((job) => job.id === selectedJobId);
 	}, [selectedJobId, jobs]);
 
+	useEffect(() => {
+		if (!selectedJobId) {
+			setActiveJobCardIndex(1);
+			setSelectedJobId(jobs?.data?.[0].id);
+		}
+	}, [jobs]);
+
 	return (
 		<div>
 			{isLoading && <Spinner fullPage text="Loading…" />}
@@ -286,7 +293,7 @@ export const Jobs = () => {
 						<motion.div
 							initial={{ opacity: 0, y: 15 }}
 							key={`job-details-${activeJobCardIndex}`}
-							className="flex-[8] flex flex-col sticky top-0"
+							className="flex-[8] flex flex-col sticky top-[100px] h-fit"
 							animate={{
 								opacity: 1,
 								y: 0,

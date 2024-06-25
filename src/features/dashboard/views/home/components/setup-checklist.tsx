@@ -86,13 +86,18 @@ export const SetupChecklist = ({
 
 	const hasTwoItems =
 		Object.values(onboardingChecklist).filter(Boolean).length >= 2;
-	const currentChecklist = checklist[active];
+	const currentChecklist = checklist[active] || {};
 
 	useEffect(() => {
 		if (!hasTwoItems && isChecklistOpen) {
 			setIsChecklistOpen(false);
 		}
-	}, [isChecklistOpen, hasTwoItems, setIsChecklistOpen]);
+
+		console.log('onboardingChecklist', onboardingChecklist);
+		if (Object.values(onboardingChecklist).filter(Boolean).length >= 3) {
+			setIsChecklistOpen(true);
+		}
+	}, [isChecklistOpen, hasTwoItems, setIsChecklistOpen, onboardingChecklist]);
 
 	if (isChecklistOpen) return null;
 
@@ -165,7 +170,7 @@ export const SetupChecklist = ({
 						<Text weight={600}>{currentChecklist.description}</Text>
 						<CallToAction.a
 							className={styles.ChecklistItemAction}
-							href={currentChecklist.action}
+							href={currentChecklist.action || '/'}
 						>
 							{currentChecklist.actionText}
 						</CallToAction.a>
