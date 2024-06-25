@@ -6,11 +6,12 @@ import {
 } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 
-import type { ApplicationJob, ApplicationState } from '../types';
+import type { ApplicationState } from '../types';
 import { filterApplicationsByID } from '../utils';
 
 import { StrictModeDroppable } from '@/features/build-resume/components/sm-droppable';
 import { Flex, Text } from '@labs/components';
+import { UserJobData } from '@/queries/types/job';
 
 import ApplicationsGridItem from './grid-item';
 
@@ -21,7 +22,7 @@ export default function ApplicationsGridColumn({
 }: {
 	icon: any;
 	categoryID: ApplicationState;
-	applications: ApplicationJob[];
+	applications: UserJobData[];
 }) {
 	const filteredApplications = React.useMemo(
 		() => filterApplicationsByID(applications, categoryID),
@@ -52,8 +53,8 @@ export default function ApplicationsGridColumn({
 					>
 						{filteredApplications.map((application, index) => (
 							<Draggable
-								key={`draggable-${application.key}`}
-								draggableId={`draggable-${application.key}`}
+								key={`draggable-${application.id}`}
+								draggableId={`draggable-${application.id}`}
 								index={index}
 							>
 								{(provided, _snapshot) => (
@@ -61,7 +62,7 @@ export default function ApplicationsGridColumn({
 										dragHandleProps={provided.dragHandleProps}
 										{...provided.draggableProps}
 										ref={provided.innerRef}
-										key={application.key}
+										key={application.status}
 										jobDetails={application}
 									/>
 								)}

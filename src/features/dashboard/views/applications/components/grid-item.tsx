@@ -1,19 +1,18 @@
 import React from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
 
-import type { ApplicationJob } from '../types';
 import { applicationsOptions } from '../data';
 import styles from '../applications.module.scss';
 
 import { Modal } from '@labs/components/modal';
 import { Flex, Text } from '@labs/components';
-import DNDIcon from '@labs/icons/misc/dnd.svg';
+import { UserJobData } from '@/queries/types/job';
 
 import ApplicationModal from './modal';
 import OptionsDropDown from './options-dropdown';
 
 interface ApplicationGridItem extends React.HTMLAttributes<HTMLDivElement> {
-	jobDetails: ApplicationJob;
+	jobDetails: UserJobData;
 	dragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
 }
 
@@ -24,7 +23,7 @@ const ApplicationsGridItem = React.forwardRef<
 	const [isModalOpen, setIsModalOpen] = React.useState(false);
 
 	const options = applicationsOptions.filter(
-		(option) => option.id !== jobDetails.categoryID
+		(option) => option.id !== jobDetails.status
 	);
 
 	return (
@@ -32,15 +31,21 @@ const ApplicationsGridItem = React.forwardRef<
 			<Flex
 				gap={8}
 				className={styles.applicationGridItem}
-				onClick={() => setIsModalOpen(true)}
+				// onClick={() => setIsModalOpen(false)}
 				ref={ref}
 				{...dragHandleProps}
 				{...otherProps}
 			>
-				<div className={styles.aGIIcon}>{jobDetails.icon}</div>
-				<Flex.Column gap={2} className="mr-2">
+				{jobDetails.job.logo && (
+					<div className={styles.aGIIcon}>{jobDetails.job.logo}</div>
+				)}
+				<Flex.Column
+					gap={2}
+					className="mr-2"
+					onClick={() => setIsModalOpen(true)}
+				>
 					<Text fontSize="15px" noOfLines={1}>
-						{jobDetails.title}
+						{jobDetails.job.title}
 					</Text>
 					<Text
 						className={styles.aGIsubTitle}
@@ -48,13 +53,14 @@ const ApplicationsGridItem = React.forwardRef<
 						size="sm"
 						weight={500}
 					>
-						{jobDetails.company} . {jobDetails.location} . {jobDetails.workMode}
+						{jobDetails.job.company} . {jobDetails.job.location}
+						{/* .{' '} {jobDetails.job.location} */}
 					</Text>
 				</Flex.Column>
-				<OptionsDropDown options={options} id={jobDetails.categoryID} />
+				<OptionsDropDown options={options} id={jobDetails.id} />
 			</Flex>
 			<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)} size="lg">
-				<ApplicationModal options={options} id={jobDetails.categoryID} />
+				<ApplicationModal options={options} userJob={jobDetails} />
 			</Modal>
 		</>
 	);
