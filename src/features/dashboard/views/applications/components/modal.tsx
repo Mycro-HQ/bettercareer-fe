@@ -6,27 +6,47 @@ import type { ApplicationOptions } from '../types';
 import { applicationData } from '../data';
 import styles from '../applications.module.scss';
 
-import { useApplicationStore } from '@/store/z-store/application';
-import { Flex, Text } from '@labs/components';
+import { Flex, Text, useFeedback } from '@labs/components';
 import DownIcon from '@labs/icons/dashboard/down.svg';
+import { UserJobData } from '@/queries/types/job';
+import { useUpdateJobStatusMutation } from '@/queries/job';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function ApplicationModal({
 	options,
-	id,
+	userJob,
 }: {
 	options: ApplicationOptions[];
-	id: string;
+	userJob: UserJobData;
 }) {
-	const { updateApplicationCategory } = useApplicationStore();
+	const { createToast } = useFeedback();
+	const queryClient = useQueryClient();
+
+	const { mutateAsync: updateJobStatus, isPending: isLoading } =
+		useUpdateJobStatusMutation();
+
+	const handleChoice = async (status: string) => {
+		if (isLoading) return;
+		try {
+			await updateJobStatus({ id: userJob.id, status });
+			queryClient.refetchQueries({ queryKey: ['user-jobs'] });
+		} catch (error) {
+			const err = error as any;
+			createToast({
+				message: err?.message || 'An error occurred, please try again!',
+				variant: 'error',
+			});
+		}
+	};
 
 	return (
 		<Flex.Column gap={40}>
 			<Flex.Row justifyContent="space-between">
 				<Flex.Row gap={18}>
-					{applicationData.companyLogo}
+					{userJob.job.logo}
 					<Flex.Column gap={4} className="font-[Figtree]">
 						<Text as="span" weight={600} fontSize="18px" inheritFont>
-							{applicationData.jobTitle}
+							{userJob.job.title}
 						</Text>
 						<Text
 							color="var(--text-gray)"
@@ -34,8 +54,8 @@ export default function ApplicationModal({
 							lineHeight="24px"
 							inheritFont
 						>
-							{applicationData.companyName} . {applicationData.location} .{' '}
-							{applicationData.salaryRange}
+							{userJob.job.company} . {userJob.job.location} .{' '}
+							{userJob.job.compensation}
 						</Text>
 					</Flex.Column>
 				</Flex.Row>
@@ -45,7 +65,11 @@ export default function ApplicationModal({
 							gap={8}
 							className="items-center cursor-pointer mt-2 sm:mt-0 my-2"
 						>
-							<Text>{id}</Text>
+							<Text>
+								{isLoading
+									? 'loading ...'
+									: `${userJob.status.charAt(0).toUpperCase() + userJob.status.slice(1)}`}
+							</Text>
 							<DownIcon />
 						</Flex.Row>
 					</DropdownMenu.Trigger>
@@ -55,7 +79,8 @@ export default function ApplicationModal({
 						{options.map((data) => (
 							<DropdownMenu.Item
 								key={data.id}
-								onClick={() => updateApplicationCategory(id, data.id)}
+								onClick={() => handleChoice(data.id.toLowerCase())}
+								// onClick={() => updateApplicationCategory(id, data.id)}
 								className={classNames('group', styles.optionsDropdownItem)}
 							>
 								<div className="group-hover:[&>svg>path]:stroke-white">
@@ -81,7 +106,7 @@ export default function ApplicationModal({
 						Summary
 					</Text>
 					<div className="text-sm font-medium leading-5 text-[#273643]">
-						{applicationData.summary}
+						{userJob.job.description}
 					</div>
 				</div>
 				<div>

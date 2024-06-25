@@ -8,12 +8,11 @@ import classNames from 'classnames';
 
 import SearchIcon from '@labs/icons/dashboard/search.svg';
 import BriefcaseIcon from '@labs/icons/dashboard/briefcase.svg';
-import { Flex, Heading, Text } from '@labs/components';
-import { useApplicationStore } from '@/store/z-store/application';
+import { Flex, Heading, Spinner, Text, useFeedback } from '@labs/components';
+import { useGetUserJobsQuery, useUpdateJobStatusMutation } from '@/queries/job';
 
 import ApplicationsGridColumn from './components/grid-column';
 import { applicationsOptions } from './data';
-import type { ApplicationState } from './types';
 import styles from './applications.module.scss';
 
 export const Applications = () => {
@@ -80,19 +79,49 @@ function Header() {
 }
 
 function ApplicationsGrid() {
-	const { applications, reorderJobApplications } = useApplicationStore();
+	const { createToast } = useFeedback();
+	const { data: applications, isPending, refetch } = useGetUserJobsQuery({});
+
+	const { mutateAsync: updateJobStatus, isPending: isLoading } =
+		useUpdateJobStatusMutation();
+
+	const statusChangeRequest = React.useCallback(
+		async (id?: string, status?: string) => {
+			if (!id) {
+				createToast({
+					message: 'Please refresh page and try again!',
+					variant: 'error',
+				});
+			}
+			try {
+				await updateJobStatus({ id, status });
+				refetch();
+			} catch (error) {
+				const err = error as any;
+				createToast({
+					message: err?.message || 'An error occurred, please try again!',
+					variant: 'error',
+				});
+			}
+		},
+		[createToast, refetch, updateJobStatus]
+	);
 
 	const handleOnDragEnd = React.useCallback(
 		(result: DropResult, _provided: ResponderProvided): void => {
-			const source = result.source;
+			if (!applications) return;
+			// const source = result.source;
 			const destination = result.destination;
-			const job = applications.find(
-				(job) => `draggable-${job.key}` === result.draggableId
+			const job = applications.data.find(
+				(job) => `draggable-${job.id}` === result.draggableId
 			);
-			const jobIndex = applications.findIndex(
-				(job) => `draggable-${job.key}` === result.draggableId
-			);
+			// const jobIndex = applications.data.findIndex(
+			// 	(job) => `draggable-${job.id}` === result.draggableId
+			// );
 
+			statusChangeRequest(job?.id, destination?.droppableId.toLowerCase());
+
+			/*
 			if (!destination) {
 				return;
 			} else {
@@ -104,42 +133,48 @@ function ApplicationsGrid() {
 						: jobIndex + (destinationIndex - sourceIndex);
 
 				if (destination.droppableId === source.droppableId) {
-					reorderJobApplications(job!, jobIndex, newJobIndex);
+					// reorderJobApplications(job!, jobIndex, newJobIndex);
 				} else {
 					if (job) {
-						const jobIndex = applications.findIndex(
-							(job_) => job_.key === job.key
+						const jobIndex = applications.data.findIndex(
+							(job_) => job_.status === job?.status
 						);
 						const newJob = {
 							...job,
 							categoryID: destination.droppableId as ApplicationState,
 						};
 
-						reorderJobApplications(newJob, jobIndex, newJobIndex);
+						// reorderJobApplications(newJob, jobIndex, newJobIndex);
 					}
 				}
 			}
+        
+      */
 		},
-		[applications, reorderJobApplications]
+		[applications, statusChangeRequest]
 	);
 
 	return (
-		<DragDropContext onDragEnd={handleOnDragEnd}>
-			<div
-				className={classNames(
-					styles.applicationsGrid,
-					'-top-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:min-h-screen'
-				)}
-			>
-				{applicationsOptions.map((option) => (
-					<ApplicationsGridColumn
-						key={option.id}
-						icon={option.icon}
-						categoryID={option.id}
-						applications={applications}
-					/>
-				))}
-			</div>
-		</DragDropContext>
+		<>
+			{(isPending || isLoading) && <Spinner fullPage text="Loading…" />}
+			<DragDropContext onDragEnd={handleOnDragEnd}>
+				<div
+					className={classNames(
+						styles.applicationsGrid,
+						'-top-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:min-h-screen'
+					)}
+				>
+					{applications?.data &&
+						applicationsOptions.map((option) => (
+							<ApplicationsGridColumn
+								key={option.id}
+								icon={option.icon}
+								categoryID={option.id}
+								applications={applications.data}
+							/>
+						))}
+				</div>
+			</DragDropContext>
+		</>
 	);
 }
