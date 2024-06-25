@@ -12,3 +12,22 @@ export interface JobResponseData {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface UserJobData {
+	id: string;
+	status: string;
+	job: Pick<
+		JobResponseData,
+		'company' | 'title' | 'location' | 'compensation' | 'logo' | 'description'
+	>;
+
+	// company: true,
+	// title: true,
+	// location: true,
+	// compensation: true,
+	// logo: true,
+	// description: true,
+
+	createdAt: string;
+	updatedAt: string;
+}
