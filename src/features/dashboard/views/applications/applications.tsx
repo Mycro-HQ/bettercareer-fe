@@ -110,16 +110,18 @@ function ApplicationsGrid() {
 	const handleOnDragEnd = React.useCallback(
 		(result: DropResult, _provided: ResponderProvided): void => {
 			if (!applications) return;
-			// const source = result.source;
+			const source = result.source;
 			const destination = result.destination;
 			const job = applications.data.find(
 				(job) => `draggable-${job.id}` === result.draggableId
 			);
+			if (!destination) return;
+			if (source.droppableId === destination.droppableId) return;
 			// const jobIndex = applications.data.findIndex(
 			// 	(job) => `draggable-${job.id}` === result.draggableId
 			// );
 
-			statusChangeRequest(job?.id, destination?.droppableId.toLowerCase());
+			statusChangeRequest(job?.id, destination.droppableId.toLowerCase());
 
 			/*
 			if (!destination) {
