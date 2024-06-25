@@ -1,18 +1,15 @@
 import React from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
-import Logo from '@labs/icons/logo.svg';
 
-import type { ApplicationJob } from '../types';
 import { applicationsOptions } from '../data';
 import styles from '../applications.module.scss';
 
 import { Modal } from '@labs/components/modal';
 import { Flex, Text } from '@labs/components';
-import DNDIcon from '@labs/icons/misc/dnd.svg';
+import { UserJobData } from '@/queries/types/job';
 
 import ApplicationModal from './modal';
 import OptionsDropDown from './options-dropdown';
-import { UserJobData } from '@/queries/types/job';
 
 interface ApplicationGridItem extends React.HTMLAttributes<HTMLDivElement> {
 	jobDetails: UserJobData;

@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DropdownMenu } from '@radix-ui/themes';
+import { useQueryClient } from '@tanstack/react-query';
 
 import type { ApplicationOptions } from '../types';
 import { applicationData } from '../data';
@@ -10,7 +11,6 @@ import { Flex, Text, useFeedback } from '@labs/components';
 import DownIcon from '@labs/icons/dashboard/down.svg';
 import { UserJobData } from '@/queries/types/job';
 import { useUpdateJobStatusMutation } from '@/queries/job';
-import { useQueryClient } from '@tanstack/react-query';
 
 export default function ApplicationModal({
 	options,
