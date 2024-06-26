@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 
@@ -232,14 +232,17 @@ const JobData = [
 ];
 
 export const Jobs = () => {
-	const [activeJobCardIndex, setActiveJobCardIndex] = React.useState<
-		number | null
-	>(1);
-
-	const [selectedJobId, setSelectedJobId] = React.useState<string | null>(null);
+	const [activeJobCardIndex, setActiveJobCardIndex] = useState<number | null>(
+		1
+	);
+	const [selectedJobId, setSelectedJobId] = useState<string | null | undefined>(
+		null
+	);
+	const [filter, setFilter] = useState<string | undefined>();
+	const [query, setQuery] = useState<Record<string, string>>({});
 	const { width } = useWindowDimensions();
 
-	const { data: jobs, isLoading } = useGetJobsQuery({});
+	const { data: jobs, isFetching } = useGetJobsQuery({ query });
 
 	const selectedJob = useMemo(() => {
 		return jobs?.data.find((job) => job.id === selectedJobId);
@@ -250,13 +253,19 @@ export const Jobs = () => {
 			setActiveJobCardIndex(1);
 			setSelectedJobId(jobs?.data?.[0].id);
 		}
-	}, [jobs]);
+	}, [jobs, selectedJobId]);
+
+	useEffect(() => {
+		if (filter) {
+			setQuery({ filter });
+		}
+	}, [filter]);
 
 	return (
 		<div>
-			{isLoading && <Spinner fullPage text="Loading…" />}
-			<JobSearchForm />
-			<JobFilter />
+			{isFetching && <Spinner fullPage text="Loading…" />}
+			<JobSearchForm setQuery={setQuery} />
+			<JobFilter setFilter={setFilter} />
 			<Flex.Row gap={32} className="mb-10 relative">
 				<Flex.Column
 					gap={24}
@@ -354,7 +363,7 @@ function JobDetails({
 	selectedJob: JobResponseData;
 }) {
 	const index = activeJobCardIndex - 1;
-	const [isModalOpen, setIsModalOpen] = React.useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 	const { createToast } = useFeedback();
 
 	return (

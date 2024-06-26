@@ -6,15 +6,16 @@ export const billingApiCreator = createSmartApi({
 	key: 'job',
 	endpoints: (builder) => ({
 		getJobs: builder.query<
-			{},
+			{ query: Record<string, string> },
 			{
 				data: JobResponseData[];
 			}
 		>({
 			key: 'get-jobs',
-			queryFn: () => ({
-				url: `/jobs`,
-			}),
+			queryFn: ({ query }) => {
+				const queryString = new URLSearchParams(query).toString();
+				return { url: `/jobs?${queryString}` };
+			},
 		}),
 		createJobApplication: builder.mutation({
 			key: 'create-job-application',
