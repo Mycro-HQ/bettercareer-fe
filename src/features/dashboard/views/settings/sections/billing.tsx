@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { type NextRouter, useRouter } from 'next/router';
 
 import { Wrapper } from '../components';
 
@@ -11,8 +12,8 @@ import { CallToAction, Spinner, useFeedback } from '@labs/components';
 import { useUserStore } from '@/store/z-store/user';
 
 export default function BillingTab() {
+	const router = useRouter();
 	const { createToast } = useFeedback();
-
 	const { profile } = useUserStore();
 	const { data: plans, isPending } = useGetPlansQuery({});
 	const { mutateAsync: portalSession, isPending: isLoading } =
@@ -20,6 +21,33 @@ export default function BillingTab() {
 
 	const { mutateAsync: checkoutSession, isPending: isPendingPlan } =
 		useCheckoutSessionMutation();
+
+	useEffect(() => {
+		if (!router.isReady) return;
+		// Extract the query string from the router object
+		const { sub_cancelled, session_id } = router.query as {
+			[key: string]: string | undefined;
+		};
+
+		if (sub_cancelled == 'true') {
+			handleURLUpdate(router);
+			createToast({
+				message: 'Subscription payment cancelled',
+				variant: 'error',
+			});
+		} else if (session_id) {
+			handleURLUpdate(router);
+			createToast({
+				message: 'Subscription payment successful...',
+				variant: 'secondary',
+			});
+		}
+	}, [createToast, router]);
+
+	const handleURLUpdate = (router: NextRouter) => {
+		const { pathname } = router;
+		router.replace({ pathname }, undefined, { shallow: true });
+	};
 
 	const handleChoice = async (id: string) => {
 		try {
