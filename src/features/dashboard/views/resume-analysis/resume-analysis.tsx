@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
+import { useRouter } from 'next/router';
 
-import { Flex, Heading, Text } from '@labs/components';
-
+import { Flex, Heading, Text, useFeedback } from '@labs/components';
 import { useGetResumeAnalysisMutation } from '@/queries/resume';
 import { useBuildStore } from '@/store/z-store/builder';
 import { Modal } from '@labs/components/modal';
 import { ProgressLoader } from '@/components/misc/loader';
+
 import { AnalysisHistory } from './view/analysis-history';
-import { useRouter } from 'next/router';
 import { Analysis } from './view/analysis';
 
 export const ResumeAnalysis = ({
@@ -20,6 +20,7 @@ export const ResumeAnalysis = ({
 	isAnalysis?: boolean;
 }) => {
 	const router = useRouter();
+	const { createToast } = useFeedback();
 	const [screen, setScreen] = React.useState(
 		isAnalysis ? 'analysis' : 'all-analysis'
 	);
@@ -43,6 +44,14 @@ export const ResumeAnalysis = ({
 	} = useGetResumeAnalysisMutation({
 		onSuccess: (data) => {
 			setAnalysisData(data?.data?.analysis);
+		},
+		onError: (error) => {
+			handleClose();
+			const err = error as any;
+			createToast({
+				message: err?.message || 'Unable to process analysis, try again later!',
+				variant: 'error',
+			});
 		},
 	});
 
