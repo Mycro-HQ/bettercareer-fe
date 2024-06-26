@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import classNames from 'classnames';
 
 import usePreferenceStore from '../../store/preference-store';
+import { PreferenceDataType } from '../../utils';
 
 import { Flex, Heading } from '@labs/components';
 import IdeaIcon from '@labs/icons/dashboard/idea.svg';
@@ -16,11 +17,16 @@ import { Skillsets } from './qualification-data';
 
 const Qualifications = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
-	const { selectedQualifications, handleSelectedQualification } =
-		usePreferenceStore();
+	const {
+		selectedQualifications,
+		handleSelectedQualification,
+		setSelectedQualifications,
+	} = usePreferenceStore();
 	const [value, setValue] = React.useState('');
 	const _search = useDebounce(value, 500);
 
@@ -50,9 +56,20 @@ const Qualifications = ({
 
 	const hasSkill = (skill: string) => selectedQualifications.includes(skill);
 
+	const updateSkillArray = (data: string[]) => {
+		const existingSkills = new Set(Skillsets);
+		const updatedSkills = data.filter((item) => !existingSkills.has(item));
+		Skillsets.unshift(...updatedSkills);
+	};
+
 	React.useEffect(() => {
 		handleSelectionChange(selectedQualifications.length > 0);
 	}, [handleSelectionChange, selectedQualifications.length]);
+
+	useEffect(() => {
+		updateSkillArray(userPreference?.data.qualifications.skills);
+		setSelectedQualifications(userPreference?.data.qualifications.skills);
+	}, [setSelectedQualifications, userPreference]);
 
 	return (
 		<Flex.Column gap={24} className={styles.Qualifications}>

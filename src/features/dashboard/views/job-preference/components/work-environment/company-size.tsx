@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import style from '../target-role/target-role.module.scss';
 import usePreferenceStore from '../../store/preference-store';
+import { PreferenceDataType } from '../../utils';
 
 import { Flex, Heading, Text } from '@labs/components';
 import UserGroup from '@labs/icons/dashboard/user-group.svg';
@@ -12,8 +13,10 @@ import { CompanySizeData } from './work-environment-data';
 
 const CompanySize = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
 	const { selectedCompanySize, handleClickedCompanySize } =
 		usePreferenceStore();
@@ -21,6 +24,10 @@ const CompanySize = ({
 	useEffect(() => {
 		handleSelectionChange(selectedCompanySize.length > 0);
 	}, [handleSelectionChange, selectedCompanySize.length]);
+
+	useEffect(() => {
+		handleClickedCompanySize(userPreference?.data.workEnvironment.companySize);
+	}, [handleClickedCompanySize, userPreference]);
 
 	return (
 		<Flex.Column gap={24}>
