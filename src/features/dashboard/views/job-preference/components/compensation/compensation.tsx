@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import * as Slider from '@radix-ui/react-slider';
 
 import usePreferenceStore from '../../store/preference-store';
+import { PreferenceDataType } from '../../utils';
 
 import { Flex, Heading, Text } from '@labs/components';
 import MoneyIcon from '@labs/icons/misc/money.svg';
@@ -30,8 +31,10 @@ const formatCurrencyValue = (value: number) => {
 
 const Compensation = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
 	const {
 		minimumSalary,
@@ -80,6 +83,14 @@ const Compensation = ({
 	React.useEffect(() => {
 		handleSelectionChange(isAllTabCompleted());
 	}, [componentsState, handleSelectionChange]);
+
+	useEffect(() => {
+		const existingMinimumSalary = parseInt(
+			userPreference?.data.compensation.minimumSalary
+		);
+		setMinimumSalary(existingMinimumSalary);
+		setPreferredCurrency(userPreference?.data.compensation.preferredCurrency);
+	}, [setMinimumSalary, setPreferredCurrency, userPreference]);
 
 	return (
 		<Flex.Column gap={32} className={styles.Compensation}>

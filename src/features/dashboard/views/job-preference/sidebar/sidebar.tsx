@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 import usePreferenceStore from '../store/preference-store';
+import { preferenceList } from '../utils';
 
 import { Flex, Text } from '@labs/components';
 
@@ -9,35 +10,26 @@ import styles from './sidebar.module.scss';
 
 interface Props {
 	currentIndex: number;
-	preferenceList: {
-		label: string;
-		component: (({}: {
-			handleSelectionChange: () => void;
-		}) => React.JSX.Element)[];
-	}[];
 	jumpToTab: (tab: number) => void;
 }
 
-export const Sidebar = ({ currentIndex, preferenceList, jumpToTab }: Props) => {
-	const {
-		selectedTargetRoles,
-		isUserOpenToAllRoleLevel,
-		selectedRoleLevel,
-		selectedWorkIndustry,
-		isUserOpenToAllCompanySize,
-		selectedCompanySize,
-		selectedQualifications,
-		selectedLocation,
-		selectedPriority,
-		minimumSalary,
-	} = usePreferenceStore();
+export const Sidebar = ({ currentIndex, jumpToTab }: Props) => {
+	const store = usePreferenceStore((state) => state);
 
 	const componentsState = [
-		[selectedTargetRoles, isUserOpenToAllRoleLevel, selectedRoleLevel],
-		[selectedWorkIndustry, isUserOpenToAllCompanySize, selectedCompanySize],
-		[selectedQualifications],
-		[selectedLocation, selectedPriority],
-		[minimumSalary],
+		[
+			store.selectedTargetRoles,
+			store.isUserOpenToAllRoleLevel,
+			store.selectedRoleLevel,
+		],
+		[
+			store.selectedWorkIndustry,
+			store.isUserOpenToAllCompanySize,
+			store.selectedCompanySize,
+		],
+		[store.selectedQualifications],
+		[store.selectedLocation, store.selectedPriority],
+		[store.minimumSalary],
 	];
 
 	function isTabCompleted(activeTabComponentsState: any[]) {

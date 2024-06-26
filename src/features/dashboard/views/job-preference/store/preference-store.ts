@@ -2,15 +2,18 @@ import { create } from 'zustand';
 
 interface PreferenceStore {
 	selectedTargetRoles: string[];
+	setSelectedTargetRoles: (roles: string[]) => void;
 	handleClickedRoles: (role: string) => void;
 
 	isUserOpenToAllRoleLevel: boolean | null;
 	handleIsUserOpenToAllRoleLevel: (option: boolean) => void;
 
 	selectedRoleLevel: string[];
+	setSelectedRoleLevel: (roleLevel: string[]) => void;
 	handleClickedRoleLevel: (roleLevel: string) => void;
 
 	selectedWorkIndustry: string[];
+	setSelectedWorkIndustry: (industry: string[]) => void;
 	handleClickedWorkIndustry: (industry: string) => void;
 
 	isUserOpenToAllCompanySize: boolean | null;
@@ -20,9 +23,11 @@ interface PreferenceStore {
 	handleClickedCompanySize: (companySize: string) => void;
 
 	selectedQualifications: string[];
+	setSelectedQualifications: (qualification: string[]) => void;
 	handleSelectedQualification: (qualification: string) => void;
 
 	selectedLocation: string[];
+	setSelectedLocation: (location: string[]) => void;
 	handleSelectedLocation: (location: string) => void;
 
 	selectedPriority: string;
@@ -53,6 +58,10 @@ const initialState = {
 
 const usePreferenceStore = create<PreferenceStore>((set) => ({
 	...initialState,
+
+	setSelectedTargetRoles: (roles) => {
+		set({ selectedTargetRoles: roles });
+	},
 	handleClickedRoles: (role) => {
 		set((state) => {
 			if (state.selectedTargetRoles.includes(role)) {
@@ -73,6 +82,9 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 		set({ isUserOpenToAllRoleLevel: option });
 	},
 
+	setSelectedRoleLevel: (roleLevel) => {
+		set({ selectedRoleLevel: roleLevel });
+	},
 	handleClickedRoleLevel: (roleLevel) => {
 		set((state) => {
 			if (state.selectedRoleLevel.includes(roleLevel)) {
@@ -89,6 +101,9 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 		});
 	},
 
+	setSelectedWorkIndustry: (industry) => {
+		set({ selectedWorkIndustry: industry });
+	},
 	handleClickedWorkIndustry: (industry) => {
 		set((state) => {
 			if (state.selectedWorkIndustry.includes(industry)) {
@@ -113,6 +128,9 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 		set(() => ({ selectedCompanySize: companySize }));
 	},
 
+	setSelectedQualifications: (qualification) => {
+		set({ selectedQualifications: qualification });
+	},
 	handleSelectedQualification: (qualification) => {
 		set((state) => {
 			if (state.selectedQualifications.includes(qualification)) {
@@ -132,6 +150,9 @@ const usePreferenceStore = create<PreferenceStore>((set) => ({
 		});
 	},
 
+	setSelectedLocation: (location) => {
+		set({ selectedLocation: location });
+	},
 	handleSelectedLocation: (location) => {
 		set((state) => {
 			if (state.selectedLocation.includes(location)) {

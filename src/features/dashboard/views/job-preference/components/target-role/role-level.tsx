@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import usePreferenceStore from '../../store/preference-store';
+import { PreferenceDataType } from '../../utils';
 
 import Briefcase from '@labs/icons/dashboard/briefcase-blue.svg';
 import Checkbox from '@labs/icons/dashboard/square-checkbox.svg';
@@ -12,14 +13,21 @@ import { RoleLevelData } from './target-role-data';
 
 const RoleLevel = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
-	const { selectedRoleLevel, handleClickedRoleLevel } = usePreferenceStore();
+	const { selectedRoleLevel, handleClickedRoleLevel, setSelectedRoleLevel } =
+		usePreferenceStore();
 
 	useEffect(() => {
 		handleSelectionChange(selectedRoleLevel.length > 0);
 	}, [handleSelectionChange, selectedRoleLevel.length]);
+
+	useEffect(() => {
+		setSelectedRoleLevel(userPreference?.data.targetRole.roleLevels);
+	}, [setSelectedRoleLevel, userPreference?.data.targetRole.roleLevels]);
 
 	return (
 		<Flex.Column gap={24}>
