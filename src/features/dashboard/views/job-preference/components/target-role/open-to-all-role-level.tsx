@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
 import usePreferenceStore from '../../store/preference-store';
+import { PreferenceDataType } from '../../utils';
 
 import Briefcase from '@labs/icons/dashboard/briefcase-blue.svg';
 import { Flex, Heading, Text } from '@labs/components';
@@ -9,8 +10,10 @@ import { Flex, Heading, Text } from '@labs/components';
 import style from './target-role.module.scss';
 const OpenToAllRoleLevel = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
 	const { isUserOpenToAllRoleLevel, handleIsUserOpenToAllRoleLevel } =
 		usePreferenceStore();
@@ -18,6 +21,11 @@ const OpenToAllRoleLevel = ({
 	useEffect(() => {
 		handleSelectionChange(isUserOpenToAllRoleLevel !== null);
 	}, [handleSelectionChange, isUserOpenToAllRoleLevel]);
+
+	useEffect(() => {
+		const option = userPreference?.data.targetRole.openToAllRoles === 'yes';
+		handleIsUserOpenToAllRoleLevel(option);
+	}, [handleIsUserOpenToAllRoleLevel, userPreference]);
 
 	return (
 		<Flex.Column gap={24}>

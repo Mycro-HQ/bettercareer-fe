@@ -7,17 +7,29 @@ import Building from '@labs/icons/dashboard/blue-building.svg';
 import { Flex, Heading, Text } from '@labs/components';
 
 import { WorkIndustryData } from './work-environment-data';
+import { PreferenceDataType } from '../../utils';
 const WorkEnvironment = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
-	const { selectedWorkIndustry, handleClickedWorkIndustry } =
-		usePreferenceStore();
+	const {
+		selectedWorkIndustry,
+		handleClickedWorkIndustry,
+		setSelectedWorkIndustry,
+	} = usePreferenceStore();
 
 	useEffect(() => {
 		handleSelectionChange(selectedWorkIndustry.length > 0);
 	}, [handleSelectionChange, selectedWorkIndustry.length]);
+
+	useEffect(() => {
+		setSelectedWorkIndustry(
+			userPreference?.data.workEnvironment.preferredIndustry
+		);
+	}, [setSelectedWorkIndustry, userPreference]);
 
 	return (
 		<Flex.Column gap={24}>

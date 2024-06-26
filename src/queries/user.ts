@@ -57,6 +57,14 @@ export const authApiCreator = createSmartApi({
 				body: data,
 			}),
 		}),
+
+		getUserPreference: builder.query({
+			key: 'get-preference',
+			queryFn: () => ({
+				url: `/jobs/preference`,
+				method: 'GET',
+			}),
+		}),
 	}),
 });
 
@@ -95,4 +103,5 @@ export const {
 	useDeleteAccountMutation,
 	useOAuthMutation,
 	useSetUserPreferenceMutation,
+	useGetUserPreferenceQuery,
 } = authApiCreator;

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
 import usePreferenceStore from '../../store/preference-store';
+import { PreferenceDataType } from '../../utils';
 
 import BriefcaseIcon from '@labs/icons/misc/brief-case.svg';
 import { Flex, Heading } from '@labs/components';
@@ -16,14 +17,20 @@ const PriorityList = [
 
 const SearchPriority = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
 	const { selectedPriority, handleSelectedPriority } = usePreferenceStore();
 
 	React.useEffect(() => {
 		handleSelectionChange(selectedPriority !== '');
 	}, [handleSelectionChange, selectedPriority]);
+
+	useEffect(() => {
+		handleSelectedPriority(userPreference?.data.availability.jobStatus);
+	}, [handleSelectedPriority, userPreference]);
 
 	return (
 		<Flex.Column gap={24} className={styles.Availability}>

@@ -33,3 +33,31 @@ export const endpoints = [
 	'availability',
 	'compensation',
 ];
+
+export type PreferenceDataType = {
+	data: {
+		targetRole: {
+			roles: string[];
+			roleLevels: string[];
+			openToAllRoles: string;
+		};
+		workEnvironment: {
+			companySize: string;
+			openToAllCompanySizes: string;
+			preferredIndustry: string[];
+		};
+		qualifications: {
+			skills: string[];
+		};
+		availability: {
+			jobStatus: string;
+			workLocations: string[];
+		};
+
+		compensation: {
+			minimumSalary: string;
+			preferredCurrency: string;
+		};
+	};
+	message: string;
+};

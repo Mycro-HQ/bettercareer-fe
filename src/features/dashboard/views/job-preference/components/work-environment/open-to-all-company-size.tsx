@@ -3,14 +3,17 @@ import classNames from 'classnames';
 
 import usePreferenceStore from '../../store/preference-store';
 import style from '../target-role/target-role.module.scss';
+import { PreferenceDataType } from '../../utils';
 
 import { Flex, Heading, Text } from '@labs/components';
 import UserGroup from '@labs/icons/dashboard/user-group.svg';
 
 const OpenToAllCompanySize = ({
 	handleSelectionChange,
+	userPreference,
 }: {
 	handleSelectionChange: (isSelectionMade: boolean) => void;
+	userPreference: PreferenceDataType;
 }) => {
 	const { isUserOpenToAllCompanySize, handleIsUserOpenToAllCompanySize } =
 		usePreferenceStore();
@@ -18,6 +21,12 @@ const OpenToAllCompanySize = ({
 	useEffect(() => {
 		handleSelectionChange(isUserOpenToAllCompanySize !== null);
 	}, [handleSelectionChange, isUserOpenToAllCompanySize]);
+
+	useEffect(() => {
+		const option =
+			userPreference?.data.workEnvironment.openToAllCompanySizes === 'yes';
+		handleIsUserOpenToAllCompanySize(option);
+	}, [handleIsUserOpenToAllCompanySize, userPreference]);
 
 	return (
 		<Flex.Column gap={24}>

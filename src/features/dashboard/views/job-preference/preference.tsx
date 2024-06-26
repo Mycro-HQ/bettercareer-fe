@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { CallToAction, Flex, Modal, useToast } from '@labs/components';
-import { useSetUserPreferenceMutation } from '@/queries/user';
+import {
+	useGetUserPreferenceQuery,
+	useSetUserPreferenceMutation,
+} from '@/queries/user';
 
 import styles from './preference.module.scss';
 import { Sidebar } from './sidebar/sidebar';
@@ -20,6 +23,7 @@ export const JobPreference = ({
 	const { createToast } = useToast();
 	const { mutateAsync: setUserPreference, isPending } =
 		useSetUserPreferenceMutation();
+	const { data: userPreference } = useGetUserPreferenceQuery({});
 
 	const handleSelectionChange = (isSelectionMade: boolean) => {
 		setIsButtonDisabled(!isSelectionMade);
@@ -102,16 +106,15 @@ export const JobPreference = ({
 			<Modal.Body noPadding={true}>
 				<Flex className={styles.JobPreference}>
 					<aside className={styles.JobPreferenceAside}>
-						<Sidebar
-							currentIndex={activeTab}
-							preferenceList={preferenceList}
-							jumpToTab={JumpToTab}
-						/>
+						<Sidebar currentIndex={activeTab} jumpToTab={JumpToTab} />
 					</aside>
 
 					<Flex.Column className={styles.JobPreferenceContent}>
 						<Flex.Column className={styles.JobPreferenceContentBody}>
-							<ActiveComponent handleSelectionChange={handleSelectionChange} />
+							<ActiveComponent
+								userPreference={userPreference}
+								handleSelectionChange={handleSelectionChange}
+							/>
 						</Flex.Column>
 					</Flex.Column>
 				</Flex>
