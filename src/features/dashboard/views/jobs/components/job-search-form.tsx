@@ -1,20 +1,41 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
+
+import styles from '../jobs.module.scss';
+
 import { Flex, CallToAction, Text } from '@labs/components';
 import SearchIcon from '@labs/icons/dashboard/search.svg';
 import JobTypeIcon from '@labs/icons/dashboard/job-search.svg';
 import LocationIcon from '@labs/icons/dashboard/location.svg';
-import styles from '../jobs.module.scss';
 
-export function JobSearchForm() {
+export function JobSearchForm({
+	setQuery,
+}: {
+	setQuery: Dispatch<SetStateAction<Record<string, string>>>;
+}) {
 	const [formData, setFormData] = React.useState({
-		search: '',
+		title: '',
 		location: '',
-		jobType: '',
+		workMode: '',
 	});
 
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const { name, value } = e.target;
 		setFormData((prev) => ({ ...prev, [name]: value }));
+	}
+
+	useEffect(() => {
+		const fieldsEmpty = Object.values(formData).every(
+			(value) => value.length < 1
+		);
+		if (fieldsEmpty) {
+			setQuery({ filter: 'all_jobs' });
+		}
+	}, [formData, setQuery]);
+
+	function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
+		e.preventDefault();
+		setQuery({ ...formData });
+		alert(JSON.stringify(formData));
 	}
 
 	return (
@@ -32,22 +53,22 @@ export function JobSearchForm() {
 						outline
 						key={jobType}
 						size="xs"
-						onClick={() => setFormData((prev) => ({ ...prev, jobType }))}
+						onClick={() => setFormData((prev) => ({ ...prev, title: jobType }))}
 					>
 						{jobType}
 					</CallToAction.button>
 				))}
 			</Flex.Row>
-			<form action="" className={styles.JobSearchForm}>
+			<form onSubmit={handleSubmit} className={styles.JobSearchForm}>
 				<Flex
 					alignItems="center"
 					className="gap-y-4 flex-col md:flex-row mb-4 md:mb-0"
 				>
 					<JobSearchFormItem
 						icon={<SearchIcon />}
-						name="search"
+						name="title"
 						placeholder="Search jobs"
-						value={formData.search}
+						value={formData.title}
 						handleChange={handleChange}
 					/>
 					<JobSearchSeparator />
@@ -61,9 +82,9 @@ export function JobSearchForm() {
 					<JobSearchSeparator />
 					<JobSearchFormItem
 						icon={<JobTypeIcon />}
-						name="jobType"
-						placeholder="Job Type"
-						value={formData.jobType}
+						name="workMode"
+						placeholder="Work mode e.g. remote"
+						value={formData.workMode}
 						handleChange={handleChange}
 					/>
 				</Flex>
@@ -94,10 +115,10 @@ function JobSearchFormItem({
 	handleChange,
 }: {
 	icon: any;
-	name: 'search' | 'location' | 'jobType';
+	name: 'title' | 'location' | 'workMode';
 	placeholder: string;
 	value: string;
-	handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	handleChange: React.ChangeEventHandler<HTMLInputElement>;
 }) {
 	return (
 		<Flex
