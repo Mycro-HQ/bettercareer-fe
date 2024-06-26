@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { DropdownMenu } from '@radix-ui/themes';
+import classNames from 'classnames';
+
 import { Text, Flex, CallToAction } from '@labs/components';
 import DownIcon from '@labs/icons/dashboard/down.svg';
-import classNames from 'classnames';
 
 function JobFilterText({
 	text,
@@ -13,7 +14,7 @@ function JobFilterText({
 	text: string;
 	index: number;
 	selectedFilter: number;
-	setSelectedFilter: (index: number) => void;
+	setSelectedFilter: Dispatch<SetStateAction<number>>;
 }) {
 	const isSelected = selectedFilter === index;
 
@@ -36,15 +37,27 @@ function JobFilterText({
 }
 
 const filterOptions = [
-	{ index: 0, text: 'All Jobs' },
+	{ index: 0, text: 'All Jobs', slug: 'all_jobs' },
 	{ index: 1, text: 'Best Matches' },
 	{ index: 2, text: 'Based on Resume' },
-	{ index: 3, text: 'Posted this Week' },
-	{ index: 4, text: 'Sponsored Jobs' },
+	{ index: 3, text: 'Posted this Week', slug: 'this_week' },
+	{ index: 4, text: 'Sponsored Jobs', slug: 'sponsored' },
 ];
 
-export function JobFilter() {
+export function JobFilter({
+	setFilter,
+}: {
+	setFilter: Dispatch<SetStateAction<string | undefined>>;
+}) {
 	const [selectedFilter, setSelectedFilter] = React.useState(0);
+
+	useEffect(() => {
+		const filter = filterOptions.find(({ index }) => index == selectedFilter);
+		if (filter) {
+			console.log(filter.slug);
+			setFilter(filter.slug);
+		}
+	}, [selectedFilter, setFilter]);
 
 	return (
 		<div className="md:justify-between w-full flex items-center lg:items-start mb-4 md:mb-8 flex-col md:flex-row">
