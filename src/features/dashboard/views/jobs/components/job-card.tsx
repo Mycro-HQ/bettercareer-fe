@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { formatDistanceToNow } from 'date-fns';
+import { Avatar } from '@radix-ui/themes';
 
 import styles from '../jobs.module.scss';
 
@@ -37,7 +38,12 @@ export default function JobCard({
 		>
 			<Flex gap={12} justifyContent="space-between">
 				<Flex.Row gap={18}>
-					{companyLogo}
+					{typeof companyLogo === 'string' ? (
+						<Avatar src={companyLogo} fallback={''} />
+					) : (
+						companyLogo
+					)}
+					{/* {companyLogo} */}
 					<Flex.Column gap={4}>
 						<Text weight={700} fontSize="17px">
 							{jobTitle}
