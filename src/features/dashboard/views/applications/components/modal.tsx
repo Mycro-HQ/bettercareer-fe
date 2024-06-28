@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DropdownMenu } from '@radix-ui/themes';
+import { Avatar, DropdownMenu } from '@radix-ui/themes';
 import { useQueryClient } from '@tanstack/react-query';
 
 import type { ApplicationOptions } from '../types';
@@ -43,7 +43,11 @@ export default function ApplicationModal({
 		<Flex.Column gap={40}>
 			<Flex.Row justifyContent="space-between">
 				<Flex.Row gap={18}>
-					{userJob.job.logo}
+					{typeof userJob.job.logo === 'string' ? (
+						<Avatar src={userJob.job.logo} fallback={''} />
+					) : (
+						userJob.job.logo
+					)}
 					<Flex.Column gap={4} className="font-[Figtree]">
 						<Text as="span" weight={600} fontSize="18px" inheritFont>
 							{userJob.job.title}

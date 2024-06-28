@@ -38,8 +38,8 @@ function JobFilterText({
 
 const filterOptions = [
 	{ index: 0, text: 'All Jobs', slug: 'all_jobs' },
-	{ index: 1, text: 'Best Matches' },
-	{ index: 2, text: 'Based on Resume' },
+	{ index: 1, text: 'Best Matches', slug: 'best_matches' },
+	{ index: 2, text: 'Based on Resume', slug: 'resume' },
 	{ index: 3, text: 'Posted this Week', slug: 'this_week' },
 	{ index: 4, text: 'Sponsored Jobs', slug: 'sponsored' },
 ];
