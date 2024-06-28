@@ -1,5 +1,6 @@
 import React from 'react';
 import { DraggableProvidedDragHandleProps } from 'react-beautiful-dnd';
+import { Avatar } from '@radix-ui/themes';
 
 import { applicationsOptions } from '../data';
 import styles from '../applications.module.scss';
@@ -37,7 +38,13 @@ const ApplicationsGridItem = React.forwardRef<
 				{...otherProps}
 			>
 				{jobDetails.job.logo && (
-					<div className={styles.aGIIcon}>{jobDetails.job.logo}</div>
+					<div className={styles.aGIIcon}>
+						{typeof jobDetails.job.logo === 'string' ? (
+							<Avatar src={jobDetails.job.logo} fallback={''} />
+						) : (
+							jobDetails.job.logo
+						)}
+					</div>
 				)}
 				<Flex.Column
 					gap={2}

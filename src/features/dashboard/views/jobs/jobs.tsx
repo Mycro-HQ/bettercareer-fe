@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import { Avatar } from '@radix-ui/themes';
 
 import {
 	Text,
@@ -232,6 +233,7 @@ const JobData = [
 ];
 
 export const Jobs = () => {
+	const { createToast } = useFeedback();
 	const [activeJobCardIndex, setActiveJobCardIndex] = useState<number | null>(
 		1
 	);
@@ -242,24 +244,34 @@ export const Jobs = () => {
 	const [query, setQuery] = useState<Record<string, string>>({});
 	const { width } = useWindowDimensions();
 
-	const { data: jobs, isFetching } = useGetJobsQuery({ query });
+	const { data: jobs, isFetching, error } = useGetJobsQuery({ query });
 
 	const selectedJob = useMemo(() => {
-		return jobs?.data.find((job) => job.id === selectedJobId);
+		return jobs?.data?.find((job) => job.id === selectedJobId);
 	}, [selectedJobId, jobs]);
 
 	useEffect(() => {
 		if (!selectedJobId) {
 			setActiveJobCardIndex(1);
-			setSelectedJobId(jobs?.data?.[0].id);
+			setSelectedJobId(jobs?.data?.[0]?.id);
 		}
 	}, [jobs, selectedJobId]);
 
 	useEffect(() => {
 		if (filter) {
 			setQuery({ filter });
+			setSelectedJobId(null);
 		}
 	}, [filter]);
+
+	useEffect(() => {
+		if (error?.message) {
+			createToast({
+				message: error.message || 'Please try again later!',
+				variant: 'error',
+			});
+		}
+	}, [createToast, error?.message]);
 
 	return (
 		<div>
@@ -276,7 +288,7 @@ export const Jobs = () => {
 					flex="5"
 				>
 					{jobs &&
-						jobs.data.map((job) => (
+						jobs.data?.map((job) => (
 							<JobCard
 								key={job.id}
 								companyLogo={job.logo}
@@ -371,7 +383,12 @@ function JobDetails({
 			<Flex.Column gap={40}>
 				<Flex.Row justifyContent="space-between">
 					<Flex.Row gap={18}>
-						{selectedJob.logo}
+						{/* {selectedJob.logo} */}
+						{typeof selectedJob.logo === 'string' ? (
+							<Avatar src={selectedJob.logo} fallback={''} />
+						) : (
+							selectedJob.logo
+						)}
 						<Flex.Column gap={4}>
 							<Text weight={600} fontSize="18px" inheritFont>
 								{selectedJob.title}
