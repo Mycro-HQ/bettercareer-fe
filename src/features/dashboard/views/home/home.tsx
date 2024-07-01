@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react';
 import {} from 'date-fns';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { JobPreference } from '../job-preference';
 
 import { CallToAction, Flex, Heading, Spinner, Text } from '@labs/components';
 import WavingHandIcon from '@labs/icons/dashboard/wave-hand.svg';
 import Resumes from '@labs/icons/dashboard/resumes.svg';
-
 import ResumeIcon from '@labs/icons/dashboard/file_1.svg';
 import Selection from '@labs/icons/dashboard/selection.svg';
 import JobIcon from '@labs/icons/dashboard/calendar.svg';
 import SponsorIcon from '@labs/icons/dashboard/tag.svg';
 import NewResume from '@labs/icons/dashboard/upload.svg';
 import { type UserData } from '@/queries/types/user';
+import { useGetJobsStatQuery } from '@/queries/job';
 
 import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
 import { AllResumes } from './components/all-resumes';
-import Router, { useRouter } from 'next/router';
 
 export const DashboardHome = ({
 	profile,
@@ -37,40 +37,42 @@ export const DashboardHome = ({
 		if (!isModalOpen) {
 			router.replace('/dashboard', undefined, { shallow: true });
 		}
-	}, [router.query?.setPreferences, isModalOpen]);
+	}, [router.query?.setPreferences, isModalOpen, router]);
 
 	const hasSetup =
 		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
 		profile?.onboardingChecklist?.hasBuiltResume;
 
+	const { data: stats, isFetching } = useGetJobsStatQuery({});
+
 	const recommendationSections = [
 		{
 			title: 'All your matches',
 			icon: '/images/dashboard/match.png',
-			href: '/dashboard/jobs',
-			tag: '5+ jobs',
+			href: '/dashboard/jobs?tab=best_matches',
+			tag: stats && stats.data.jobsByBestMatch.toString(),
 		},
 		{
 			title: 'Based on your Resume',
 			icon: ResumeIcon,
-			href: '/dashboard/jobs',
-			tag: '5+ jobs',
+			href: '/dashboard/jobs?tab=resume',
+			tag: stats && stats.data.jobsByResume.toString(),
 		},
 		{
 			title: 'Jobs added this week',
 			icon: JobIcon,
-			href: '/dashboard/jobs',
-			tag: '5+ jobs',
+			href: '/dashboard/jobs?tab=this_week',
+			tag: stats && stats.data.jobsThisWeek.toString(),
 		},
 		{
 			title: 'Sponsored jobs',
 			icon: SponsorIcon,
-			href: '/dashboard/jobs',
-			tag: '5+ jobs',
+			href: '/dashboard/jobs?tab=sponsored',
+			tag: stats && stats.data.sponsoredJobs.toString(),
 		},
 	];
 
-	if (!profile)
+	if (!profile || isFetching)
 		return <Spinner fullPage spinner="logo" text="Preparing your dashboard" />;
 
 	return (
