@@ -4,7 +4,6 @@ import { Avatar, DropdownMenu } from '@radix-ui/themes';
 import { useQueryClient } from '@tanstack/react-query';
 
 import type { ApplicationOptions } from '../types';
-import { applicationData } from '../data';
 import styles from '../applications.module.scss';
 
 import { Flex, Text, useFeedback } from '@labs/components';
@@ -119,11 +118,16 @@ export default function ApplicationModal({
 					</Text>
 					<div className="text-sm font-medium leading-5 text-[#273643]">
 						<ul className="list-disc list-inside">
-							{applicationData.requirementsArray.map((req) => (
+							{userJob.job.requirements?.split('-').map((req, idx) => (
+								<li key={idx} className="mb-4">
+									{req}
+								</li>
+							))}
+							{/* {applicationData.requirementsArray.map((req) => (
 								<li key={req.key} className="mb-4">
 									{req.requirement}
 								</li>
-							))}
+							))} */}
 						</ul>
 					</div>
 				</div>
