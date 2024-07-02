@@ -23,6 +23,8 @@ const OpenToAllRoleLevel = ({
 	}, [handleSelectionChange, isUserOpenToAllRoleLevel]);
 
 	useEffect(() => {
+		if (!userPreference?.data?.targetRole) return;
+
 		const option = userPreference?.data.targetRole.openToAllRoles === 'yes';
 		handleIsUserOpenToAllRoleLevel(option);
 	}, [handleIsUserOpenToAllRoleLevel, userPreference]);

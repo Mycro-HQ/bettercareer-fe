@@ -26,6 +26,7 @@ const WorkEnvironment = ({
 	}, [handleSelectionChange, selectedWorkIndustry.length]);
 
 	useEffect(() => {
+		if (!userPreference?.data?.workEnvironment?.preferredIndustry) return;
 		setSelectedWorkIndustry(
 			userPreference?.data.workEnvironment.preferredIndustry
 		);

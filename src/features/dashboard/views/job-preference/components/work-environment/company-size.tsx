@@ -26,6 +26,7 @@ const CompanySize = ({
 	}, [handleSelectionChange, selectedCompanySize.length]);
 
 	useEffect(() => {
+		if (!userPreference?.data?.workEnvironment?.companySize) return;
 		handleClickedCompanySize(userPreference?.data.workEnvironment.companySize);
 	}, [handleClickedCompanySize, userPreference]);
 

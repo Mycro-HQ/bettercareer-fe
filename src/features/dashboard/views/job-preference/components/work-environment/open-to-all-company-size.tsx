@@ -23,6 +23,8 @@ const OpenToAllCompanySize = ({
 	}, [handleSelectionChange, isUserOpenToAllCompanySize]);
 
 	useEffect(() => {
+		if (!userPreference?.data?.workEnvironment?.openToAllCompanySizes) return;
+
 		const option =
 			userPreference?.data.workEnvironment.openToAllCompanySizes === 'yes';
 		handleIsUserOpenToAllCompanySize(option);

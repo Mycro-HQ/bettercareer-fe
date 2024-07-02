@@ -85,7 +85,7 @@ export const SetupChecklist = ({
 	);
 
 	const hasTwoItems =
-		Object.values(onboardingChecklist).filter(Boolean).length >= 2;
+		Object.values(onboardingChecklist).filter(Boolean).length >= 3;
 	const currentChecklist = checklist[active] || {};
 
 	useEffect(() => {
@@ -93,7 +93,7 @@ export const SetupChecklist = ({
 			setIsChecklistOpen(false);
 		}
 
-		if (Object.values(onboardingChecklist).filter(Boolean).length >= 3) {
+		if (hasTwoItems) {
 			setIsChecklistOpen(true);
 		}
 	}, [isChecklistOpen, hasTwoItems, onboardingChecklist]);

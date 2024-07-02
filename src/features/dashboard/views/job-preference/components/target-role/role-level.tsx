@@ -26,8 +26,10 @@ const RoleLevel = ({
 	}, [handleSelectionChange, selectedRoleLevel.length]);
 
 	useEffect(() => {
+		if (!userPreference?.data?.targetRole?.roleLevels) return;
+
 		setSelectedRoleLevel(userPreference?.data.targetRole.roleLevels);
-	}, [setSelectedRoleLevel, userPreference?.data.targetRole.roleLevels]);
+	}, [setSelectedRoleLevel, userPreference?.data?.targetRole?.roleLevels]);
 
 	return (
 		<Flex.Column gap={24}>

@@ -24,7 +24,9 @@ const TargetRole = ({
 	});
 
 	useEffect(() => {
-		setSelectedTargetRoles(userPreference?.data.targetRole.roles);
+		if (userPreference?.data?.targetRole) {
+			setSelectedTargetRoles(userPreference?.data.targetRole.roles);
+		}
 	}, [setSelectedTargetRoles, userPreference]);
 
 	return (

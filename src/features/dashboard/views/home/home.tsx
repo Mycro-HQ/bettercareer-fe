@@ -40,7 +40,8 @@ export const DashboardHome = ({
 	}, [router.query?.setPreferences, isModalOpen]);
 
 	const hasSetup =
-		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
+		Object.values(profile?.onboardingChecklist || {}).filter(Boolean).length >=
+			2 || // at least 2 items are true in the checklist
 		profile?.onboardingChecklist?.hasBuiltResume;
 
 	const { data: stats, isFetching } = useGetJobsStatQuery({});
@@ -91,7 +92,7 @@ export const DashboardHome = ({
 			</Flex.Column>
 
 			<Flex.Column gap={32}>
-				{profile?.onboardingChecklist?.hasBuiltResume && (
+				{hasSetup && (
 					<Flex gap={18} flexWrap="wrap">
 						{recommendationSections.map((rcmd, i) => (
 							<StackCard
