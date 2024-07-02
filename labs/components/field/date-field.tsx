@@ -65,7 +65,8 @@ export const FieldDate: React.FC<IFieldDate> = ({
 		placeholder,
 	} = props;
 
-	const softConvertTodate = (value: string | Date) => {
+	const softConvertTodate = (value: string) => {
+		if (!value) return null;
 		// change everty / to - and add 01 to the end of the string then make the year the first part of the string and the month the second part
 		const date = value.replace(/\//g, '-').concat('-01').split('-');
 		const year = date[1];
