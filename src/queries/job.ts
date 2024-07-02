@@ -1,6 +1,6 @@
 import { createSmartApi } from '@lib/usable-query';
 
-import { JobResponseData, UserJobData } from './types/job';
+import type { JobResponseData, UserJobData, JobsStatData } from './types/job';
 
 export const billingApiCreator = createSmartApi({
 	key: 'job',
@@ -37,6 +37,17 @@ export const billingApiCreator = createSmartApi({
 				url: `/jobs/me`,
 			}),
 		}),
+		getJobsStat: builder.query<
+			{},
+			{
+				data: JobsStatData;
+			}
+		>({
+			key: 'jobs-stat',
+			queryFn: () => ({
+				url: `/jobs/stats`,
+			}),
+		}),
 		updateJobStatus: builder.mutation({
 			key: 'user-job-status',
 			mutationFn: (data) => ({
@@ -51,7 +62,8 @@ export const billingApiCreator = createSmartApi({
 
 export const {
 	useGetJobsQuery,
-	useCreateJobApplicationMutation,
 	useGetUserJobsQuery,
+	useGetJobsStatQuery,
+	useCreateJobApplicationMutation,
 	useUpdateJobStatusMutation,
 } = billingApiCreator;

@@ -426,23 +426,31 @@ function JobDetails({
 						</CallToAction>
 					</Flex.Row>
 				</Flex.Row>
-				<Flex.Column gap={32}>
-					<div>
+				<Flex.Column>
+					<div className="mb-8">
 						<JobDescriptionTitle title="Summary" />
 						<JobDescriptionBody>{selectedJob.description}</JobDescriptionBody>
 					</div>
-					<div>
+					<div className="mb-4">
 						<JobDescriptionTitle title="Requirements" />
 						<JobDescriptionBody isChildText={JobData[index].isRequirementsText}>
 							<ul className="list-disc list-inside">
-								{JobData[index].requirementsArray.map((req) => (
+								{selectedJob.requirements?.split('-').map((req, idx) => (
+									<li key={idx} className="mb-4">
+										{req}
+									</li>
+								))}
+								{/* {JobData[index].requirementsArray.map((req) => (
 									<li key={req.key} className="mb-4">
 										{req.requirement}
 									</li>
-								))}
+								))} */}
 							</ul>
 						</JobDescriptionBody>
 					</div>
+					<Text className="text-[#878f97]">
+						Job source: {new URL(selectedJob.url).hostname}
+					</Text>
 				</Flex.Column>
 			</Flex.Column>
 			<Modal in={isModalOpen} onClose={() => setIsModalOpen(false)} size="sm">

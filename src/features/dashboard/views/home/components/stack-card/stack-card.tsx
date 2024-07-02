@@ -58,7 +58,9 @@ export const StackCard: React.FC<StackCardProps> = ({
 				alignItems="flex-end"
 			>
 				<Heading.h6 weight={800}>{title}</Heading.h6>
-				<div className={styles.StackCard__tag}>{props.tag}</div>
+				{props.tag && (
+					<div className={styles.StackCard__tag}>{props.tag}+ jobs</div>
+				)}
 			</Flex>
 		</Wrapper>
 	);

@@ -35,7 +35,6 @@ export function JobSearchForm({
 	function handleSubmit(e: React.ChangeEvent<HTMLFormElement>) {
 		e.preventDefault();
 		setQuery({ ...formData });
-		alert(JSON.stringify(formData));
 	}
 
 	return (

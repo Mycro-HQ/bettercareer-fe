@@ -7,6 +7,7 @@ export interface JobResponseData {
 	logo: string | null;
 	location: string | null;
 	compensation: string | null;
+	requirements: string | null;
 	tags: string | null;
 	archived: boolean;
 	createdAt: string;
@@ -18,16 +19,22 @@ export interface UserJobData {
 	status: string;
 	job: Pick<
 		JobResponseData,
-		'company' | 'title' | 'location' | 'compensation' | 'logo' | 'description'
+		| 'company'
+		| 'title'
+		| 'location'
+		| 'compensation'
+		| 'logo'
+		| 'description'
+		| 'requirements'
 	>;
-
-	// company: true,
-	// title: true,
-	// location: true,
-	// compensation: true,
-	// logo: true,
-	// description: true,
 
 	createdAt: string;
 	updatedAt: string;
+}
+
+export interface JobsStatData {
+	jobsThisWeek: number;
+	sponsoredJobs: number;
+	jobsByResume: number;
+	jobsByBestMatch: number;
 }
