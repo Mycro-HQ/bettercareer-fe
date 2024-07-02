@@ -122,7 +122,7 @@ const ExperienceFrame = ({
 
 							if (key === 'date') {
 								if (isDate(e)) {
-									return format(e, 'yyyy-MM-dd');
+									return format(new Date(e), 'yyyy-MM-dd');
 								}
 
 								return e;

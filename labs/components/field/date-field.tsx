@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import DatePicker from 'react-datepicker';
 import classNames from 'classnames';
-import { addMonths, format, sub } from 'date-fns';
+import { addMonths, format, isDate, sub } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { generateUUID } from '../../utils';
@@ -65,6 +65,26 @@ export const FieldDate: React.FC<IFieldDate> = ({
 		placeholder,
 	} = props;
 
+	const softConvertTodate = (value: string | Date) => {
+		// change everty / to - and add 01 to the end of the string then make the year the first part of the string and the month the second part
+		const date = value.replace(/\//g, '-').concat('-01').split('-');
+		const year = date[1];
+		const month = date[0];
+		const day = date[2];
+		return new Date(`${year}-${month}-${day}`);
+	};
+
+	const selectedDate = useMemo(() => {
+		if (value) {
+			if (isDate(value)) {
+				return new Date(value);
+			}
+
+			return softConvertTodate(value);
+		}
+		return null;
+	}, [value]);
+
 	return (
 		<AnimatePresence>
 			<fieldset
@@ -100,7 +120,7 @@ export const FieldDate: React.FC<IFieldDate> = ({
 					</div>
 
 					<DatePicker
-						selected={value ? new Date(value) : null}
+						selected={selectedDate}
 						placeholderText={placeholder}
 						required={required}
 						dateFormat="MM/yyyy"

@@ -52,6 +52,7 @@ export const DashboardHeader = ({
 	const getFallback = () => {
 		if (!profile?.name) return '';
 		const [first, last] = profile?.name.split(' ');
+		if (!last) return first?.[0] || 'Creator';
 		return `${first[0]}${last[0]}`;
 	};
 
