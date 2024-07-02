@@ -50,9 +50,9 @@ export const DashboardHeader = ({
 	const { profile, logOut } = useUserStore();
 
 	const getFallback = () => {
-		if (!profile?.name) return '';
+		if (!profile?.name) return 'BC';
 		const [first, last] = profile?.name.split(' ');
-		if (!last) return first?.[0] || 'Creator';
+		if (!last) return first?.[0] || 'BC';
 		return `${first[0]}${last[0]}`;
 	};
 

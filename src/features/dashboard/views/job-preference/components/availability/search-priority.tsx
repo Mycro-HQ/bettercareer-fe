@@ -29,6 +29,7 @@ const SearchPriority = ({
 	}, [handleSelectionChange, selectedPriority]);
 
 	useEffect(() => {
+		if (!userPreference?.data.availability.jobStatus) return;
 		handleSelectedPriority(userPreference?.data.availability.jobStatus);
 	}, [handleSelectedPriority, userPreference]);
 

@@ -67,6 +67,7 @@ const Qualifications = ({
 	}, [handleSelectionChange, selectedQualifications.length]);
 
 	useEffect(() => {
+		if (!userPreference?.data?.qualifications?.skills) return;
 		updateSkillArray(userPreference?.data.qualifications.skills);
 		setSelectedQualifications(userPreference?.data.qualifications.skills);
 	}, [setSelectedQualifications, userPreference]);

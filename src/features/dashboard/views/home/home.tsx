@@ -76,12 +76,22 @@ export const DashboardHome = ({
 	if (!profile)
 		return <Spinner fullPage spinner="logo" text="Preparing your dashboard" />;
 
+	const getFirstName = (name: string) => {
+		if (!name) return 'Creator';
+		const firstName = name?.split(' ')?.[0];
+
+		if (!firstName) return 'Creator';
+		return firstName;
+	};
+
 	return (
 		<div className={styles.DashboardHome}>
 			<Flex.Column gap={6}>
 				<Flex alignItems="center" gap={12}>
 					<Heading.h3 weight={400} animate="slide">
-						{hasSetup ? 'Welcome, Adenekan' : 'Hello, Let’s get you started'}
+						{hasSetup
+							? `Welcome, ${getFirstName(profile?.name)}`
+							: 'Hello, Let’s get you started'}
 					</Heading.h3>
 					<WavingHandIcon width="24" height="24" />
 				</Flex>

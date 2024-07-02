@@ -48,6 +48,7 @@ const Availability = ({
 	}, [handleSelectionChange, selectedLocation]);
 
 	useEffect(() => {
+		if (!userPreference?.data.availability.workLocations) return;
 		setSelectedLocation(userPreference?.data.availability.workLocations);
 	}, [setSelectedLocation, userPreference]);
 

@@ -85,6 +85,8 @@ const Compensation = ({
 	}, [componentsState, handleSelectionChange]);
 
 	useEffect(() => {
+		if (!userPreference?.data?.compensation) return;
+
 		const existingMinimumSalary = parseInt(
 			userPreference?.data.compensation.minimumSalary
 		);
