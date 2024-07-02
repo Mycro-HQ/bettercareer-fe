@@ -544,7 +544,12 @@ export const BuildResumePane = ({
 						</StrictModeDroppable>
 
 						<div className={styles.FloatingResources}>
-							<CallToAction.a size="sm" leadingIcon={<Bulb />} href="/" outline>
+							<CallToAction.a
+								size="sm"
+								leadingIcon={<Bulb />}
+								href="mailto:mycroteam@gmail.com"
+								outline
+							>
 								Resources and support
 							</CallToAction.a>
 						</div>

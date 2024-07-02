@@ -20,7 +20,6 @@ import { SetupChecklist } from './components/setup-checklist';
 import { StackCard } from './components/stack-card/stack-card';
 import styles from './home.module.scss';
 import { AllResumes } from './components/all-resumes';
-import Router, { useRouter } from 'next/router';
 
 export const DashboardHome = ({
 	profile,
@@ -38,7 +37,7 @@ export const DashboardHome = ({
 		if (!isModalOpen) {
 			router.replace('/dashboard', undefined, { shallow: true });
 		}
-	}, [router.query?.setPreferences, isModalOpen, router]);
+	}, [router.query?.setPreferences, isModalOpen]);
 
 	const hasSetup =
 		Object.values(profile?.onboardingChecklist || {}).every(Boolean) || // at least 2 items are true in the checklist
@@ -73,7 +72,7 @@ export const DashboardHome = ({
 		},
 	];
 
-	if (!profile || isFetching)
+	if (!profile)
 		return <Spinner fullPage spinner="logo" text="Preparing your dashboard" />;
 
 	return (

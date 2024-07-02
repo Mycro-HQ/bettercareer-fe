@@ -93,11 +93,10 @@ export const SetupChecklist = ({
 			setIsChecklistOpen(false);
 		}
 
-		console.log('onboardingChecklist', onboardingChecklist);
 		if (Object.values(onboardingChecklist).filter(Boolean).length >= 3) {
 			setIsChecklistOpen(true);
 		}
-	}, [isChecklistOpen, hasTwoItems, setIsChecklistOpen, onboardingChecklist]);
+	}, [isChecklistOpen, hasTwoItems, onboardingChecklist]);
 
 	if (isChecklistOpen) return null;
 

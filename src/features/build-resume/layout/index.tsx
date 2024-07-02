@@ -40,6 +40,7 @@ import { ProgressLoader } from '@/components/misc/loader';
 import { ResumeAnalysis } from '@/features/dashboard';
 
 import styles from './layout.module.scss';
+import { useUserStore } from '@/store/z-store/user';
 
 export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 	const router = useRouter();
@@ -57,7 +58,7 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 		modules: blocks,
 		template,
 	} = useBuildStore();
-
+	const { profile } = useUserStore();
 	const { mutateAsync: deleteResume } = useDeleteResumeMutation();
 	const {
 		mutateAsync: createOrUpdateResume,
@@ -360,15 +361,17 @@ export const BuildResumeLayout = ({ resume }: { resume: any }) => {
 							className={classNames([styles.BuildResumeLayout__nav__logo])}
 						/>
 					</Link>
-					<Link href="/upgrade">
-						<Text
-							fontSize="12px"
-							color="var(--primary-blue)"
-							casing="uppercase"
-							weight={800}
-						>
-							Upgrade
-						</Text>
+					<Link href="/dashboard/settings">
+						{!profile?.subscription && (
+							<Text
+								fontSize="12px"
+								color="var(--primary-blue)"
+								casing="uppercase"
+								weight={800}
+							>
+								Upgrade
+							</Text>
+						)}
 					</Link>
 				</Flex>
 				<div className="hidden xl:flex">
