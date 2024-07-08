@@ -9,6 +9,7 @@ import {
 	Text,
 	capitalize,
 	getDataIcons,
+	isDefinitelyDate,
 	parseValue,
 	useFeedback,
 } from '@labs';
@@ -121,7 +122,7 @@ const ExperienceFrame = ({
 							}
 
 							if (key === 'date') {
-								if (isDate(e)) {
+								if (isDefinitelyDate(e)) {
 									return format(new Date(e), 'yyyy-MM-dd');
 								}
 
@@ -361,7 +362,11 @@ const FrameCards = ({
 					{index > 0 && !!data && '- '}
 
 					{!!data && typeof data !== 'boolean' ? (
-						<>{isDate(data) ? format(new Date(data), 'MMM yyyy') : data}</>
+						<>
+							{isDefinitelyDate(data)
+								? format(new Date(data), 'MMM yyyy')
+								: data}
+						</>
 					) : (
 						<>{data && 'Present'}</>
 					)}

@@ -9,7 +9,7 @@ import Logo from '@labs/icons/logo-mark.svg';
 import styles from './analysis.module.scss';
 import classNames from 'classnames';
 
-import { getDataIcons } from '@labs/utils';
+import { cleanText, getDataIcons } from '@labs/utils';
 import Router from 'next/router';
 
 const COLORS = ['#2b94f4', '#4ea27f', '#ff973c', '#dd4237'];
@@ -80,14 +80,16 @@ export const Analysis = ({
 					>
 						See All Analysis
 					</CallToAction.button>
-					<CallToAction.button
+					<CallToAction.a
 						variant={
 							Router.query?.analysis === 'true' ? 'secondary' : 'primary'
 						}
 						size="sm"
+						target="_blank"
+						href={`mailto:info@bettercareer.me:subject=Request for Expert Review on Resume ${data?.resume?.id} &body=I would like to request an expert review of my resume. Please find attached my resume`}
 					>
 						Get an Expert Review
-					</CallToAction.button>
+					</CallToAction.a>
 					{Router.query?.analysis === 'true' && (
 						<CallToAction.button
 							onClick={closeModal}
@@ -175,7 +177,7 @@ export const Analysis = ({
 									<div key={key} className={styles.ResumeScoreItem}>
 										<Flex.Row key={key} className={styles.ResumeScoreTitle}>
 											<Text.p size="sm" casing="capitalize">
-												{key}
+												{cleanText(key)}
 											</Text.p>
 											<Text.p size="sm" weight={600} color={color}>
 												{item.score}/100
@@ -229,7 +231,7 @@ export const Analysis = ({
 															className={styles.AccordionHeader}
 														>
 															<Text.p weight={700} casing="capitalize">
-																{key}
+																{cleanText(key)}
 															</Text.p>
 															<div
 																style={{

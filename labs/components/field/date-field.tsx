@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { addMonths, format, isDate, sub } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { generateUUID } from '../../utils';
+import { generateUUID, isDefinitelyDate } from '../../utils';
 
 import Calendar from '@labs/icons/dashboard/calendar.svg';
 
@@ -65,19 +65,25 @@ export const FieldDate: React.FC<IFieldDate> = ({
 		placeholder,
 	} = props;
 
-	const softConvertTodate = (value: string) => {
+	const softConvertTodate = (value: string | Date) => {
 		if (!value) return null;
+
+		if ((value as string).split('-').length === 3) {
+			return new Date(value);
+		}
+
 		// change everty / to - and add 01 to the end of the string then make the year the first part of the string and the month the second part
-		const date = value.replace(/\//g, '-').concat('-01').split('-');
+		const date = (value as string).replace(/\//g, '-').concat('-01').split('-');
 		const year = date[1];
 		const month = date[0];
 		const day = date[2];
+
 		return new Date(`${year}-${month}-${day}`);
 	};
 
 	const selectedDate = useMemo(() => {
 		if (value) {
-			if (isDate(value)) {
+			if (isDefinitelyDate(value)) {
 				return new Date(value);
 			}
 

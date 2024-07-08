@@ -421,9 +421,6 @@ function JobDetails({
 						>
 							Apply
 						</CallToAction>
-						<CallToAction outline size="sm">
-							Save
-						</CallToAction>
 					</Flex.Row>
 				</Flex.Row>
 				<Flex.Column>

@@ -1,3 +1,4 @@
+import { isDefinitelyDate } from '@labs/utils';
 import { formatDate, isDate } from 'date-fns';
 
 export const COLOR_MAPS = {
@@ -30,7 +31,7 @@ export const SCALE_MAP = {
 };
 
 export const toDate = (date: string) => {
-	if (isDate(date)) {
+	if (isDefinitelyDate(date)) {
 		return formatDate(new Date(date), 'MMM yyyy');
 	}
 

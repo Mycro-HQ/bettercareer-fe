@@ -371,3 +371,12 @@ export const cleanText = (val: string) => {
 	const _val = val.replace(/[^a-zA-Z ]/g, ' ');
 	return _val.charAt(0).toUpperCase() + _val.slice(1);
 };
+
+export const isDefinitelyDate = (date: string | Date) => {
+	if (typeof date === 'string' && (date as string)?.split('-').length === 3) {
+		return true;
+	}
+
+	const dateObj = new Date(date);
+	return dateObj instanceof Date && !isNaN(dateObj.getTime());
+};
