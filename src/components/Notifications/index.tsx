@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from './Notifications.module.scss';
-import { CallToAction, Flex, Text } from '@labs/components';
 
+import { CallToAction, Flex, Text } from '@labs/components';
 import JobIcon from '@labs/icons/dashboard/jobs.svg';
 import CheckMonochromeIcon from '@labs/icons/dashboard/check_monochrome.svg';
 import CloseIcon from '@labs/icons/dashboard/X.svg';
-
 import { NotificationListItemProps } from '@labs/utils/types/utility';
+
+import styles from './Notifications.module.scss';
 
 export function NotificationListItem({
 	title,

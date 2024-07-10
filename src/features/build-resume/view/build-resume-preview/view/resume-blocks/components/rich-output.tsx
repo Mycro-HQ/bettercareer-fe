@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, StyleSheet, Text } from '@react-pdf/renderer';
-import cheerio from 'cheerio';
 import { parse } from 'node-html-parser';
 
 const styles = StyleSheet.create({

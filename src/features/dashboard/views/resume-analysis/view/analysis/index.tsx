@@ -1,15 +1,14 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import { CallToAction, Flex, Heading, Text } from '@labs/components';
 import { ScoreCounter } from '@/components/score-counter';
 import { Accordion } from '@labs/components/accordion';
 import { Progress } from '@/components/misc/progress';
 import Logo from '@labs/icons/logo-mark.svg';
+import { getDataIcons } from '@labs/utils';
 
 import styles from './analysis.module.scss';
-import classNames from 'classnames';
-
-import { getDataIcons } from '@labs/utils';
 
 const COLORS = ['#2b94f4', '#4ea27f', '#ff973c', '#dd4237'];
 

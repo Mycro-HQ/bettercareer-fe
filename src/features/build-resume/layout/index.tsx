@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { DropdownMenu } from '@radix-ui/themes';
 import Link from 'next/link';
 import classNames from 'classnames';
@@ -7,17 +7,11 @@ import Router, { useRouter } from 'next/router';
 
 import { BuildResumePreview } from '../view/build-resume-preview/';
 import { BuildResumePane } from '../view/build-resume-pane';
-import { Modal } from '@labs/components/modal';
-import { Field } from '@labs/components/field';
 import { templatesConfig } from '../view/build-resume-preview/view/resume-blocks/utils';
 
-import {
-	CallToAction,
-	Flex,
-	Heading,
-	Text,
-	useFeedback,
-} from '@labs/components';
+import { Modal } from '@labs/components/modal';
+import { Field } from '@labs/components/field';
+import { CallToAction, Flex, Text, useFeedback } from '@labs/components';
 import { MODULES, useBuildStore } from '@/store/z-store/builder';
 import {
 	downloadResume,
@@ -36,7 +30,6 @@ import {
 	useDeleteResumeMutation,
 	useDuplicateResumeMutation,
 } from '@/queries/resume';
-import { ProgressLoader } from '@/components/misc/loader';
 import { ResumeAnalysis } from '@/features/dashboard';
 
 import styles from './layout.module.scss';

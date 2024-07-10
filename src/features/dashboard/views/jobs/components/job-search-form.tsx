@@ -1,9 +1,11 @@
 import React from 'react';
+
+import styles from '../jobs.module.scss';
+
 import { Flex, CallToAction } from '@labs/components';
 import SearchIcon from '@labs/icons/dashboard/search.svg';
 import JobTypeIcon from '@labs/icons/dashboard/job-search.svg';
 import LocationIcon from '@labs/icons/dashboard/location.svg';
-import styles from '../jobs.module.scss';
 
 export function JobSearchForm() {
 	const [formData, setFormData] = React.useState({

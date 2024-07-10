@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { forwardRefWrapper } from '../../../utils';
-
 import type { NativeElementProps } from '../../../utils/types/utility';
 
 import styles from './container.module.scss';

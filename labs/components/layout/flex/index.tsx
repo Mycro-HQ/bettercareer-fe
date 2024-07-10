@@ -3,7 +3,6 @@
 /* -------------------------------------------------------------------------- */
 import React from 'react';
 import type { CSSProperties } from 'react';
-
 import classNames from 'classnames';
 
 import { forwardRefWrapper, useDynamicStyle } from '../../../utils';

@@ -3,7 +3,6 @@ import Link from 'next/link';
 import classNames from 'classnames';
 
 import { forwardRefWrapper } from '../../utils';
-
 import type { NativeElementProps, Prettify } from '../../utils/types/utility';
 import { Spinner } from '../spinner';
 

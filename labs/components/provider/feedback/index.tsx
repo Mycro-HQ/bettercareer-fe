@@ -1,7 +1,9 @@
 import React from 'react';
-import { FeedbackContext } from './context';
+
 import { ToastProvider, useToastSetup } from '../../toast';
 import { DisclosureProvider, useDisclosureSetup } from '../../disclosure';
+
+import { FeedbackContext } from './context';
 
 export const FeedBackProvider = ({
 	children,

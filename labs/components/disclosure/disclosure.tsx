@@ -9,7 +9,7 @@
  * Component Template Provided by Plop
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Heading } from '../layout/heading';
 import { Modal } from '../modal';

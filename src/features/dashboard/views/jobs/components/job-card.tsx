@@ -1,7 +1,9 @@
 import React from 'react';
-import styles from '../jobs.module.scss';
-import { Text, Flex } from '@labs/components';
 import classNames from 'classnames';
+
+import styles from '../jobs.module.scss';
+
+import { Text, Flex } from '@labs/components';
 import LikeIcon from '@labs/icons/dashboard/match.svg';
 
 interface JobCardProps extends React.HTMLAttributes<HTMLDivElement> {

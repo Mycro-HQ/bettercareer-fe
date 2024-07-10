@@ -1,5 +1,4 @@
 import React from 'react';
-
 import * as Progress from '@radix-ui/react-progress';
 import { useRouter } from 'next/router';
 

@@ -20,9 +20,9 @@ import {
 	forwardRefWrapper,
 	generateUUID,
 } from '../../utils';
+import type { NativeElementProps, Prettify } from '../../utils/types/utility';
 
 import { useFormField } from './form-field';
-import type { NativeElementProps, Prettify } from '../../utils/types/utility';
 import styles from './field.module.scss';
 
 type FieldElementTypes = 'select' | 'input' | 'textarea';

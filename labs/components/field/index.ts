@@ -1,7 +1,8 @@
-import { FieldDate } from './date-field';
-import { FormField } from './form-field';
 import { Checkbox, Radio, Switch } from '../checkable-interactive';
 import { Autocomplete } from '../autocomplete';
+
+import { FieldDate } from './date-field';
+import { FormField } from './form-field';
 import { fieldFactory } from './field';
 /**
  * Creating a Field component that can be used to create input, textarea, and select fields.

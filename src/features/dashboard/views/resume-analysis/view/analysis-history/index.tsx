@@ -1,16 +1,17 @@
-import { useGetResumeAnalysisHistoryQuery } from '@/queries/resume';
 import { useRouter } from 'next/router';
 import React from 'react';
-import FileIcon from '@labs/icons/dashboard/file.svg';
-
 import classNames from 'classnames';
-import { Flex, Heading, Text } from '@labs/components';
-import { getColorByScore } from '../analysis';
-import { getDataIcons } from '@labs/utils';
 import { formatDate } from 'date-fns';
 
-import styles from './analysis-history.module.scss';
+import { getColorByScore } from '../analysis';
+
+import { useGetResumeAnalysisHistoryQuery } from '@/queries/resume';
+import FileIcon from '@labs/icons/dashboard/file.svg';
+import { Flex, Heading, Text } from '@labs/components';
+import { getDataIcons } from '@labs/utils';
 import { Spinner } from '@labs/components/spinner';
+
+import styles from './analysis-history.module.scss';
 
 export const AnalysisHistory = ({
 	setAnalysisData,
