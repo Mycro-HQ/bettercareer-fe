@@ -1,6 +1,7 @@
 // import { renderToStream } from '@react-pdf/renderer';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { renderToStream } from '@react-pdf/renderer';
+
 import { Resume } from '@/features/build-resume/view/build-resume-preview/view/resume-blocks';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

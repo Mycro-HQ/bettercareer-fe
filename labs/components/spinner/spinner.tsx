@@ -11,11 +11,11 @@
  */
 
 import classNames from 'classnames';
-import React, { Fragment, CSSProperties } from 'react';
+import React, { CSSProperties } from 'react';
+import { motion } from 'framer-motion';
 
 import { Text } from '../layout';
 import type { TextProps } from '../layout';
-import { motion } from 'framer-motion';
 
 import styles from './spinner.module.scss';
 
@@ -173,7 +173,7 @@ const LogoSVG = ({ size, color }: SpinnerProps) => {
 						gradientUnits="userSpaceOnUse"
 					>
 						<motion.stop stop-color="#339DFF" />
-						<stop offset="1" stop-color="#2783D8" />
+						<stop offset="1" stopColor="#2783D8" />
 					</linearGradient>
 				</defs>
 			</motion.svg>

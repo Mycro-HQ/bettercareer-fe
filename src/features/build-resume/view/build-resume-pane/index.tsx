@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext, Draggable } from 'react-beautiful-dnd';
 import { ScrollArea } from '@radix-ui/themes';
 import classNames from 'classnames';
 import { HoverCard } from '@radix-ui/themes';
-import Router, { useRouter } from 'next/router';
 
 import { COMPONENT_MAP } from '../../lib';
 import { StrictModeDroppable } from '../../components/sm-droppable';
 import { FontFamily } from '../build-resume-preview/view/resume-blocks/templates/utils';
+import { templatesConfig } from '../build-resume-preview/view/resume-blocks/utils';
 
 import Customize from '@labs/icons/misc/customize.svg';
 import HeadingIcon from '@labs/icons/misc/heading.svg';
@@ -31,7 +31,6 @@ import { useBuildStore } from '@/store/z-store/builder';
 import { Progress } from '@/components/misc/progress';
 import { capitalize, cleanText, pluralize } from '@labs/utils';
 import { Field } from '@labs/components/field';
-import { templatesConfig } from '../build-resume-preview/view/resume-blocks/utils';
 
 import styles from './build-resume-pane.module.scss';
 

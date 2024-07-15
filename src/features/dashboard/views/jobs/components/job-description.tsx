@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Text } from '@labs/components';
 
 export function JobDescriptionTitle({ title }: { title: string }) {

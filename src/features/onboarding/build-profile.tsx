@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import Router from 'next/router';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -7,13 +6,13 @@ import { useInterval } from '@labs/utils/hooks/useInterval';
 import { CallToAction, Flex, Heading, Text, useToast } from '@labs/components';
 import LogoMark from '@labs/icons/logo-mark.svg';
 import DragAndDrop from '@/components/drag-and-drop';
+import { useUploadResumeMutation } from '@/queries/resume';
+import { formDataAppender } from '@labs/utils';
+import { ProgressLoader } from '@/components/misc/loader';
 
 import { OnboardingLayout } from '.';
 
 import styles from './onboarding.module.scss';
-import { useUploadResumeMutation } from '@/queries/resume';
-import { formDataAppender } from '@labs/utils';
-import { ProgressLoader } from '@/components/misc/loader';
 
 export const BuildProfile = () => {
 	useEffect(() => {}, []);

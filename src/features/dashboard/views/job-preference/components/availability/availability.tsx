@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 
 import usePreferenceStore from '../../store/preference-store';
+import { PreferenceDataType } from '../../utils';
 
 import { Flex, Heading } from '@labs/components';
 import LocationIcon from '@labs/icons/misc/location.svg';
@@ -9,7 +10,6 @@ import TickIcon from '@labs/icons/misc/tick.svg';
 import SquareIcon from '@labs/icons/misc/square.svg';
 
 import styles from './availability.module.scss';
-import { PreferenceDataType } from '../../utils';
 
 const locationList = [
 	' Remote',

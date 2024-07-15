@@ -14,8 +14,8 @@
 
 import React, { FC, useState, useMemo } from 'react';
 import classNames from 'classnames';
-
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+
 import type { NativeElementProps } from '../../utils/types/utility';
 import { generateUUID, useDynamicStyle } from '../../utils';
 

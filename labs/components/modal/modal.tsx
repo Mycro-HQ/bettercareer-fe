@@ -14,10 +14,8 @@ import classNames from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { EphemeralPortal } from '../layout/ephemeral-portal';
-
 import { useMediaQuery } from '../media';
 import { forwardRefWrapper, generateUUID, getDataIcons } from '../../utils';
-
 import type { NativeElementProps } from '../../utils/types/utility';
 
 import styles from './modal.module.scss';

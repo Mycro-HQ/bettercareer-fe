@@ -6,7 +6,6 @@ import { DashboardLayout } from '@/features/dashboard/layout';
 import Notifications, {
 	NotificationListItem,
 } from '@/components/Notifications';
-
 import { NotificationListItemProps } from '@labs/utils/types/utility';
 
 function NotificationHeader() {

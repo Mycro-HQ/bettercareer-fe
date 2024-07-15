@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs } from '@radix-ui/themes';
+import * as Tabs from '@radix-ui/react-tabs';
 
 import type { tabType } from '../settings';
 

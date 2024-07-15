@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from '@radix-ui/themes';
+import * as Switch from '@radix-ui/react-switch';
 
 import { Label, Wrapper } from '../components';
 
@@ -116,12 +116,15 @@ function NotificationOptions({
 					text={title}
 					className="text-[#273643] text-base font-semibold"
 				/>
-				<Switch
+				<Switch.Root
 					name={id}
 					id={id}
 					checked={checked}
 					onCheckedChange={setChecked}
-				/>
+					className="bg-[#F3F4F4] rounded-xl w-9 h-5 data-[state=checked]:bg-[#1388F2] transition-colors"
+				>
+					<Switch.Thumb className="block size-4 bg-white rounded-full transition-transform duration-100 translate-x-0.5 will-change-transform data-[state=checked]:translate-x-[19px]" />
+				</Switch.Root>
 			</div>
 			<Text
 				size="sm"

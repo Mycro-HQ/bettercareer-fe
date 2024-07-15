@@ -1,4 +1,4 @@
-import React, { use, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import Cookies from 'js-cookie';
 

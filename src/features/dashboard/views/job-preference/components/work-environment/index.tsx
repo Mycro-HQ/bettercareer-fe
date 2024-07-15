@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 
 import usePreferenceStore from '../../store/preference-store';
 import style from '../target-role/target-role.module.scss';
+import { PreferenceDataType } from '../../utils';
 
 import Building from '@labs/icons/dashboard/blue-building.svg';
 import { Flex, Heading, Text } from '@labs/components';
 
 import { WorkIndustryData } from './work-environment-data';
-import { PreferenceDataType } from '../../utils';
 const WorkEnvironment = ({
 	handleSelectionChange,
 	userPreference,

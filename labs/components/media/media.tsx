@@ -11,7 +11,6 @@
  */
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-
 import { Slot } from '@radix-ui/themes';
 
 type MediaQueryType =

@@ -16,7 +16,6 @@ import classNames from 'classnames';
 import { useClickOutside, useMount } from '../../utils';
 import { getDataIcons } from '../../utils/data-icons';
 import { Spinner } from '../spinner';
-
 import { fieldFactory, type FieldInstance } from '../field/field';
 
 import styles from './autocomplete.module.scss';

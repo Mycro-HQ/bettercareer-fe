@@ -1,13 +1,13 @@
 import React from 'react';
+import Router from 'next/router';
 
 import { Flex, Heading, Text } from '@labs/components';
-
 import { useGetResumeAnalysisMutation } from '@/queries/resume';
 import { useBuildStore } from '@/store/z-store/builder';
 import { Modal } from '@labs/components/modal';
 import { ProgressLoader } from '@/components/misc/loader';
+
 import { AnalysisHistory } from './view/analysis-history';
-import Router from 'next/router';
 import { Analysis } from './view/analysis';
 
 export const ResumeAnalysis = ({
