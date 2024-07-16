@@ -1,0 +1,14 @@
+@use '@/styles/base/utils' as *;
+
+.gradientBackground {
+  background: linear-gradient(90deg, rgba(255, 182, 193, 0.069), rgba(144, 238, 144, 0.077));
+}
+
+.icon-burger-menu {
+  width: 24px;
+  height: 24px;
+  background-image: url('/images/landing/gradient-logo.png'); /* Update this path to your burger icon */
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}

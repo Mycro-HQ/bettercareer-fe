@@ -1,0 +1,6 @@
+@use '@/styles/base/utils' as *;
+
+.gradientBackground {
+	background: linear-gradient(90deg, rgba(255, 182, 193, 0.069), rgba(144, 238, 144, 0.077));
+}
+

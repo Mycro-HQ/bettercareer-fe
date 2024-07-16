@@ -10,6 +10,7 @@ export default function Discover() {
 			<div>
 				<Heading
 					weight={500}
+					fontSize="50px"
 					color="white"
 					className={`${styles.ctaHeader} cta-header`}
 				>

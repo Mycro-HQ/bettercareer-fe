@@ -94,10 +94,10 @@
 }
 
 .icon {
-  font-size: 24px;
-  transition: transform 0.2s;
+	font-size: 24px;
+	transition: transform 0.2s;
 
-  &.rotate {
-    transform: rotate(45deg);
-  }
+	&.rotate {
+		transform: rotate(45deg);
+	}
 }

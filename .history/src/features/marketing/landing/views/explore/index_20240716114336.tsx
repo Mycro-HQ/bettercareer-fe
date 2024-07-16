@@ -60,7 +60,7 @@ function ExploreTab2() {
 							{item.Question}
 						</LabsHeading>
 						<span
-							className={`text-4xl font-bold transition-transform ${activeIndex === index ? 'text-[#3f4c58]' : 'text-[#3f4c58]'}`}
+							className={`text-7xl font-bold transition-transform ${activeIndex === index ? 'text-grey-600' : 'text-greay-600'}`}
 						>
 							{activeIndex === index ? '×' : '+'}
 						</span>
