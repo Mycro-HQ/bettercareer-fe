@@ -1,0 +1,71 @@
+@use '@/styles/base/utils' as *;
+
+.CardContainer {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+
+	@media (768px < width < 992px) {
+		flex-direction: row;
+	}
+
+	> div {
+		// TestimonialCard
+		border-radius: 1.5rem;
+		border: 1px solid #e7e9eb;
+		background-color: #fff;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		padding: 2rem;
+		font-family: Figtree;
+
+		@media (768px < width < 992px) {
+			justify-content: space-between;
+		}
+
+		> p {
+			color: #273643;
+			letter-spacing: -0.216px;
+		}
+
+		span {
+			font-size: 12px;
+			line-height: 18px;
+			letter-spacing: -0.096px;
+		}
+	}
+
+	> :first-child {
+		flex: 4;
+	}
+
+	> :last-child {
+		flex: 6;
+	}
+
+	@media (768px < width < 992px) {
+		> :first-child,
+		> :last-child {
+			flex: 1;
+		}
+	}
+
+	&.reverse {
+		> :first-child {
+			flex: 6;
+		}
+
+		> :last-child {
+			flex: 4;
+		}
+
+		@media (768px < width < 992px) {
+			> :first-child,
+			> :last-child {
+				flex: 1;
+			}
+		}
+	}
+}
