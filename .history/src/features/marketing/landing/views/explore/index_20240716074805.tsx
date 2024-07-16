@@ -45,7 +45,7 @@ function ExploreTab2() {
 
 	const handleToggle = (index: number) => {
 		setActiveIndex(activeIndex === index ? null : index);
-		// console.log('toggled');
+		console.log('toggled');
 	};
 
 	return (
