@@ -1,0 +1,103 @@
+@use '@/styles/base/utils' as *;
+
+.CardContainer {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+
+	@media (min-width: 768px) and (max-width: 992px) {
+		flex-direction: row;
+	}
+
+	> div {
+		border-radius: 1.5rem;
+		border: 1px solid #e7e9eb;
+		background-color: #fff;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		padding: 2rem;
+		font-family: Figtree;
+
+		@media (min-width: 768px) and (max-width: 992px) {
+			justify-content: space-between;
+		}
+
+		> p {
+			color: #273643;
+			letter-spacing: -0.216px;
+		}
+
+		span {
+			font-size: 12px;
+			line-height: 18px;
+			letter-spacing: -0.096px;
+		}
+	}
+
+	> :first-child {
+		flex: 4;
+	}
+
+	> :last-child {
+		flex: 6;
+	}
+
+	@media (min-width: 768px) and (max-width: 992px) {
+		> :first-child,
+		> :last-child {
+			flex: 1;
+		}
+	}
+
+	&.reverse {
+		> :first-child {
+			flex: 6;
+		}
+
+		> :last-child {
+			flex: 4;
+		}
+
+		@media (min-width: 768px) and (max-width: 992px) {
+			> :first-child,
+			> :last-child {
+				flex: 1;
+			}
+		}
+	}
+}
+
+.question {
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 16px;
+	border-bottom: 1px solid #e0e0e0;
+	font-weight: 600;
+
+	&:hover {
+		background-color: #f5f5f5;
+	}
+}
+
+.answer {
+	padding: 16px;
+	border-bottom: 1px solid #e0e0e0;
+	display: none;
+
+	&.active {
+		display: block;
+	}
+}
+
+.icon {
+	font-size: 24px;
+	transition: transform 0.2s;
+
+	&.rotate {
+		transform: rotate(45deg);
+	}
+}

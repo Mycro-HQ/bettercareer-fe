@@ -1,0 +1,21 @@
+@use '@/styles/base/utils' as *;
+
+.gradientBackground {
+	background: linear-gradient(90deg, rgba(255, 182, 193, 0.069), rgba(144, 238, 144, 0.077));
+}
+
+.ReadMore {
+	background: linear-gradient(197deg, #339dff 7.09%, #2783d8 86.59%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+
+	font: bold;
+	font-size: 1rem;
+	display: flex;
+	align-items: center;
+	-moz-column-gap: 0.5rem;
+	     column-gap: 0.5rem;
+	line-height: 1rem;
+	letter-spacing: -0.192px;
+}
